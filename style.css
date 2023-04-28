@@ -1,0 +1,252 @@
+:root {
+    background: url("assets/bg.jpg") no-repeat center fixed;
+    background-size: cover;
+    font-size: 16px;
+    margin: 0;
+}
+
+* {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+h1 {
+    font-size: 2.3rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+.side-container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 24px;
+    right: 0;
+    top: 0;
+    width: 33vw;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(6px);
+}
+
+#site-title h1 + h2 {
+    margin-top: -20px;
+}
+
+.side-container img {
+    width: 80px;
+    margin: 100px 12px 0 12px;
+}
+
+.link-btn {
+    width: 97%;
+    margin: 5px 0;
+    padding: 12px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.3rem;
+    transition: 0.3s;
+}
+.small {
+    font-size: 0.85rem;
+}
+
+#client div p {
+    margin: 5px;
+}
+
+#student {
+    background-color: #F45050;
+    color: #fff;
+}
+
+#student:hover {
+    background-color: #b43a3a;
+}
+
+#client {
+    background-color: #3C486B;
+    color: #fff;
+}
+
+#client:hover {
+    background-color: #252c41;
+}
+
+#admin {
+    background-color: #777777;
+    color: #fff;
+}
+
+#admin:hover {
+    background-color: #505050;
+}
+
+a {
+    color: #2c5ef3;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #252c41;
+}
+
+#signup-modal {
+    display: none;
+}
+
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+}
+
+.modal-container {
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    width: 70vw;
+    padding: 20px;
+}
+
+form {
+    height: 100%;
+    width: 100%;
+}
+  
+form h2 {
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 30vw;
+}
+
+.form-group select {
+    height: 40px;
+}
+
+.form-group textarea {
+    height: 100px;
+}
+
+.btn {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f8f8f8;
+    border: 1px #cccccc solid;
+    color: #000;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn[type="submit"] {
+    background-color: #2c5ef3;
+    color: #fff;
+    border: none;
+}
+
+.btn[type="submit"]:hover {
+    background-color: #252c41;
+}
+
+.btn:hover {
+    background-color: #dddddd;
+}
+
+.col-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.personal-details {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+
+.account-details {
+    display: flex;
+    flex-direction: column;
+    width: 96%;
+    gap: 10px;
+}
+
+.account-details .form-group input {
+    width: 100%;
+}
+
+.required::after {
+    content: " *";
+    color: #F45050;
+}
+
+textarea {
+    resize: none;
+}
+  
+
+@media only screen and (max-width: 728px) {
+    .side-container {
+        width: 100%;
+        padding: 0;
+    }
+
+    .link-btn {
+        width: 90%;
+    }
+
+    .modal-container {
+        border-radius: 0;
+        width: 94%;
+    }
+
+    .personal-details {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 96%;
+    }
+}
