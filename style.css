@@ -17,6 +17,22 @@ h2 {
     font-size: 1.5rem;
 }
 
+.flex-container {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
 .side-container {
     position: fixed;
     display: flex;
@@ -38,7 +54,7 @@ h2 {
 
 .side-container img {
     width: 80px;
-    margin: 100px 12px 0 12px;
+    margin: 10vh 12px 0 12px;
 }
 
 .link-btn {
@@ -59,31 +75,34 @@ h2 {
     margin: 5px;
 }
 
-#student {
+.red-btn {
     background-color: #F45050;
     color: #fff;
 }
 
-#student:hover {
+.red-btn:hover {
     background-color: #b43a3a;
+    color: #fff;
 }
 
-#client {
+.blue-btn {
     background-color: #3C486B;
     color: #fff;
 }
 
-#client:hover {
+.blue-btn:hover {
     background-color: #252c41;
+    color: #fff;
 }
 
-#admin {
+.gray-btn {
     background-color: #777777;
     color: #fff;
 }
 
-#admin:hover {
+.gray-btn:hover {
     background-color: #505050;
+    color: #fff;
 }
 
 a {
@@ -112,19 +131,18 @@ a:hover {
 
 .modal-container {
     position: absolute;
-    top: 85%;
+    top: 12px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
     width: 70vw;
     padding: 20px;
 }
 
 form {
-    height: 100%;
-    width: 100%;
+    gap: 10px;
 }
   
 form h2 {
@@ -142,9 +160,7 @@ form h2 {
     margin-bottom: 5px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+input, textarea {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -152,7 +168,12 @@ form h2 {
     width: 30vw;
 }
 
-.form-group select {
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 10vw;
     height: 40px;
 }
 
@@ -227,7 +248,8 @@ textarea {
 @media only screen and (max-width: 728px) {
     .side-container {
         width: 100%;
-        padding: 0;
+        padding: 0 20px;
+        box-sizing: border-box;
     }
 
     .link-btn {
@@ -236,7 +258,9 @@ textarea {
 
     .modal-container {
         border-radius: 0;
-        width: 94%;
+        top: 0;
+        width: calc(100% - 42px);
+        transform: translate(-50%, 0);
     }
 
     .personal-details {
@@ -244,9 +268,7 @@ textarea {
         padding: 0;
     }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
+    input, select, textarea {
         width: 96%;
     }
 }

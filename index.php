@@ -20,14 +20,14 @@
             <h2>Online Transaction Management System</h2>
         </div>
         <p><i class="fa-solid fa-arrow-down"></i> Please click or tap the appropriate button</p>
-        <a id="student" class="link-btn" href="login/student.php">Student</a>
-        <a id="client" class="link-btn" href="login/client.php">
+        <a class="link-btn red-btn" href="login/student.php">Student</a>
+        <a id="client" class="link-btn blue-btn" href="login/client.php">
             <div>
                 <p>Client</p>
                 <p class="small">PUP Alumnus/Alumna, Parent, General Public, Others</p>
             </div>
         </a>
-        <a id="admin" class="link-btn" href="login/admin.php">College/Office Administrator</a>
+        <a class="link-btn gray-btn" href="login/admin.php">College/Office Administrator</a>
         <p>Haven't registered an account yet? <a id="signup-link" href="#">Sign up</a></p>
         <p>By using this service, you understood and agree to the PUP Online Services <a href="https://www.pup.edu.ph/terms/" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy/" target="_blank">Privacy Statement</a></p>
     </div>
@@ -122,14 +122,12 @@
                 e.preventDefault();
                 $('#signup-modal').fadeIn(150).css('display', 'flex');
                 $('.modal-container').animate({
-                    top: '91%',
                     opacity: '1'
                 }, 300);
             });
 
             $('.modal-close').click(function(e) {
                 $('.modal-container').animate({
-                    top: '85%',
                     opacity: '0'
                 }, 300);
                 $('#signup-modal').fadeOut(150).css('display', 'none');
