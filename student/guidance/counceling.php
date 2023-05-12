@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guidance Office - Counseling</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../style.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
@@ -43,7 +44,7 @@
                             <a class="btn btn-outline-primary mb-2">
                             <i class="fa-regular fa-flag"></i> Generate Inquiry
                             </a>
-                            <button class="btn btn-outline-primary mb-2">
+                            <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
                             <button class="btn btn-outline-primary mb-2">
@@ -91,7 +92,7 @@
                             <h6 class="mt-5">Appointment Information</h6>
                             <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" id="date" required>
+                                <input type="date" class="form-control" id="date" max="2023-12-31" required>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="time" class="form-label">Time</label>
