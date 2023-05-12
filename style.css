@@ -1,274 +1,186 @@
-:root {
-    background: url("assets/bg.jpg") no-repeat center fixed;
-    background-size: cover;
-    font-size: 16px;
+* {
     margin: 0;
 }
-
-* {
-    font-family: 'Fira Sans', sans-serif;
-}
-
-h1 {
-    font-size: 2.3rem;
-}
-
-h2 {
-    font-size: 1.5rem;
-}
-
-.flex-container {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.flex-column {
-    flex-direction: column;
-}
-
-.flex-row {
-    flex-direction: row;
-}
-
-.side-container {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 24px;
-    right: 0;
-    top: 0;
-    width: 33vw;
+html, body {
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(6px);
 }
 
-#site-title h1 + h2 {
-    margin-top: -20px;
+.login-card {
+    width: 50%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
-.side-container img {
-    width: 80px;
-    margin: 10vh 12px 0 12px;
-}
-
-.link-btn {
-    width: 97%;
-    margin: 5px 0;
-    padding: 12px;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.3rem;
-    transition: 0.3s;
-}
-.small {
-    font-size: 0.85rem;
-}
-
-#client div p {
-    margin: 5px;
-}
-
-.red-btn {
-    background-color: #F45050;
+/* Color scheme styling on buttons */
+.btn-student {
+    background-color: rgb(255, 63, 63);
     color: #fff;
 }
 
-.red-btn:hover {
-    background-color: #b43a3a;
+.btn-student:hover {
+    background-color: rgb(197, 50, 50);
     color: #fff;
 }
 
-.blue-btn {
-    background-color: #3C486B;
+.btn-client {
+    background-color: rgb(49, 97, 255);
     color: #fff;
 }
 
-.blue-btn:hover {
-    background-color: #252c41;
+.btn-client:hover {
+    background-color: rgb(40, 79, 207);
     color: #fff;
 }
 
-.gray-btn {
-    background-color: #777777;
+.btn-admin {
+    background-color: rgb(29, 189, 29);
     color: #fff;
 }
 
-.gray-btn:hover {
-    background-color: #505050;
+.btn-admin:hover {
+    background-color: rgb(23, 143, 23);
     color: #fff;
 }
 
-a {
-    color: #2c5ef3;
-    text-decoration: none;
-    transition: 0.3s;
+.bg-maroon {
+    background-color: #800000;
 }
 
-a:hover {
-    color: #252c41;
+.btn-primary {
+    background-color: #800000;
+    border: none;
 }
 
-#signup-modal {
-    display: none;
+.btn-primary:hover {
+    background-color: #520000;
 }
 
-.modal-bg {
-    position: fixed;
+.btn-outline-primary {
+    color: #800000;
+    border-color: #800000;
+}
+
+.btn-outline-primary:hover {
+    border-color: #520000;
+    background-color: #520000;
+}
+
+.btn-primary:disabled {
+    background-color: #bbbbbb;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #520000;
+}  
+
+.container-fluid {
+    position: relative;
+}
+
+.header {
+    background-image: url("assets/bg2.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(6px);
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
 }
 
-.modal-container {
+.header-text {
+    z-index: 1;
+}
+
+.header-btn {
+    z-index: 1;
+}
+
+/* Start of custom breadcrumb styling
+Breadcrumb is a bootstrap component that shows the location of the user on the website. */
+.breadcrumb-nav {
+    z-index: 1;
     position: absolute;
-    top: 12px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    width: 70vw;
-    padding: 20px;
+    left: 8px;
+    top: 16px;
 }
 
-form {
-    gap: 10px;
-}
-  
-form h2 {
-    margin-top: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input, textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    width: 30vw;
-}
-
-select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    width: 10vw;
-    height: 40px;
-}
-
-.form-group textarea {
-    height: 100px;
-}
-
-.btn {
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #f8f8f8;
-    border: 1px #cccccc solid;
-    color: #000;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn[type="submit"] {
-    background-color: #2c5ef3;
+.breadcrumb-container .breadcrumb-item + .breadcrumb-item::before {
+    font-weight: 100;
     color: #fff;
-    border: none;
+    content: "/";
 }
 
-.btn[type="submit"]:hover {
-    background-color: #252c41;
+.breadcrumb-container .breadcrumb-item a {
+    color: #fff;
 }
 
-.btn:hover {
-    background-color: #dddddd;
+.breadcrumb-item a {
+    color: #000;
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
+    padding: 5px 8px;
+    border-radius: 5px;
 }
 
-.col-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+.breadcrumb-item a:hover {
+    background-color: #520000;
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
-.personal-details {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    gap: 10px;
+.breadcrumb-container .breadcrumb .active {
+    color: #fff;
 }
 
-.account-details {
-    display: flex;
-    flex-direction: column;
-    width: 96%;
-    gap: 10px;
+.breadcrumb .active {
+    font-weight: 800;
+}
+/* End of custom breadcrumb styling */
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
 }
 
-.account-details .form-group input {
-    width: 100%;
+.form-group.required .form-label:after {
+    content:" *";
+    color:red;
+  }
+
+.footer, .push {
+    height: 50px; /* .push must be the same height as .footer */
 }
 
-.required::after {
-    content: " *";
-    color: #F45050;
+.footer a {
+    font-size: 12px;
 }
 
-textarea {
-    resize: none;
-}
-  
-
-@media only screen and (max-width: 728px) {
-    .side-container {
+@media only screen and (max-width: 768px) {
+    .login-card {
         width: 100%;
-        padding: 0 20px;
-        box-sizing: border-box;
     }
 
-    .link-btn {
-        width: 90%;
-    }
-
-    .modal-container {
-        border-radius: 0;
-        top: 0;
-        width: calc(100% - 42px);
-        transform: translate(-50%, 0);
-    }
-
-    .personal-details {
-        flex-direction: column;
-        padding: 0;
-    }
-
-    input, select, textarea {
-        width: 96%;
+    table {
+        table-layout: fixed;
+        word-wrap: break-word;
     }
 }
