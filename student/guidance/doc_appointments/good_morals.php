@@ -15,7 +15,8 @@
 <body>
     <div class="wrapper">
         <?php
-            include "../../../navbar.php"
+            $office_name = "Guidance Office";
+            include "../../../navbar.php";
         ?>
         <div class="container-fluid p-4">
             <nav class="breadcrumb-nav" aria-label="breadcrumb">
