@@ -82,8 +82,15 @@ html, body {
     position: relative;
 }
 
+.academicbanner {
+    background-image: url("assets/academicoffice.jpeg");
+}
+
+.guidancebanner {
+    background-image: url("assets/bg2.jpg")
+}
+
 .header {
-    background-image: url("assets/bg2.jpg");
     background-size: cover;
     background-position: center;
     height: 500px;
