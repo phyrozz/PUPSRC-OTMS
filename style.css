@@ -47,11 +47,12 @@ html, body {
 
 .btn-primary {
     background-color: #800000;
-    border: none;
+    border: 1px solid #800000;
 }
 
 .btn-primary:hover {
     background-color: #520000;
+    border: 1px solid #520000;
 }
 
 .btn-outline-primary {
@@ -66,6 +67,19 @@ html, body {
 
 .btn-primary:disabled {
     background-color: #bbbbbb;
+}
+
+.search-btn {
+    background-color: #DAA520;
+}
+
+.search-btn:hover {
+    background-color: #af8519;
+}
+
+.search-btn:active {
+    color: #fff !important;
+    background-color: #af8519 !important;
 }
 
 .navbar {
@@ -191,7 +205,7 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 
 .btn:active {
     background-color: #520000 !important;
-    border: none !important;
+    border: #520000 1px solid !important;
 }
 
 @media only screen and (max-width: 768px) {

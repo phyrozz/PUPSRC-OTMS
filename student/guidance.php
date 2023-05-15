@@ -15,9 +15,10 @@
 <body>
     <div class="wrapper">
         <?php
+            $office_name = "Guidance Office";
             include "../navbar.php"
         ?>
-        <div class="container-fluid header">
+        <div class="container-fluid guidancebanner header">
             <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
             <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">

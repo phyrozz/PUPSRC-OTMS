@@ -9,12 +9,12 @@
             <ul class="navbar-nav me-auto order-2 order-lg-1">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="officeServicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Guidance Office
+                        <?php echo $office_name; ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
                         <li><a class="dropdown-item" href="#">Registration</a></li>
                         <li><a class="dropdown-item" href="/student/guidance.php">Guidance</a></li>
-                        <li><a class="dropdown-item" href="#">Academic</a></li>
+                        <li><a class="dropdown-item" href="/student/academic.php">Academic</a></li>
                         <li><a class="dropdown-item" href="#">Accounting</a></li>
                         <li><a class="dropdown-item" href="#">Administration</a></li>
                     </ul>
@@ -34,7 +34,7 @@
                 <div class="d-flex navbar-nav justify-content-center me-auto order-2 order-lg-1 w-100">
                     <form class="d-flex w-100">
                         <input class="form-control me-2" type="search" placeholder="Search for services..." aria-label="Search">
-                        <button class="btn btn-warning" type="submit"><strong>Search</strong></button>
+                        <button class="btn search-btn" type="submit"><strong>Search</strong></button>
                     </form>
                 </div>
                 <li class="nav-item dropdown order-1 order-lg-2">
