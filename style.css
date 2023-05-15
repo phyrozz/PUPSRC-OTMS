@@ -154,6 +154,13 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 }
 /* End of custom breadcrumb styling */
 
+/* Different select option colors of statuses for admin pages */
+.form-select {
+    background-color: white;
+    transition: background-color 0.3s;
+}
+  
+
 .wrapper {
     min-height: 100%;
     height: auto !important;
