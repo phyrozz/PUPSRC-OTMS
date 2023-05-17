@@ -1,0 +1,103 @@
+.modal {
+    display: none; /* Hide the modal by default */
+    position: fixed;
+    z-index: 9999; /* Set a high z-index value to bring the modal to the top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    pointer-events: none; /* Disable pointer events on the modal */
+  }
+
+.answeredno{
+    display: none; /* Hide the modal by default */
+}
+  .modal-content {
+    background-color: #fefefe;
+    margin: 0 auto; /* Center horizontally */
+    margin-top: 15%; /* Adjust the top margin as needed */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px; /* Limit the maximum width of the modal */
+    pointer-events: auto; /* Enable pointer events on the modal content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* prevents clicks on other elements by setting the pointer-events property to "none" on the <body> element.
+  Only the modal and its content remain clickable.
+  */
+  body.modal-open {
+  overflow: hidden;
+  pointer-events: none;
+}
+
+   /* Radio button styles */
+   .modal-radio-group {
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.radio-option1{
+    margin-left: 5px;
+}
+
+.radio-option2{
+    margin-left: 50px;
+}
+
+label{
+    margin-left:10px;
+}
+
+  .btn-close {
+    position: absolute; /* Set the position absolute for the close button */
+    top: 0;
+    right: 0;
+    padding: 25px;
+    cursor: pointer;
+  }
+
+  .exclamationpic {
+    position: relative; /* Set the position relative for the picture */
+    margin-top: -90px; /* Adjust the negative margin to position the picture */
+    height: 150px;
+    width: 150px;
+  }
+
+  .countdown {
+    display: none;
+}
+
+.card-body .col-sm-6 {
+  font-size: 25px;
+  padding-top: 20px;
+}
+
+.card-body .col-sm-2 {
+  font-size: 20px;
+  padding-top: 20px;
+}
+
+.subtext {
+  font-size: 13px;
+}
+
+.btn.btn-secondary {
+  width:110px;
+}
+
+.btn.btn-info {
+  width:110px;
+}
+
+.btn.btn-danger {
+  width:110px;
+}
