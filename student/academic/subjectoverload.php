@@ -116,10 +116,11 @@
     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
     </div>
     <div class="col-sm-2">
-      ATTACH1
+    <button type="button" class="btn btn-primary"> View Attachment</button> 
     </div>
     <div class="col-sm-2">
-      ACTION1
+    <button type="button" class="btn btn-primary"><i class="fa-solid fa-upload"></i>Upload</button> 
+
     </div>
   </div>
   <div class="row">
@@ -131,10 +132,11 @@
     <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
     </div>
     <div class="col-sm-2">
-      ATTACH2
+    <button type="button" class="btn btn-primary"> View Attachment</button> 
     </div>
     <div class="col-sm-2">
-      ACTION2
+    <button type="button" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i>dit</button> 
+
     </div>
   </div>
   <div class="row">
@@ -146,10 +148,10 @@
     <button type="button" class="btn btn-danger"><i class="fa-solid fa-circle-check"></i> Verified</button>
     </div>
     <div class="col-sm-2">
-      ATTACH3
+    <button type="button" class="btn btn-primary"> View Attachment</button> 
     </div>
     <div class="col-sm-2">
-      ACTION3
+    <button type="button" class="btn btn-primary"><i class="fa-solid fa-upload"></i>Upload</button> 
     </div>
   </div>
 </div>
