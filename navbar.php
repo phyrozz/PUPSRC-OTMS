@@ -19,16 +19,35 @@
                         <li><a class="dropdown-item" href="#">Administration</a></li>
                     </ul>
                 </li>
+                <?php if ($office_name != "Select an Office") { ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="officeServicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Services List
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-                        <li><a class="dropdown-item" href="/student/guidance/counceling.php">Schedule Counceling</a></li>
-                        <li><a class="dropdown-item" href="/student/guidance/good_morals.php">Request Good Moral Document</a></li>
-                        <li><a class="dropdown-item" href="/student/guidance/clearance.php">Request Clearance</a></li>
+                        <?php switch ($office_name) { 
+                            case 'Guidance Office':
+                                echo '
+                                <li><a class="dropdown-item" href="/student/guidance/counceling.php">Schedule Counceling</a></li>
+                                <li><a class="dropdown-item" href="/student/guidance/good_morals.php">Request Good Moral Document</a></li>
+                                <li><a class="dropdown-item" href="/student/guidance/clearance.php">Request Clearance</a></li>
+                                ';
+                                break;
+                            case 'Academic Office':
+                                echo '
+                                <li><a class="dropdown-item" href="/student/academic/subject_overload.php">Subject Overload</a></li>
+                                <li><a class="dropdown-item" href="/student/academic/grade_accreditation.php">Grade Accreditation</a></li>
+                                <li><a class="dropdown-item" href="/student/academic/cross_enrollment.php">Cross-Enrollment</a></li>
+                                <li><a class="dropdown-item" href="/student/academic/shifting.php">Shifting</a></li>
+                                <li><a class="dropdown-item" href="/student/academic/manual_enrollment.php">Manual Enrollment</a></li>
+                                <li><a class="dropdown-item" href="/student/academic/sis_tools.php">Services in SIS Tools</a></li>
+                                ';
+                            // Add more cases for other office services
+                            }
+                        ?>
                     </ul>
                 </li>
+                <?php } ?>
             </ul>
             <ul class="navbar-nav order-3 order-lg-3 w-50 gap-3">
                 <div class="d-flex navbar-nav justify-content-center me-auto order-2 order-lg-1 w-100">

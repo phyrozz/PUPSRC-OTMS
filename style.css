@@ -244,16 +244,12 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 }
 
 /* Different background banners for office pages */
-.offices-page-banner {
-    background-image: url("assets/bg3.jpg");
-}
-
 .academicbanner {
     background-image: url("assets/academicoffice.jpeg");
 }
 
 .guidancebanner {
-    background-image: url("assets/bg2.jpg")
+    background-image: url("assets/bg9.jpeg")
 }
 
 @media only screen and (max-width: 768px) {
@@ -264,5 +260,13 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     table {
         table-layout: fixed;
         word-wrap: break-word;
+    }
+
+    .jumbotron {
+        left: 0;
+        top: 0;
+        margin: 0;
+        padding: 120px 0 0 0;
+        transform: translate(0%, 0%);
     }
 }

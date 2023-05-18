@@ -40,26 +40,26 @@
                                 </a>
                             </div>
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
-                                    <img class="p-3" src="/assets/guidance.png" alt="Registration Office Logo" width=80>
+                                <a href="guidance.php" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
+                                    <img class="p-3" src="/assets/guidance.png" alt="Guidance Office Logo" width=80>
                                     Guidance Office
                                 </a>
                             </div>
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
-                                    <img class="p-3" src="/assets/academic.png" alt="Registration Office Logo" width=80>
+                                <a href="academic.php" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
+                                    <img class="p-3" src="/assets/academic.png" alt="Academic Office Logo" width=80>
                                     Academic Office
                                 </a>
                             </div>
                             <div class="col-md-12">
                                 <a href="#" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
-                                    <img class="p-3" src="/assets/accounting.png" alt="Registration Office Logo" width=80>
+                                    <img class="p-3" src="/assets/accounting.png" alt="Accounting Office Logo" width=80>
                                     Accounting Office
                                 </a>
                             </div>
                             <div class="col-md-12">
                                 <a href="#" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
-                                    <img class="p-3" src="/assets/administration.png" alt="Registration Office Logo" width=80>
+                                    <img class="p-3" src="/assets/administration.png" alt="Administration Office Logo" width=80>
                                     Administration Office
                                 </a>
                             </div>
