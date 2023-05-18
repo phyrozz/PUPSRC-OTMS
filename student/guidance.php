@@ -26,7 +26,7 @@
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
             <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="home.php">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Guidance Office</li>
                 </ol>
             </nav>
