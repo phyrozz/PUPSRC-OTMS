@@ -11,9 +11,6 @@
     pointer-events: none; /* Disable pointer events on the modal */
   }
 
-.answeredno{
-    display: none; /* Hide the modal by default */
-}
   .modal-content {
     background-color: #fefefe;
     margin: 0 auto; /* Center horizontally */
@@ -27,6 +24,32 @@
     justify-content: center;
     align-items: center;
   }
+
+  .uploadbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 70px;
+    border-style: dashed;
+    cursor: pointer;
+  }
+
+  .editmod{
+    max-width: 1000px !important /* Set the desired width */
+  }
+
+  .uploadsubtext{
+    font-size: 10px;
+  }
+
+  #hiddenFileInput {
+    display: none;
+  }
+
+h1, h2, p{
+  display: inline-block;
+  text-align: center;
+}
 
   /* prevents clicks on other elements by setting the pointer-events property to "none" on the <body> element.
   Only the modal and its content remain clickable.
@@ -65,6 +88,16 @@ label{
     cursor: pointer;
   }
 
+  .btn-close.upload{
+    position: absolute; /* Set the position absolute for the close button */
+    padding: 25px;
+    cursor: pointer;
+  }
+
+  .btn.btn-primary.submit{
+    width:300px;
+  }
+
   .exclamationpic {
     position: relative; /* Set the position relative for the picture */
     margin-top: -90px; /* Adjust the negative margin to position the picture */
@@ -74,6 +107,15 @@ label{
 
   .countdown {
     display: none;
+}
+
+iframe{
+  height: 400px;
+  width: 700px;
+}
+
+.container.d-flex{
+  margin-top:30px;
 }
 
 .card-body .col-sm-6 {
@@ -98,6 +140,6 @@ label{
   width:110px;
 }
 
-.btn.btn-danger {
+.btn.btn-success {
   width:110px;
 }

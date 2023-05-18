@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Office - Subject Overload</title>
+    <title>Academic Office - Shifting</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
@@ -20,15 +20,13 @@
             include ('../../navbar.php');
             include ('uploadmodal.php');
             include ('editmodal.php');
-            //include('generate_pdf.php')
         ?>
 
         <!-- The Modal -->
             <div id="myModal" class="modal">
             <div id="modalContent" class="modal-content">
             <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/><h2>Are you a student in good standing?</h2>
-            <p>(no failing grade in previous semester)</p>
+            <br/><h2>Do you have at least 1 year of residency in your current program?</h2>
             <div class="modal-radio-group">
                     <input type="radio" name="option" value="option1" class="radio-option1">
                     <label for="option1">Yes</label>
@@ -45,8 +43,20 @@
             <div id="modalContent" class="modal-content">
             <a href="../academic.php" class="btn-close" aria-label="Close"></a>
             <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/><h1>Subject overload is only allowed for academically outstanding students.</h1>
+            <br/><h1>Students must have at least 1 year residency from current program to qualify for shifting.</h1>
             <a href="../academic.php" class="btn btn-primary" id="nextButton">Home</a>
+            </div>
+        </div>
+
+        <!-- Pay Alert Modal -->
+        <div id="payModal" class="modal">
+            <div id="modalContent" class="modal-content">
+            <img src="/assets/exclamation.png" class="exclamationpic">
+            <br/><h2>Pay 150 PHP at the cashier for the certified copy of grades.</h2>
+            <p>Take a picture of the issued copy as it needs to be uploaded here later.<br/>
+            Then submit the copy to the academic office, with your transaction ID.</p>
+            <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="close_payModal()">Next</button>
+            
             </div>
         </div>
 
@@ -55,11 +65,11 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item"><a href="../academic.php">Academic Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Subject Overload</li>
+                    <li class="breadcrumb-item active" aria-current="page">Shifting</li>
                 </ol>
             </nav>
-            <h1 class="display-1 header-text text-center text-light">Subject Overload</h1>
-            <p class="header-text text-center text-light">Add additional subject/s more than the prescribed number of units</p>
+            <h1 class="display-1 header-text text-center text-light">Shifting</h1>
+            <p class="header-text text-center text-light">Shift to another program offered in PUP Santa Rosa</p>
         </div>
 
         <br/>
@@ -103,8 +113,8 @@
   <div class="card-body">
   <div class="row">
     <div class="col-sm-6">
-      Request Letter for Overload
-      <br/><span class="subtext">(Letter that contains justification of the need for overload)</span>
+      Request Letter for Shifting
+      <br/><span class="subtext">(Letter that contains justification of the need to shift)</span>
     </div>
     <div class="col-sm-2">
     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
@@ -119,8 +129,8 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-    ACE Form
-      <br/><span class="subtext">(Adding of Subject/s)</span>
+    Certified Copy of Grades (Soft Copy)
+      <br/><span class="subtext">(Picture of issued copy)</span>
     </div>
     <div class="col-sm-2">
     <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
@@ -129,14 +139,14 @@
     <button type="button" class="btn btn-primary"> View Attachment</button> 
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen-to-square"></i> Edit</button> 
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
 
     </div>
   </div>
   <div class="row">
     <div class="col-sm-6">
-    Certificate of Registration
-      <br/><span class="subtext">(Current semester)</span>
+    Certified Copy of Grades (Soft Copy)
+      <br/><span class="subtext">(To be submitted at the Academic Office)</span>
     </div>
     <div class="col-sm-2">
     <button type="button" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Verified</button>

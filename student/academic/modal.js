@@ -3,31 +3,46 @@ function openModal() {
     modal.style.display = "block";
     document.body.classList.add("modal-open");
   }
-  
-function closeModal() {
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
-    document.body.classList.remove("modal-open");
+
+function open_payModal() {
+    var modal = document.getElementById("payModal");
+    modal.style.display = "block";
+    document.body.classList.add("modal-open");
   }
 
+function yesModal(){
+  var modal = document.getElementById("redirectModal");
+  modal.style.display = "none";
+  window.location.href = "../academic.php";
+  document.body.classList.remove("modal-open");
+}
+
+function closeModal() {
+    var modal = document.getElementById("redirectModal");
+    modal.style.display = "none";
+    document.body.classList.remove("modal-open");
+}
+
+function close_payModal(){
+    var modal = document.getElementById("payModal");
+    modal.style.display = "none";
+    document.body.classList.remove("modal-open");
+}
 
 function openModal2() {
     var modal1 = document.getElementById("myModal");
     var modal2 = document.getElementById("redirectModal");
+    var modal3 = document.getElementById("payModal");
     var radio1 = document.querySelector(".radio-option1");
     var radio2 = document.querySelector(".radio-option2");
-  
 
     if (radio1.checked){
-        closeModal();
+        modal1.style.display = "none";
+        modal3.style.display = "block";
     } else if (radio2.checked){
       modal1.style.display = "none";
       modal2.style.display = "block";
     }
-  }
-
-  function redirectHome(){
-    window.location.href = "../academic.php";
   }
 
 // Initial check when the page loads
@@ -51,33 +66,3 @@ window.addEventListener('load', function() {
             });
         }
     }
-
-/*
-  window.addEventListener('load', function() {
-    disableButton();
-});
-*/
-
-/*
-  function disableButton() {
-    var button = document.getElementById("nextButton");
-    var countdownText = document.getElementById("countdownText");
-    
-    button.disabled = true;
-    countdownText.style.display = "block";
-    
-    var count = 5;
-    countdownText.textContent = "Next (" + count + ")";
-    
-    var countdown = setInterval(function() {
-        count--;
-        countdownText.textContent = "Next (" + count + ")";
-        
-        if (count <= 0) {
-            clearInterval(countdown);
-            button.disabled = false;
-            countdownText.textContent = "Next";
-        }
-    }, 1000);
-}
-*/
