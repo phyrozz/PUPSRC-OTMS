@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
     <div class="container-fluid">
         <img class="p-2" src="/assets/pup-logo.png" alt="PUP Logo" width="40">
-        <a class="navbar-brand" href="#"><strong>PUPSRC-OTMS</strong></a>
+        <a class="navbar-brand" href="/student/home.php"><strong>PUPSRC-OTMS</strong></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

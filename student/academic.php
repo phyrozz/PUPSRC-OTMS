@@ -27,7 +27,7 @@
             <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
                 <ol class="breadcarumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="home.php">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Academic Office</li>
                 </ol>
             </nav>

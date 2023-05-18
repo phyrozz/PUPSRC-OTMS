@@ -11,6 +11,17 @@ html, body {
     height: 100%;
 }
 
+/* Set styles for the student homepage */
+.jumbotron {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2rem 1rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
+  }
+
 .login-card {
     width: 50%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -134,15 +145,6 @@ html, body {
     position: relative;
 }
 
-.academicbanner {
-    background-image: url("assets/academicoffice.jpeg");
-}
-
-.guidancebanner {
-    background-image: url("assets/bg2.jpg")
-}
-
-
 .header {
     background-size: cover;
     background-position: center;
@@ -239,6 +241,19 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 
 .footer a {
     font-size: 12px;
+}
+
+/* Different background banners for office pages */
+.offices-page-banner {
+    background-image: url("assets/bg3.jpg");
+}
+
+.academicbanner {
+    background-image: url("assets/academicoffice.jpeg");
+}
+
+.guidancebanner {
+    background-image: url("assets/bg2.jpg")
 }
 
 @media only screen and (max-width: 768px) {

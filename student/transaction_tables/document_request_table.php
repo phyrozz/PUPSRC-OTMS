@@ -1,3 +1,5 @@
+<?php include './functions.php';?>
+
 <?php
     // Add pagination to the table
     $rowsPerPage = 5;
@@ -9,7 +11,7 @@
     $sortDirection = isset($_GET['dir']) ? $_GET['dir'] : 'DESC';
 
     // Validate and sanitize the sort column
-    $validColumns = ['id', 'office_name', 'request_description', 'scheduled_datetime', 'status_name'];
+    $validColumns = ['id', 'office_name', 'request_description', 'scheduled_datetime', 'status_name', 'amount_to_pay'];
     if (!in_array($sortColumn, $validColumns)) {
         $sortColumn = 'scheduled_datetime'; // Set a default sort column
     }
@@ -20,38 +22,15 @@
         $sortDirection = 'DESC'; // Set a default sort direction
     }
 
-    $documentRequests = "SELECT doc_requests.id, office_name, request_description, scheduled_datetime, status_name
+    $documentRequests = "SELECT doc_requests.id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
                         FROM doc_requests
                         INNER JOIN offices ON doc_requests.office_id = offices.id
                         INNER JOIN statuses ON doc_requests.status_id = statuses.id
-                        WHERE user_id = 1
+                        WHERE user_id = 1 OR request_description <> NULL
                         ORDER BY $sortColumn $sortDirection
                         LIMIT $offset, $rowsPerPage";
 
     $result = mysqli_query($connection, $documentRequests);
-    function getStatusBadgeClass($status) {
-        switch ($status) {
-            case 'Approved':
-                return 'bg-success';
-            case 'Disapproved':
-                return 'bg-danger';
-            default:
-                return 'bg-warning text-dark';
-        }
-    }
-    
-    // Add more cases here for other office document requests
-    function getSchedulePageRedirect($request) {
-        switch ($request) {
-            case "Request Good Moral Document":
-                return "/student/guidance/doc_appointments/good_morals.php";
-            case "Request Clearance":
-                return "/student/guidance/doc_appointments/clearance.php";
-            default:
-                return "#";
-        }
-    }
-
 ?>
 <table id="transactions-table" class="table table-hover table-bordered">
     <thead>
@@ -88,6 +67,14 @@
                     <?php } ?>
                 </a>
             </th>
+            <th class="text-center" scope="col">
+                <a class="text-decoration-none text-dark" href="?sort=id&dir=<?php echo $sortColumn === 'amount_to_pay' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
+                    Amount to pay
+                    <?php if ($sortColumn === 'amount_to_pay') { ?>
+                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
+                    <?php } ?>
+                </a>
+            </th>
             <th class="text-center sortable-header" scope="col">
                 <a class="text-decoration-none text-dark" href="?sort=status_name&dir=<?php echo $sortColumn === 'status_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Status
@@ -107,12 +94,14 @@
                     $scheduledDateTime = $row['scheduled_datetime'];
                     $officeName = $row['office_name'];
                     $statusName = $row['status_name'];
+                    $amountToPay = $row['amount_to_pay'];
         ?>
         <tr>
             <td><?php echo "DR-"; echo $requestId; ?></td>
             <td><?php echo $officeName; ?></td>
             <td><?php echo $requestDescription; ?></td>
             <td><a href="<?php echo getSchedulePageRedirect($requestDescription); ?>" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a> <?php echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A"); ?></td>
+            <td><?php echo "₱"; echo $amountToPay; ?></td>
             <td class="text-center">
                 <span class="badge rounded-pill <?php echo getStatusBadgeClass($statusName); ?>">
                     <?php echo $statusName; ?>
@@ -126,7 +115,7 @@
                 echo "Error executing the query: " . mysqli_error($connection);
             }
 
-            $countTotalOnDocumentRequests = "SELECT COUNT(*) AS total FROM doc_requests";
+            $countTotalOnDocumentRequests = "SELECT COUNT(*) AS total FROM doc_requests WHERE user_id = 1";
             $countResult = mysqli_query($connection, $countTotalOnDocumentRequests);
             $countRow = mysqli_fetch_assoc($countResult);
             $totalRows = $countRow['total'];
