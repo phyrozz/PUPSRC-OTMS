@@ -1,6 +1,12 @@
 * {
     margin: 0;
+    font-family: 'Fira Sans', sans-serif;
 }
+
+a {
+    font-family: 'Fira Sans', sans-serif;
+}
+
 html, body {
     height: 100%;
 }
