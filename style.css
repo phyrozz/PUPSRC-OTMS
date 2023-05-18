@@ -145,6 +145,14 @@ html, body {
     position: relative;
 }
 
+.academicbanner {
+    background-image: url("assets/academicoffice.jpeg");
+}
+
+.guidancebanner {
+    background-image: url("assets/bg2.jpg")
+}
+
 .header {
     background-size: cover;
     background-position: center;
@@ -221,7 +229,6 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     background-color: white;
     transition: background-color 0.3s;
 }
-  
 
 .wrapper {
     min-height: 100%;

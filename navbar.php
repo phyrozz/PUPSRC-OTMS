@@ -9,7 +9,9 @@
             <ul class="navbar-nav me-auto order-2 order-lg-1">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="officeServicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php echo $office_name; ?>
+                        <?php
+                        echo $office_name;
+                        ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
                         <li><a class="dropdown-item" href="#">Registration</a></li>

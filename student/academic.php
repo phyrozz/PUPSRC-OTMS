@@ -25,7 +25,6 @@
             <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
             <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-                <ol class="breadcarumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="home.php">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Academic Office</li>
@@ -36,27 +35,27 @@
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
-            <a href="guidance/subjectoverload.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/subjectoverload.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
                 <h2>Subject Overload</h2>
                 <p>Add additional subject/s more than the prescribed number of units</p>
             </a>
-            <a href="guidance/gradeaccreditation.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/gradeaccreditation.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>Grade Accreditation</h2>
                 <p>For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark</p>
             </a>
-            <a href="guidance/crossenrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/crossenrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>Cross-Enrollment</h2>
                 <p>Enrollment of subject/s at another college or university</p>
             </a>
-            <a href="guidance/shifting.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/shifting.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>Shifting</h2>
                 <p>Shift to another program offered in PUP Santa Rosa</p>
             </a>
-            <a href="guidance/manualenrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/manualenrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>Manual Enrollment</h2>
                 <p>Failed to enroll during the online registration period set by the University</p>
             </a>
-            <a href="guidance/servicesinsistools.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/servicesinsistools.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>Services in SIS Tools</h2>
                 <p>(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester</p>
             </a>
