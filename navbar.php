@@ -1,10 +1,10 @@
 <?php
     session_start();
     
-    if (!isset($_SESSION['user'])) {
-        header('Location: localhost://index.php');
-        exit;
-    }
+    // if (!isset($_SESSION['user'])) {
+    //     header('Location: localhost://index.php');
+    //     exit;
+    // }
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
     <div class="container-fluid">

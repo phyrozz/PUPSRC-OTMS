@@ -18,7 +18,7 @@
 </head>
 <body>
     <?php
-        
+        include "../conn.php";
     ?>
     <div class="jumbotron container-lg bg-white d-flex">
         <div class="container-lg container-fluid">
@@ -29,7 +29,7 @@
                     <h2>Online Transaction Management System</h2>
                     <p class="lead">Sign in as PUP student</p>
 
-                    <form class="d-flex flex-column gap-2" action="student.php">
+                    <form method="POST" class="d-flex flex-column gap-2" action="">
                         <div class="form-group col-12">
                             <input type="text" class="form-control" id="studentNumber" placeholder="Student Number" maxlength="15" required>
                         </div>
@@ -57,7 +57,7 @@
         </div>
     </div>
     <!-- Sign Up Modal -->
-    <form id="signupForm" method="post">
+    <form action="../create_account.php" id="signupForm" method="POST">
         <div class="modal fade" id="Register" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true"> 
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -100,7 +100,7 @@
                                 <div class="form-group col-6">
                                 <label class="mb-0 pb-1">Extension Name <font class="small">(Jr./Sr./III Etc..)</font></label>
                                     <div class="input-group mb-0">
-                                    <input type="text" name="EName" value="" id="EName" placeholder="Middle Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                    <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
                                     </div>
                                 </div>                             
                                 </div>
@@ -133,7 +133,7 @@
                                 <div class="form-group col-12">
                                     <label>Home Address <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" maxlength="50" size="255" autocomplete="off" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
@@ -201,7 +201,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" form="signupForm" class="btn btn-primary">Sign Up</button>
+                        <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
                     </div>
                 </div>
             </div>
@@ -209,68 +209,68 @@
     </form>
 
     <script>
-        $(document).ready(function() {
-            $('#signupForm').submit(function(e) {
-            e.preventDefault(); // Prevent form from submitting normally
+        // $(document).ready(function() {
+            // $('#signupForm').submit(function(e) {
+            // e.preventDefault(); // Prevent form from submitting normally
 
-            var password = $('#Password').val();
-            var confirmPassword = $('#ConfirmPassword').val();
+            // var password = $('#Password').val();
+            // var confirmPassword = $('#ConfirmPassword').val();
 
-            if (password !== confirmPassword) {
-                alert('Password and Confirm Password do not match');
-                return;
-            }
+            // if (password !== confirmPassword) {
+            //     alert('Password and Confirm Password do not match');
+            //     return;
+            // }
 
-            // Perform AJAX request
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                success: function(response) {
-                    console.log(response);
-                    document.innerHTML = `
-                    <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <p class="modal-title">Account Created</p> 
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Account created successfully. You may now login.</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                    `;
-                },
-                    error: function(error) {
-                    console.log(error);
-                    document.innerHTML = `
-                    <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <p class="modal-title">Sign up Failed</p> 
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Something went wrong with the sign up. Please try again.</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-                }
-            });
-            });
-        });
+            // // Perform AJAX request
+            // $.ajax({
+            //     type: 'POST',
+            //     url: $(this).attr('action'),
+            //     data: $(this).serialize(),
+            //     success: function(response) {
+            //         console.log(response);
+            //         document.innerHTML = `
+            //         <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
+            //             <div class="modal-dialog modal-lg">
+            //                 <div class="modal-content">
+            //                     <div class="modal-header">
+            //                         <p class="modal-title">Account Created</p> 
+            //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            //                     </div>
+            //                     <div class="modal-body">
+            //                         <p>Account created successfully. You may now login.</p>
+            //                     </div>
+            //                     <div class="modal-footer">
+            //                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+            //                     </div>
+            //                 </div>
+            //             </div>
+            //         </div>  
+            //         `;
+            //     },
+            //         error: function(error) {
+            //         console.log(error);
+            //         document.innerHTML = `
+            //         <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
+            //             <div class="modal-dialog modal-lg">
+            //                 <div class="modal-content">
+            //                     <div class="modal-header">
+            //                         <p class="modal-title">Sign up Failed</p> 
+            //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            //                     </div>
+            //                     <div class="modal-body">
+            //                         <p>Something went wrong with the sign up. Please try again.</p>
+            //                     </div>
+            //                     <div class="modal-footer">
+            //                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+            //                     </div>
+            //                 </div>
+            //             </div>
+            //         </div>
+            //         `;
+            //     }
+            // });
+        //     });
+        // });
     </script>
     
 </body>
