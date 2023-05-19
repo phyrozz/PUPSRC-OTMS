@@ -19,7 +19,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../../navbar.php"
+            include "../../navbar.php";
         ?>
         <div class="container-fluid p-4">
             <nav class="breadcrumb-nav" aria-label="breadcrumb">
@@ -62,7 +62,8 @@
                         <h6>Request Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="row g-3">
+                        <form id="appointment-form" class="row g-3" method="POST">
+                        <input type="hidden" name="form_type" value="good_morals">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
                             <div class="form-group required col-12">
@@ -107,7 +108,8 @@
                                 </h4>
                                 <p>Your document request will be forwarded to the concerned office after you click the "Submit" button.</p>
                                 <p>Confirmation (approved/disapproved) of the request will be sent to your registered email.</p>
-                                <p class="mb-0">You may also constantly monitor the status of the request by going to <b>My Transactions</b>.</p>
+                                <p>You need to appoint a schedule before you can retrieve your requested document.</p>
+                                <p class="mb-0">You may appoint a schedule and also constantly monitor the status of your request by going to <b>My Transactions</b>.</p>
                             </div>
                             <div class="d-flex w-100 justify-content-between p-1">
                                 <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">

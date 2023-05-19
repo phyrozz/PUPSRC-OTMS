@@ -19,7 +19,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../../navbar.php"
+            include "../../navbar.php";
         ?>
         <div class="container-fluid p-4">
             <nav class="breadcrumb-nav" aria-label="breadcrumb">
@@ -62,12 +62,13 @@
                         <h6>Appointment Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="row g-3">
+                        <form id="appointment-form" class="row g-3" method="POST">
+                            <input type="hidden" name="form_type" value="counseling_form">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
                             <div class="form-group required col-12">
                                 <label for="studentNumber" class="form-label">Student Number</label>
-                                <input type="text" class="form-control" id="studentNumber" disabled required>
+                                <input type="text" name="" class="form-control" id="studentNumber" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="lastName" class="form-label">Last Name</label>
@@ -128,6 +129,7 @@
                                 <i class="fa-solid fa-circle-info"></i> Reminder
                                 </h4>
                                 <p>Your appointment request will be forwarded to the concerned office after you click the "Submit" button.</p>
+                                <p>A .PDF file of your approval letter will be generated after successfully submitting this form and must be submitted to the Director's Office before your scheduled appointment.</p>
                                 <p>Confirmation (approved/disapproved) of the request will be sent to your registered email.</p>
                                 <p class="mb-0">You may also constantly monitor the status of the request by going to <b>My Transactions</b>.</p>
                             </div>
@@ -150,7 +152,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <a href="#" id="submit" class="btn btn-primary">Submit</a>
+                                        <a href="./generate_pdf.php" id="submit" class="btn btn-primary">Submit</a>
                                     </div>
                                     </div>
                                 </div>

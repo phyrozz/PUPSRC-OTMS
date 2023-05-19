@@ -1,0 +1,12 @@
+{
+    "require": {
+        "tecnickcom/tc-lib-pdf": "dev-main",
+        "tecnickcom/tcpdf": "^6.6"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:tecnickcom/tc-lib-pdf.git"
+        }
+    ]
+}
