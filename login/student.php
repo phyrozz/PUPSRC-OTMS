@@ -26,11 +26,11 @@
             $password = $_POST['password'];
     
             // Query to retrieve user with the given email
-            $query = "SELECT user_id, student_no, password FROM users WHERE student_no = ?";
+            $query = "SELECT user_id, student_no, first_name, last_name, password FROM users WHERE student_no = ?";
             $stmt = $connection->prepare($query);
             $stmt->bind_param("s", $studentNo);
             $stmt->execute();
-            $stmt->bind_result($userId, $dbStudentNo, $dbPassword);
+            $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbPassword);
             $stmt->fetch();
     
             // Verify password
@@ -38,6 +38,8 @@
                 // Password is correct, set session variables and redirect to the dashboard or desired page
                 $_SESSION['user_id'] = $userId;
                 $_SESSION['student_no'] = $dbStudentNo;
+                $_SESSION['first_name'] = $dbFirstName;
+                $_SESSION['last_name'] = $dbLastName;
                 header("Location: ../student/home.php");
                 exit();
             } else {
@@ -70,7 +72,7 @@
                             Don't have an account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#Register">Sign up</a>
                         </div>
                         <div class="col-12">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#Register">I forgot my password</a>
+                            <a href="#">I forgot my password</a>
                         </div>
                         <?php if (isset($error)) { ?>
                             <p class="error" style="color: #800000; font-weight: 600;"><?php echo $error; ?></p>
@@ -141,7 +143,7 @@
                                 <div class="form-group col-12">
                                     <label>Contact Number <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Contact No." pattern="[0-9\+\ ]*" maxlength="20" size="20" autocomplete="off" class="form-control">
+                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Contact No." pattern="[0-9\+\ ]*" maxlength="11" size="20" autocomplete="off" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group col-6">

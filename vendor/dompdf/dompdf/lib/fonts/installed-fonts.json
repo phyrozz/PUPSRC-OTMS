@@ -1,0 +1,13 @@
+{
+    "fira sans": {
+        "100": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_100_b0be9bbf9f81191df9707a02ebd37f49",
+        "200": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_200_1698a6dbc6e1962e0bbd6424074f6095",
+        "300": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_300_c731ff7f0aa9f8b36ac8405133cb2094",
+        "normal": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_normal_59dd5ba8e95274544e1f9b92003655b6",
+        "500": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_500_9063dba1e6d1e3a629026e5d9142c8d3",
+        "600": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_600_618190801f675eb2d116b03a5ec8cb52",
+        "bold": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_bold_5274829362372d87a070be472dceb953",
+        "800": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_800_b7a88c435144a357360ce9d7aa642e1f",
+        "900": "fira_sans_900_fa941916fc999cb4813b0cc546f7afa7"
+    }
+}

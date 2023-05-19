@@ -58,7 +58,7 @@
                                 </a>
                             </div>
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
+                                <a href="administrative.php" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
                                     <img class="p-3" src="/assets/administration.png" alt="Administration Office Logo" width=80>
                                     Administrative Services
                                 </a>

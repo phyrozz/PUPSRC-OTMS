@@ -26,7 +26,7 @@
                         <li><a class="dropdown-item" href="/student/guidance.php">Guidance</a></li>
                         <li><a class="dropdown-item" href="/student/academic.php">Academic</a></li>
                         <li><a class="dropdown-item" href="#">Accounting</a></li>
-                        <li><a class="dropdown-item" href="#">Administrative Services</a></li>
+                        <li><a class="dropdown-item" href="/student/administrative.php">Administrative Services</a></li>
                     </ul>
                 </li>
                 <?php if ($office_name != "Select an Office") { ?>
@@ -52,6 +52,13 @@
                                 <li><a class="dropdown-item" href="/student/academic/manual_enrollment.php">Manual Enrollment</a></li>
                                 <li><a class="dropdown-item" href="/student/academic/sis_tools.php">Services in SIS Tools</a></li>
                                 ';
+                                break;
+                            case 'Administrative Office':
+                                echo '
+                                <li><a class="dropdown-item" href="/student/administrative/view-equipment.php">View Available Equipment</a></li>
+                                <li><a class="dropdown-item" href="/student/administrative/view-facility.php">View Available Facilities</a></li>
+                                ';
+                                break;
                             // Add more cases for other office services
                             }
                         ?>
@@ -69,8 +76,7 @@
                 <li class="nav-item dropdown order-1 order-lg-2">
                     <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-user-circle me-1"></i>
-                        Juan Dela Cruz
-                        <!-- <?php echo $fullName; ?> -->
+                        <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="/student/transactions.php">My Transactions</a></li>
