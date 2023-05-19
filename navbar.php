@@ -14,11 +14,11 @@
                         ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-                        <li><a class="dropdown-item" href="#">Registration</a></li>
+                        <li><a class="dropdown-item" href="#">Registrar</a></li>
                         <li><a class="dropdown-item" href="/student/guidance.php">Guidance</a></li>
                         <li><a class="dropdown-item" href="/student/academic.php">Academic</a></li>
                         <li><a class="dropdown-item" href="#">Accounting</a></li>
-                        <li><a class="dropdown-item" href="#">Administration</a></li>
+                        <li><a class="dropdown-item" href="#">Administrative Services</a></li>
                     </ul>
                 </li>
                 <?php if ($office_name != "Select an Office") { ?>
