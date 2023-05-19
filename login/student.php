@@ -18,7 +18,36 @@
 </head>
 <body>
     <?php
+        session_start();
         include "../conn.php";
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['Email'];
+            $password = $_POST['Password'];
+    
+            // Query to retrieve user with the given email
+            $query = "SELECT id, email, password FROM users WHERE email = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $stmt->bind_result($userId, $dbEmail, $dbPassword);
+            $stmt->fetch();
+    
+            // Verify password
+            if ($dbEmail && password_verify($password, $dbPassword)) {
+                // Password is correct, set session variables and redirect to the dashboard or desired page
+                $_SESSION['userId'] = $userId;
+                $_SESSION['email'] = $dbEmail;
+                header("Location: ../student/home.php");
+                exit();
+            } else {
+                // Invalid login credentials
+                $error = "Invalid email or password";
+            }
+    
+            $stmt->close();
+            $conn->close();
+        }
     ?>
     <div class="jumbotron container-lg bg-white d-flex">
         <div class="container-lg container-fluid">
