@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    
+    if (!isset($_SESSION['user'])) {
+        header('Location: localhost://index.php');
+        exit;
+    }
+?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
     <div class="container-fluid">
         <img class="p-2" src="/assets/pup-logo.png" alt="PUP Logo" width="40">
@@ -62,6 +70,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-user-circle me-1"></i>
                         Juan Dela Cruz
+                        <!-- <?php echo $fullName; ?> -->
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="/student/transactions.php">My Transactions</a></li>

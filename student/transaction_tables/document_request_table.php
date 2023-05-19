@@ -22,10 +22,10 @@
         $sortDirection = 'DESC'; // Set a default sort direction
     }
 
-    $documentRequests = "SELECT doc_requests.id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
+    $documentRequests = "SELECT request_id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
                         FROM doc_requests
-                        INNER JOIN offices ON doc_requests.office_id = offices.id
-                        INNER JOIN statuses ON doc_requests.status_id = statuses.id
+                        INNER JOIN offices ON doc_requests.office_id = offices.office_id
+                        INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
                         WHERE user_id = 1 OR request_description <> NULL
                         ORDER BY $sortColumn $sortDirection
                         LIMIT $offset, $rowsPerPage";
@@ -89,7 +89,7 @@
         <?php
             if ($result) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $requestId = $row['id'];
+                    $requestId = $row['request_id'];
                     $requestDescription = $row['request_description'];
                     $scheduledDateTime = $row['scheduled_datetime'];
                     $officeName = $row['office_name'];

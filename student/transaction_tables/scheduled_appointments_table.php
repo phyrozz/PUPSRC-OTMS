@@ -22,10 +22,10 @@
         $sortDirection = 'DESC'; // Set a default sort direction
     }
 
-    $appointmentSchedules = "SELECT doc_requests.id, appointment_description, scheduled_datetime, status_name
+    $appointmentSchedules = "SELECT request_id, appointment_description, scheduled_datetime, status_name, counseling_id
                         FROM doc_requests
-                        INNER JOIN statuses ON doc_requests.status_id = statuses.id
-                        INNER JOIN counseling_schedules ON doc_requests.id = counseling_schedules.doc_requests_id
+                        INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
+                        INNER JOIN counseling_schedules ON doc_requests.request_id = counseling_schedules.counseling_id
                         ORDER BY $sortColumn $sortDirection
                         LIMIT $offset, $rowsPerPage";
 
@@ -72,7 +72,7 @@
         <?php
             if ($result) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $appointmentId = $row['id'];
+                    $appointmentId = $row['counseling_id'];
                     $appointmentDescription = $row['appointment_description'];
                     $scheduledDateTime = $row['scheduled_datetime'];
                     $statusName = $row['status_name'];
