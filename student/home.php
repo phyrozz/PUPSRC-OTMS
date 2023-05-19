@@ -52,7 +52,7 @@
                                 </a>
                             </div>
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
+                                <a href="accounting/index.php" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
                                     <img class="p-3" src="/assets/accounting.png" alt="Accounting Office Logo" width=80>
                                     Accounting
                                 </a>

@@ -1,0 +1,306 @@
+.login-card {
+    width: 50%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+/* Color scheme styling on buttons */
+.btn-student {
+    background-color: rgb(255, 63, 63);
+    color: #fff;
+}
+
+.btn-student:hover {
+    background-color: rgb(197, 50, 50);
+    color: #fff;
+}
+
+.btn-client {
+    background-color: rgb(49, 97, 255);
+    color: #fff;
+}
+
+.btn-client:hover {
+    background-color: rgb(40, 79, 207);
+    color: #fff;
+}
+
+.btn-admin {
+    background-color: rgb(29, 189, 29);
+    color: #fff;
+}
+
+.btn-admin:hover {
+    background-color: rgb(23, 143, 23);
+    color: #fff;
+}
+
+.bg-maroon {
+    background-color: #800000;
+}
+
+.btn-primary {
+    background-color: #800000;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #520000;
+}
+
+.btn-outline-primary {
+    color: #800000;
+    border-color: #800000;
+}
+
+.btn-outline-primary:hover {
+    border-color: #520000;
+    background-color: #520000;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #520000;
+}  
+
+.container-fluid {
+    position: relative;
+}
+
+.header {
+    background-image: url("assets/bg2.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.header-text {
+    z-index: 1;
+}
+
+/* Start of custom breadcrumb styling
+Breadcrumb is a bootstrap component that shows the location of the user on the website. */
+.breadcrumb-nav {
+    z-index: 1;
+    position: absolute;
+    left: 24px;
+    top: 18px;
+}
+
+.breadcrumb-container .breadcrumb-item + .breadcrumb-item::before {
+    font-weight: 100;
+    color: #fff;
+    content: "/";
+}
+
+.breadcrumb-container .breadcrumb-item a {
+    color: #fff;
+}
+
+.breadcrumb-item a {
+    color: #000;
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
+    padding: 5px 8px;
+    border-radius: 5px;
+}
+
+.breadcrumb-item a:hover {
+    background-color: #520000;
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.breadcrumb-container .breadcrumb .active {
+    color: #fff;
+}
+
+.breadcrumb .active {
+    font-weight: 800;
+}
+/* End of custom breadcrumb styling */
+
+.footer {
+    height: 100px;
+}
+
+
+
+
+
+/*content*/
+.button-container {
+    text-align: center;
+    list-style-type: none;
+    font-family: 'poppins';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .button {
+    display: block;
+    width: 220px;
+    height: 100px;
+    background-color: #800000;
+    text-align: center;
+    line-height: 100px;
+    font-size: 24px;
+    color: #fff;
+    text-decoration: none;
+    margin-top: 100px;
+    margin-bottom: -80px;
+    border-radius: 10%;
+  }
+  
+  .btn-primary {
+    float: right;
+    width: 150px;
+  }
+  
+  .container-fluid-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50vh;
+    text-align: left;
+  }
+  
+  .container-fluid-form h2,
+  .container-fluid-form p {
+    text-align: left;
+  }
+  
+  .container-fluid-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the left */
+    width: 80%;
+    max-width: 800px;
+  }
+  
+  .upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the left */
+  }
+  
+  .upload-button {
+    width: 250px; /* Adjust the width as needed */
+  }
+  
+  .submit-button {
+    margin-top: -20px; /* Add margin as needed */
+    width: 200px; /* Adjust the width as needed */
+    height: 60px; /* Adjust the height as needed */
+    font-size: 20px; /* Adjust the font size as needed */
+  }
+  
+  
+  .submit-button {
+    align-self: flex-start; /* Position the button on the left side */
+    margin-top: 10px; /* Add margin as needed */
+  }
+
+
+  .back-button {
+    float: left;
+  }
+  
+  .next-button {
+    float: right;
+  }
+  
+  .alert-info {
+    margin-right: 50px;
+    width: 600px;
+    float: right;
+    top: 20px;
+  }
+  
+  .image-container {
+    display: flex;
+    justify-content: flex-end; /* Align image to the right */
+    margin-top: -300px; /* Add margin-top as needed */
+    margin-bottom: 80px;
+    width: 0px;
+    margin-left: 800px;
+  }
+  
+  .image-container img {
+    max-width: 280px; /* Adjust the max-width as needed */
+    max-height: 280px; /* Adjust the max-height as needed */
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 1, 0, 0.5);
+  }
+  
+  .notification-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+    transition: opacity 0.5s ease-in-out; /* Adjust the duration here */
+  }
+  
+  .notification-popup.show {
+    opacity: 1;
+  }
+  
+  .notification-popup h3 {
+    margin-top: 0;
+  }
+  
+  .notification-popup p {
+    margin-bottom: 0;
+  }
+  
+  .notification-popup .close-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+
+  #referenceNumber {
+    width: 400px;
+    background-color: #d1d1d1;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  
+  
+
+
+  /*end of content*/
+@media only screen and (max-width: 768px) {
+    .login-card {
+        width: 100%;
+    }
+}
