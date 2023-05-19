@@ -20,7 +20,7 @@
         include('../../navbar.php');
         include('uploadmodal.php');
         include('editmodal-so.php');
-        include('generate_inquiry.php');
+        //include('connect_uploaddb.php');
         //include('generate_pdf.php')
     ?>
 
@@ -111,7 +111,7 @@
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
                         </div>
                         <div class="col-sm-2">
-                            <form action="trygenerate_pdf.php" method="post" target="_blank">
+                            <form action="generatepdf_so.php" method="post" target="_blank">
                                 <input type="submit" class="btn btn-primary" value="View Attachment">
                             </form>
                         </div>
@@ -128,7 +128,7 @@
                             <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
                         </div>
                         <div class="col-sm-2">
-                            <form action="trygenerate_pdf.php" method="post" target="_blank">
+                            <form action="generatepdf_so.php" method="post" target="_blank">
                                 <input type="submit" class="btn btn-primary" value="View Attachment">
                             </form>
                         </div>
@@ -145,7 +145,7 @@
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Verified</button>
                         </div>
                         <div class="col-sm-2">
-                            <form action="trygenerate_pdf.php" method="post" target="_blank">
+                            <form action="generatepdf_so.php" method="post" target="_blank">
                                 <input type="submit" class="btn btn-primary" value="View Attachment">
                             </form>
                         </div>

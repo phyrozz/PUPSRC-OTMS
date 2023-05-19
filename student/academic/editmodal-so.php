@@ -52,7 +52,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input7">Academic Year</label>
-                <input type="text" class="form-control" id="input7" placeholder="2020-2021">
+                <input type="text" pattern="20[2-9][0-9]-20[2-9][0-9]" maxlength="9" class="form-control" id="input7" placeholder="2020-2021">
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
   <div class="col-md-12">
               <div class="form-group">
                 <label for="input8">Reason for Subject Overload</label>
-                <input type="text" class="form-control" id="input8">
+                <input type="text" maxlength="50" class="form-control" id="input8">
               </div>
             </div>
 
@@ -99,25 +99,25 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input9">Code</label>
-                <input type="text" class="form-control" id="input9">
+                <input type="text" maxlength="10" class="form-control" id="input9">
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="input10">Description</label>
-                <input type="text" class="form-control" id="input10">
+                <input type="text" maxlength="30" class="form-control" id="input10">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="input11">Course/Yr/Sec</label>
-                <input type="text" class="form-control" id="input11">
+                <input type="text" maxlength="15" class="form-control" id="input11">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="text" class="form-control" id="input12">
+                <input type="number" maxlength="2" class="form-control" id="input12">
               </div>
             </div>
         </div>
@@ -144,7 +144,7 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="text" class="form-control" id="input12">
+                <input type="number" class="form-control" id="input12">
               </div>
             </div>
         </div>
@@ -171,7 +171,7 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="text" class="form-control" id="input12">
+                <input type="number" class="form-control" id="input12">
               </div>
             </div>
         </div>

@@ -19,7 +19,6 @@
             $office_name = "Academic Office";
             include ('../../navbar.php');
             include ('uploadmodal.php');
-            include ('editmodal.php');
         ?>
 
         <!-- The Modal -->

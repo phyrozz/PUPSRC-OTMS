@@ -1,4 +1,3 @@
-@@ -0,0 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +20,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Academic Office";
-            include "navbar_admin.php"
+            include "navbar.php"
         ?>
         <div class="container-fluid py-2">
             <div class="row">
@@ -95,7 +94,7 @@
                     <tr>
                         <td>AO-SO-001</td>
                         <td>Academic Office</td>
-                        <td>Subject Overload <a href="/student/academic/subjectoverload.php" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a></td>
+                        <td>Subject Overload <a href="/student/academic/subject_overload.php" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a></td>
                         <td class="text-center">
                             <select class="form-select" id="status">
                                 <option value="pending" style="background-color: gray; color: #fff;">Pending</option>
@@ -108,7 +107,7 @@
                     <tr>
                         <td>AO-GA-002</td>
                         <td>Academic Office</td>
-                        <td>Grade Accreditation <a href="/student/academic/gradeaccreditation.php" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a></td>
+                        <td>Grade Accreditation <a href="/student/academic/grade_accreditation.php" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a></td>
                         <td class="text-center">
                             <select class="form-select" id="status">
                                 <option value="pending" style="background-color: gray; color: #fff;">Pending</option>

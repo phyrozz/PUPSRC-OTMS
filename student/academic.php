@@ -19,6 +19,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Academic Office";
+            //include "../conn.php";
             include "../navbar.php"
         ?>
         <div class="container-fluid academicbanner header">

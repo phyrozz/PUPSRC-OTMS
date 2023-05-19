@@ -93,9 +93,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
     <div class="d-flex w-100 justify-content-between p-1">
         <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">

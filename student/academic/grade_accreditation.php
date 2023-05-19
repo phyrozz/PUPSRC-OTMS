@@ -13,7 +13,7 @@
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
+<body onload="open_payModal()">
 <div class="wrapper">
     <?php
         $office_name = "Academic Office";

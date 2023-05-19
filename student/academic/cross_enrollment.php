@@ -68,7 +68,7 @@
                             </button>
                         </div>
                         <div class="col-sm-2">
-                            <form action="trygenerate_pdf.php" method="post" target="_blank">
+                            <form action="generatepdf_ce.php" method="post" target="_blank">
                                 <input type="submit" class="btn btn-primary" value="View Attachment">
                             </form>
                         </div>
