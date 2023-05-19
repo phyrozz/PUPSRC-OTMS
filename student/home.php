@@ -34,7 +34,7 @@
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
+                                <a href="registrar.php" class="btn btn-primary btn-lg btn-block mb-2 w-100 text-start">
                                     <img class="p-3" src="/assets/registration.png" alt="Registration Office Logo" width=80>
                                     Registrar
                                 </a>

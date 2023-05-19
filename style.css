@@ -153,6 +153,10 @@ html, body {
     background-image: url("assets/bg2.jpg")
 }
 
+.registrarbanner {
+    background-image: url("assets/registrar.jpg")
+}
+
 .header {
     background-size: cover;
     background-position: center;
