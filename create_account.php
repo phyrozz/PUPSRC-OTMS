@@ -57,11 +57,11 @@
 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $query = "INSERT INTO users (last_name, first_name, middle_name, extension_name, contact_no, email, password, user_role)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO users (student_no, last_name, first_name, middle_name, extension_name, contact_no, email, password, user_role)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
             $stmt = $connection->prepare($query);
-            $stmt->bind_param("sssssssi", $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $hashedPassword, $userRole);
+            $stmt->bind_param("ssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $hashedPassword, $userRole);
 
             if ($stmt->execute()) {
                 // $stmt->close();

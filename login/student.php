@@ -22,32 +22,33 @@
         include "../conn.php";
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['Email'];
-            $password = $_POST['Password'];
+            $studentNo = $_POST['studentNumber'];
+            $password = $_POST['password'];
     
             // Query to retrieve user with the given email
-            $query = "SELECT id, email, password FROM users WHERE email = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("s", $email);
+            $query = "SELECT user_id, student_no, password FROM users WHERE student_no = ?";
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("s", $studentNo);
             $stmt->execute();
-            $stmt->bind_result($userId, $dbEmail, $dbPassword);
+            $stmt->bind_result($userId, $dbStudentNo, $dbPassword);
             $stmt->fetch();
     
             // Verify password
-            if ($dbEmail && password_verify($password, $dbPassword)) {
+            if ($dbStudentNo && password_verify($password, $dbPassword)) {
                 // Password is correct, set session variables and redirect to the dashboard or desired page
-                $_SESSION['userId'] = $userId;
-                $_SESSION['email'] = $dbEmail;
+                $_SESSION['user_id'] = $userId;
+                $_SESSION['student_no'] = $dbStudentNo;
                 header("Location: ../student/home.php");
                 exit();
             } else {
                 // Invalid login credentials
-                $error = "Invalid email or password";
+                    $error = "Invalid credentials. Please try again.";
+                }
+        
+                $stmt->close();
+                $connection->close();
             }
-    
-            $stmt->close();
-            $conn->close();
-        }
+
     ?>
     <div class="jumbotron container-lg bg-white d-flex">
         <div class="container-lg container-fluid">
@@ -60,7 +61,7 @@
 
                     <form method="POST" class="d-flex flex-column gap-2" action="">
                         <div class="form-group col-12">
-                            <input type="text" class="form-control" id="studentNumber" placeholder="Student Number" maxlength="15" required>
+                            <input type="text" class="form-control" name="studentNumber" id="studentNumber" placeholder="Student Number" maxlength="15" required>
                         </div>
                         <div class="form-group col-12">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" maxlength="100" required>
@@ -68,10 +69,13 @@
                         <div class="col-12">
                             Don't have an account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#Register">Sign up</a>
                         </div>
+                        <div class="col-12">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#Register">I forgot my password</a>
+                        </div>
+                        <?php if (isset($error)) { ?>
+                            <p class="error" style="color: #800000; font-weight: 600;"><?php echo $error; ?></p>
+                        <?php } ?>
                         <div class="alert alert-info" role="alert">
-                            <h4 class="alert-heading">
-                            <i class="fa-solid fa-circle-info"></i> Reminder
-                            </h4>
                             <p class="mb-0">By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">

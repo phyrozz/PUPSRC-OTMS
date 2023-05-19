@@ -2,7 +2,7 @@
     session_start();
     
     // if (!isset($_SESSION['user'])) {
-    //     header('Location: localhost://index.php');
+    //     header('Location: http://localhost/index.php');
     //     exit;
     // }
 ?>
@@ -75,7 +75,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="/student/transactions.php">My Transactions</a></li>
                         <li><a class="dropdown-item" href="#">Account Settings</a></li>
-                        <li><a class="dropdown-item" href="../index.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
                     </ul>
                 </li>
             </ul>
