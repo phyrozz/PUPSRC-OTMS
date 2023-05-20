@@ -22,10 +22,10 @@
                         ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-                        <li><a class="dropdown-item" href="#">Registrar</a></li>
+                        <li><a class="dropdown-item" href="/student/registrar.php">Registrar</a></li>
                         <li><a class="dropdown-item" href="/student/guidance.php">Guidance</a></li>
                         <li><a class="dropdown-item" href="/student/academic.php">Academic</a></li>
-                        <li><a class="dropdown-item" href="#">Accounting</a></li>
+                        <li><a class="dropdown-item" href="/student/accounting/index.php">Accounting</a></li>
                         <li><a class="dropdown-item" href="/student/administrative.php">Administrative Services</a></li>
                     </ul>
                 </li>
@@ -64,6 +64,13 @@
                                 <li><a class="dropdown-item" href="/student/registrar/create_request.php">Create Request</a></li>
                                 <li><a class="dropdown-item" href="/student/registrar/your_transaction.php">Your Registrar Transactions</a></li>
                                 <li><a class="dropdown-item" href="/student/registrar/registrar_history.php">Registrar Transaction History</a></li>
+                                ';
+                                break;
+                            case 'Accounting Office':
+                                echo '
+                                <li><a class="dropdown-item" href="/student/accounting/payment1.php">Payment</a></li>
+                                <li><a class="dropdown-item" href="/student/accounting/others/offsetting1.php">Offsetting</a></li>
+                                <li><a class="dropdown-item" href="../transactions.php">Registrar Transaction History</a></li>
                                 ';
                                 break;
                             // Add more cases for other office services
