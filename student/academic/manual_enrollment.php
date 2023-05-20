@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academic Office - Manual Enrollment</title>
@@ -24,7 +24,7 @@
     <div class="container-fluid academicbanner header" style="height: 250px">
         <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="../home.php">Home</a></li>
                 <li class="breadcrumb-item"><a href="../academic.php">Academic Office</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Manual Enrollment</li>
             </ol>
@@ -93,6 +93,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
     <div class="d-flex w-100 justify-content-between p-1">
         <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">

@@ -28,10 +28,10 @@
 
                     <form class="d-flex flex-column gap-2" action="admin.php">
                         <div class="form-group col-12">
-                            <input type="text" class="form-control" id="email" placeholder="Email address" required>
+                            <input type="text" class="form-control" id="email" placeholder="Email address"  maxlength="100" required>
                         </div>
                         <div class="form-group col-12">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password"  maxlength="100" required>
                         </div>
                         <div class="alert alert-info" role="alert">
                             <h4 class="alert-heading">

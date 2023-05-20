@@ -28,10 +28,10 @@
 
                     <form class="d-flex flex-column gap-2" action="student.php">
                         <div class="form-group col-12">
-                            <input type="text" class="form-control" id="email" placeholder="Email Address" required>
+                            <input type="text" class="form-control" id="email" placeholder="Email Address"  maxlength="100" required>
                         </div>
                         <div class="form-group col-12">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password"  maxlength="100" required>
                         </div>
                         <div class="col-12">
                             Don't have an account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#Register">Sign up</a>

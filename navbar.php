@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    
+    // if (!isset($_SESSION['user'])) {
+    //     header('Location: http://localhost/index.php');
+    //     exit;
+    // }
+?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
     <div class="container-fluid">
         <img class="p-2" src="/assets/pup-logo.png" alt="PUP Logo" width="40">
@@ -14,11 +22,11 @@
                         ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-                        <li><a class="dropdown-item" href="#">Registrar</a></li>
+                        <li><a class="dropdown-item" href="/student/registrar.php">Registrar</a></li>
                         <li><a class="dropdown-item" href="/student/guidance.php">Guidance</a></li>
                         <li><a class="dropdown-item" href="/student/academic.php">Academic</a></li>
-                        <li><a class="dropdown-item" href="#">Accounting</a></li>
-                        <li><a class="dropdown-item" href="#">Administrative Services</a></li>
+                        <li><a class="dropdown-item" href="/student/accounting/index.php">Accounting</a></li>
+                        <li><a class="dropdown-item" href="/student/administrative.php">Administrative Services</a></li>
                     </ul>
                 </li>
                 <?php if ($office_name != "Select an Office") { ?>
@@ -44,6 +52,27 @@
                                 <li><a class="dropdown-item" href="/student/academic/manual_enrollment.php">Manual Enrollment</a></li>
                                 <li><a class="dropdown-item" href="/student/academic/servicesinsistools.php">Services in SIS Tools</a></li>
                                 ';
+                                break;
+                            case 'Administrative Office':
+                                echo '
+                                <li><a class="dropdown-item" href="/student/administrative/view-equipment.php">View Available Equipment</a></li>
+                                <li><a class="dropdown-item" href="/student/administrative/view-facility.php">View Available Facilities</a></li>
+                                ';
+                                break;
+                            case 'Registrar Office':
+                                echo '
+                                <li><a class="dropdown-item" href="/student/registrar/create_request.php">Create Request</a></li>
+                                <li><a class="dropdown-item" href="/student/registrar/your_transaction.php">Your Registrar Transactions</a></li>
+                                <li><a class="dropdown-item" href="/student/registrar/registrar_history.php">Registrar Transaction History</a></li>
+                                ';
+                                break;
+                            case 'Accounting Office':
+                                echo '
+                                <li><a class="dropdown-item" href="/student/accounting/payment1.php">Payment</a></li>
+                                <li><a class="dropdown-item" href="/student/accounting/others/offsetting1.php">Offsetting</a></li>
+                                <li><a class="dropdown-item" href="../transactions.php">Registrar Transaction History</a></li>
+                                ';
+                                break;
                             // Add more cases for other office services
                             }
                         ?>
@@ -61,12 +90,12 @@
                 <li class="nav-item dropdown order-1 order-lg-2">
                     <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-user-circle me-1"></i>
-                        Juan Dela Cruz
+                        <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="/student/transactions.php">My Transactions</a></li>
                         <li><a class="dropdown-item" href="#">Account Settings</a></li>
-                        <li><a class="dropdown-item" href="../index.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
                     </ul>
                 </li>
             </ul>

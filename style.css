@@ -153,6 +153,10 @@ html, body {
     background-image: url("assets/bg2.jpg")
 }
 
+.registrarbanner {
+    background-image: url("assets/registrar.jpg")
+}
+
 .header {
     background-size: cover;
     background-position: center;
@@ -256,7 +260,11 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 }
 
 .guidancebanner {
-    background-image: url("assets/bg9.jpeg")
+    background-image: url("assets/bg9.jpeg");
+}
+
+.administrative-header {
+    background-image: url("assets/background-img/pup-bg.png");
 }
 
 @media only screen and (max-width: 768px) {
