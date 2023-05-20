@@ -19,7 +19,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Select an Office";
-            include "../conn.php";
+            //include "../conn.php";
             include "../navbar.php";
 
             $table = 'document_request';
@@ -31,7 +31,7 @@
         <div class="container-fluid p-4">
             <nav class="breadcrumb-nav" aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="academic.php">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">My Transactions</li>
                 </ol>
             </nav>
@@ -71,11 +71,11 @@
                         <?php
                             // Load the requested table
                             if ($table === 'document_request') {
-                                include 'transaction_tables/document_request_table.php';
+                                // include 'transaction_tables/document_request_table.php';
                             } elseif ($table === 'scheduled_appointments') {
-                                include 'transaction_tables/scheduled_appointments_table.php';
+                                // include 'transaction_tables/scheduled_appointments_table.php';
                             } elseif ($table === 'payments') {
-                                include 'transaction_tables/payments_table.php';
+                                // include 'transaction_tables/payments_table.php';
                             }
                         ?>
                     </div>

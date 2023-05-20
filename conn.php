@@ -2,7 +2,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $database = "otms_db";
+    $database = "acadoffice";
 
     $connection = new mysqli($servername, $username, $password, $database);
 
