@@ -17,18 +17,20 @@
 
 <?php
     $office_name = "Administrative Office";
-    include "../navbar.php"
+    include "../navbar.php";
+    include "../breadcrumb.php";
 ?>
 
 <body>
     <div class="wrapper">
         <div class="container-fluid header administrative-header">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="./home.php">Home</a></li>
-                    <li class="breadcrumb-item active text-light" aria-current="page">Administrative Office</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Administrative Office', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, false);
+            ?>
             <h1 class="display-1 header-text text-center text-light font-weight-bold">Administrative Office</h1>
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>

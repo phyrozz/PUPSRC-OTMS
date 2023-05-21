@@ -19,17 +19,19 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../navbar.php"
+            include "../navbar.php";
+            include "../breadcrumb.php";
         ?>
         <div class="container-fluid guidancebanner header">
             <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
-            <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.php">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Guidance Office</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Guidance Office', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, false);
+            ?>
             <h1 class="display-1 header-text text-center text-light">Guidance Office</h1>
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>

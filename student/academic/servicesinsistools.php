@@ -18,6 +18,7 @@
         <?php
             $office_name = "Academic Office";
             include ('../../navbar.php');
+            include '../../breadcrumb.php';
             //include('generate_pdf.php')
         ?>
 
@@ -35,13 +36,14 @@
         </div>
 
         <div class="container-fluid academicbanner header" style="height: 250px">
-            <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../academic.php">Academic Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Services in SIS Tools</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Academic Office', 'url' => '/student/academic.php', 'active' => false],
+                ['text' => 'Services in SIS Tools', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, false);
+            ?>
             <h1 class="display-1 header-text text-center text-light">Services in SIS Tools</h1>
             <p class="header-text text-center text-light">(a) ACE Form - Add subjects or change your officially enrolled subjects,<br>(b) Subject Petition/Tutorial - Request for subject not offered in the current semester</p>
         </div>

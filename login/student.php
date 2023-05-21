@@ -15,47 +15,44 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../sign_up_dropdown.js"></script>
 </head>
 <body>
     <?php
-        session_start();
-        include "../conn.php";
+    session_start();
+    include "../conn.php";
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $studentNo = $_POST['studentNumber'];
-            $password = $_POST['password'];
-    
-            // Query to retrieve user with the given email
-            $query = "SELECT user_id, student_no, first_name, last_name, password FROM users WHERE student_no = ?";
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("s", $studentNo);
-            $stmt->execute();
-            $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbPassword);
-            $stmt->fetch();
-    
-            // Verify password
-            if ($dbStudentNo && password_verify($password, $dbPassword)) {
-                // Password is correct, set session variables and redirect to the dashboard or desired page
-                $_SESSION['user_id'] = $userId;
-                $_SESSION['student_no'] = $dbStudentNo;
-                $_SESSION['first_name'] = $dbFirstName;
-                $_SESSION['last_name'] = $dbLastName;
-                header("Location: ../student/home.php");
-                exit();
-            } else {
-                // Invalid login credentials
-                    $error = "Invalid credentials. Please try again.";
-                }
-        
-                $stmt->close();
-                $connection->close();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $studentNo = $_POST['studentNumber'];
+        $password = $_POST['password'];
+
+        $query = "SELECT user_id, student_no, first_name, last_name, password FROM users WHERE student_no = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("s", $studentNo);
+        $stmt->execute();
+        $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbPassword);
+        $stmt->fetch();
+
+        if ($dbStudentNo && password_verify($password, $dbPassword)) {
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['student_no'] = $dbStudentNo;
+            $_SESSION['first_name'] = $dbFirstName;
+            $_SESSION['last_name'] = $dbLastName;
+            header("Location: ../student/home.php");
+            exit();
+        } else {
+                $loginMessage = "Invalid credentials. Please try again.";
             }
+    
+            $stmt->close();
+            $connection->close();
+        }
 
     ?>
-    <div class="jumbotron container-lg bg-white d-flex">
-        <div class="container-lg container-fluid">
+    <div class="jumbotron bg-white d-flex">
+        <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center d-flex flex-column align-items-center justify-content-center">
+                <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
                     <h1 class="display-4">PUP-SRC</h1>
                     <h2>Online Transaction Management System</h2>
@@ -68,22 +65,22 @@
                         <div class="form-group col-12">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" maxlength="100" required>
                         </div>
+                        <?php if (isset($loginMessage)) { ?>
+                        <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
+                        <?php } ?>
                         <div class="col-12">
                             Don't have an account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#Register">Sign up</a>
                         </div>
                         <div class="col-12">
                             <a href="#">I forgot my password</a>
                         </div>
-                        <?php if (isset($error)) { ?>
-                            <p class="error" style="color: #800000; font-weight: 600;"><?php echo $error; ?></p>
-                        <?php } ?>
                         <div class="alert alert-info" role="alert">
-                            <p class="mb-0">By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></p>
+                            <p class="mb-0"><small>By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></small></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <button class="btn btn-outline-primary px-4" onclick="window.history.go(-1); return false;">
+                            <a class="btn btn-outline-primary px-4" href="http://localhost/index.php">
                                 <i class="fa-solid fa-arrow-left"></i> Back
-                            </button>
+                            </a>
                             <input id="submitBtn" value="Login" type="submit" class="btn btn-primary w-25" />
                         </div>
                     </form>
@@ -103,8 +100,8 @@
                         <div class="modal-body">
                         <input type="hidden" class="form-control font-weigth-light" id="hfDepartment" name="hfDepartment">
                         <div class="row">
-                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                            <label>Personal Details</label>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-1 pb-2">
+                            <label><b>Personal Details</b></label>
                         </div>
                         <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">  
                             <div class="row">
@@ -158,7 +155,7 @@
                                     <label class="form-check-label col-3">
                                         <input class="form-check-input" type="radio" id="GenderM" name="Gender" value="1" checked=""> Male
                                     </label>
-                                    <label class="form-check-label col-3">
+                                    <label class="form-check-label col-3 px-3">
                                         <input class="form-check-input" type="radio" id="GenderF" name="Gender" value="0"> Female
                                     </label>
                                     </div> 
@@ -174,14 +171,16 @@
                                 <div class="form-group col-6">
                                     <label>Province <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Province" value="" id="Province" placeholder="Province" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <select name="Province" id="Province" class="form-control form-select">
+                                        </select>
                                     </div>
-                                </div>              
+                                </div> 
                                 <div class="form-group col-6">
                                     <label>City <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="City" value="" id="City" placeholder="City" maxlength="50" size="50" autocomplete="off" class="form-control">
-                                    </div>  
+                                        <select name="City" id="City" class="form-control form-select">
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Barangay <code>*</code></label>
@@ -200,8 +199,8 @@
                         </div>
                         <div class="dropdown-divider"></div>
                         <div class="row">
-                            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                                <label>Account Details</label>
+                            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-3 pb-2">
+                                <label><b>Account Details</b></label>
                             </div>
                             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">  
                                 <div class="row">
@@ -227,7 +226,7 @@
                                     <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
                                         <h4>Data Privacy Notice</h4>
                                         <p>
-                                        <img style="float: right; margin-left: 3px;" src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a class="text-white" href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
+                                        <img style="float: right; margin-left: 3px; filter: invert(100%);" src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
                                     </div>
                                 </div>
                                 </div>
@@ -236,77 +235,41 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
+                        <button type="submit" name="studentSignup" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#successModal">Sign Up</button>
                     </div>
                 </div>
             </div>
         </div>            
     </form>
-
-    <script>
-        // $(document).ready(function() {
-            // $('#signupForm').submit(function(e) {
-            // e.preventDefault(); // Prevent form from submitting normally
-
-            // var password = $('#Password').val();
-            // var confirmPassword = $('#ConfirmPassword').val();
-
-            // if (password !== confirmPassword) {
-            //     alert('Password and Confirm Password do not match');
-            //     return;
-            // }
-
-            // // Perform AJAX request
-            // $.ajax({
-            //     type: 'POST',
-            //     url: $(this).attr('action'),
-            //     data: $(this).serialize(),
-            //     success: function(response) {
-            //         console.log(response);
-            //         document.innerHTML = `
-            //         <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
-            //             <div class="modal-dialog modal-lg">
-            //                 <div class="modal-content">
-            //                     <div class="modal-header">
-            //                         <p class="modal-title">Account Created</p> 
-            //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            //                     </div>
-            //                     <div class="modal-body">
-            //                         <p>Account created successfully. You may now login.</p>
-            //                     </div>
-            //                     <div class="modal-footer">
-            //                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         </div>  
-            //         `;
-            //     },
-            //         error: function(error) {
-            //         console.log(error);
-            //         document.innerHTML = `
-            //         <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
-            //             <div class="modal-dialog modal-lg">
-            //                 <div class="modal-content">
-            //                     <div class="modal-header">
-            //                         <p class="modal-title">Sign up Failed</p> 
-            //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            //                     </div>
-            //                     <div class="modal-body">
-            //                         <p>Something went wrong with the sign up. Please try again.</p>
-            //                     </div>
-            //                     <div class="modal-footer">
-            //                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         </div>
-            //         `;
-            //     }
-            // });
-        //     });
-        // });
-    </script>
-    
+    <!-- End of sign up modal -->
+    <!-- Success alert modal -->
+    <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Account has been created successfully.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php if (isset($_SESSION['account_created']) && $_SESSION['account_created']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#successModal').modal('show');
+        });
+        </script>
+        ";
+    } 
+    unset($_SESSION['account_created']);
+    ?>
+    <!-- End of success alert modal -->
 </body>
 </html>

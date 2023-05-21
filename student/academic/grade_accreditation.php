@@ -20,6 +20,7 @@
         include ('../../navbar.php');
         include ('uploadmodal.php');
         include ('editmodal-ga.php');
+        include '../../breadcrumb.php';
     ?>
 
     <!-- Pay Alert Modal -->
@@ -35,13 +36,14 @@
     </div>
 
     <div class="container-fluid academicbanner header" style="height:250px">
-        <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="../academic.php">Academic Office</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Grade Accreditation</li>
-            </ol>
-        </nav>
+        <?php
+        $breadcrumbItems = [
+            ['text' => 'Academic Office', 'url' => '/student/academic.php', 'active' => false],
+            ['text' => 'Grade Accreditation', 'active' => true],
+        ];
+
+        echo generateBreadcrumb($breadcrumbItems, false);
+        ?>
         <h1 class="display-1 header-text text-center text-light">Grade Accreditation</h1>
         <p class="header-text text-center text-light">For Correction of Grade Entry, Late Reporting of Grades and Removal of Incomplete Mark</p>
     </div>

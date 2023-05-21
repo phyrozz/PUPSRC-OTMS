@@ -20,15 +20,17 @@
         <?php
             $office_name = "Guidance Office";
             include "../../navbar.php";
+            include "../../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../guidance.php">Guidance Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Schedule for Counseling</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Guidance Office', 'url' => '/student/guidance.php', 'active' => false],
+                ['text' => 'Schedule for Counseling', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>Schedule for Counseling</h1>

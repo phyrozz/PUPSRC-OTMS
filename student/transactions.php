@@ -21,6 +21,7 @@
             $office_name = "Select an Office";
             include "../conn.php";
             include "../navbar.php";
+            include "../breadcrumb.php";
 
             $table = 'document_request';
 
@@ -29,12 +30,13 @@
             }
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.php">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">My Transactions</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'My Transactions', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>My Transactions</h1>
@@ -82,9 +84,9 @@
                 </div>
             </div>
             <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
+                <a href="../" class="btn btn-primary px-4">
                     <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
+                </a>
                 </button>
                 <div class="d-flex justify-content-end gap-2">
                     <?php if ($page > 1) { ?>

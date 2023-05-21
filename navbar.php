@@ -1,15 +1,17 @@
 <?php
     session_start();
     
-    // if (!isset($_SESSION['user'])) {
-    //     header('Location: http://localhost/index.php');
-    //     exit;
-    // }
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: http://localhost/index.php');
+        exit;
+    }
+
+    $isLoggedIn = true;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
     <div class="container-fluid">
-        <img class="p-2" src="/assets/pup-logo.png" alt="PUP Logo" width="40">
-        <a class="navbar-brand" href="/student/home.php"><strong>PUPSRC-OTMS</strong></a>
+        <img class="p-2" src="http://localhost/assets/pup-logo.png" alt="PUP Logo" width="40">
+        <a class="navbar-brand" href="http://localhost/student/home.php"><strong>PUPSRC-OTMS</strong></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -18,15 +20,19 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="officeServicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <?php
-                        echo $office_name;
+                            echo $office_name;
                         ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-                        <li><a class="dropdown-item" href="/student/registrar.php">Registrar</a></li>
-                        <li><a class="dropdown-item" href="/student/guidance.php">Guidance</a></li>
-                        <li><a class="dropdown-item" href="/student/academic.php">Academic</a></li>
-                        <li><a class="dropdown-item" href="/student/accounting/index.php">Accounting</a></li>
-                        <li><a class="dropdown-item" href="/student/administrative.php">Administrative Services</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/student/registrar.php">Registrar</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/student/guidance.php">Guidance</a></li>
+                        <?php 
+                        if (!$isClient) {
+                            echo '<li><a class="dropdown-item" href="http://localhost/student/academic.php">Academic</a></li>';
+                        }
+                        ?>
+                        <li><a class="dropdown-item" href="http://localhost/student/accounting/index.php">Accounting</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/student/administrative.php">Administrative Services</a></li>
                     </ul>
                 </li>
                 <?php if ($office_name != "Select an Office") { ?>
@@ -93,7 +99,7 @@
                         <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-                        <li><a class="dropdown-item" href="/student/transactions.php">My Transactions</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/student/transactions.php">My Transactions</a></li>
                         <li><a class="dropdown-item" href="#">Account Settings</a></li>
                         <li><a class="dropdown-item" href="http://localhost/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
                     </ul>

@@ -20,6 +20,7 @@
         include('../../navbar.php');
         include('uploadmodal.php');
         include('editmodal-se.php');
+        include '../../breadcrumb.php';
         //include('generate_pdf.php')
     ?>
 
@@ -51,13 +52,14 @@
     </div>
 
     <div class="container-fluid academicbanner header" style="height:250px">
-        <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="../academic.php">Academic Office</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Subject Overload</li>
-            </ol>
-        </nav>
+        <?php
+        $breadcrumbItems = [
+            ['text' => 'Academic Office', 'url' => '/student/academic.php', 'active' => false],
+            ['text' => 'Subject Overload', 'active' => true],
+        ];
+
+        echo generateBreadcrumb($breadcrumbItems, false);
+        ?>
         <h1 class="display-1 header-text text-center text-light">Subject Overload</h1>
         <p class="header-text text-center text-light">Add additional subject/s more than the prescribed number of units</p>
     </div>

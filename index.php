@@ -15,6 +15,14 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <?php
+        session_start();
+
+        if (!empty($_SESSION['user_id'])) {
+            header("Location: http://localhost/student/home.php");
+            exit;
+        }
+    ?>
     <div class="vh-100 d-flex align-items-center">
         <div class="container d-flex justify-content-center">
             <div class="card login-card text-center bg-light p-3">

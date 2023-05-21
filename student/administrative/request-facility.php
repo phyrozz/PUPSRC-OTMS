@@ -20,19 +20,20 @@
 
 <?php
     $office_name = "Administrative Office";
-    include "../../navbar.php"
+    include "../../navbar.php";
+    include "../../breadcrumb.php";
 ?>
 <div class="wrapper">
-      <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Administrative Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Facility Appointment</li>
-                </ol>
-            </nav>
-        </div>
+    <div class="container-fluid p-4">
+        <?php
+        $breadcrumbItems = [
+            ['text' => 'Administrative Office', 'url' => '/student/administrative.php', 'active' => false],
+            ['text' => 'Facility Appointment', 'active' => true],
+        ];
 
+        echo generateBreadcrumb($breadcrumbItems, true);
+        ?>
+    </div>
     <div class="container-fluid text-center p-4">
         <h1>Facility Appointment</h1>
     </div>

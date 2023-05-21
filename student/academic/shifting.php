@@ -19,7 +19,8 @@
             $office_name = "Academic Office";
             include ('../../navbar.php');
             include ('uploadmodal.php');
-            include ('editmodal.php');
+            include ('editmodal-se.php');
+            include '../../breadcrumb.php';
         ?>
 
         <!-- The Modal -->
@@ -61,13 +62,14 @@
         </div>
 
         <div class="container-fluid academicbanner header" style="height:250px">
-        <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../academic.php">Academic Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Shifting</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Academic Office', 'url' => '/student/academic.php', 'active' => false],
+                ['text' => 'Shifting', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, false);
+            ?>
             <h1 class="display-1 header-text text-center text-light">Shifting</h1>
             <p class="header-text text-center text-light">Shift to another program offered in PUP Santa Rosa</p>
         </div>

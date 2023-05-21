@@ -19,16 +19,18 @@
         $office_name = "Academic Office";
         include ('../../navbar.php');
         include ('editmodal-me.php');
+        include '../../breadcrumb.php';
     ?>
 
     <div class="container-fluid academicbanner header" style="height: 250px">
-        <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="../academic.php">Academic Office</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Manual Enrollment</li>
-            </ol>
-        </nav>
+        <?php
+        $breadcrumbItems = [
+            ['text' => 'Academic Office', 'url' => '/student/academic.php', 'active' => false],
+            ['text' => 'Manual Enrollment', 'active' => true],
+        ];
+
+        echo generateBreadcrumb($breadcrumbItems, false);
+        ?>
         <h1 class="display-1 header-text text-center text-light">Manual Enrollment</h1>
         <p class="header-text text-center text-light">Failed to enroll during the online registration period set by the University</p>
     </div>
