@@ -49,7 +49,7 @@
                         <i class="fa-solid fa-circle-info"></i> Reminder
                         </h4>
                         <p>You must set an appointment for approved document requests before retrieving it from their respective offices.</p>
-                        <p class="mb-0">To set or edit an appointment, click on the <i class="fa-brands fa-wpforms"></i> button on the table.</p>
+                        <p class="mb-0">To set or edit an appointment, click the <i class="fa-brands fa-wpforms"></i> button on the table.</p>
                     </div>
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">

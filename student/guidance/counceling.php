@@ -31,7 +31,42 @@
             $result = $stmt->get_result();
             $userData = $result->fetch_all(MYSQLI_ASSOC);
             $stmt->close();
-            $connection->close();
+
+            if(isset($_POST['formSubmit'])) {
+                $counselingDescription = $_POST['counseling_description'];
+                $date = $_POST['date'];
+                $time = $_POST['time'];
+                $officeId = 5;
+                $statusId = 3;
+                $amountToPay = 0.00;
+                $dateTime = $date . ' ' . $time;
+
+                $query = "INSERT INTO doc_requests (scheduled_datetime, office_id, user_id, status_id, amount_to_pay)
+                VALUES (?, ?, ?, ?, ?)";
+
+                $stmt = $connection->prepare($query);
+                $stmt->bind_param("siiid", $dateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
+                $stmt->execute();
+                $insertedId = $connection->insert_id;
+                if (!$insertedId > 0) {
+                    $connection->close();
+                    header("Location: http://localhost/student/guidance/counceling.php");
+                    exit();
+                }
+                $stmt->close();
+
+                $query = "INSERT INTO counseling_schedules (appointment_description, doc_requests_id)
+                VALUES (?, ?)";
+
+                $stmt = $connection->prepare($query);
+                $stmt->bind_param("si", $counselingDescription, $insertedId);
+                if ($stmt->execute()) {
+                    $_SESSION['success'] = true;
+                    header("Refresh:0");
+                    $stmt->close();
+                }
+                $connection->close();
+            }
         ?>
         <div class="container-fluid p-4">
             <?php
@@ -75,7 +110,7 @@
                         <h6>Appointment Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="needs-validated row g-3" method="POST" novalidate>
+                        <form action="counceling.php" id="appointment-form" class="needs-validated row g-3" method="POST" novalidate>
                             <input type="hidden" name="form_type" value="counseling_form">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
@@ -111,16 +146,16 @@
                             <div class="form-group required col-md-12">
                                 <label for="counseling_description" class="form-label">Reason for Counseling</label>
                                 <div class="input-group has-validation">
-                                    <select class="form-control form-select" id="counseling_description" required>
+                                    <select class="form-control form-select" name="counseling_description" id="counseling_description" required>
                                         <option value="">--Select--</option>
-                                        <option>Academic Performance</option>
-                                        <option>Academic Guidance</option>
-                                        <option>Career Path Guidance</option>
-                                        <option>Personal Development</option>
-                                        <option>Goal Setting</option>
-                                        <option>Study Skills</option>
-                                        <option>Report Issue</option>
-                                        <option>Other</option>
+                                        <option value="Academic Performance">Academic Performance</option>
+                                        <option value="Academic Guidance">Academic Guidance</option>
+                                        <option value="Career Path Guidance">Career Path Guidance</option>
+                                        <option value="Personal Development">Personal Development</option>
+                                        <option value="Goal Setting">Goal Setting</option>
+                                        <option value="Study Skills">Study Skills</option>
+                                        <option value="Report Issue">Report Issue</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                     <div class="invalid-feedback">Please choose an option.</div>
                                 </div>
@@ -128,26 +163,26 @@
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" id="date" required>
+                                <input type="date" class="form-control" name="date" id="date" required>
                                 <div class="invalid-feedback">Please choose a valid date.</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="time" class="form-label">Time</label>
-                                <select class="form-control form-select" id="time" required>
+                                <select class="form-control form-select" name="time" id="time" required>
                                     <option value="">--Select--</option>
-                                    <option>8:00 AM</option>
-                                    <option>9:00 AM</option>
-                                    <option>10:00 AM</option>
-                                    <option>11:00 AM</option>
-                                    <option>12:00 PM</option>
-                                    <option>1:00 PM</option>
-                                    <option>2:00 PM</option>
-                                    <option>3:00 PM</option>
-                                    <option>4:00 PM</option>
-                                    <option>5:00 PM</option>
-                                    <option>6:00 PM</option>
-                                    <option>7:00 PM</option>
-                                    <option>8:00 PM</option>
+                                    <option value="08:00:00">8:00 AM</option>
+                                    <option value="09:00:00">9:00 AM</option>
+                                    <option value="10:00:00">10:00 AM</option>
+                                    <option value="11:00:00">11:00 AM</option>
+                                    <option value="12:00:00">12:00 PM</option>
+                                    <option value="13:00:00">1:00 PM</option>
+                                    <option value="14:00:00">2:00 PM</option>
+                                    <option value="15:00:00">3:00 PM</option>
+                                    <option value="16:00:00">4:00 PM</option>
+                                    <option value="17:00:00">5:00 PM</option>
+                                    <option value="18:00:00">6:00 PM</option>
+                                    <option value="19:00:00">7:00 PM</option>
+                                    <option value="20:00:00">8:00 PM</option>
                                 </select>
                                 <div class="invalid-feedback">Please choose a time.</div>
                             </div>
@@ -156,7 +191,7 @@
                                     <p>Supporting Documents (Referral Slip, etc.)</p>
                                     <small>You can attach multiple files</small>
                                 </label>
-                                <input class="form-control" type="file" id="supportingDocuments" multiple>
+                                <input class="form-control" name="supportingDocuments" type="file" id="supportingDocuments" multiple>
                             </div>
                             <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
@@ -185,13 +220,34 @@
                                         Are you sure you want to submit this form?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <a href="./generate_pdf.php" id="submit" class="btn btn-primary">Submit</a>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                        <button type="submit" id="submit" class="btn btn-primary" name="formSubmit" data-bs-toggle="modal" data-bs-target="#successModal">Yes</button>
+                                        <!-- <a href="./generate_pdf.php" id="submit" class="btn btn-primary">Submit</a> -->
                                     </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <!-- Success alert modal -->
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your counseling appointment has been submitted successfully!</p>
+                                        <p>You can check the status of your appointment on the <b>My Transactions</b> page.</p>
+                                        <p>You must print this approval letter and submit it to the Director's Office before your scheduled appointment.</p>
+                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -209,12 +265,8 @@
     </div>
     <script src="jquery.js"></script>
     <script>
-        var currentDate = new Date();
-        var currentYear = currentDate.getFullYear();
-        var currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        var currentDay = currentDate.getDate().toString().padStart(2, '0');
         var minDate = "1940-01-01";
-        var maxDate = currentYear + "-" + currentMonth + "-" + currentDay;
+        var maxDate = "2023-12-31";
 
         document.getElementById("date").min = minDate;
         document.getElementById("date").max = maxDate;
@@ -254,5 +306,16 @@
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
+    <?php if (isset($_SESSION['success']) && $_SESSION['success']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#successModal').modal('show');
+        });
+        </script>
+        ";
+    } 
+    unset($_SESSION['success']);
+    ?>
 </body>
 </html>

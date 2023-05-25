@@ -26,7 +26,7 @@
                         FROM doc_requests
                         INNER JOIN offices ON doc_requests.office_id = offices.office_id
                         INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        WHERE user_id = ". $_SESSION['user_id'] ." OR request_description <> NULL
+                        WHERE user_id = ". $_SESSION['user_id'] ." AND request_description <> NULL
                         ORDER BY $sortColumn $sortDirection
                         LIMIT $offset, $rowsPerPage";
 

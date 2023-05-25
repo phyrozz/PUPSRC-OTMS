@@ -16,11 +16,22 @@
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="wrapper">
+    <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
             include "../navbar.php";
             include "../../breadcrumb.php";
+            include "../../conn.php";
+
+            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
+            WHERE user_id = ?";
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("i", $_SESSION['user_id']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $userData = $result->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+            $connection->close();
         ?>
         <div class="container-fluid p-4">
             <?php
@@ -64,36 +75,37 @@
                         <h6>Request Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="row g-3">
+                        <form id="appointment-form" class="row g-3" method="POST">
+                        <input type="hidden" name="form_type" value="good_morals">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
                             <div class="form-group required col-12">
                                 <label for="studentNumber" class="form-label">Student Number</label>
-                                <input type="text" class="form-control" id="studentNumber" disabled required>
+                                <input type="text" class="form-control" id="studentNumber" value="<?php echo $userData[0]['student_no'] ?>" maxlength="15" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" disabled required>
+                                <input type="text" class="form-control" id="lastName" value="<?php echo $userData[0]['last_name'] ?>" maxlength="100" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="firstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" disabled required>
+                                <input type="text" class="form-control" id="firstName" value="<?php echo $userData[0]['first_name'] ?>" maxlength="100" disabled required>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName" disabled required>
+                                <input type="text" class="form-control" id="middleName" value="<?php echo $userData[0]['middle_name'] ?>" maxlength="100" disabled required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="extensionName" class="form-label">Extension Name</label>
-                                <input type="text" class="form-control" id="extensionName" disabled required>
+                                <input type="text" class="form-control" id="extensionName" value="<?php echo $userData[0]['extension_name'] ?>" maxlength="11" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" required>
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" maxlength="100" required>
                             </div>
                             <h6 class="mt-5">Request Information</h6>
                             <div class="form-group col-12">
