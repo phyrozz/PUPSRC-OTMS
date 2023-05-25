@@ -52,8 +52,7 @@
             <div class="row">
                 <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
-                    <h1 class="display-4">PUP-SRC</h1>
-                    <h2>Online Transaction Management System</h2>
+                    <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
                     <p class="lead">Sign in as PUP Client (Alumni, Visitor, etc.)</p>
 
                     <form method="POST" class="d-flex flex-column gap-2" action="">

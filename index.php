@@ -29,7 +29,7 @@
                 <div class="card-body">
                     <img class="p-3" src="assets/pup-logo.png" alt="PUP Logo" width="110" height="110">
                     <h3 class="card-title">PUP Santa Rosa</h3>
-                    <h5 class="card-title">Online Transaction Management System</h5>
+                    <h5 class="lead card-title"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h5>
                     <p class="card-text">Choose your role to get started</p>
                     <div class="d-flex justify-content-center align-items-center p-3 gap-2">
                         <a href="login/student.php" class="btn btn-student p-3 btn-lg">

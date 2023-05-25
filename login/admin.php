@@ -17,13 +17,12 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="jumbotron container-lg bg-white d-flex">
-        <div class="container-lg container-fluid">
+    <div class="jumbotron bg-white d-flex">
+        <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center d-flex flex-column align-items-center justify-content-center">
+                <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
-                    <h1 class="display-4">PUP-SRC</h1>
-                    <h2>Online Transaction Management System</h2>
+                    <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
                     <p class="lead">Sign in as Faculty Admin</p>
 
                     <form class="d-flex flex-column gap-2" action="admin.php">

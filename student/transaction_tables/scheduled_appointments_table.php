@@ -7,11 +7,11 @@
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
     $offset = ($page - 1) * $rowsPerPage;
 
-    $sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'request_code';
+    $sortColumn = isset($_GET['sort']) ? $_GET['sort'] : '';
     $sortDirection = isset($_GET['dir']) ? $_GET['dir'] : 'DESC';
 
     // Validate and sanitize the sort column
-    $validColumns = ['id', 'appointment_description', 'scheduled_datetime', 'status_name'];
+    $validColumns = ['counseling_id', 'appointment_description', 'scheduled_datetime', 'status_name'];
     if (!in_array($sortColumn, $validColumns)) {
         $sortColumn = 'scheduled_datetime'; // Set a default sort column
     }
@@ -25,7 +25,8 @@
     $appointmentSchedules = "SELECT request_id, appointment_description, scheduled_datetime, status_name, counseling_id
                         FROM doc_requests
                         INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        INNER JOIN counseling_schedules ON doc_requests.request_id = counseling_schedules.counseling_id
+                        INNER JOIN counseling_schedules ON doc_requests.request_id = counseling_schedules.doc_requests_id
+                        WHERE user_id = ". $_SESSION['user_id'] ."
                         ORDER BY $sortColumn $sortDirection
                         LIMIT $offset, $rowsPerPage";
 
@@ -35,15 +36,15 @@
     <thead>
         <tr>
             <th class="text-center" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
+                <a class="text-decoration-none text-dark" href="?sort=counseling_id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Schedule Code
-                    <?php if ($sortColumn === 'id') { ?>
+                    <?php if ($sortColumn === 'counseling_id') { ?>
                         <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
             </th>
             <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=office_name&dir=<?php echo $sortColumn === 'appointment_description' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
+                <a class="text-decoration-none text-dark" href="?sort=appointment_description&dir=<?php echo $sortColumn === 'appointment_description' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Appointment Description
                     <?php if ($sortColumn === 'appointment_description') { ?>
                         <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
@@ -71,11 +72,12 @@
     <tbody>
         <?php
             if ($result) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $appointmentId = $row['counseling_id'];
-                    $appointmentDescription = $row['appointment_description'];
-                    $scheduledDateTime = $row['scheduled_datetime'];
-                    $statusName = $row['status_name'];
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $appointmentId = $row['counseling_id'];
+                        $appointmentDescription = $row['appointment_description'];
+                        $scheduledDateTime = $row['scheduled_datetime'];
+                        $statusName = $row['status_name'];
         ?>
         <tr>
             <td><?php echo "GO-"; echo $appointmentId; ?></td>
@@ -86,6 +88,14 @@
                     <?php echo $statusName; ?>
                 </span>
             </td>
+        </tr>
+        <?php
+                    }
+                }
+                else {
+        ?>
+        <tr>
+            <td class="text-center table-light p-4" colspan="4">No Transactions</td>
         </tr>
         <?php
                 }

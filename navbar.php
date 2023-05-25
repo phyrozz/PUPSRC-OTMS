@@ -27,7 +27,7 @@
                         <li><a class="dropdown-item" href="http://localhost/student/registrar.php">Registrar</a></li>
                         <li><a class="dropdown-item" href="http://localhost/student/guidance.php">Guidance</a></li>
                         <?php 
-                        if (!$isClient) {
+                        if (!isset($isClient)) {
                             echo '<li><a class="dropdown-item" href="http://localhost/student/academic.php">Academic</a></li>';
                         }
                         ?>

@@ -18,7 +18,6 @@
 </head>
 <body>
         <?php
-            $isClient = false;
             $office_name = "Select an Office";
             include "../conn.php";
             include "../navbar.php";
