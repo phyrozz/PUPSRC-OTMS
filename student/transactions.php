@@ -20,7 +20,7 @@
         <?php
             $office_name = "Select an Office";
             include "../conn.php";
-            include "../navbar.php";
+            include "navbar.php";
             include "../breadcrumb.php";
 
             $table = 'document_request';

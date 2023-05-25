@@ -19,7 +19,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Registrar Office";
-            include "../../navbar.php"
+            include "../navbar.php"
         ?>
         <div class="container-fluid p-4">
             <nav class="breadcrumb-nav" aria-label="breadcrumb">

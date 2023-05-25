@@ -15,6 +15,7 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../sign_up_dropdown.js"></script>
 </head>
 <body>
     <?php
@@ -22,6 +23,7 @@
     include "../conn.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
         $password = $_POST['password'];
 
         $query = "SELECT user_id, email, first_name, last_name, password FROM users WHERE email = ?";
@@ -31,9 +33,8 @@
         $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbPassword);
         $stmt->fetch();
 
-        if ($email && password_verify($password, $dbPassword)) {
+        if ($dbEmail && password_verify($password, $dbPassword)) {
             $_SESSION['user_id'] = $userId;
-            $_SESSION['email'] = $dbEmail;
             $_SESSION['first_name'] = $dbFirstName;
             $_SESSION['last_name'] = $dbLastName;
             header("Location: ../client/home.php");
@@ -53,7 +54,7 @@
                 <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
                     <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
-                    <p class="lead">Sign in as PUP Client (Alumni, Visitor, etc.)</p>
+                    <p class="lead">Sign in as Client (Alumni, Visitor, etc.)</p>
 
                     <form method="POST" class="d-flex flex-column gap-2" action="">
                         <div class="form-group col-12">
@@ -63,7 +64,7 @@
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" maxlength="100" required>
                         </div>
                         <?php if (isset($loginMessage)) { ?>
-                            <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
+                        <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
                         <?php } ?>
                         <div class="col-12">
                             Don't have an account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#Register">Sign up</a>
@@ -146,7 +147,7 @@
                                     <label class="form-check-label col-3">
                                         <input class="form-check-input" type="radio" id="GenderM" name="Gender" value="1" checked=""> Male
                                     </label>
-                                    <label class="form-check-label col-3">
+                                    <label class="form-check-label col-3 px-3">
                                         <input class="form-check-input" type="radio" id="GenderF" name="Gender" value="0"> Female
                                     </label>
                                     </div> 
@@ -162,14 +163,16 @@
                                 <div class="form-group col-6">
                                     <label>Province <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Province" value="" id="Province" placeholder="Province" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <select name="Province" id="Province" class="form-control form-select">
+                                        </select>
                                     </div>
-                                </div>              
+                                </div> 
                                 <div class="form-group col-6">
                                     <label>City <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="City" value="" id="City" placeholder="City" maxlength="50" size="50" autocomplete="off" class="form-control">
-                                    </div>  
+                                        <select name="City" id="City" class="form-control form-select">
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Barangay <code>*</code></label>
@@ -248,19 +251,17 @@
             </div>
         </div>
     </div>
+    <?php if (isset($_SESSION['account_created']) && $_SESSION['account_created']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#successModal').modal('show');
+        });
+        </script>
+        ";
+    } 
+    unset($_SESSION['account_created']);
+    ?>
     <!-- End of success alert modal -->
-    <!-- <?php
-        if (isset($_GET['account_created']) && $_GET['account_created'] == 1) {
-            // echo "
-            //     <script>
-            //         console.log();
-            //         $('document').ready(function() {
-            //             $('#successModal').modal('show');
-            //         });
-            //     </script>
-            // ";
-            // $loginMessage = "Account has been created successfully.";
-        }
-    ?> -->
 </body>
 </html>

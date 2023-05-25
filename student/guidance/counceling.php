@@ -19,7 +19,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../../navbar.php";
+            include "../navbar.php";
             include "../../breadcrumb.php";
             include "../../conn.php";
 
@@ -75,7 +75,7 @@
                         <h6>Appointment Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="row g-3" method="POST">
+                        <form id="appointment-form" class="needs-validated row g-3" method="POST" novalidate>
                             <input type="hidden" name="form_type" value="counseling_form">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
@@ -91,30 +91,50 @@
                                 <label for="firstName" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="firstName" value="<?php echo $userData[0]['first_name'] ?>" maxlength="100" disabled required>
                             </div>
-                            <div class="form-group required col-md-6">
+                            <div class="form-group col-md-6">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName" value="<?php echo $userData[0]['middle_name'] ?>" maxlength="100" disabled required>
+                                <input type="text" class="form-control" id="middleName" value="<?php echo $userData[0]['middle_name'] ?>" maxlength="100" disabled>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="extensionName" class="form-label">Extension Name</label>
                                 <input type="text" class="form-control" id="extensionName" value="<?php echo $userData[0]['extension_name'] ?>" maxlength="11" disabled required>
                             </div>
-                            <div class="form-group required col-12">
+                            <div class="form-group col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" maxlength="100" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Appointment Information</h6>
+                            <div class="form-group required col-md-12">
+                                <label for="counseling_description" class="form-label">Reason for Counseling</label>
+                                <div class="input-group has-validation">
+                                    <select class="form-control form-select" id="counseling_description" required>
+                                        <option value="">--Select--</option>
+                                        <option>Academic Performance</option>
+                                        <option>Academic Guidance</option>
+                                        <option>Career Path Guidance</option>
+                                        <option>Personal Development</option>
+                                        <option>Goal Setting</option>
+                                        <option>Study Skills</option>
+                                        <option>Report Issue</option>
+                                        <option>Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please choose an option.</div>
+                                </div>
+                                
+                            </div>
                             <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" id="date" max="2023-12-31" required>
+                                <input type="date" class="form-control" id="date" required>
+                                <div class="invalid-feedback">Please choose a valid date.</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="time" class="form-label">Time</label>
-                                <select class="form-control form-select" id="time">
+                                <select class="form-control form-select" id="time" required>
+                                    <option value="">--Select--</option>
                                     <option>8:00 AM</option>
                                     <option>9:00 AM</option>
                                     <option>10:00 AM</option>
@@ -129,6 +149,7 @@
                                     <option>7:00 PM</option>
                                     <option>8:00 PM</option>
                                 </select>
+                                <div class="invalid-feedback">Please choose a time.</div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
@@ -150,7 +171,7 @@
                                 <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
                                     <i class="fa-solid fa-arrow-left"></i> Back
                                 </button>
-                                <input id="submitBtn" value="Submit "type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
+                                <button id="submitBtn" type="button" class="btn btn-primary w-25">Submit</button>
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
@@ -187,5 +208,51 @@
         </div>
     </div>
     <script src="jquery.js"></script>
+    <script>
+        var currentDate = new Date();
+        var currentYear = currentDate.getFullYear();
+        var currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        var currentDay = currentDate.getDate().toString().padStart(2, '0');
+        var minDate = "1940-01-01";
+        var maxDate = currentYear + "-" + currentMonth + "-" + currentDay;
+
+        document.getElementById("date").min = minDate;
+        document.getElementById("date").max = maxDate;
+
+        var counselingDesc = document.getElementById('counseling_description').value;
+
+        function validateForm() {
+            var form = document.getElementById('appointment-form');
+            var selectFields = form.querySelectorAll('select[required]');
+
+            for (var i = 0; i < selectFields.length; i++) {
+                var selectField = selectFields[i];
+                if (selectField.value === "") {
+                    selectField.classList.add('is-invalid');
+                    selectField.classList.remove('is-valid');
+                } else {
+                    selectField.classList.add('is-valid');
+                    selectField.classList.remove('is-invalid');
+                }
+            }
+
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }
+
+        // Function to handle form submission
+        function handleSubmit() {
+            validateForm();
+            if (document.getElementById('appointment-form').checkValidity()) {
+                $('#confirmSubmitModal').modal('show');
+            }
+        }
+        
+        // Add event listener to the submit button
+        document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+    </script>
 </body>
 </html>

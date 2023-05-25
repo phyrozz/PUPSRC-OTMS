@@ -17,7 +17,7 @@
 <div class="wrapper">
     <?php
         $office_name = "Academic Office";
-        include ('../../navbar.php');
+        include ('../navbar.php');
         include ('editmodal-me.php');
         include '../../breadcrumb.php';
     ?>

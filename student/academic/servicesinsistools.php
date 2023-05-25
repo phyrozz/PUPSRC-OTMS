@@ -17,7 +17,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Academic Office";
-            include ('../../navbar.php');
+            include ('../navbar.php');
             include '../../breadcrumb.php';
             //include('generate_pdf.php')
         ?>

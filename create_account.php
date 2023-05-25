@@ -67,11 +67,8 @@ if (isset($_POST['studentSignup'])) {
             // $loginMessage = "Sign up failed. Please try again.";
         }
     }
-
-    $connection->close();
-    exit();
 }
-else if (isset($POST['clientSignup'])) {
+else if (isset($_POST['clientSignup'])) {
     $email = $_POST['Email'];
     $lastName = $_POST['LName'];
     $firstName = $_POST['FName'];
@@ -113,14 +110,14 @@ else if (isset($POST['clientSignup'])) {
 
         if ($stmt->execute()) {
             header("Location: http://localhost/login/client.php");
+            $_SESSION['account_created'] = true;
         } 
         else {
             header("Location: http://localhost/index.php");
             // $loginMessage = "Sign up failed. Please try again.";
         }
     }
-
-    $connection->close();
-    exit();
 }
+$connection->close();
+exit();
 ?>

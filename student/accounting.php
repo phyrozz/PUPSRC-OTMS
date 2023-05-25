@@ -19,7 +19,7 @@
 <body>
     <?php
         $office_name = "Accounting Office";
-        include "../navbar.php";
+        include "navbar.php";
         include "../breadcrumb.php";
     ?>
     <div class="container-fluid p-4">

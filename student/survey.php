@@ -16,7 +16,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Select an Office";
-            include "../navbar.php";
+            include "navbar.php";
             include "../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">

@@ -20,7 +20,7 @@
 
 <?php
     $office_name = "Administrative Office";
-    include "../../navbar.php";
+    include "../navbar.php";
     include "../../breadcrumb.php";
 ?>
 <div class="wrapper">

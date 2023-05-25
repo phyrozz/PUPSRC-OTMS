@@ -26,12 +26,8 @@
                     <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
                         <li><a class="dropdown-item" href="http://localhost/student/registrar.php">Registrar</a></li>
                         <li><a class="dropdown-item" href="http://localhost/student/guidance.php">Guidance</a></li>
-                        <?php 
-                        if (!isset($isClient)) {
-                            echo '<li><a class="dropdown-item" href="http://localhost/student/academic.php">Academic</a></li>';
-                        }
-                        ?>
-                        <li><a class="dropdown-item" href="http://localhost/student/accounting/index.php">Accounting</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/student/academic.php">Academic</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/student/accounting.php">Accounting</a></li>
                         <li><a class="dropdown-item" href="http://localhost/student/administrative.php">Administrative Services</a></li>
                     </ul>
                 </li>
