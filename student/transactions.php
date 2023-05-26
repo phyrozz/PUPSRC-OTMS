@@ -73,11 +73,11 @@
                         <?php
                             // Load the requested table
                             if ($table === 'document_request') {
-                                // include 'transaction_tables/document_request_table.php';
+                                include 'transaction_tables/document_request_table.php';
                             } elseif ($table === 'scheduled_appointments') {
-                                // include 'transaction_tables/scheduled_appointments_table.php';
+                                include 'transaction_tables/scheduled_appointments_table.php';
                             } elseif ($table === 'payments') {
-                                // include 'transaction_tables/payments_table.php';
+                                include 'transaction_tables/payments_table.php';
                             }
                         ?>
                     </div>

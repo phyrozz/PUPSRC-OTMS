@@ -1,4 +1,7 @@
-<?php include "../navbar.php"; ?>
+<?php
+    $office_name = "Guidance Office";
+    include "../navbar.php"; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,8 +22,6 @@
 <body>
     <div class="wrapper">
         <?php
-            $office_name = "Guidance Office";
-            
             include "../../breadcrumb.php";
             include "../../conn.php";
 
