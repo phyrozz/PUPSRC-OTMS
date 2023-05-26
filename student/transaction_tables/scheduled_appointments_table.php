@@ -1,6 +1,47 @@
 <?php include './functions.php';?>
 
 <?php
+    // if (isset($_POST['delete_appointment'])) {
+    //     $counselingId = $_POST['counseling_id'];
+
+    //     $deleteQuery = "DELETE FROM counseling_schedules WHERE counseling_id = $counselingId";
+    //     $deleteResult = mysqli_query($connection, $deleteQuery);
+    //     $deleteQuery = "DELETE FROM doc_requests WHERE "
+
+    //     if ($deleteResult) {
+    //         header("Refresh:0");
+    //         // exit();
+    //     }
+    // }
+
+    if (isset($_POST['delete_appointment'])) {
+        $counselingId = $_POST['counseling_id'];
+
+        // Get the request_id associated with the counseling_id
+        $getRequestIdQuery = "SELECT doc_requests_id FROM counseling_schedules WHERE counseling_id = $counselingId";
+        $getRequestIdResult = mysqli_query($connection, $getRequestIdQuery);
+
+        if ($getRequestIdResult && mysqli_num_rows($getRequestIdResult) > 0) {
+            $row = mysqli_fetch_assoc($getRequestIdResult);
+            $requestId = $row['doc_requests_id'];
+
+            // Perform the deletion on counseling_schedules table
+            $deleteCounselingQuery = "DELETE FROM counseling_schedules WHERE counseling_id = $counselingId";
+            $deleteCounselingResult = mysqli_query($connection, $deleteCounselingQuery);
+
+            if ($deleteCounselingResult) {
+                // Perform the deletion on doc_requests table
+                $deleteRequestQuery = "DELETE FROM doc_requests WHERE request_id = $requestId";
+                $deleteRequestResult = mysqli_query($connection, $deleteRequestQuery);
+
+                if ($deleteRequestResult) {
+                    header("Refresh:0");
+                    // exit();
+                }
+            }
+        }
+    }
+
     // Add pagination to the table
     $rowsPerPage = 5;
 
@@ -82,11 +123,27 @@
         <tr>
             <td><?php echo "GO-"; echo $appointmentId; ?></td>
             <td><?php echo $appointmentDescription; ?></td>
-            <td><a href="<?php echo getSchedulePageRedirect($appointmentDescription); ?>" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a> <?php echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A"); ?></td>
+            <td>
+                <?php echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A"); ?>
+            </td>
             <td class="text-center">
                 <span class="badge rounded-pill <?php echo getStatusBadgeClass($statusName); ?>">
                     <?php echo $statusName; ?>
                 </span>
+            </td>
+            <td class="text-center">
+                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?')">
+                    <a href="<?php echo getSchedulePageRedirect($appointmentDescription); ?>" class="btn btn-primary btn-sm"><i class="fa-brands fa-wpforms"></i></a>
+                    <input type="hidden" name="counseling_id" value="<?php echo $appointmentId; ?>">
+                    <?php
+                    if ($statusName == "Pending" || $statusName == "Disapproved") {
+                        echo '<button type="submit" name="delete_appointment" class="btn btn-primary btn-sm"><i class="fa-solid fa-trash-can"></i></button>';
+                    }
+                    else {
+                        echo '<button type="button" class="btn btn-sm" disabled><i class="fa-solid fa-trash-can"></i></button>';
+                    }
+                    ?>
+                </form>
             </td>
         </tr>
         <?php

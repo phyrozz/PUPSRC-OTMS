@@ -222,7 +222,6 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                                         <button type="submit" id="submit" class="btn btn-primary" name="formSubmit" data-bs-toggle="modal" data-bs-target="#successModal">Yes</button>
-                                        <!-- <a href="./generate_pdf.php" id="submit" class="btn btn-primary">Submit</a> -->
                                     </div>
                                     </div>
                                 </div>
