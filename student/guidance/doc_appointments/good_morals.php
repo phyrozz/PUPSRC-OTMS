@@ -21,6 +21,7 @@
             $office_name = "Guidance Office";
             include "../../navbar.php";
             include "../../../breadcrumb.php";
+            include "../../../conn.php";
         ?>
         <div class="container-fluid p-4">
             <?php

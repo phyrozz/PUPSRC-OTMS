@@ -26,11 +26,22 @@
                         FROM doc_requests
                         INNER JOIN offices ON doc_requests.office_id = offices.office_id
                         INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        WHERE user_id = ". $_SESSION['user_id'] ." AND request_description <> NULL
+                        WHERE user_id = ". $_SESSION['user_id'] ." AND request_description IS NOT NULL
                         ORDER BY $sortColumn $sortDirection
                         LIMIT $offset, $rowsPerPage";
 
     $result = mysqli_query($connection, $documentRequests);
+
+    if (isset($_POST['delete_request'])) {
+        $deleteRequestId = $_POST['request_id'];
+    
+        $deleteQuery = "DELETE FROM doc_requests WHERE request_id = $deleteRequestId";
+        mysqli_query($connection, $deleteQuery);
+    
+        // Redirect or refresh the page to update the table after deletion
+        header("Refresh:0");
+        exit();
+    }
 ?>
 <table id="transactions-table" class="table table-hover table-bordered">
     <thead>
@@ -101,12 +112,34 @@
             <td><?php echo "DR-"; echo $requestId; ?></td>
             <td><?php echo $officeName; ?></td>
             <td><?php echo $requestDescription; ?></td>
-            <td><a href="<?php echo getSchedulePageRedirect($requestDescription); ?>" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a> <?php echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A"); ?></td>
+            <td>
+                <?php
+                if ($scheduledDateTime === NULL) {
+                    echo "Not yet scheduled";
+                } else {
+                    echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A");
+                }
+                ?>
+            </td>
             <td><?php echo "₱"; echo $amountToPay; ?></td>
             <td class="text-center">
                 <span class="badge rounded-pill <?php echo getStatusBadgeClass($statusName); ?>">
                     <?php echo $statusName; ?>
                 </span>
+            </td>
+            <td>
+                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?')">
+                    <a href="<?php echo getSchedulePageRedirect($requestDescription); ?>" class="btn btn-primary btn-sm"><i class="fa-brands fa-wpforms"></i></a>
+                    <input type="hidden" name="request_id" value="<?php echo $requestId; ?>">
+                    <?php
+                    if ($statusName == "Pending" || $statusName == "Disapproved") {
+                        echo '<button type="submit" name="delete_request" class="btn btn-primary btn-sm"><i class="fa-solid fa-trash-can"></i></button>';
+                    }
+                    else {
+                        echo '<button type="button" class="btn btn-sm" disabled><i class="fa-solid fa-trash-can"></i></button>';
+                    }
+                    ?>
+                </form>
             </td>
         </tr>
         <?php

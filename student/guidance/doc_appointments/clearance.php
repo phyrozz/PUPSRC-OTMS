@@ -21,7 +21,7 @@
             $office_name = "Guidance Office";
             include "../../navbar.php";
             include "../../../breadcrumb.php";
-            include "../../conn.php";
+            include "../../../conn.php";
 
             $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
             WHERE user_id = ?";
