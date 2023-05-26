@@ -10,9 +10,14 @@
         Browse from device:
         <br/>
         <div class="uploadbox" id="uploadDiv">
-          <i class="fa-solid fa-upload fa-4x"></i>
-          <input type="file" id="hiddenFileInput">
-        </div>
+  <i class="fa-solid fa-upload fa-4x"></i>
+  <form action="connect_uploaddb.php" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" id="hiddenFileInput" style="display: none;">
+    <input type="submit" value="Upload" style="display: none;">
+    
+  </form>
+</div>
+
         <span class="uploadsubtext">Note: If possible, please use a stable internet connection to avoid errors when uploading. Sudden interruptions/spike may cause it to fail.</span>
       </div>
       <div class="modal-footer">

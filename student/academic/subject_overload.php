@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academic Office - Subject Overload</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="academic.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -45,7 +45,7 @@
     <div id="redirectModal" class="modal">
         <div id="modalContent" class="modal-content">
             <a href="../academic.php" class="btn-close" aria-label="Close"></a>
-            <img src="/assets/exclamation.png" class="exclamationpic">
+            <img src="../../assets/exclamation.png" class="exclamationpic">
             <br/><h1>Subject overload is only allowed for academically outstanding students.</h1>
             <a href="../academic.php" class="btn btn-primary" id="nextButton">Home</a>
         </div>
@@ -75,8 +75,8 @@
                 <div class="card-body d-flex flex-column justify-content-between">
                     <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                     <div class="d-flex flex-column">
-                        <button class="btn btn-outline-primary mb-2">
-                            <i class="fa-solid fa-arrows-rotate"></i> Reset Form
+                        <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
+                            <i class="fa-solid fa-arrows-rotate"></i> Reset Form 
                         </button>
                         <button class="btn btn-outline-primary mb-2">
                             <i class="fa-solid fa-circle-question"></i> Help
@@ -112,7 +112,9 @@
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary"> View Attachment</button> 
+                            <form action="generatepdf_so.php" method="post" target="_blank">
+                                <input type="submit" class="btn btn-primary" value="View Attachment">
+                            </form>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
@@ -127,7 +129,9 @@
                             <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary"> View Attachment</button> 
+                            <form action="generatepdf_so.php" method="post" target="_blank">
+                                <input type="submit" class="btn btn-primary" value="View Attachment">
+                            </form>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen-to-square"></i> Edit</button> 
@@ -142,10 +146,12 @@
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Verified</button>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary"> View Attachment</button> 
+                            <form action="generatepdf_so.php" method="post" target="_blank">
+                                <input type="submit" class="btn btn-primary" value="View Attachment">
+                            </form>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inquiryModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
                         </div>
                     </div>
                 </div>

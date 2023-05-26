@@ -8,14 +8,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav gap-3 w-100">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Guidance Office</a>
+                    <a href="#" class="nav-link">Academic Office</a>
                 </li>
             </ul>
             <ul class="navbar-nav gap-3 w-100 justify-content-end">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-user-circle me-1"></i>
-                        Juan Dela Cruz
+                        Leny Salmingo
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="#">Account Settings</a></li>

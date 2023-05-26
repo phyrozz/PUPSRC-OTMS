@@ -60,6 +60,7 @@ $pdf->AddPage();
 $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
 
 // Data Retrieval
+    /*
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve form data
         $studentNumber = $_POST['studentNumber'];
@@ -70,6 +71,7 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
         $date = $_POST['date'];
         $time = $_POST['time'];
     } else {
+    */
     // Set default values or handle the case when the form is not submitted
         $studentNumber = '';
         $lastName = '';
@@ -78,7 +80,7 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
         $contactNumber = '';
         $date = '';
         $time = '';
-                                                }
+                                                
 
 // Set some content to print
     $html = <<<EOD

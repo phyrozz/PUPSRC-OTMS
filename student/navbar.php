@@ -52,7 +52,7 @@
                                 <li><a class="dropdown-item" href="/student/academic/cross_enrollment.php">Cross-Enrollment</a></li>
                                 <li><a class="dropdown-item" href="/student/academic/shifting.php">Shifting</a></li>
                                 <li><a class="dropdown-item" href="/student/academic/manual_enrollment.php">Manual Enrollment</a></li>
-                                <li><a class="dropdown-item" href="/student/academic/sis_tools.php">Services in SIS Tools</a></li>
+                                <li><a class="dropdown-item" href="/student/academic/servicesinsistools.php">Services in SIS Tools</a></li>
                                 ';
                                 break;
                             case 'Administrative Office':
