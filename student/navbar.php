@@ -97,6 +97,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="http://localhost/student/transactions.php">My Transactions</a></li>
                         <li><a class="dropdown-item" href="#">Account Settings</a></li>
+                        <li><a class="dropdown-item" href="http://localhost/student/generate_inquiry.php">Generate Inquiry</a></li>
                         <li><a class="dropdown-item" href="http://localhost/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
                     </ul>
                 </li>

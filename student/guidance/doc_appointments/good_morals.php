@@ -175,5 +175,13 @@
         </div>
     </div>
     <script src="jquery.js"></script>
+    <script>
+        let currentDate = new Date().toISOString().split('T')[0];
+
+        var maxDate = "2033-12-31";
+
+        document.getElementById("date").min = currentDate;
+        document.getElementById("date").max = maxDate;
+    </script>
 </body>
 </html>

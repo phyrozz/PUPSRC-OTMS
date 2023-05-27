@@ -62,7 +62,7 @@
                             <input type="text" class="form-control" name="studentNumber" id="studentNumber" placeholder="Student Number" maxlength="15" required>
                         </div>
                         <div class="form-group col-12">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" maxlength="100" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" maxlength="100" required>
                         </div>
                         <?php if (isset($loginMessage)) { ?>
                         <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
