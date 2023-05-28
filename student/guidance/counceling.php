@@ -264,10 +264,11 @@
     </div>
     <script src="jquery.js"></script>
     <script>
-        var minDate = "1940-01-01";
-        var maxDate = "2023-12-31";
+        let currentDate = new Date().toISOString().split('T')[0];
 
-        document.getElementById("date").min = minDate;
+        var maxDate = "2033-12-31";
+
+        document.getElementById("date").min = currentDate;
         document.getElementById("date").max = maxDate;
 
         var counselingDesc = document.getElementById('counseling_description').value;

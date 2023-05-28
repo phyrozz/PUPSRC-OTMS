@@ -16,15 +16,17 @@
     <div class="wrapper">
         <?php
             $office_name = "Select an Office";
-            include "../navbar.php"
+            include "navbar.php";
+            include "../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="academic.php">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Generate Inquiry/Concern</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Generate Inquiry', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>Generate Inquiry/Concern</h1>
