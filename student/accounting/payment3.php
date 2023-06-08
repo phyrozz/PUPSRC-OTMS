@@ -1,8 +1,6 @@
-
-
-
 <!-- INSERT PHP SECTION -->
 <?php
+$office_name = "Accounting Office";
 include 'admin/db_connect.php';
 
 // Execute a test query
@@ -37,15 +35,19 @@ mysqli_close($conn);
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
 </head>
 <body>
-    <?php include "../navbar.php"; ?>
+    <?php 
+    include "../navbar.php";
+    include '../../breadcrumb.php'; 
+    ?>
     <div class="container-fluid p-4">
-        <nav class="breadcrumb-nav" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="index.php">Accounting Services Office</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Payments</li>
-            </ol>
-        </nav>
+      <?php
+      $breadcrumbItems = [
+          ['text' => 'Accounting Office', 'url' => '../accounting.php', 'active' => false],
+          ['text' => 'Payments', 'active' => true],
+      ];
+
+      echo generateBreadcrumb($breadcrumbItems, true);
+      ?>
     </div>
     <div class="container-fluid text-center p-4">
 

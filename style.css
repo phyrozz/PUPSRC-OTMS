@@ -158,6 +158,10 @@ html, body {
     background-image: url("assets/registrar.jpg")
 }
 
+.accountingbanner {
+    background-image: url("assets/accounting_bg.png");
+}
+
 .header {
     background-size: cover;
     background-position: center;

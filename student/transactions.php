@@ -83,28 +83,6 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex w-100 justify-content-between p-2">
-                <a href="../" class="btn btn-primary px-4">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </a>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <?php if ($page > 1) { ?>
-                        <a class="btn btn-outline-primary" href="?page=<?php echo $page - 1; ?>">Previous</a>
-                    <?php } ?>
-                    <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                        <?php if ($i == $page) { ?>
-                            <a class="btn btn-primary" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                        <?php } else { ?>
-                            <a class="btn btn-outline-primary" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                        <?php } ?>
-                    <?php } ?>
-                    <?php if ($page < $totalPages) { ?>
-                        <a class="btn btn-outline-primary" href="?page=<?php echo $page + 1; ?>">Next</a>
-                    <?php } ?>
-                </div>
-            </div>
-            
         </div>
         <div class="push"></div>
     </div>
@@ -128,6 +106,7 @@
             e.preventDefault();
             });
         });
+
     </script>
 </body>
 </html>
