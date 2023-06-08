@@ -65,7 +65,6 @@
                                 echo '
                                 <li><a class="dropdown-item" href="/student/registrar/create_request.php">Create Request</a></li>
                                 <li><a class="dropdown-item" href="/student/registrar/your_transaction.php">Your Registrar Transactions</a></li>
-                                <li><a class="dropdown-item" href="/student/registrar/registrar_history.php">Registrar Transaction History</a></li>
                                 ';
                                 break;
                             case 'Accounting Office':
