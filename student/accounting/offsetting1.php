@@ -4,7 +4,7 @@ $office_name = "Accounting Office";
 $servername = "localhost";
 $username =  "root";
 $password = "";
-$dbname =  "payment_db";
+$dbname =  "accountingdb";
 
 $conn = new mysqli ($servername,$username,$password,$dbname);
 if ($conn->connect_error){
