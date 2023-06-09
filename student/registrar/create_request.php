@@ -1,6 +1,5 @@
 <?php
 include '../conn.php';
-session_start();
 
     //fetching student info//
     $result = mysqli_query($connect, "SELECT users.id, users.last_name, users.first_name, users.middle_name, users.extension_name, users.contact_no, users.email, students.student_no 
@@ -73,7 +72,7 @@ session_start();
     <div class="wrapper">
         <?php
             $office_name = "Registrar Office";
-            include "../../navbar.php";
+            include "../navbar.php";
             include "../../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">

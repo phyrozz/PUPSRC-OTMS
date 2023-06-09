@@ -1,20 +1,20 @@
 <?php
-require "connection.php";
+require "conn.php";
 
-function displayInventory($equip_table, $conn, $filterCategory = null)
+function displayInventory($equip_table, $connection, $filterCategory = null)
 {
-    $sql = "SELECT e.*, et.equipment_type FROM " . mysqli_real_escape_string($conn, $equip_table) . " AS e
+    $sql = "SELECT e.*, et.equipment_type FROM " . mysqli_real_escape_string($connection, $equip_table) . " AS e
             INNER JOIN equipment_type AS et ON e.equipment_type_id = et.equipment_type_id";
 
     if ($filterCategory) {
-        $filterCategory = mysqli_real_escape_string($conn, $filterCategory);
+        $filterCategory = mysqli_real_escape_string($connection, $filterCategory);
         $sql .= " WHERE et.equipment_type = '$filterCategory'";
     }
 
     // Add the ORDER BY clause to arrange the equipment alphabetically
 
 
-    $result = $conn->query($sql);
+    $result = $connection->query($sql);
 
     if ($result->num_rows > 0) {
         echo "<table class='table table-hover table-bordered'>";
@@ -35,7 +35,7 @@ function displayInventory($equip_table, $conn, $filterCategory = null)
             echo "<td>" . htmlspecialchars($row["availability"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["quantity"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["equipment_type"]) . "</td>";
-            echo "<td><button class='btn btn-primary custom-font-size' onclick='redirectToRequest(" . htmlspecialchars($row["equipment_id"]) . ", \"" . htmlspecialchars($equip_table) . "\")'>Create Request</button></td>";
+            echo "<td><button class='btn btn-primary custom-font-size' onclick='redirectToRequest(" . htmlspecialchars($row["equipment_id"]) . ", \"" . htmlspecialchars($equip_table) . "\", \"" . htmlspecialchars($row["equipment_name"]) . "\")'>Create Request</button></td>";
             echo "</tr>";
         }
 
@@ -49,12 +49,12 @@ function displayInventory($equip_table, $conn, $filterCategory = null)
 // Filter form handling
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $selectedCategory = $_POST["category"];
-    displayInventory("equipment", $conn, $selectedCategory);
+    displayInventory("equipment", $connection, $selectedCategory);
 } else {
     // Display the inventory table without filtering
-    displayInventory("equipment", $conn);
+    displayInventory("equipment", $connection);
 }
 
-$conn->close();
+$connection->close();
 ?>
 

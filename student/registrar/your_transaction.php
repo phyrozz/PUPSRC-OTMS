@@ -1,6 +1,5 @@
 <?php 
 include '../conn.php';
-session_start();
     //fetching transaction info//
     $result = mysqli_query($connect, "SELECT * FROM users
     INNER JOIN reg_transaction ON  users.id = reg_transaction.user_id
@@ -34,7 +33,7 @@ session_start();
     <div class="wrapper">
         <?php
             $office_name = "Registrar Office";
-            include "../../navbar.php";
+            include "../navbar.php";
             include "../../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">

@@ -30,59 +30,14 @@ $(document).ready(function() {
     }
   }
 
-  function validateForm() {
-    var inputs = document.querySelectorAll("#studentForm input[required], #studentForm select[required]");
-    var isValid = true;
 
-    for (var i = 0; i < inputs.length; i++) {
-      if (inputs[i].value.trim() === "") {
-        inputs[i].classList.add("invalid-input");
-        isValid = false;
-      } else {
-        inputs[i].classList.remove("invalid-input");
-      }
-    }
 
-    if (!isValid) {
-      return false;
-    }
-  }
 
-  $("#studentForm").on("submit", function(event) {
-    event.preventDefault(); // Prevent the form from submitting
 
-    if (validateForm()) {
-      this.submit(); // Submit the form if it is valid
-    }
-  });
 
-  $("#name, #surname, #studentNumber, #amount, #course, #documentType").on("input change", function() {
-    validateFields();
-  });
-
-  function validateFields() {
-    var nameInput = $("#name");
-    var surnameInput = $("#surname");
-    var studentNumberInput = $("#studentNumber");
-    var amountInput = $("#amount");
-    var courseSelect = $("#course");
-    var documentTypeSelect = $("#documentType");
-    var nextButton = $(".next-button");
-
-    if (
-      nameInput.val().trim() === "" ||
-      surnameInput.val().trim() === "" ||
-      studentNumberInput.val().trim() === "" ||
-      amountInput.val().trim() === "" ||
-      courseSelect.val() === "" ||
-      documentTypeSelect.val() === ""
-    ) {
-      nextButton.attr("disabled", "disabled");
-    } else {
-      nextButton.removeAttr("disabled");
-    }
-  }
 });
+
+
 
 
 /*POPUP WHEN SUBMIT BUTTON IN PAGE2 PAYMENTS IS CLICKED */

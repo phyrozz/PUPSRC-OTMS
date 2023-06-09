@@ -5,33 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Facility</title>
-    <link rel="icon" href="../../assets/icon/pup-logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../stylesheets/request-style.css">
+    <link rel="icon" href="../assets/icon/pup-logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../stylesheets/request-style.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
 
 <?php
     $office_name = "Administrative Office";
-    include "../navbar.php";
-    include "../../breadcrumb.php";
+    include "../navbar/navbar.php"
 ?>
 <div class="wrapper">
-    <div class="container-fluid p-4">
-        <?php
-        $breadcrumbItems = [
-            ['text' => 'Administrative Office', 'url' => '/student/administrative.php', 'active' => false],
-            ['text' => 'View Facility', 'active' => true],
-        ];
-
-        echo generateBreadcrumb($breadcrumbItems, true);
-        ?>
-    </div>
+      <div class="container-fluid p-4">
+            <nav class="breadcrumb-nav" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Administrative Office</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">View Facility</li>
+                </ol>
+            </nav>
+        </div>
 
 
     <div class="container-fluid p-4">
@@ -105,9 +102,9 @@
                 // Load initial table without filtering
                 filterResults();
                 
-                function redirectToRequest(id, facility_table) {
+                function redirectToRequest(id, facility_table, facility_name, facility_number) {
                     // Assuming the PHP file you want to navigate to is named "request.php"
-                    var url = "request-facility.php?id=" + id + "&facility_table=" + facility_table;
+                    var url = "/administrative/front-page/request-facility.php?id=" + id + "&facility_table=" + facility_table + "&facility_name=" + encodeURIComponent(facility_name) + "&facility_number=" + encodeURIComponent(facility_number);
                     console.log(url); // Debugging output
                     window.location.href = url;
                 }

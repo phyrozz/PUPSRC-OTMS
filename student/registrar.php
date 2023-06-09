@@ -19,7 +19,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Registrar Office";
-            include "../navbar.php";
+            include "navbar.php";
             include "../breadcrumb.php";
         ?>
         <div class="container-fluid registrarbanner header">
