@@ -263,6 +263,72 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     background-image: url("assets/background-img/pup-bg.png");
 }
 
+.search-result {
+    background-color: #f5dcdc;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.search-result:hover a {
+    background-color: #800000;
+    color: white;
+    border-radius: 5px;
+}
+
+.search-result a {
+    text-decoration: none;
+    color: #555;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 5px;
+}
+
+.search-result .card-title {
+    font-weight: normal;
+}
+
+.search-result .card-header {
+    font-style: oblique;
+    border: none;
+}
+
+/* Fixes the overflowing bug on the search result page */
+.page-heading {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+} 
+
+.autocomplete-list {
+    position: absolute;
+    top: 48px;
+    left: 57vw;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.autocomplete-item {
+    color: #000;
+    padding: 10px;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+a .autocomplete-item:hover {
+    background-color: #520000;
+    color: #fff;
+}
+
+@media only screen and (max-width: 992px) {
+    .autocomplete-list {
+        position: static;
+        margin-top: 10px;
+        box-shadow: none;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     .login-card {
         width: 100%;
