@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2023 at 08:35 AM
+-- Generation Time: Jun 10, 2023 at 03:53 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -43,6 +43,37 @@ INSERT INTO `admins` (`admin_id`, `users_id`, `office_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `appointment_facility`
+--
+
+CREATE TABLE `appointment_facility` (
+  `appointment_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL,
+  `start_date_time_sched` datetime DEFAULT NULL,
+  `end_date_time_sched` datetime DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `purpose` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `appointment_facility`
+--
+
+INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `start_date_time_sched`, `end_date_time_sched`, `email`, `purpose`) VALUES
+(1, 28, 3, '2023-06-28 13:30:00', '2023-06-28 15:30:00', 'joshuamalabanan70@gmail.com', 'IDK ANYMORE'),
+(2, 28, 3, '2023-06-27 15:00:00', '2023-06-27 17:30:00', 'joshuamalabanan70@gmail.com', 'QWDQWE123213'),
+(3, 28, 3, '2023-06-27 15:00:00', '2023-06-27 17:30:00', 'joshuamalabanan70@gmail.com', 'QWDQWE123213'),
+(4, 28, 3, '2023-06-27 15:00:00', '2023-06-27 17:30:00', 'joshuamalabanan70@gmail.com', 'QWDQWE123213'),
+(5, 28, 3, '2023-06-20 14:00:00', '2023-06-22 15:30:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(6, 28, 3, '2023-06-21 13:00:00', '2023-06-27 14:00:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(7, 28, 3, '2023-06-21 13:00:00', '2023-06-27 14:00:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(8, 28, 3, '2023-06-21 13:00:00', '2023-06-27 14:00:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(9, 28, 3, '2023-06-21 11:00:00', '2023-06-26 13:30:00', 'joshuamalabanan70@gmail.com', 'asdasdasd2e');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `clients`
 --
 
@@ -75,7 +106,22 @@ CREATE TABLE `counseling_schedules` (
 --
 
 INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `doc_requests_id`) VALUES
-(9, 'Personal Development', 28);
+(9, NULL, 27),
+(10, NULL, 28),
+(11, NULL, 29),
+(12, NULL, 30),
+(13, NULL, 31),
+(14, NULL, 32),
+(15, NULL, 33),
+(16, NULL, 34),
+(17, NULL, 35),
+(18, NULL, 36),
+(19, NULL, 37),
+(20, NULL, 38),
+(21, NULL, 39),
+(22, NULL, 40),
+(23, NULL, 41),
+(24, NULL, 42);
 
 -- --------------------------------------------------------
 
@@ -99,7 +145,165 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-(28, NULL, '2023-06-02 08:00:00', 5, 28, 3, 0.00, '');
+(27, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(28, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(29, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(30, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(31, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(32, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
+(33, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
+(34, NULL, '2023-06-04 08:00:00', 5, 31, 3, 0.00, ''),
+(35, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(36, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(37, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(38, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(39, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(40, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(41, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(42, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `equipment`
+--
+
+CREATE TABLE `equipment` (
+  `equipment_id` int(11) NOT NULL,
+  `equipment_name` varchar(100) NOT NULL,
+  `availability` enum('Available','Unavailable') DEFAULT 'Available',
+  `quantity` int(11) DEFAULT 0,
+  `equipment_type_id` int(11) DEFAULT 0,
+  `request` tinyint(11) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `equipment`
+--
+
+INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quantity`, `equipment_type_id`, `request`) VALUES
+(1, 'Badminton Net', 'Available', 4, 2, 1),
+(2, 'Badminton Racket', 'Available', 15, 2, 1),
+(3, 'Badminton Shuttlecock', 'Available', 20, 2, 1),
+(4, 'Basketball', 'Available', 10, 2, 1),
+(5, 'BasketBall Ring and Net', 'Available', 2, 2, 1),
+(6, 'Brush', 'Available', 12, 3, 1),
+(7, 'Bucket', 'Available', 15, 3, 1),
+(8, 'Chairs', 'Available', 20, 1, 1),
+(9, 'Cleaning Detergent', 'Available', 20, 3, 1),
+(10, 'Curtains', 'Available', 6, 1, 1),
+(11, 'Chess Board', 'Available', 5, 2, 1),
+(12, 'Digital Scoreboard', 'Available', 1, 1, 1),
+(13, 'Mop', 'Available', 10, 3, 1),
+(14, 'Projectors', 'Available', 3, 1, 1),
+(15, 'Scoreboard', 'Available', 2, 2, 1),
+(16, 'Vacuum', 'Available', 5, 3, 1),
+(17, 'Volleyball', 'Available', 6, 2, 1),
+(18, 'Volleyball Net', 'Available', 3, 2, 1),
+(19, 'Tables', 'Available', 10, 1, 1),
+(20, 'TV', 'Available', 3, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `equipment_type`
+--
+
+CREATE TABLE `equipment_type` (
+  `equipment_type_id` int(11) NOT NULL,
+  `equipment_type` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `equipment_type`
+--
+
+INSERT INTO `equipment_type` (`equipment_type_id`, `equipment_type`) VALUES
+(1, 'School'),
+(2, 'Sports'),
+(3, 'Cleaning');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `facility`
+--
+
+CREATE TABLE `facility` (
+  `facility_id` int(11) NOT NULL,
+  `facility_name` varchar(50) NOT NULL,
+  `availability` enum('Available','Unavailable') DEFAULT 'Available',
+  `facility_number` varchar(50) DEFAULT NULL,
+  `facility_type_id` int(11) DEFAULT 0,
+  `request` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `facility`
+--
+
+INSERT INTO `facility` (`facility_id`, `facility_name`, `availability`, `facility_number`, `facility_type_id`, `request`) VALUES
+(1, 'Campus Court', 'Available', '101', 1, 1),
+(2, 'Room 102', 'Available', '102', 1, 1),
+(3, 'Room 103', 'Available', '103', 1, 1),
+(4, 'Room 104', 'Available', '104', 1, 1),
+(5, 'Room 105', 'Available', '105', 1, 1),
+(6, 'Room 106', 'Available', '106', 1, 1),
+(7, 'Room 107', 'Available', '107', 1, 1),
+(8, 'Room 108', 'Available', '108', 1, 1),
+(9, 'Room 109', 'Available', '109', 1, 1),
+(10, 'Room 110', 'Available', '110', 1, 1),
+(11, 'Computer Lab', 'Available', '201', 2, 1),
+(12, 'Room 202', 'Available', '202', 2, 1),
+(13, 'Room 203', 'Available', '203', 2, 1),
+(14, 'Room 204', 'Available', '204', 2, 1),
+(15, 'Room 205', 'Available', '205', 2, 1),
+(16, 'Room 206', 'Available', '206', 2, 1),
+(17, 'Room 207', 'Available', '207', 2, 1),
+(18, 'Room 208', 'Available', '208', 2, 1),
+(19, 'Room 209', 'Available', '209', 2, 1),
+(20, 'Room 210', 'Available', '210', 2, 1),
+(21, 'Room 301', 'Available', '301', 3, 1),
+(22, 'Room 302', 'Available', '302', 3, 1),
+(23, 'Room 303', 'Available', '303', 3, 1),
+(24, 'Room 304', 'Available', '304', 3, 1),
+(25, 'Room 305', 'Available', '305', 3, 1),
+(26, 'Room 306', 'Available', '306', 3, 1),
+(27, 'Audio Visual Room', 'Available', '307', 3, 1),
+(28, 'Room 308', 'Available', '308', 3, 1),
+(29, 'Room 309', 'Available', '309', 3, 1),
+(30, 'Room 310', 'Available', '310', 3, 1),
+(31, 'Room 401', 'Available', '401', 4, 1),
+(32, 'Room 402', 'Available', '402', 4, 1),
+(33, 'Room 403', 'Available', '403', 4, 1),
+(34, 'Room 404', 'Available', '404', 4, 1),
+(35, 'Room 405', 'Available', '405', 4, 1),
+(36, 'Room 406', 'Available', '406', 4, 1),
+(37, 'Room 407', 'Available', '407', 4, 1),
+(38, 'Room 408', 'Available', '408', 4, 1),
+(39, 'Room 409', 'Available', '409', 4, 1),
+(40, 'Room 410', 'Available', '410', 4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `facility_type`
+--
+
+CREATE TABLE `facility_type` (
+  `facility_type_id` int(11) NOT NULL,
+  `facility_type` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `facility_type`
+--
+
+INSERT INTO `facility_type` (`facility_type_id`, `facility_type`) VALUES
+(1, 'First Floor'),
+(2, 'Second Floor'),
+(3, 'Third Floor'),
+(4, 'Fourth Floor');
 
 -- --------------------------------------------------------
 
@@ -139,6 +343,23 @@ CREATE TABLE `personal_details` (
   `city` varchar(100) NOT NULL,
   `barangay` varchar(100) NOT NULL,
   `zip_code` varchar(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `request_equipment`
+--
+
+CREATE TABLE `request_equipment` (
+  `request_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `datetime_schedule` datetime DEFAULT NULL,
+  `quantity_equip` int(30) NOT NULL,
+  `status_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `purpose` text NOT NULL,
+  `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -228,7 +449,10 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (5, '', 'Belloso', 'Collin', 'Magat', NULL, '09010110590', 'bestnn_2021@gmail.com', NULL, 1),
 (6, '', 'Reyes', 'Nataniel Urbano', 'Ynaya', NULL, '09087310002', 'urban_011@yahoo.com', NULL, 2),
 (7, '', 'Lorenzo', 'Vincente Dylan', 'Dioquino', NULL, '09051128492', 'vincente_999@yahoo.com', NULL, 3),
-(28, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '09087756313', 'joshuamalabanan70@gmail.com', '$2y$10$Tzsuk4BMbLY5ewMILCTTdeIk2/ufNWTbWQzOZcLlsH8Iy/LQmaC8a', 1);
+(28, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '09087756313', 'joshuamalabanan70@gmail.com', '$2y$10$Tzsuk4BMbLY5ewMILCTTdeIk2/ufNWTbWQzOZcLlsH8Iy/LQmaC8a', 1),
+(31, '2020-00200-SR-0', 'Shandra', 'Miki', 'Brawl', 'Jr.', '09464032004', 'mmallow624@gmail.com', '$2y$10$orJgdEoFs1G066jHzilA4Or/WrvzNj8HDJVBk6pcJBtMhguQ6MlbG', 1),
+(32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', 'bussinbaldes@gmail.com', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
+(33, '2020-12356-SR-0', 'Magno', 'Dowel', 'P', 'Jr', '09645231211', 'mixelsynth69@gmail.com', '$2y$10$ZZFWcYG4TvuawhqLZfoNs.ijLIefE0k9rUJMhathYttUQqX8B1q66', 1);
 
 -- --------------------------------------------------------
 
@@ -263,6 +487,14 @@ ALTER TABLE `admins`
   ADD KEY `fk_admins_users1_idx` (`users_id`);
 
 --
+-- Indexes for table `appointment_facility`
+--
+ALTER TABLE `appointment_facility`
+  ADD PRIMARY KEY (`appointment_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `status_id` (`status_id`);
+
+--
 -- Indexes for table `clients`
 --
 ALTER TABLE `clients`
@@ -286,6 +518,32 @@ ALTER TABLE `doc_requests`
   ADD KEY `fk_doc_requests_statuses1_idx` (`status_id`);
 
 --
+-- Indexes for table `equipment`
+--
+ALTER TABLE `equipment`
+  ADD PRIMARY KEY (`equipment_id`),
+  ADD KEY `equipment_ibfk_1` (`equipment_type_id`);
+
+--
+-- Indexes for table `equipment_type`
+--
+ALTER TABLE `equipment_type`
+  ADD PRIMARY KEY (`equipment_type_id`);
+
+--
+-- Indexes for table `facility`
+--
+ALTER TABLE `facility`
+  ADD PRIMARY KEY (`facility_id`),
+  ADD KEY `facility_type_id` (`facility_type_id`);
+
+--
+-- Indexes for table `facility_type`
+--
+ALTER TABLE `facility_type`
+  ADD PRIMARY KEY (`facility_type_id`);
+
+--
 -- Indexes for table `offices`
 --
 ALTER TABLE `offices`
@@ -297,6 +555,15 @@ ALTER TABLE `offices`
 ALTER TABLE `personal_details`
   ADD PRIMARY KEY (`personal_detail_id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `request_equipment`
+--
+ALTER TABLE `request_equipment`
+  ADD PRIMARY KEY (`request_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `status_id` (`status_id`),
+  ADD KEY `request_equipment_ibfk_3` (`equipment_id`);
 
 --
 -- Indexes for table `statuses`
@@ -342,6 +609,12 @@ ALTER TABLE `admins`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `appointment_facility`
+--
+ALTER TABLE `appointment_facility`
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
@@ -351,19 +624,49 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT for table `counseling_schedules`
 --
 ALTER TABLE `counseling_schedules`
-  MODIFY `counseling_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `counseling_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `doc_requests`
 --
 ALTER TABLE `doc_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `equipment`
+--
+ALTER TABLE `equipment`
+  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `equipment_type`
+--
+ALTER TABLE `equipment_type`
+  MODIFY `equipment_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `facility`
+--
+ALTER TABLE `facility`
+  MODIFY `facility_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `facility_type`
+--
+ALTER TABLE `facility_type`
+  MODIFY `facility_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `personal_details`
 --
 ALTER TABLE `personal_details`
   MODIFY `personal_detail_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `request_equipment`
+--
+ALTER TABLE `request_equipment`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `statuses`
@@ -387,7 +690,7 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -405,6 +708,13 @@ ALTER TABLE `user_roles`
 ALTER TABLE `admins`
   ADD CONSTRAINT `fk_admins_offices1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_admins_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `appointment_facility`
+--
+ALTER TABLE `appointment_facility`
+  ADD CONSTRAINT `appointment_facility_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `appointment_facility_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`);
 
 --
 -- Constraints for table `clients`
@@ -427,10 +737,30 @@ ALTER TABLE `doc_requests`
   ADD CONSTRAINT `fk_doc_requests_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `equipment`
+--
+ALTER TABLE `equipment`
+  ADD CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`equipment_type_id`) REFERENCES `equipment_type` (`equipment_type_id`);
+
+--
+-- Constraints for table `facility`
+--
+ALTER TABLE `facility`
+  ADD CONSTRAINT `facility_ibfk_1` FOREIGN KEY (`facility_type_id`) REFERENCES `facility_type` (`facility_type_id`);
+
+--
 -- Constraints for table `personal_details`
 --
 ALTER TABLE `personal_details`
   ADD CONSTRAINT `personal_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `request_equipment`
+--
+ALTER TABLE `request_equipment`
+  ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
+  ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 
 --
 -- Constraints for table `students`

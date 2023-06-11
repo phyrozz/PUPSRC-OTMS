@@ -1,5 +1,5 @@
 <?php
-require "../content/conn.php";
+require "conn.php";
 
 $facilityID = $_GET['facilityID'];
 

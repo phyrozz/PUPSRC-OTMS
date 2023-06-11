@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 08, 2023 at 07:23 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Jun 10, 2023 at 03:53 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -61,10 +61,15 @@ CREATE TABLE `appointment_facility` (
 --
 
 INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `start_date_time_sched`, `end_date_time_sched`, `email`, `purpose`) VALUES
-(1, 31, 3, '2023-06-26 11:30:00', '2023-06-28 13:00:00', 'mmallow624@gmail.com', NULL),
-(2, 31, 3, '2023-06-26 11:30:00', '2023-06-28 13:00:00', 'mmallow624@gmail.com', NULL),
-(3, 31, 3, '2023-06-26 11:30:00', '2023-06-28 13:00:00', 'mmallow624@gmail.com', 'asdasdasdasd'),
-(4, 31, 3, '2023-06-27 13:30:00', '2023-06-27 14:00:00', 'mmallow624@gmail.com', 'asdasdasd');
+(1, 28, 3, '2023-06-28 13:30:00', '2023-06-28 15:30:00', 'joshuamalabanan70@gmail.com', 'IDK ANYMORE'),
+(2, 28, 3, '2023-06-27 15:00:00', '2023-06-27 17:30:00', 'joshuamalabanan70@gmail.com', 'QWDQWE123213'),
+(3, 28, 3, '2023-06-27 15:00:00', '2023-06-27 17:30:00', 'joshuamalabanan70@gmail.com', 'QWDQWE123213'),
+(4, 28, 3, '2023-06-27 15:00:00', '2023-06-27 17:30:00', 'joshuamalabanan70@gmail.com', 'QWDQWE123213'),
+(5, 28, 3, '2023-06-20 14:00:00', '2023-06-22 15:30:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(6, 28, 3, '2023-06-21 13:00:00', '2023-06-27 14:00:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(7, 28, 3, '2023-06-21 13:00:00', '2023-06-27 14:00:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(8, 28, 3, '2023-06-21 13:00:00', '2023-06-27 14:00:00', 'joshuamalabanan70@gmail.com', 'asdasdasdasd'),
+(9, 28, 3, '2023-06-21 11:00:00', '2023-06-26 13:30:00', 'joshuamalabanan70@gmail.com', 'asdasdasd2e');
 
 -- --------------------------------------------------------
 
@@ -140,22 +145,22 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-(27, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(28, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(29, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(30, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(31, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(32, NULL, '2023-06-16 01:00:00', 5, 31, 3, '0.00', ''),
-(33, NULL, '2023-06-16 01:00:00', 5, 31, 3, '0.00', ''),
-(34, NULL, '2023-06-04 08:00:00', 5, 31, 3, '0.00', ''),
-(35, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(36, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(37, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(38, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(39, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(40, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(41, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(42, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', '');
+(27, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(28, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(29, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(30, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(31, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(32, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
+(33, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
+(34, NULL, '2023-06-04 08:00:00', 5, 31, 3, 0.00, ''),
+(35, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(36, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(37, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(38, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(39, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(40, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(41, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(42, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, '');
 
 -- --------------------------------------------------------
 
@@ -353,19 +358,9 @@ CREATE TABLE `request_equipment` (
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `purpose` text NOT NULL
+  `purpose` text NOT NULL,
+  `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `request_equipment`
---
-
-INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `email`, `purpose`) VALUES
-(1, 31, '2023-06-13 14:00:00', 3, 3, 'mmallow624@gmail.com', 'asdasdasd'),
-(2, 31, '2023-06-23 11:00:00', 2, 3, 'mmallow624@gmail.com', 'asdasdasd'),
-(3, 31, '2023-06-23 11:00:00', 2, 3, 'mmallow624@gmail.com', 'asdasdasd'),
-(4, 31, '2023-06-28 18:00:00', 3, 3, 'mmallow624@gmail.com', 'a231123312312321321'),
-(5, 31, '2023-06-28 18:00:00', 3, 3, 'mmallow624@gmail.com', 'a231123312312321321');
 
 -- --------------------------------------------------------
 
@@ -527,7 +522,7 @@ ALTER TABLE `doc_requests`
 --
 ALTER TABLE `equipment`
   ADD PRIMARY KEY (`equipment_id`),
-  ADD KEY `equipment_type_id` (`equipment_type_id`);
+  ADD KEY `equipment_ibfk_1` (`equipment_type_id`);
 
 --
 -- Indexes for table `equipment_type`
@@ -567,7 +562,8 @@ ALTER TABLE `personal_details`
 ALTER TABLE `request_equipment`
   ADD PRIMARY KEY (`request_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `status_id` (`status_id`);
+  ADD KEY `status_id` (`status_id`),
+  ADD KEY `request_equipment_ibfk_3` (`equipment_id`);
 
 --
 -- Indexes for table `statuses`
@@ -616,7 +612,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `appointment_facility`
 --
 ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -655,6 +651,12 @@ ALTER TABLE `facility`
   MODIFY `facility_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
+-- AUTO_INCREMENT for table `facility_type`
+--
+ALTER TABLE `facility_type`
+  MODIFY `facility_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `personal_details`
 --
 ALTER TABLE `personal_details`
@@ -664,7 +666,7 @@ ALTER TABLE `personal_details`
 -- AUTO_INCREMENT for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `statuses`
@@ -757,7 +759,8 @@ ALTER TABLE `personal_details`
 --
 ALTER TABLE `request_equipment`
   ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`);
+  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
+  ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 
 --
 -- Constraints for table `students`
