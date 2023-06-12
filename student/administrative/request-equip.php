@@ -1,7 +1,3 @@
-<!-- SET FOREIGN_KEY_CHECKS=0;
-
--- set globally:
-SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,36 +42,24 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
             $purpose = $_POST['purposeReq'];
             $email = $_POST['email'];
             $dateTimeSched = $date . ' ' . $time;
-            $equip_id = $_POST['id'];
+            $equipID = $_POST['id'];
 
-            // Retrieve equipment details using equipment_id
-            
-            // balikan if error 
-            $query = "SELECT equipment_name FROM equipment WHERE equipment_id = ?";
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("i", $_SESSION['id']);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $equipmentData = $result->fetch_assoc();
-            $stmt->close();
-
-            if(isset($_SESSION['id'])) {
-                $_SESSION['id'] = 1;
-            }
  
             $query = "INSERT INTO request_equipment (datetime_schedule, quantity_equip, user_id, status_id, email, purpose, equipment_id) 
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $connection->prepare($query);
-            $stmt->bind_param("siiissi", $dateTimeSched, $quantityEquip, $_SESSION['user_id'], $statusId, $email, $purpose, $equip_id);
+            $stmt->bind_param("siiissi", $dateTimeSched, $quantityEquip, $_SESSION['user_id'], $statusId, $email, $purpose, $equipID);
 
             if ($stmt->execute()) {
                 $_SESSION['success'] = true;
+                
                 // header("Refresh:0");
             } else {
                 var_dump($stmt->error);
             }
             $stmt->close();
             $connection->close();
+
         }
     ?>
 
@@ -88,6 +72,7 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
 
             echo generateBreadcrumb($breadcrumbItems, true);
             ?>
+            
         <div class="container-fluid text-center p-4">
             <h1>Request of Equipment</h1>
         </div>
@@ -100,7 +85,7 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <a class="btn btn-outline-primary mb-2" href="transactions.php">
+                            <a class="btn btn-outline-primary mb-2" href="../transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
                            
@@ -147,17 +132,17 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
                                 <label for="contactNumber" class="form-label">Contact Number</label>
                                 <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div> -->
+                            
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required >
-                                <div class="invalid-feedback">Please input a valid email</div>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required>
                             </div>
                             <h6 class="mt-5">Request Information</h6>
 
                             <div class="form-group col-md-6">
                                 <label for="equipName" class="form-label">Equipment Name</label>
-                                <input type="text" class="form-control" id="equipName" name="equipName" value="<?php echo isset($_GET['equipment_name']) ? $_GET['equipment_name'] : ''; ?>" disabled readonly>
-                                <input type="hidden" name="id" value="<?php echo isset($_POST['id']) ? $_POST['id'] : ''; ?>">
+                                <input type="text" class="form-control" id="equipment_name" name="equipment_name" value="<?php echo isset($_GET['equipment_name']) ? $_GET['equipment_name'] : ''; ?>" disabled>
+                                <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>">
                                 <div class="invalid-feedback">Please input a valid email address.</div>
                             </div>
 
@@ -224,6 +209,7 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             Are you sure you want to submit this form?
@@ -242,6 +228,7 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                        
                                         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                     </div>
                                     <div class="modal-body">
@@ -369,9 +356,6 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
                 var equipID = <?php echo $_POST['id']; ?>;
 
 
-
-
-                // basta io reverse yung id and name
                 // AJAX request to fetch the equipment name based on the equipment ID
                 $.ajax({
                     type: "POST",

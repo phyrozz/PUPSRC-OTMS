@@ -15,7 +15,7 @@ if ($result->num_rows > 0) {
 }
 
 $encodedEquipmentName = urlencode($equipmentName);
-header("Location: request-equip.php?equipment_name=" . $encodedEquipmentName);
+header("Location: request-equip.php equipID=$equipID&equipment_name=" . $encodedEquipmentName);
 $connection->close();
 ?>
 

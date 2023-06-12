@@ -46,11 +46,12 @@
                 $purpose = $_POST['purposeReq'];
                 $startDateTimeSched = $startDate . ' ' . $startTime;
                 $endDateTimeSched = $endDate . ' ' . $endTime;
+                $facilityID = $_POST['id'];
                 
-                $query = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, email, purpose) 
-                VALUES (?, ?, ?, ?, ?, ?)";
+                $query = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, email, purpose, facility_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $connection->prepare($query);
-                $stmt->bind_param("ssiiss", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $email, $purpose);
+                $stmt->bind_param("ssiissi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $email, $purpose, $facilityID);
 
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
@@ -68,7 +69,7 @@
         <div class="container-fluid p-4">
             <?php
             $breadcrumbItems = [
-                ['text' => 'Administrative Office', 'url' => '../front-page/administrative.php', 'active' => false],
+                ['text' => 'Administrative Office', 'url' => '../administrative.php', 'active' => false],
                 ['text' => 'Facility Appointment', 'active' => true],
             ];
 
@@ -86,7 +87,7 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <a class="btn btn-outline-primary mb-2" href="../user-page/transactions.php">
+                            <a class="btn btn-outline-primary mb-2" href="../transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
                            
@@ -142,6 +143,7 @@
                             <div class="form-group required col-md-6">
                                 <label for="facilityName" class="form-label">Facility Name</label>
                                 <input type="text" class="form-control" id="facilityName" name="facilityName" value="<?php echo isset($_GET['facility_name']) ? $_GET['facility_name'] : ''; ?>" disabled required>
+                                <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>">
                                 
                             </div>
 
@@ -280,7 +282,7 @@
                                         <a href="../administrative/generate-letter.php" target="_blank" class="btn btn-primary">Show Letter</a>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToViewEquipment()">Create another request</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToViewEquipment()">Create another appointment</button>
                                     </div>
                                 </div>
                             </div>
@@ -485,11 +487,11 @@
     <script>
         $(document).ready(function() {
             // Get the facility ID from the query parameter in the URL
-            var facilityID = <?php echo $_GET['id']; ?>;
+            var facilityID = <?php echo $_POST['id']; ?>;
 
             // AJAX request to fetch the facility name and room number based on the facility ID
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "get-facility-details.php",
                 data: { facilityID: facilityID },
                 success: function(response) {
