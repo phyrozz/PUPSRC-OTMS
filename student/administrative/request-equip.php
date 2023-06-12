@@ -17,7 +17,8 @@
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="wrapper">
+<div class="wrapper">
+
     <?php
         $office_name = "Administrative Office";
         include "../navbar.php";
@@ -34,7 +35,6 @@
         $stmt->close();
 
         if (isset($_POST['equipFormSubmit'])) {
-
             $date = $_POST['date'];
             $quantityEquip = $_POST['quantityequip'];
             $time = $_POST['time'];
@@ -44,24 +44,64 @@
             $dateTimeSched = $date . ' ' . $time;
             $equipID = $_POST['id'];
 
- 
-            $query = "INSERT INTO request_equipment (datetime_schedule, quantity_equip, user_id, status_id, email, purpose, equipment_id) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("siiissi", $dateTimeSched, $quantityEquip, $_SESSION['user_id'], $statusId, $email, $purpose, $equipID);
+            // Check if the requested quantity is available
+            $checkQuery = "SELECT quantity FROM equipment WHERE equipment_id = ?";
+            $checkStmt = $connection->prepare($checkQuery);
+            $checkStmt->bind_param("i", $equipID);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+            $equipmentData = $checkResult->fetch_assoc();
+            $checkStmt->close();
 
-            if ($stmt->execute()) {
-                $_SESSION['success'] = true;
-                
-                // header("Refresh:0");
+            if ($equipmentData['quantity'] >= $quantityEquip) {
+                // Deduct the requested quantity from the equipment table
+                $deductQuery = "UPDATE equipment SET quantity = quantity - ? WHERE equipment_id = ?";
+                $deductStmt = $connection->prepare($deductQuery);
+                $deductStmt->bind_param("ii", $quantityEquip, $equipID);
+                $deductStmt->execute();
+                $deductStmt->close();
+
+                // Check if the quantity is 0
+                $checkAvailabilityQuery = "SELECT quantity FROM equipment WHERE equipment_id = ?";
+                $checkAvailabilityStmt = $connection->prepare($checkAvailabilityQuery);
+                $checkAvailabilityStmt->bind_param("i", $equipID);
+                $checkAvailabilityStmt->execute();
+                $checkAvailabilityResult = $checkAvailabilityStmt->get_result();
+                $equipmentData = $checkAvailabilityResult->fetch_assoc();
+                $checkAvailabilityStmt->close();
+
+                if ($equipmentData['quantity'] == 0) {
+                    // Update the availability to "Unavailable"
+                    $updateAvailabilityQuery = "UPDATE equipment SET availability = 'Unavailable' WHERE equipment_id = ?";
+                    $updateAvailabilityStmt = $connection->prepare($updateAvailabilityQuery);
+                    $updateAvailabilityStmt->bind_param("i", $equipID);
+                    $updateAvailabilityStmt->execute();
+                    $updateAvailabilityStmt->close();
+                }
+
+                // Insert the request into the request_equipment table
+                $insertQuery = "INSERT INTO request_equipment (datetime_schedule, quantity_equip, user_id, status_id, email, purpose, equipment_id) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $insertStmt = $connection->prepare($insertQuery);
+                $insertStmt->bind_param("siiissi", $dateTimeSched, $quantityEquip, $_SESSION['user_id'], $statusId, $email, $purpose, $equipID);
+
+                if ($insertStmt->execute()) {
+                    $_SESSION['success'] = true;
+                    // header("Refresh:0");
+                } else {
+                    var_dump($insertStmt->error);
+                }
+                $insertStmt->close();
             } else {
-                var_dump($stmt->error);
+                // Quantity not available, display an error message
+                $_SESSION['error'] = "Insufficient quantity available for the requested equipment.";
             }
-            $stmt->close();
-            $connection->close();
 
+            $connection->close();
         }
-    ?>
+        ?>
+
+
 
         <div class="container-fluid p-4">
             <?php
@@ -133,9 +173,10 @@
                                 <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div> -->
                             
-                            <div class="form-group col-12">
+                            <div class="form-group required col-12">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required>
+                                <div class="invalid-feedback">Please input a valid email address.</div>
                             </div>
                             <h6 class="mt-5">Request Information</h6>
 
@@ -149,8 +190,9 @@
 
                             <div class="form-group required col-md-6">
                                 <label for="quantityequip" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" id="quantityequip" name="quantityequip" min="1" max="20" maxlength="2" required>
-                                <div class="invalid-feedback">Please input a corresponding quantity (Max. 20).</div>
+                                <!-- get the current quantity of an equipment from equipment table and make it a max quantity  -->
+                                <input type="number" class="form-control" id="quantityequip" name="quantityequip" min="1" max="<?php echo $_GET['quantity']; ?>" maxlength="2" required> 
+                                <div class="invalid-feedback">Please input a valid quantity (Max. <?php echo$_GET['quantity']; ?>).</div>
                             </div>
 
 
@@ -166,19 +208,31 @@
                                 <select class="form-control form-select" name="time" id="time" required>
                                     <option value="">--Select--</option>
                                     <option value="08:00:00">8:00 AM</option>
+                                    <option value="08:30:00">8:30 AM</option>
                                     <option value="09:00:00">9:00 AM</option>
+                                    <option value="09:30:00">9:30 AM</option>
                                     <option value="10:00:00">10:00 AM</option>
+                                    <option value="10:30:00">10:30 AM</option>
                                     <option value="11:00:00">11:00 AM</option>
+                                    <option value="11:30:00">11:30 AM</option>
                                     <option value="12:00:00">12:00 PM</option>
+                                    <option value="12:30:00">12:30 PM</option>
                                     <option value="13:00:00">1:00 PM</option>
+                                    <option value="13:30:00">1:30 PM</option>
                                     <option value="14:00:00">2:00 PM</option>
+                                    <option value="14:30:00">2:30 PM</option>
                                     <option value="15:00:00">3:00 PM</option>
+                                    <option value="15:30:00">3:30 PM</option>
                                     <option value="16:00:00">4:00 PM</option>
+                                    <option value="16:30:00">4:30 PM</option>
                                     <option value="17:00:00">5:00 PM</option>
+                                    <option value="17:30:00">5:30 PM</option>
                                     <option value="18:00:00">6:00 PM</option>
+                                    <option value="18:30:00">6:30 PM</option>
                                     <option value="19:00:00">7:00 PM</option>
+                                    <option value="19:30:00">7:30 PM</option>
                                     <option value="20:00:00">8:00 PM</option>
-                                </select>       
+                                </select>      
                                 <div class="invalid-feedback">Please choose a time.</div>
                             </div>
                             <div class="form-group required col-md-12">

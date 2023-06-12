@@ -19,53 +19,54 @@
     <div class="wrapper">
         
     <?php  
-             $office_name = "Administrative Office";
-             include "../navbar.php";
-             include "../../breadcrumb.php";
-             include "conn.php";
+        $office_name = "Administrative Office";
+        include "../navbar.php";
+        include "../../breadcrumb.php";
+        include "conn.php";
 
- 
-            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
-            WHERE user_id = ?";
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("i", $_SESSION['user_id']);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $userData = $result->fetch_all(MYSQLI_ASSOC);
-            $stmt->close();
+        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users WHERE user_id = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userData = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
 
+        if (isset($_POST['facilityFormSubmit'])) {
+            $email = $_POST['email'];
+            $startDate = $_POST['startDate'];
+            $endDate = $_POST['endDate'];
+            $startTime = $_POST['startTime'];
+            $endTime = $_POST['endTime'];
+            $statusId = 3;
+            $purpose = $_POST['purposeReq'];
+            $startDateTimeSched = $startDate . ' ' . $startTime;
+            $endDateTimeSched = $endDate . ' ' . $endTime;
+            $facilityID = $_POST['id'];
+            
+            $insertQuery = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, email, purpose, facility_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insertStmt = $connection->prepare($insertQuery);
+            $insertStmt->bind_param("ssiissi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $email, $purpose, $facilityID);
 
-            if (isset($_POST['facilityFormSubmit'])) {
-
-                $email = $_POST['email'];
-                $startDate = $_POST['startDate'];
-                $endDate = $_POST['endDate'];
-                $startTime = $_POST['startTime'];
-                $endTime = $_POST['endTime'];
-                $statusId = 3;
-                $purpose = $_POST['purposeReq'];
-                $startDateTimeSched = $startDate . ' ' . $startTime;
-                $endDateTimeSched = $endDate . ' ' . $endTime;
-                $facilityID = $_POST['id'];
+            if ($insertStmt->execute()) {
+                $_SESSION['success'] = true;
+                // header("Refresh:0");
                 
-                $query = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, email, purpose, facility_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $connection->prepare($query);
-                $stmt->bind_param("ssiissi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $email, $purpose, $facilityID);
-
-                if ($stmt->execute()) {
-                    $_SESSION['success'] = true;
-                    // header("Refresh:0");
-                } else {
-                    var_dump($stmt->error);
-                }
-                $stmt->close();
-                $connection->close();
-
-
+                // Update the facility availability to "Unavailable" after successful request
+                $updateQuery = "UPDATE facility SET availability = 'Unavailable' WHERE facility_id = ?";
+                $updateStmt = $connection->prepare($updateQuery);
+                $updateStmt->bind_param("i", $facilityID);
+                $updateStmt->execute();
+                $updateStmt->close();
+            } else {
+                var_dump($insertStmt->error);
             }
-        
-        ?>
+
+            $insertStmt->close();
+            $connection->close();
+        }
+    ?>
+
         <div class="container-fluid p-4">
             <?php
             $breadcrumbItems = [
@@ -133,7 +134,7 @@
                                 <label for="contactNumber" class="form-label">Contact Number</label>
                                 <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div> -->
-                            <div class="form-group col-12">
+                            <div class="form-group required col-12">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required >
                                 <div class="invalid-feedback">Please input a valid email</div>
