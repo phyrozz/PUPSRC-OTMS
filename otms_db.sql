@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2023 at 04:23 AM
+-- Generation Time: Jun 12, 2023 at 07:15 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -62,12 +62,9 @@ CREATE TABLE `appointment_facility` (
 --
 
 INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `start_date_time_sched`, `end_date_time_sched`, `email`, `purpose`, `facility_id`) VALUES
-(1, 31, 3, '2023-06-22 15:30:00', '2023-06-29 14:00:00', 'mmallow624@gmail.com', 'sdasdasdqweqweqwe', 6),
-(2, 31, 3, '2023-06-29 12:30:00', '2023-06-29 13:00:00', 'mmallow624@gmail.com', 'asasdaqe21123asdasd', 1),
-(3, 31, 3, '2023-07-06 15:00:00', '2023-07-26 14:30:00', 'mmallow624@gmail.com', 'asadssddas21312adsdasd', 40),
-(4, 31, 3, '2023-06-28 13:30:00', '2023-06-28 15:30:00', 'mmallow624@gmail.com', 'for seminar purposes', 1),
-(5, 31, 3, '2023-06-21 12:30:00', '2023-06-21 15:30:00', 'bussinbaldes@gmail.com', 'azxczxc1233', 11),
-(6, 31, 3, '2023-06-21 12:30:00', '2023-06-21 15:30:00', 'bussinbaldes@gmail.com', 'azxczxc1233', 11);
+(1, 31, 3, '2023-06-12 11:00:00', '2023-06-12 11:30:00', 'mmallow624@gmail.com', 'asdasd213asdasd', 1),
+(2, 31, 3, '2023-07-08 13:00:00', '2023-07-08 13:30:00', 'mmallow624@gmail.com', 'asdasd12312asdasd', 6),
+(3, 31, 3, '2023-06-13 16:00:00', '2023-06-13 17:30:00', 'mmallow624@gmail.com', 'sdasd213asdasd', 3);
 
 -- --------------------------------------------------------
 
@@ -184,14 +181,14 @@ INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quan
 (2, 'Badminton Racket', 'Available', 15, 2, 1),
 (3, 'Badminton Shuttlecock', 'Available', 20, 2, 1),
 (4, 'Basketball', 'Available', 10, 2, 1),
-(5, 'BasketBall Ring and Net', 'Available', 2, 2, 1),
+(5, 'BasketBall Ring and Net', 'Unavailable', 0, 2, 1),
 (6, 'Brush', 'Available', 12, 3, 1),
 (7, 'Bucket', 'Available', 15, 3, 1),
 (8, 'Chairs', 'Available', 20, 1, 1),
 (9, 'Cleaning Detergent', 'Available', 20, 3, 1),
-(10, 'Curtains', 'Available', 6, 1, 1),
+(10, 'Curtains', 'Unavailable', 0, 1, 1),
 (11, 'Chess Board', 'Available', 5, 2, 1),
-(12, 'Digital Scoreboard', 'Available', 1, 1, 1),
+(12, 'Digital Scoreboard', 'Unavailable', 0, 1, 1),
 (13, 'Mop', 'Available', 10, 3, 1),
 (14, 'Projectors', 'Available', 3, 1, 1),
 (15, 'Scoreboard', 'Available', 2, 2, 1),
@@ -241,12 +238,12 @@ CREATE TABLE `facility` (
 --
 
 INSERT INTO `facility` (`facility_id`, `facility_name`, `availability`, `facility_number`, `facility_type_id`, `request`) VALUES
-(1, 'Campus Court', 'Available', '101', 1, 1),
+(1, 'Campus Court', 'Unavailable', '101', 1, 1),
 (2, 'Room 102', 'Available', '102', 1, 1),
-(3, 'Room 103', 'Available', '103', 1, 1),
+(3, 'Room 103', 'Unavailable', '103', 1, 1),
 (4, 'Room 104', 'Available', '104', 1, 1),
 (5, 'Room 105', 'Available', '105', 1, 1),
-(6, 'Room 106', 'Available', '106', 1, 1),
+(6, 'Room 106', 'Unavailable', '106', 1, 1),
 (7, 'Room 107', 'Available', '107', 1, 1),
 (8, 'Room 108', 'Available', '108', 1, 1),
 (9, 'Room 109', 'Available', '109', 1, 1),
@@ -365,9 +362,10 @@ CREATE TABLE `request_equipment` (
 --
 
 INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `email`, `purpose`, `equipment_id`) VALUES
-(1, 31, '2023-06-22 15:00:00', 4, 3, 'mmallow624@gmail.com', 'asdasdaqwe1231awd', 11),
-(2, 31, '2023-06-13 15:00:00', 4, 3, 'mmallow624@gmail.com', 'sadasdas12312wdawed', 18),
-(3, 31, '2023-06-27 15:00:00', 5, 3, 'mmallow624@gmail.com', 'bruh ', 8);
+(1, 31, '2023-06-12 10:30:00', 1, 3, 'mmallow624@gmail.com', 'sadasdd12312asdas', 12),
+(2, 31, '2023-06-12 10:00:00', 2, 3, 'bussinbaldes@gmail.com', 'dasdasd21312asdasd', 10),
+(3, 31, '2023-06-12 14:00:00', 4, 3, 'mmallow624@gmail.com', 'adasdq123asdds', 10),
+(4, 31, '2023-06-13 11:00:00', 2, 3, 'mmallow624@gmail.com', 'asdasd21312asdd', 5);
 
 -- --------------------------------------------------------
 
@@ -530,7 +528,7 @@ ALTER TABLE `doc_requests`
 --
 ALTER TABLE `equipment`
   ADD PRIMARY KEY (`equipment_id`),
-  ADD KEY `equipment_ibfk_1` (`equipment_type_id`);
+  ADD KEY `equipment_type_id` (`equipment_type_id`);
 
 --
 -- Indexes for table `equipment_type`
@@ -620,7 +618,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `appointment_facility`
 --
 ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -674,7 +672,7 @@ ALTER TABLE `personal_details`
 -- AUTO_INCREMENT for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `statuses`
