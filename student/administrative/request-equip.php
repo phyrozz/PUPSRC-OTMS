@@ -46,24 +46,27 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
             $purpose = $_POST['purposeReq'];
             $email = $_POST['email'];
             $dateTimeSched = $date . ' ' . $time;
+            $equip_id = $_POST['id'];
 
-            // // Retrieve equipment details using equipment_id
-            // $query = "SELECT equipment_name FROM equipment WHERE equipment_id = ?";
-            // $stmt = $connection->prepare($query);
-            // $stmt->bind_param("i", $_SESSION['equipment_id']);
-            // $stmt->execute();
-            // $result = $stmt->get_result();
-            // $equipmentData = $result->fetch_assoc();
-            // $stmt->close();
-
-            // // if(isset($_SESSION['equipment_id'])) {
-            // //     $_SESSION['equipment_id'] = 1;
-            // // }
- 
-            $query = "INSERT INTO request_equipment (datetime_schedule, quantity_equip, user_id, status_id, email, purpose) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+            // Retrieve equipment details using equipment_id
+            
+            // balikan if error 
+            $query = "SELECT equipment_name FROM equipment WHERE equipment_id = ?";
             $stmt = $connection->prepare($query);
-            $stmt->bind_param("siiiss", $dateTimeSched, $quantityEquip, $_SESSION['user_id'], $statusId, $email, $purpose);
+            $stmt->bind_param("i", $_SESSION['id']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $equipmentData = $result->fetch_assoc();
+            $stmt->close();
+
+            if(isset($_SESSION['id'])) {
+                $_SESSION['id'] = 1;
+            }
+ 
+            $query = "INSERT INTO request_equipment (datetime_schedule, quantity_equip, user_id, status_id, email, purpose, equipment_id) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("siiissi", $dateTimeSched, $quantityEquip, $_SESSION['user_id'], $statusId, $email, $purpose, $equip_id);
 
             if ($stmt->execute()) {
                 $_SESSION['success'] = true;
@@ -153,8 +156,8 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
 
                             <div class="form-group col-md-6">
                                 <label for="equipName" class="form-label">Equipment Name</label>
-                                <input type="text" class="form-control" id="equipName" name="equipName" value="<?php echo isset($_GET['equipment_name']) ? $_GET['equipment_name'] : ''; ?>" disabled>
-                                <input type="hidden" name="equipment_id" value="<?php echo isset($_GET['equipment_id']) ? $_GET['equipment_id'] : ''; ?>">
+                                <input type="text" class="form-control" id="equipName" name="equipName" value="<?php echo isset($_GET['equipment_name']) ? $_GET['equipment_name'] : ''; ?>" disabled readonly>
+                                <input type="hidden" name="id" value="<?php echo isset($_POST['id']) ? $_POST['id'] : ''; ?>">
                                 <div class="invalid-feedback">Please input a valid email address.</div>
                             </div>
 
@@ -216,12 +219,11 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
                                 <input id="submitBtn" value="Submit "type="button" class="btn btn-primary w-25" />
                             </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             Are you sure you want to submit this form?
@@ -246,7 +248,7 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
                                         <p>Your request has been submitted successfully!</p>
                                         <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
                                         <p>You must print this slip and submit it to the Administrative Office before your request.</p>
-                                        <a href="../generate-slip.php" target="_blank" class="btn btn-primary">Show Slip</a>
+                                        <a href="../administrative/generate-slip.php" target="_blank" class="btn btn-primary">Show Slip</a>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToViewEquipment()">Create another request</button>
@@ -342,7 +344,7 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
 
             function redirectToViewEquipment() {
                 // Redirect to the view-equipment.php page
-                window.location.href = "../content/view-equipment.php";
+                window.location.href = "view-equipment.php";
             }
 
 
@@ -364,11 +366,15 @@ SET GLOBAL FOREIGN_KEY_CHECKS=0 -->
         <script>
             $(document).ready(function() {
                 // Get the equipment ID from the query parameter in the URL
-                var equipID = <?php echo $_GET['id']; ?>;
+                var equipID = <?php echo $_POST['id']; ?>;
 
+
+
+
+                // basta io reverse yung id and name
                 // AJAX request to fetch the equipment name based on the equipment ID
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: "get-equipment-name.php",
                     data: { equipID: equipID },
                     success: function(response) {

@@ -35,7 +35,7 @@ CREATE TABLE `request_equipment` (
   `status_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
-
+  `equipment_id` INT(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -75,6 +75,7 @@ ALTER TABLE `request_equipment`
 ALTER TABLE `request_equipment`
   ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`);
+  ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

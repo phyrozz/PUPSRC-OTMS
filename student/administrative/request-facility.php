@@ -8,21 +8,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="icon" href="../assets/icon/pup-logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../style.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
         
     <?php  
              $office_name = "Administrative Office";
-             include "../navbar/navbar.php";
-             include "../breadcrumb.php";
-             include "../content/conn.php";
+             include "../navbar.php";
+             include "../../breadcrumb.php";
+             include "conn.php";
 
  
             $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
@@ -147,7 +147,7 @@
 
                             <div class="form-group required col-md-6">
                                 <label for="facilityNum" class="form-label">Room Number</label>
-                                <input type="text" class="form-control" id="facilityNum" name="facilityNum" value="<?php echo $_GET['facility_number']; ?>" disabled required>
+                                <input type="text" class="form-control" id="facilityNum" name="facilityNum"value="<?php echo isset($_GET['facility_number']) ? $_GET['facility_number'] : ''; ?>" disabled required>
                             </div>
                            
                             
@@ -254,7 +254,6 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             Are you sure you want to submit this form?
@@ -268,18 +267,17 @@
                             </div>
                         </form>
                         <!-- Success alert modal -->
-                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false"> 
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="successModalLabel">Success</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <p>Your appointment request has been submitted successfully!</p>
                                         <p>You can check the status of your appointment request on the <b>My Transactions</b> page.</p>
                                         <p>You must print this letter and submit it to the Administrative Office before your request.</p>
-                                        <a href="../generate-letter.php" target="_blank" class="btn btn-primary">Show Letter</a>
+                                        <a href="../administrative/generate-letter.php" target="_blank" class="btn btn-primary">Show Letter</a>
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToViewEquipment()">Create another request</button>
@@ -474,7 +472,7 @@
             
             function redirectToViewEquipment() {
                 // Redirect to the view-equipment.php page
-                window.location.href = "../content/view-facility.php";
+                window.location.href = "view-facility.php";
             }
 
            

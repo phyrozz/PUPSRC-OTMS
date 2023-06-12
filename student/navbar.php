@@ -83,10 +83,11 @@
             </ul>
             <ul class="navbar-nav order-3 order-lg-3 w-50 gap-3">
                 <div class="d-flex navbar-nav justify-content-center me-auto order-2 order-lg-1 w-100">
-                    <form class="d-flex w-100">
-                        <input class="form-control me-2" type="search" placeholder="Search for services..." aria-label="Search">
+                    <form class="d-flex w-100" action="search.php" method="GET" onsubmit="return validateForm(this)">
+                        <input class="form-control me-2" type="search" id="search" name="query" placeholder="Search for services..." aria-label="Search" maxlength="50" oninput="validateSearchInput(this)" onkeyup="handleSearchAutocomplete(this)" autocomplete="off">
                         <button class="btn search-btn" type="submit"><strong>Search</strong></button>
                     </form>
+                    <div id="autocomplete-list" class="autocomplete-list"></div>
                 </div>
                 <li class="nav-item dropdown order-1 order-lg-2">
                     <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -104,3 +105,61 @@
         </div>
     </div>
 </nav>
+<script>
+    function handleSearchAutocomplete(input) {
+        var query = input.value.trim();
+        var autocompleteList = document.getElementById('autocomplete-list');
+
+        if (query === '') {
+            // Clear autocomplete list if query is empty
+            autocompleteList.style.display = 'none';
+            return;
+        }
+
+        // Make an AJAX request to fetch autocomplete results
+        $.ajax({
+            url: '../autocomplete.php',
+            method: 'POST',
+            data: { query: query },
+            success: function(response) {
+                // Update the autocomplete list with the received results
+                autocompleteList.innerHTML = response;
+                autocompleteList.style.display = 'block';
+            }
+        });
+    }
+
+    function validateSearchInput(input) {
+    var regex = /^[a-zA-Z\s]+$/; // Regular expression to allow only letters
+    
+    var value = input.value;
+    var newValue = '';
+
+    // Remove non-letter characters
+    for (var i = 0; i < value.length; i++) {
+        if (regex.test(value[i])) {
+        newValue += value[i];
+        }
+    }
+
+    input.value = newValue;
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+        var autocompleteList = document.getElementById('autocomplete-list');
+        autocompleteList.style.display = 'none';
+    });
+
+    function validateForm(form) {
+        var queryInput = form.querySelector('#search');
+        var query = queryInput.value.trim();
+
+        if (query === '') {
+            // If query is empty, prevent form submission
+            return false;
+        }
+
+        // If query is not empty, allow form submission
+        return true;
+    }
+</script>
