@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrative - Welcome</title>
+    <title>Administrative - View Facility</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -18,31 +18,25 @@
 </head>
 <body>
 
+
+<div class="wrapper">
 <?php
     $office_name = "Administrative Office";
     include "../navbar.php";
+    include "../../breadcrumb.php";
     include "conn.php";
 ?>
-<div class="wrapper">
-      <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Administrative Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">View Facility</li>
-                </ol>
-            </nav>
-        </div>
-
 
     <div class="container-fluid p-4">
-        <!-- <nav class="breadcrumb-nav" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">View Equipment</li>
-            </ol>
-        </nav>
-    </div> -->
+    <?php
+            $breadcrumbItems = [
+                ['text' => 'Administrative Office', 'url' => '../administrative.php', 'active' => false],
+                ['text' => 'View Facility', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+    ?>    
+
     <div class="container-fluid text-center p-4">
         <h1>View Facility</h1>
     </div>
