@@ -13,7 +13,6 @@ function displayInventory($equip_table, $connection, $filterCategory = null)
 
     // Add the ORDER BY clause to arrange the equipment alphabetically
 
-
     $result = $connection->query($sql);
 
     if ($result->num_rows > 0) {
@@ -33,9 +32,18 @@ function displayInventory($equip_table, $connection, $filterCategory = null)
             echo "<tr class='text-center'>";
             echo "<td>" . htmlspecialchars($row["equipment_name"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["availability"]) . "</td>";
-            echo "<td>" . htmlspecialchars($row["quantity"]) . "</td>";
+            echo "<td data-quantity='" . htmlspecialchars($row["quantity"]) . "'>" . htmlspecialchars($row["quantity"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["equipment_type"]) . "</td>";
-            echo "<td><button class='btn btn-primary custom-font-size' onclick='redirectToRequest(" . htmlspecialchars($row["equipment_id"]) . ", \"" . htmlspecialchars($equip_table) . "\", \"" . htmlspecialchars($row["equipment_name"]) . "\")'>Create Request</button></td>";
+
+            $remainingQuantity = $row["quantity"];
+            if ($remainingQuantity > 0) {
+                // Add the equip_quantity parameter to the URL
+                echo "<td><button class='btn btn-primary custom-font-size' onclick='redirectToRequest(" . htmlspecialchars($row["equipment_id"]) . ", \"" . htmlspecialchars($equip_table) . "\", \"" . htmlspecialchars($row["equipment_name"]) . "\", \"" . htmlspecialchars($row["quantity"]) . "\")'>Create Request</button></td>";
+
+            } else {
+                echo "<td><button class='btn btn-primary btn-dark custom-font-size text-black' disabled>Out of Stock</button></td>";
+            }
+
             echo "</tr>";
         }
 
@@ -45,6 +53,7 @@ function displayInventory($equip_table, $connection, $filterCategory = null)
         echo "No data available.";
     }
 }
+
 
 // Filter form handling
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

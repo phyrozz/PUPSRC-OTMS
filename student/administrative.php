@@ -28,7 +28,7 @@
         <div class="container-fluid guidancebanner header">
             <?php
             $breadcrumbItems = [
-                ['text' => 'Guidance Office', 'active' => true],
+                ['text' => 'Administrative Office', 'active' => true],
             ];
 
             echo generateBreadcrumb($breadcrumbItems, false);

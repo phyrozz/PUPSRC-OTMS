@@ -5,15 +5,34 @@ require "../../vendor/autoload.php";
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-$options = new Options;
-$options->setChroot(__DIR__);
-$options->setIsRemoteEnabled(true);
+include "conn.php";
 
-$dompdf = new Dompdf($options);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    include "conn.php";
+  
+    $date = $_POST['date'];
+    $quantityEquip = $_POST['quantityequip'];
+    $time = $_POST['time'];
+    $equipId = isset($_POST['equipment_id']) ? $_POST['equipment_id'] : '';
 
-$dompdf->setPaper(array(0, 0, 500.64, 450.53), 'portrait');
 
-$html = <<<HTML
+    $query = "SELECT equipment_name FROM equipment WHERE equipment_id = ?";
+    $statement = $connection->prepare($query);
+    $statement->bind_param("i", $equipId);
+    $statement->execute();
+    $statement->bind_result($equipName);
+    $statement->fetch();
+
+    $statement->close();
+    $connection->close();
+} else {
+    $date = '';
+    $quantityEquip = '';
+    $time = '';
+    $equipName = '';
+}
+
+$html = <<<EOD
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,9 +62,9 @@ $html = <<<HTML
     </thead>
     <tbody>
       <tr>
-        <td>Chairs</td>
-        <td>1</td>
-        <td>19-05-2023</td>
+        <td>$equipName</td>
+        <td>$quantityEquip</td>
+        <td>$date</td>
       </tr>
       <tr>
         <td></td>
@@ -65,13 +84,20 @@ $html = <<<HTML
   </div>
 </body>
 </html>
-HTML;
+EOD;
 
+$options = new Options;
+$options->setChroot(__DIR__);
+$options->setIsRemoteEnabled(true);
+
+$dompdf = new Dompdf($options);
+
+$dompdf->setPaper(array(0, 0, 500.64, 450.53), 'portrait');
 $dompdf->loadHtml($html);
 
 $dompdf->render();
 
 // Output the PDF to the browser
 $dompdf->stream("slip.pdf", ["Attachment" => false]);
-?>
 
+?>
