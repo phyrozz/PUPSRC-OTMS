@@ -5,16 +5,71 @@ require "../../vendor/autoload.php";
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-$options = new Options();
-$options->setChroot(__DIR__);
-$options->setIsRemoteEnabled(true);
+include "conn.php";
 
-$dompdf = new Dompdf($options);
+session_start();
 
-// Set the paper size to A4 and orientation to portrait
-$dompdf->setPaper('A4', 'portrait');
+if(isset($_SESSION['appointment_details'])) {
 
-$html = <<<HTML
+    $appointmentDetails = $_SESSION['appointment_details'];
+
+    $startDate = date("F j, Y", strtotime($appointmentDetails['startDate']));
+    $endDate = date("F j, Y", strtotime($appointmentDetails['endDate']));
+    $startTime = date("h:i A", strtotime($appointmentDetails['startTime']));
+    $endTime = date("h:i A", strtotime($appointmentDetails['endTime']));
+    $facilityId = $appointmentDetails['facility_id'];
+    $purpose = $appointmentDetails['purposeReq'];
+    $course =  $appointmentDetails['course'];
+    $section = $appointmentDetails['section'];
+
+
+    $currentDate = date("F j, Y"); // ge the current date
+
+        // Query to retrieve user data
+        $userQuery = "SELECT last_name, first_name FROM users WHERE user_id = ?";
+        $userStmt = $connection->prepare($userQuery);
+        $userStmt->bind_param("i", $_SESSION['user_id']);
+        $userStmt->execute();
+        $result = $userStmt->get_result();
+        $userResult = $result->fetch_assoc();
+        $firstName = $userResult['first_name'];
+        $lastName = $userResult['last_name'];
+
+
+         // Close the prepared statement
+        $userStmt->close();
+
+
+        // Retrieve the facility name and facility number from the database based on the facility ID
+        $facilityStmt = $connection->prepare("SELECT facility_name FROM facility WHERE facility_id = ?");
+        $facilityStmt->bind_param("i", $facilityId);
+        $facilityStmt->execute();
+        $facilityResult = $facilityStmt->get_result();
+        $facilityRow = $facilityResult->fetch_assoc();
+        $facilityName = $facilityRow['facility_name'];
+        // $facilityNumber = $facilityRow['facility_number'];
+
+        // Close the prepared statement
+        $facilityStmt->close();
+
+} else {
+        $startDate = '';
+        $endDate = '';
+        $startTime = '';
+        $endTime = '';
+        $facilityName = '';
+
+        $purpose = '';
+        $firstName = '';
+        $lastName = '';
+
+
+
+}
+
+
+
+$html = <<<EOD
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,7 +200,7 @@ $html = <<<HTML
     </div>
     
     <div class="date">
-        <h4><span id="current-date">April 27, 2023</span></h4>
+        <h4><span id="current-date">$currentDate</span></h4>
     </div>
     
     <div class="reciever">
@@ -169,7 +224,7 @@ $html = <<<HTML
     <p>Greetings!</p>
 
         <p class="indent">
-            We are <span id="year-level">3rd Year</span> from <span id="course">BSIT</span> and we would like to ask permission to use the <span id="facility">Audio Visual Room</span> for <span id="reason">a seminar</span>. We will utilize it from <span id="start-date">July 27, 2023</span> at <span id="start-time">1:00 PM</span> up to <span id="end-date">July 24, 2023</span> at <span id="end-time">10:00 PM</span>
+            We are <span id="year-level">$section</span> from <span id="course">$course</span> and we would like to ask permission to use the <span id="facility">$facilityName</span> to conduct <span id="reason">$purpose</span>. We will utilize it from <span id="start-date">$startDate</span> at <span id="start-time">$startTime</span> up to <span id="end-date">$endDate</span> at <span id="end-time">$endTime</span>
         </p>
         <p class="indent">
             Safety and health protocols will be practiced and observed within the premises such as wearing facemasks, social distancing, providing alcohol, and maintaining cleanliness according to our campus policies. Any damages that might happen will be accounted for.<br>
@@ -183,7 +238,7 @@ $html = <<<HTML
         <p>
             Respectfully,<br><br><br>
 
-            <span id="representative-name" style="text-decoration: none;">Juan Dela Cruz</span><br>
+            <span id="representative-name" style="text-decoration: none;">$firstName $lastName</span><br>
             <span id="representative-year-section"></span> Representative
         </p>
     </div>
@@ -202,8 +257,16 @@ $html = <<<HTML
 
 </body>
 </html>
-HTML;
+EOD;
 
+$options = new Options();
+$options->setChroot(__DIR__);
+$options->setIsRemoteEnabled(true);
+
+$dompdf = new Dompdf($options);
+
+// Set the paper size to A4 and orientation to portrait
+$dompdf->setPaper('A4', 'portrait');
 $dompdf->loadHtml($html);
 
 $dompdf->render();
