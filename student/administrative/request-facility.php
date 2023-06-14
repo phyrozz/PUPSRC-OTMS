@@ -200,8 +200,6 @@
                                 <div class="invalid-feedback">Please choose a section.</div>
                             </div>
 
-
-
                             <h6 class="mt-5">Appointment Information</h6>
 
                             <div class="form-group required col-md-6">
@@ -580,6 +578,22 @@
                 var url = "http://localhost/student/administrative/generate-letter.php";
                 window.open(url, "_blank"); 
             }
+
+             //code that validates email with .com
+            var emailInput = document.getElementById('email');
+            
+            
+
+            emailInput.addEventListener('input', function() {
+                var email = emailInput.value;
+                var domainExtension = email.substring(email.lastIndexOf('.') + 1);
+
+                if (domainExtension !== 'com') {
+                    emailInput.setCustomValidity('Please input a valid email address ');
+                } else {
+                    emailInput.setCustomValidity('');
+                }
+            });
 
     </script>
 

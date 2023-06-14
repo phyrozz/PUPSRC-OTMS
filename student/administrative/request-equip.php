@@ -185,9 +185,10 @@
                             
                             <div class="form-group required col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required>
-                                <div class="invalid-feedback">Please input a valid email address.</div>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" maxlength="50" required>
+                                <div class="invalid-feedback">Please input a valid email</div>
                             </div>
+
                             <h6 class="mt-5">Request Information</h6>
 
                             <div class="form-group col-md-6">
@@ -402,6 +403,23 @@
                 var url = "http://localhost/student/administrative/generate-slip.php";
                 window.open(url, "_blank"); 
             }
+            
+            
+            //code that validates email with .com
+            var emailInput = document.getElementById('email');
+            
+            
+
+            emailInput.addEventListener('input', function() {
+                var email = emailInput.value;
+                var domainExtension = email.substring(email.lastIndexOf('.') + 1);
+
+                if (domainExtension !== 'com') {
+                    emailInput.setCustomValidity('Please input a valid email address ');
+                } else {
+                    emailInput.setCustomValidity('');
+                }
+            });
 
 
         </script>
