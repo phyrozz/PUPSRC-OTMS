@@ -1,7 +1,6 @@
 <?php
 $office_name = "Accounting Office";
 
-session_start();
 $servername = "localhost";
 $username =  "root";
 $password = "";
@@ -120,7 +119,7 @@ echo "<script>
                 </div>
             </div>
             <div class="col-12">
-            <a class ="btn btn-primary back-button" href="index.php">Back</a>
+            <a class ="btn btn-primary back-button" href="../accounting.php">Back</a>
                 <button class="btn btn-primary next-button" type="submit"onclick="validateForm(event)">Next</button>
             </div>
         </form>

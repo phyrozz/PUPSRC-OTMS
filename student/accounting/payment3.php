@@ -41,6 +41,7 @@ mysqli_close($conn);
 </head>
 <body>
     <?php 
+    $office_name = "Accounting Office";
     include "../navbar.php";
     include '../../breadcrumb.php'; 
     ?>
@@ -72,7 +73,7 @@ mysqli_close($conn);
     <div class="col-12">
       <a class="btn btn-primary back-button" href="payment2.php">Back</a>
       <!--<button class="btn btn-primary next-button" type="submit">Next</button>-->
-      <a class="btn btn-primary next-button" href="index.php" type="submit">Home</a>
+      <a class="btn btn-primary next-button" href="../accounting.php" type="submit">Home</a>
     </div>
   </form>
 </div>
