@@ -321,6 +321,12 @@ a .autocomplete-item:hover {
     color: #fff;
 }
 
+/* Validation errors for sign up modal */
+.text-danger {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
         position: static;

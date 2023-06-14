@@ -84,7 +84,7 @@
             <ul class="navbar-nav order-3 order-lg-3 w-50 gap-3">
                 <div class="d-flex navbar-nav justify-content-center me-auto order-2 order-lg-1 w-100">
                     <form class="d-flex w-100" action="search.php" method="GET" onsubmit="return validateForm(this)">
-                        <input class="form-control me-2" type="search" id="search" name="query" placeholder="Search for services..." aria-label="Search" maxlength="50" oninput="validateSearchInput(this)" onkeyup="handleSearchAutocomplete(this)" autocomplete="off">
+                        <input class="form-control me-2" type="search" id="search" name="query" placeholder="Search for services..." aria-label="Search" minlength="5" maxlength="50" oninput="validateSearchInput(this)" onkeyup="handleSearchAutocomplete(this)" autocomplete="off">
                         <button class="btn search-btn" type="submit"><strong>Search</strong></button>
                     </form>
                     <div id="autocomplete-list" class="autocomplete-list"></div>
@@ -154,7 +154,7 @@
         var queryInput = form.querySelector('#search');
         var query = queryInput.value.trim();
 
-        if (query === '') {
+        if (query === '' || queryInput.value.length <= 2) {
             // If query is empty, prevent form submission
             return false;
         }
