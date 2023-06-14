@@ -2,30 +2,56 @@
 $office_name = "Accounting Office";
 
 $servername = "localhost";
-$username =  "root";
+$username = "root";
 $password = "";
-$dbname =  "accountingdb";
+$dbname = "accountingdb";
 
-$conn = new mysqli ($servername,$username,$password,$dbname);
-if ($conn->connect_error){
-    die("connection failed".$conn->connect_error);
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
 if (isset($_POST['submit'])) {
-    // Retrieve form data
-    $amountToOffset = $_POST['amountToOffset'];
-    $offsetType = $_POST['offsetType'];
+    $user_id = $_SESSION['user_id'];
 
-
-    $sql = "INSERT INTO offsettingtb (amountToOffset, offsetType)
-    VALUES ('$amountToOffset', '$offsetType')";
-
-    if ($conn->query($sql) === TRUE) {
-        header("location:offsetting3.php");
+    // Check if a form has already been submitted by the user within the last 24 hours
+    $checkFormQuery = "SELECT * FROM offsettingtb WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $checkFormQuery)) {
+        echo "Error";
     } else {
-        echo "Error inserting data: " . $conn->error;
-    }
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-    $conn->close();
+        // If a form has already been submitted, display an error message
+        if (mysqli_num_rows($result) > 0) {
+            echo "<div class='custom-alert' id='custom-alert'>
+            <div class='custom-alert-message'>You can only submit one request every 24 hours to ensure fair usage and timely processing. Please note that you will need to wait for 24 hours before submitting another request. Thank you for your understanding.</div>
+            <button class='custom-alert-close' onclick='redirectToIndex()'>Go Back</button>
+          </div>";
+        echo "<script>
+            document.getElementById('custom-alert').style.display = 'block';
+            function redirectToIndex() {
+                window.location.href = 'index.php';
+            }
+          </script>";
+        } else {
+            // If no form has been submitted, proceed with inserting the new form data
+            $amountToOffset = $_POST['amountToOffset'];
+            $offsetType = $_POST['offsetType'];
+
+            $insert = "INSERT INTO offsettingtb (user_id, amountToOffset, offsetType) VALUES (?,?,?)";
+            $stmt = mysqli_stmt_init($conn);
+            if (!mysqli_stmt_prepare($stmt, $insert)) {
+                echo "Error";
+            } else {
+                mysqli_stmt_bind_param($stmt, 'sis', $user_id, $amountToOffset, $offsetType);
+                mysqli_stmt_execute($stmt);
+                header("location: offsetting3.php");
+            }
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -76,7 +102,7 @@ if (isset($_POST['submit'])) {
             </div>
             <div class="col-md-7">
                 <label for="amountToOffset" class="form-label2">Amount to be offset:</label>
-                <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required>
+                <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required min="1">
                 <div class="invalid-feedback">
                     Please provide the amount to be offset.
                 </div>
