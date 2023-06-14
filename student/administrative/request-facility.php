@@ -39,14 +39,16 @@
             $startTime = $_POST['startTime'];
             $endTime = $_POST['endTime'];
             $statusId = 3;
+            $course = $_POST['course'];
+            $section = $_POST['section'];
             $purpose = $_POST['purposeReq'];
             $startDateTimeSched = $startDate . ' ' . $startTime;
             $endDateTimeSched = $endDate . ' ' . $endTime;
             $facilityID = $_POST['id'];
             
-            $insertQuery = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, email, purpose, facility_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, course, section, email, purpose, facility_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $insertStmt = $connection->prepare($insertQuery);
-            $insertStmt->bind_param("ssiissi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $email, $purpose, $facilityID);
+            $insertStmt->bind_param("ssiissssi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $course, $section, $email, $purpose, $facilityID);
 
             if ($insertStmt->execute()) {
                 $_SESSION['success'] = true;
@@ -58,6 +60,21 @@
                 $updateStmt->bind_param("i", $facilityID);
                 $updateStmt->execute();
                 $updateStmt->close();
+                
+                // Add the request details to the session
+                $_SESSION['appointment_details'] = [
+
+                    'startDate' => $startDate,
+                    'endDate' => $endDate,
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'user_id' => $_SESSION['user_id'],
+                    'status_id' => $statusId,
+                    'purposeReq' => $purpose,
+                    'facility_id' => $facilityID,
+                    'course' => $course,
+                    'section' => $section,
+                ];
             } else {
                 var_dump($insertStmt->error);
             }
@@ -139,6 +156,52 @@
                                 <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required >
                                 <div class="invalid-feedback">Please input a valid email</div>
                             </div>
+
+                            <div class="form-group required col-md-6">
+                                <label for="course" class="form-label">Course</label>
+                                <select class="form-control form-select" name="course" id="course" required>
+                                    <option value="">--Select--</option>
+                                    <option value="BSA">BSA</option>
+                                    <option value="BSBAMM">BSBAMM</option>
+                                    <option value="BSBAHRM">BSBAHRM</option>
+                                    <option value="BSECE">BSECE</option>
+                                    <option value="BSEdEng">BSEd Eng</option>
+                                    <option value="BSEdMath">BSEd Math</option>
+                                    <option value="BSEM">BSEM</option>
+                                    <option value="BSIE">BSIE</option>
+                                    <option value="BSIT">BSIT</option>
+                                    <option value="BSPSY">BSPSY</option>
+                                </select>
+
+                                <div class="invalid-feedback">Please choose a course.</div>
+                            </div>
+
+                            <div class="form-group required col-md-6">
+                                <label for="section" class="form-label">Section</label>
+                                <select class="form-control form-select" name="section" id="section" required>
+                                    <option value="">--Select--</option>
+                                    <option value="1-1">1-1</option>
+                                    <option value="1-2">1-2</option>
+                                    <option value="1-3">1-3</option>
+                                    <option value="1-4">1-4</option>
+                                    <option value="2-1">2-1</option>
+                                    <option value="2-2">2-2</option>
+                                    <option value="2-3">2-3</option>
+                                    <option value="2-4">2-4</option>
+                                    <option value="3-1">3-1</option>
+                                    <option value="3-2">3-2</option>
+                                    <option value="3-3">3-3</option>
+                                    <option value="3-4">3-4</option>
+                                    <option value="4-1">4-1</option>
+                                    <option value="4-2">4-2</option>
+                                    <option value="4-3">4-3</option>
+                                    <option value="4-4">4-4</option>
+                                </select>
+                                <div class="invalid-feedback">Please choose a section.</div>
+                            </div>
+
+
+
                             <h6 class="mt-5">Appointment Information</h6>
 
                             <div class="form-group required col-md-6">
@@ -268,8 +331,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <!-- Success alert modal -->
+                            <!-- Success alert modal -->
                         <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false"> 
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -280,7 +342,7 @@
                                         <p>Your appointment request has been submitted successfully!</p>
                                         <p>You can check the status of your appointment request on the <b>My Transactions</b> page.</p>
                                         <p>You must print this letter and submit it to the Administrative Office before your request.</p>
-                                        <a href="../administrative/generate-letter.php" target="_blank" class="btn btn-primary">Show Letter</a>
+                                        <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Letter</button>
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToViewEquipment()">Create another appointment</button>
@@ -288,6 +350,8 @@
                                 </div>
                             </div>
                         </div>
+                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -304,6 +368,7 @@
         </div>
     </div>
     <script src="jquery.js"></script>
+    
     <script>
         var date = new Date();
 
@@ -411,11 +476,45 @@
         updateEndTimeOptions();
 
 
+    </script>
+
+    <script>
+        // Function to update the available sections based on the selected course
+        function updateSections() {
+            var courseSelect = document.getElementById("course");
+            var sectionSelect = document.getElementById("section");
+            var selectedCourse = courseSelect.value;
+
+            // Clear the section dropdown options
+            sectionSelect.innerHTML = "";
+
+            // Check if the selected course is BSBAMM
+            if (selectedCourse === "BSBAMM") {
+                // Add all sections as options
+                var sections = ["1-1", "1-2", "1-3", "1-4", "2-1", "2-2", "2-3", "2-4", "3-1", "3-2", "3-3", "3-4", "4-1", "4-2", "4-3", "4-4"];
+                for (var i = 0; i < sections.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = sections[i];
+                    option.text = sections[i];
+                    sectionSelect.appendChild(option);
+                }
+            } else {
+                // Add limited sections as options
+                var sections = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2", "4-1", "4-2"];
+                for (var i = 0; i < sections.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = sections[i];
+                    option.text = sections[i];
+                    sectionSelect.appendChild(option);
+                }
+            }
+        }
+
+        // Add event listener to the course select dropdown
+        document.getElementById("course").addEventListener("change", updateSections);
+    </script>
 
 
-
-
-</script>
     <script>
 
         function validateForm() {
@@ -477,11 +576,10 @@
                 // Redirect to the view-equipment.php page
                 window.location.href = "view-facility.php";
             }
-
-           
-
-
-
+            function redirectToAnotherPage() {
+                var url = "http://localhost/student/administrative/generate-letter.php";
+                window.open(url, "_blank"); 
+            }
 
     </script>
 

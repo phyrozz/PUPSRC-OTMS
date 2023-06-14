@@ -41,6 +41,7 @@ mysqli_close($conn);
 </head>
 <body>
     <?php
+    $office_name = "Accounting Office";
     include '../navbar.php';
     include '../../breadcrumb.php';
     ?>

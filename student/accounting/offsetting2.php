@@ -2,30 +2,56 @@
 $office_name = "Accounting Office";
 
 $servername = "localhost";
-$username =  "root";
+$username = "root";
 $password = "";
-$dbname =  "accountingdb";
+$dbname = "accountingdb";
 
-$conn = new mysqli ($servername,$username,$password,$dbname);
-if ($conn->connect_error){
-    die("connection failed".$conn->connect_error);
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
 if (isset($_POST['submit'])) {
-    // Retrieve form data
-    $amountToOffset = $_POST['amountToOffset'];
-    $offsetType = $_POST['offsetType'];
+    $user_id = $_SESSION['user_id'];
 
-
-    $sql = "INSERT INTO offsettingtb (amountToOffset, offsetType)
-    VALUES ('$amountToOffset', '$offsetType')";
-
-    if ($conn->query($sql) === TRUE) {
-        header("location:offsetting3.php");
+    // Check if a form has already been submitted by the user within the last 24 hours
+    $checkFormQuery = "SELECT * FROM offsettingtb WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $checkFormQuery)) {
+        echo "Error";
     } else {
-        echo "Error inserting data: " . $conn->error;
-    }
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-    $conn->close();
+        // If a form has already been submitted, display an error message
+        if (mysqli_num_rows($result) > 0) {
+            echo "<div class='custom-alert' id='custom-alert'>
+            <div class='custom-alert-message'>You can only submit one request every 24 hours to ensure fair usage and timely processing. Please note that you will need to wait for 24 hours before submitting another request. Thank you for your understanding.</div>
+            <button class='custom-alert-close' onclick='redirectToIndex()'>Go Back</button>
+          </div>";
+        echo "<script>
+            document.getElementById('custom-alert').style.display = 'block';
+            function redirectToIndex() {
+                window.location.href = 'index.php';
+            }
+          </script>";
+        } else {
+            // If no form has been submitted, proceed with inserting the new form data
+            $amountToOffset = $_POST['amountToOffset'];
+            $offsetType = $_POST['offsetType'];
+
+            $insert = "INSERT INTO offsettingtb (user_id, amountToOffset, offsetType) VALUES (?,?,?)";
+            $stmt = mysqli_stmt_init($conn);
+            if (!mysqli_stmt_prepare($stmt, $insert)) {
+                echo "Error";
+            } else {
+                mysqli_stmt_bind_param($stmt, 'sis', $user_id, $amountToOffset, $offsetType);
+                mysqli_stmt_execute($stmt);
+                header("location: offsetting3.php");
+            }
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -35,11 +61,17 @@ if (isset($_POST['submit'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Office - Landing Page</title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/offsetting2.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/payment1.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
 </head>
 <body>
     <?php
@@ -76,7 +108,7 @@ if (isset($_POST['submit'])) {
             </div>
             <div class="col-md-7">
                 <label for="amountToOffset" class="form-label2">Amount to be offset:</label>
-                <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required>
+                <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required min="1">
                 <div class="invalid-feedback">
                     Please provide the amount to be offset.
                 </div>

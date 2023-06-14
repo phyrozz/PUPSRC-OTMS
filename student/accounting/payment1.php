@@ -1,4 +1,6 @@
 <?php
+$office_name = "Accounting Office";
+
 $servername = "localhost";
 $username = "root";
 $password = "";

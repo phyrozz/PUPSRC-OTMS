@@ -87,6 +87,16 @@
 
                 if ($insertStmt->execute()) {
                     $_SESSION['success'] = true;
+
+
+                    $_SESSION['request_details'] = [
+                        'time' => $time,
+                        'date' => $date,
+                        'quantity_equip' => $quantityEquip,
+                        'user_id' => $_SESSION['user_id'],
+                        'status_id' => $statusId,
+                        'equipment_id' => $equipID,
+                    ];
                     // header("Refresh:0");
                 } else {
                     var_dump($insertStmt->error);
@@ -191,8 +201,8 @@
                             <div class="form-group required col-md-6">
                                 <label for="quantityequip" class="form-label">Quantity</label>
                                 <!-- get the current quantity of an equipment from equipment table and make it a max quantity  -->
-                                <input type="number" class="form-control" id="quantityequip" name="quantityequip" min="1" max="<?php echo $_GET['quantity']; ?>" maxlength="2" required> 
-                                <div class="invalid-feedback">Please input a valid quantity (Max. <?php echo$_GET['quantity']; ?>).</div>
+                                <input type="number" class="form-control" id="quantityequip" name="quantityequip" min="1" max="<?php echo isset($_GET['quantity']) ? $_GET['quantity'] : ''; ?>" required> 
+                                <div class="invalid-feedback">Please input a valid quantity (Max. <?php echo isset($_GET['quantity']) ? $_GET['quantity'] : ''; ?>).</div>
                             </div>
 
 
@@ -275,9 +285,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <!-- Success alert modal -->
-                       <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -289,7 +297,7 @@
                                         <p>Your request has been submitted successfully!</p>
                                         <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
                                         <p>You must print this slip and submit it to the Administrative Office before your request.</p>
-                                        <a href="../administrative/generate-slip.php" target="_blank" class="btn btn-primary">Show Slip</a>
+                                        <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Slip</button>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToViewEquipment()">Create another request</button>
@@ -297,6 +305,9 @@
                                 </div>
                             </div>
                         </div>
+                        </form>
+
+                       
                     </div>
                 </div>
             </div>
@@ -386,6 +397,10 @@
             function redirectToViewEquipment() {
                 // Redirect to the view-equipment.php page
                 window.location.href = "view-equipment.php";
+            }
+            function redirectToAnotherPage() {
+                var url = "http://localhost/student/administrative/generate-slip.php";
+                window.open(url, "_blank"); 
             }
 
 

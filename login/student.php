@@ -105,48 +105,51 @@
                         <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">  
                             <div class="row">
                                 <div class="form-group">
-                                <label class="mb-0 pb-1">Student Number <code>*</code></label>
+                                    <label class="mb-0 pb-1">Student Number <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                    <input type="text" name="StudentNo" value="" id="StudentNo" placeholder="Student Number" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="15" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="StudentNo" value="" id="StudentNo" placeholder="Student Number" pattern="\d{4}-\d{5}-SR-\d" maxlength="15" size="50" autocomplete="on" class="form-control" required>
+                                    </div>
+                                    <div id="studentNoValidationMessage" class="text-danger"></div>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label class="mb-0 pb-1">Last Name <code>*</code></label>
+                                    <div class="input-group mb-0 mt-0">
+                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
-                                <label class="mb-0 pb-1">Last Name <code>*</code></label>
+                                    <label class="mb-0 pb-1">First Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                    <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
-                                <label class="mb-0 pb-1">First Name <code>*</code></label>
-                                    <div class="input-group mb-0 mt-0">
-                                    <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group col-6">
-                                <label class="mb-0 pb-1">Middle Name</label>
+                                    <label class="mb-0 pb-1">Middle Name</label>
                                     <div class="input-group mb-0">
-                                    <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="on" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
-                                <label class="mb-0 pb-1">Extension Name <font class="small">(Jr./Sr./III Etc..)</font></label>
+                                    <label class="mb-0 pb-1">Extension Name <font class="small">(Jr./Sr./III Etc..)</font></label>
                                     <div class="input-group mb-0">
-                                    <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="11" size="11" autocomplete="on" class="form-control">
                                     </div>
-                                </div>                             
+                                </div>                           
                                 </div>
                                 <div class="row">
                                 <div class="form-group col-12">
                                     <label>Contact Number <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Contact No." pattern="[0-9\+\ ]*" maxlength="11" size="20" autocomplete="off" class="form-control">
+                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Contact No." pattern="^090\d{1}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control" required>
                                     </div>
+                                    <div id="contactNoValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Birthdate <code>*</code></label>
                                     <div data-target="#Birthday" data-toggle="datetimepicker">
-                                        <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input" data-target="#Birthday">
+                                        <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input" data-target="#Birthday" min="1900-01-01" max="<?php echo date('Y-m-d'); ?>" required>
                                     </div>
+                                    <div class="text-danger" id="birthdateError" style="display: none;">Invalid birth date.</div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Sex  <code>*</code></label><br>
@@ -164,34 +167,35 @@
                                 <div class="form-group col-12">
                                     <label>Home Address <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" maxlength="50" size="255" autocomplete="off" class="form-control">
+                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" maxlength="255" size="255" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Province <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <select name="Province" id="Province" class="form-control form-select">
+                                        <select name="Province" id="Province" class="form-control form-select" required>
                                         </select>
                                     </div>
                                 </div> 
                                 <div class="form-group col-6">
                                     <label>City <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <select name="City" id="City" class="form-control form-select">
+                                        <select name="City" id="City" class="form-control form-select" required>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Barangay <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Barangay" value="" id="Barangay" placeholder="Barangay" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="Barangay" value="" id="Barangay" placeholder="Barangay" maxlength="100" size="50" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Zip Code</label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="ZipCode" value="" id="ZipCode" placeholder="Zip Code" pattern="[0-9]+" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="ZipCode" value="" id="ZipCode" placeholder="Zip Code" pattern="[0-9]{4,6}" maxlength="6" size="6" autocomplete="on" class="form-control">
                                     </div>
+                                    <div id="zipCodeError" class="text-danger"></div>
                                 </div>
                                 </div>
                             </div>
@@ -203,38 +207,39 @@
                             </div>
                             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">  
                                 <div class="row">
-                                <div class="form-group col-12">
-                                    <label for="exampleInputEmail1">Email <code>*</code></label>
-                                    <div class="input-group mb-0">
-                                    <input type="text" name="Email" value="" id="Email" placeholder="Complete Email" pattern="[a-zA-Z0-9Ññ\@\_\-\.\(\)\&amp;\,\<\>\'\`]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                    <div class="form-group col-12">
+                                        <label for="exampleInputEmail1">Email <code>*</code></label>
+                                        <div class="input-group mb-0">
+                                            <input type="text" name="Email" value="" id="Email" placeholder="Complete Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" maxlength="100" size="100" autocomplete="on" class="form-control" required>
+                                        </div>
+                                        <div class="text-danger" id="emailError" style="display: none;">Invalid email address.</div>
                                     </div>
-                                </div>
-                                <div class="form-group col-12">
-                                    <label for="exampleInputEmail1">Password <code>*</code></label>
-                                    <div class="input-group mb-0">
-                                    <input type="password" name="Password" value="" id="Password" placeholder="Password" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                    <div class="form-group col-12">
+                                        <label for="exampleInputEmail1">Password <code>*</code></label>
+                                        <div class="input-group mb-0">
+                                        <input type="password" name="Password" value="" id="Password" placeholder="Password" minlength="8" maxlength="80" size="80" autocomplete="on" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group col-12">
-                                    <label for="exampleInputEmail1">Confirm Password <code>*</code></label>
-                                    <div class="input-group mb-0">
-                                    <input type="password" name="ConfirmPassword" value="" id="ConfirmPassword" placeholder="Retype Password" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                    <div class="form-group col-12">
+                                        <label for="exampleInputEmail1">Confirm Password <code>*</code></label>
+                                        <div class="input-group mb-0">
+                                        <input type="password" name="ConfirmPassword" value="" id="ConfirmPassword" placeholder="Retype Password" minlength="8" maxlength="80" size="80" autocomplete="on" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mt-3">
-                                    <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
-                                        <h4>Data Privacy Notice</h4>
-                                        <p>
-                                        <img style="float: right; margin-left: 3px; filter: invert(100%);" src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
+                                    <div class="form-group mt-3">
+                                        <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
+                                            <h4>Data Privacy Notice</h4>
+                                            <p>
+                                            <img style="float: right; margin-left: 3px; filter: invert(100%);" src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" name="studentSignup" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#successModal">Sign Up</button>
+                        <input type="submit" value="Sign Up" id="submitBtn" name="studentSignup" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
@@ -270,5 +275,107 @@
     unset($_SESSION['account_created']);
     ?>
     <!-- End of success alert modal -->
+
+    <!-- JS validation for form fields -->
+    <script>
+        const studentNoInput = document.getElementById('StudentNo');
+        const contactNoInput = document.getElementById('ContactNumber');
+        const studentNoValidationMessage = document.getElementById('studentNoValidationMessage');
+        const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+        const emailInput = document.getElementById('Email');
+        const emailError = document.getElementById('emailError');
+        const zipCodeInput = document.getElementById('ZipCode');
+        const zipCodeError = document.getElementById('zipCodeError');
+        const birthdateInput = document.getElementById('Birthday');
+        const birthdateError = document.getElementById('birthdateError');
+        var passwordInput = document.getElementById("Password");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword");
+        var submitButton = document.getElementById("submitBtn");
+
+        // Validation event listeners
+        studentNoInput.addEventListener('input', () => {
+            const studentNo = studentNoInput.value.trim();
+            const studentNoValidPattern = /^\d{4}-\d{5}-SR-\d$/;
+
+            if (!studentNoValidPattern.test(studentNo)) {
+                studentNoValidationMessage.textContent = 'Invalid student number. The format must be xxxx-xxxxx-SR-x';
+                studentNoInput.classList.add('is-invalid');
+            } else {
+                studentNoValidationMessage.textContent = '';
+                studentNoInput.classList.remove('is-invalid');
+            }
+        });
+
+        contactNoInput.addEventListener('input', () => {
+            const contactNo = contactNoInput.value.trim();
+            const contactNoValidPattern = /^090\d{1}-\d{3}-\d{4}$/;
+
+            if (!contactNoValidPattern.test(contactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx'
+                contactNoInput.classList.add('is-invalid');
+            } else {
+                contactNoValidationMessage.textContent = '';
+                contactNoInput.classList.remove('is-invalid');
+            }
+        });
+
+        birthdateInput.addEventListener('input', function() {
+            validateBirthdate(this.value);
+        });
+
+        emailInput.addEventListener('input', validateEmail);
+        zipCodeInput.addEventListener('input', validateZipCode);
+
+        // Validation functions
+        function validateBirthdate(birthdate) {
+            const currentDate = new Date();
+            const selectedDate = new Date(birthdate);
+
+            if (selectedDate < new Date('1900-01-01') || selectedDate > currentDate) {
+                birthdateError.style.display = 'block';
+                birthdateInput.classList.add('is-invalid');
+            } else {
+                birthdateError.style.display = 'none';
+                birthdateInput.classList.remove('is-invalid');
+            }
+            }
+
+        function validateEmail() {
+            const email = emailInput.value;
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (emailPattern.test(email)) {
+                emailInput.classList.remove('is-invalid');
+                emailError.style.display = 'none';
+            } else {
+                emailInput.classList.add('is-invalid');
+                emailError.style.display = 'block';
+            }
+        }
+
+        function validateZipCode() {
+            const zipCode = zipCodeInput.value.trim();
+            const validZipCodePattern = /^[0-9]{4,6}$/;
+
+            if (!validZipCodePattern.test(zipCode)) {
+                zipCodeError.textContent = 'Zip Code must be 4 to 6 digits long';
+                zipCodeInput.classList.add('is-invalid');
+            } else {
+                zipCodeError.textContent = '';
+                zipCodeInput.classList.remove('is-invalid');
+            }
+        }
+
+        function validatePassword() {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                confirmPasswordInput.setCustomValidity("Passwords do not match");
+            } else {
+                confirmPasswordInput.setCustomValidity("");
+            }
+        }
+
+        passwordInput.addEventListener("change", validatePassword);
+        confirmPasswordInput.addEventListener("keyup", validatePassword);
+    </script>
 </body>
 </html>

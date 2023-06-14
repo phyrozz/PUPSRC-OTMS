@@ -21,6 +21,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $result = $conn->query($sql);
 if ($result->num_rows == 1) {
+    $row = mysqli_fetch_array($result);
+    $_SESSION['user_id'] = $row['user_id'];
     echo "<div class='custom-alert' id='custom-alert'>
     <div class='custom-alert-message'>Account successfully validated!</div>
     <button class='custom-alert-close' onclick='redirectToOffsetting2()'>Next</button>
@@ -38,7 +40,7 @@ echo "<script>
           </div>";
     echo "<script>
             document.getElementById('custom-alert').style.display = 'block';
-            setTimeout(closeAlert, ); // Automatically close the alert after 3 seconds
+            setTimeout(closeAlert, );
           </script>";
 } else {
     die("Database error");
@@ -104,7 +106,7 @@ echo "<script>
             </div>
             <div class="col-md-6">
                 <label for="studentNumber" class="form-label">Student Number</label>
-                <input type="text" class="form-control" id="studentNumber"name="student_number" required maxlength="15">
+                <input type="text" onkeypress="return blockSpecialChar(event)"class="form-control" id="studentNumber"name="student_number" required maxlength="15">
                 <div class="invalid-feedback">
                     Please provide a student number.
                 </div>
