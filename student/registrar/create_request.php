@@ -214,7 +214,7 @@ include '../conn.php';
             <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
         </div>
     </div>
-    <script src="jquery.js"></script>
+    <script src="../../jquery.js"></script>
 </body>
 </html>
 
