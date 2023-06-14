@@ -163,14 +163,16 @@
                                     <option value="">--Select--</option>
                                     <option value="BSA">BSA</option>
                                     <option value="BSBAMM">BSBAMM</option>
+                                    <option value="BSBAHRM">BSBAHRM</option>
                                     <option value="BSECE">BSECE</option>
-                                    <option value="BSEM">BSEM</option>
                                     <option value="BSEdEng">BSEd Eng</option>
+                                    <option value="BSEdMath">BSEd Math</option>
+                                    <option value="BSEM">BSEM</option>
                                     <option value="BSIE">BSIE</option>
                                     <option value="BSIT">BSIT</option>
-                                    <option value="BSEdMath">BSEd Math</option>
                                     <option value="BSPSY">BSPSY</option>
                                 </select>
+
                                 <div class="invalid-feedback">Please choose a course.</div>
                             </div>
 
