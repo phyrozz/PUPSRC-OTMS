@@ -1,52 +1,6 @@
 <?php
 $office_name = "Accounting Office";
-
-$servername = "localhost";
-$username =  "root";
-$password = "";
-$dbname =  "accountingdb";
-
-$conn = new mysqli ($servername,$username,$password,$dbname);
-if ($conn->connect_error){
-    die("connection failed".$conn->connect_error);
-}
-//start of account verification
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    $first_name = $_POST["first_name"];
-    $last_name = $_POST["last_name"];
-    $student_number = $_POST["student_number"];
-    $birthDate = $_POST["birthDate"];
-
-    $sql = "SELECT * FROM accountingtb WHERE first_name = '$first_name' && last_name = '$last_name' && student_number = '$student_number' && birthDate = '$birthDate'";
-
-    $result = $conn->query($sql);
-if ($result->num_rows == 1) {
-    $row = mysqli_fetch_array($result);
-    $_SESSION['user_id'] = $row['user_id'];
-    echo "<div class='custom-alert' id='custom-alert'>
-    <div class='custom-alert-message'>Account successfully validated!</div>
-    <button class='custom-alert-close' onclick='redirectToOffsetting2()'>Next</button>
-  </div>";
-echo "<script>
-    document.getElementById('custom-alert').style.display = 'block';
-    function redirectToOffsetting2() {
-        window.location.href = 'offsetting2.php';
-    }
-  </script>";
-} elseif ($result->num_rows == 0) {
-    echo "<div class='custom-alert' id='custom-alert'>
-            <div class='custom-alert-message'>No matching account found</div>
-            <button class='custom-alert-close' onclick='closeAlert()'>Close</button>
-          </div>";
-    echo "<script>
-            document.getElementById('custom-alert').style.display = 'block';
-            setTimeout(closeAlert, );
-          </script>";
-} else {
-    die("Database error");
-}
-
-}
+include 'verification.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -106,14 +60,14 @@ echo "<script>
             </div>
             <div class="col-md-6">
                 <label for="studentNumber" class="form-label">Student Number</label>
-                <input type="text" onkeypress="return blockSpecialChar(event)"class="form-control" id="studentNumber"name="student_number" required maxlength="15">
+                <input type="text" onkeypress="return blockSpecialChar(event)"class="form-control" id="studentNumber"name="student_no" required maxlength="15">
                 <div class="invalid-feedback">
                     Please provide a student number.
                 </div>
             </div>
             <div class="col-md-6">
                 <label for="birthdate" class="form-label">Birth Date</label>
-                <input type="date" class="form-control" id="birthdate"name="birthDate" required>
+                <input type="date" class="form-control" id="birthdate"name="birth_date" required>
                 <div class="invalid-feedback">
                     Please provide a birth date.
                 </div>
