@@ -25,7 +25,7 @@
             include "navbar.php";
             include "../breadcrumb.php";
         ?>
-        <div class="container-fluid guidancebanner header">
+        <div class="container-fluid administrative-header header">
             <?php
             $breadcrumbItems = [
                 ['text' => 'Administrative Office', 'active' => true],
