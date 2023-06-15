@@ -1,58 +1,6 @@
 <?php
 $office_name = "Accounting Office";
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "accountingdb";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-if (isset($_POST['submit'])) {
-    $user_id = $_SESSION['user_id'];
-
-    // Check if a form has already been submitted by the user within the last 24 hours
-    $checkFormQuery = "SELECT * FROM offsettingtb WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $checkFormQuery)) {
-        echo "Error";
-    } else {
-        mysqli_stmt_bind_param($stmt, 'i', $user_id);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        // If a form has already been submitted, display an error message
-        if (mysqli_num_rows($result) > 0) {
-            echo "<div class='custom-alert' id='custom-alert'>
-            <div class='custom-alert-message'>You can only submit one request every 24 hours to ensure fair usage and timely processing. Please note that you will need to wait for 24 hours before submitting another request. Thank you for your understanding.</div>
-            <button class='custom-alert-close' onclick='redirectToIndex()'>Go Back</button>
-          </div>";
-        echo "<script>
-            document.getElementById('custom-alert').style.display = 'block';
-            function redirectToIndex() {
-                window.location.href = 'index.php';
-            }
-          </script>";
-        } else {
-            // If no form has been submitted, proceed with inserting the new form data
-            $amountToOffset = $_POST['amountToOffset'];
-            $offsetType = $_POST['offsetType'];
-
-            $insert = "INSERT INTO offsettingtb (user_id, amountToOffset, offsetType) VALUES (?,?,?)";
-            $stmt = mysqli_stmt_init($conn);
-            if (!mysqli_stmt_prepare($stmt, $insert)) {
-                echo "Error";
-            } else {
-                mysqli_stmt_bind_param($stmt, 'sis', $user_id, $amountToOffset, $offsetType);
-                mysqli_stmt_execute($stmt);
-                header("location: offsetting3.php");
-            }
-        }
-    }
-}
+include 'request_offset.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +10,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Office - Landing Page</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/payment1.css">
+    <link rel="stylesheet" href="css/offsetting2.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,7 +23,7 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
     <?php
-    include '../navbar.php';
+    @include '../navbar.php';
     include '../../breadcrumb.php';
     ?>
     <div class="container-fluid p-4">

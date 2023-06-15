@@ -1,12 +1,12 @@
 <?php
-    session_start();
-    
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: http://localhost/index.php');
-        exit;
-    }
+session_start();
 
-    $isLoggedIn = true;
+if (!isset($_SESSION['user_id'])) {
+    header('Location: http://localhost/index.php');
+    exit;
+}
+
+$isLoggedIn = true;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
     <div class="container-fluid">
