@@ -7,7 +7,7 @@
     <title>Transaction History</title>
     <link rel="icon" href="../../assets/icon/pup-logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../stylesheets/request-style.css">
+    <link rel="stylesheet" href="../../style.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

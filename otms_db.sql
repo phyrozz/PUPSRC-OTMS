@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2023 at 12:27 PM
+-- Generation Time: Jun 14, 2023 at 05:49 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -58,6 +58,16 @@ CREATE TABLE `appointment_facility` (
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `appointment_facility`
+--
+
+INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `email`, `purpose`, `facility_id`) VALUES
+(1, 34, 3, 'BSEM', '3-2', '2023-06-13 15:00:00', '2023-06-13 17:00:00', 'mmallow624@gmail.com', 'seminar', 9),
+(2, 34, 3, 'BSIT', '3-1', '2023-06-14 10:30:00', '2023-06-14 15:30:00', 'mmallow624@gmail.com', 'classes', 4),
+(3, 34, 3, 'BSBAMM', '2-2', '2023-06-14 09:30:00', '2023-06-14 16:00:00', 'mmallow624@gmail.com', 'seminar', 27),
+(4, 34, 3, 'BSEM', '3-2', '2023-06-14 13:30:00', '2023-06-14 14:00:00', 'mmallow624@gmail.com', 'seminar', 1);
 
 -- --------------------------------------------------------
 
@@ -170,9 +180,9 @@ CREATE TABLE `equipment` (
 --
 
 INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quantity`, `equipment_type_id`, `request`) VALUES
-(1, 'Badminton Net', 'Available', 4, 2, 1),
+(1, 'Badminton Net', 'Available', 2, 2, 1),
 (2, 'Badminton Racket', 'Available', 15, 2, 1),
-(3, 'Badminton Shuttlecock', 'Available', 20, 2, 1),
+(3, 'Badminton Shuttlecock', 'Available', 18, 2, 1),
 (4, 'Basketball', 'Available', 10, 2, 1),
 (5, 'BasketBall Ring and Net', 'Available', 20, 2, 1),
 (6, 'Brush', 'Available', 20, 3, 1),
@@ -181,7 +191,7 @@ INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quan
 (9, 'Cleaning Detergent', 'Available', 20, 3, 1),
 (10, 'Curtains', 'Available', 5, 1, 1),
 (11, 'Chess Board', 'Available', 20, 2, 1),
-(12, 'Digital Scoreboard', 'Available', 20, 1, 1),
+(12, 'Digital Scoreboard', 'Available', 18, 1, 1),
 (13, 'Mop', 'Available', 10, 3, 1),
 (14, 'Projectors', 'Available', 20, 1, 1),
 (15, 'Scoreboard', 'Available', 2, 2, 1),
@@ -189,7 +199,7 @@ INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quan
 (17, 'Volleyball', 'Available', 6, 2, 1),
 (18, 'Volleyball Net', 'Available', 3, 2, 1),
 (19, 'Tables', 'Available', 10, 1, 1),
-(20, 'TV', 'Available', 20, 1, 1);
+(20, 'TV', 'Available', 18, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -231,15 +241,15 @@ CREATE TABLE `facility` (
 --
 
 INSERT INTO `facility` (`facility_id`, `facility_name`, `availability`, `facility_number`, `facility_type_id`, `request`) VALUES
-(1, 'Campus Court', 'Available', '101', 1, 1),
+(1, 'Campus Court', 'Unavailable', '101', 1, 1),
 (2, 'Room 102', 'Available', '102', 1, 1),
 (3, 'Room 103', 'Available', '103', 1, 1),
-(4, 'Room 104', 'Available', '104', 1, 1),
+(4, 'Room 104', 'Unavailable', '104', 1, 1),
 (5, 'Room 105', 'Available', '105', 1, 1),
 (6, 'Room 106', 'Available', '106', 1, 1),
 (7, 'Room 107', 'Available', '107', 1, 1),
 (8, 'Room 108', 'Available', '108', 1, 1),
-(9, 'Room 109', 'Available', '109', 1, 1),
+(9, 'Room 109', 'Unavailable', '109', 1, 1),
 (10, 'Room 110', 'Available', '110', 1, 1),
 (11, 'Computer Lab', 'Available', '201', 2, 1),
 (12, 'Room 202', 'Available', '202', 2, 1),
@@ -257,7 +267,7 @@ INSERT INTO `facility` (`facility_id`, `facility_name`, `availability`, `facilit
 (24, 'Room 304', 'Available', '304', 3, 1),
 (25, 'Room 305', 'Available', '305', 3, 1),
 (26, 'Room 306', 'Available', '306', 3, 1),
-(27, 'Audio Visual Room', 'Available', '307', 3, 1),
+(27, 'Audio Visual Room', 'Unavailable', '307', 3, 1),
 (28, 'Room 308', 'Available', '308', 3, 1),
 (29, 'Room 309', 'Available', '309', 3, 1),
 (30, 'Room 310', 'Available', '310', 3, 1),
@@ -349,6 +359,50 @@ CREATE TABLE `request_equipment` (
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `request_equipment`
+--
+
+INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `email`, `purpose`, `equipment_id`) VALUES
+(1, 34, '2023-06-13 15:00:00', 2, 3, 'mmallow624@gmail.com', 'asd12asd', 12),
+(2, 34, '2023-06-13 15:00:00', 2, 3, 'mmallow624@gmail.com', 'room purposes', 20),
+(3, 34, '2023-06-13 14:00:00', 2, 3, 'mmallow624@gmail.com', 'sports purposes', 3),
+(4, 34, '2023-06-14 12:30:00', 2, 3, 'mmallow624@gmail.com', 'for p.e purposes', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `services`
+--
+
+CREATE TABLE `services` (
+  `services_id` int(11) NOT NULL,
+  `service_name` varchar(100) NOT NULL,
+  `service_description` text NOT NULL,
+  `office_id` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `services`
+--
+
+INSERT INTO `services` (`services_id`, `service_name`, `service_description`, `office_id`, `url`) VALUES
+(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 2, 'http://localhost/student/registrar/create_request.php'),
+(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://localhost/student/guidance/counseling.php'),
+(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://localhost/student/guidance/good_morals.php'),
+(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://localhost/student/guidance/clearance.php'),
+(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://localhost/student/academic/subject_overload.php'),
+(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://localhost/student/academic/grade_accreditation.php'),
+(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://localhost/student/academic/cross_enrollment.php'),
+(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://localhost/student/academic/shifting.php'),
+(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://localhost/student/academic/manual_enrollment.php'),
+(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://localhost/student/academic/servicesinsistools.php'),
+(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://localhost/student/accounting/payment1.php'),
+(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://localhost/student/accounting/offsetting1.php'),
+(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://localhost/student/administrative/view-equipment.php'),
+(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://localhost/student/administrative/view-facility.php');
 
 -- --------------------------------------------------------
 
@@ -555,6 +609,13 @@ ALTER TABLE `request_equipment`
   ADD KEY `request_equipment_ibfk_3` (`equipment_id`);
 
 --
+-- Indexes for table `services`
+--
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`services_id`),
+  ADD KEY `office_id` (`office_id`);
+
+--
 -- Indexes for table `statuses`
 --
 ALTER TABLE `statuses`
@@ -601,7 +662,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `appointment_facility`
 --
 ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -655,7 +716,13 @@ ALTER TABLE `personal_details`
 -- AUTO_INCREMENT for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `services`
+--
+ALTER TABLE `services`
+  MODIFY `services_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `statuses`
@@ -751,6 +818,12 @@ ALTER TABLE `request_equipment`
   ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
   ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
+
+--
+-- Constraints for table `services`
+--
+ALTER TABLE `services`
+  ADD CONSTRAINT `fk_services_office_id1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `students`
