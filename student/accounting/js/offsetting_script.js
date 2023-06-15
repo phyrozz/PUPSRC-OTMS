@@ -89,6 +89,12 @@ document.getElementById('custom-alert').style.display = 'none';
 }
 //restrict user to input space and special char
 function blockSpecialChar(e) {
-var k = e.keyCode;
-return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8   || (k >= 48 && k <= 57));
+  var key = e.key;
+  return (
+    (key >= 'a' && key <= 'z') ||
+    (key >= 'A' && key <= 'Z') ||
+    key === 'Backspace' ||
+    (key >= '0' && key <= '9') ||
+    key === '-'
+  );
 }
