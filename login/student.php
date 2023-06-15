@@ -140,7 +140,7 @@
                                 <div class="form-group col-12">
                                     <label>Contact Number <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Contact No." pattern="^090\d{1}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Eg. 0901-234-5678" pattern="^090\d{1}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control" required>
                                     </div>
                                     <div id="contactNoValidationMessage" class="text-danger"></div>
                                 </div>

@@ -18,7 +18,7 @@ while( $row = mysqli_fetch_array($result) ){
 
     <?php if ($row['status'] == "Released") { ?>
         <div class="d-flex justify-content-center">
-            <a href="http://localhost:3000/student/registrar/create_request.php" type="button" class="btn btn-primary">Do You Want Another Request?</a>
+            <a href="http://localhost/student/registrar/create_request.php" type="button" class="btn btn-primary">Do You Want Another Request?</a>
         </div>
     <?php }?>
 <?php }

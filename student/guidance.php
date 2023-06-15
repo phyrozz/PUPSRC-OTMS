@@ -36,9 +36,9 @@
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
-            <a href="guidance/counceling.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
-                <h2>Schedule Counceling</h2>
-                <p>Schedule an appointment for counceling with the guidance councelor of the campus</p>
+            <a href="guidance/counseling.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+                <h2>Schedule Counseling</h2>
+                <p>Schedule an appointment for counseling with the guidance councelor of the campus</p>
             </a>
             <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>Request Good Moral Document</h2>
