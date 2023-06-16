@@ -31,7 +31,28 @@
             $result = $stmt->get_result();
             $userData = $result->fetch_all(MYSQLI_ASSOC);
             $stmt->close();
-            $connection->close();
+
+            if(isset($_POST['goodMoralsFormSubmit'])) {
+                $requestDescription = "Request Good Moral Document";
+                $officeId = 5;
+                $statusId = 3;
+                $amountToPay = 0.00;
+
+                $query = "INSERT INTO doc_requests (request_description, office_id, user_id, status_id, amount_to_pay)
+                VALUES (?, ?, ?, ?, ?)";
+
+                $stmt = $connection->prepare($query);
+                $stmt->bind_param("siiid", $requestDescription, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
+                if ($stmt->execute()) {
+                    $_SESSION['success'] = true;
+                    // header("Location: http://localhost/student/guidance/success.php");
+                }
+                else {
+                    var_dump($stmt->error);
+                }
+                $stmt->close();
+                $connection->close();
+            }
         ?>
         <div class="container-fluid p-4">
             <?php
@@ -143,12 +164,32 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <a href="#" id="submit" class="btn btn-primary">Submit</a>
+                                        <button type="submit" id="submit" class="btn btn-primary" name="goodMoralsFormSubmit">Yes</button>
                                     </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <!-- Success alert modal -->
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your request has been submitted successfully!</p>
+                                        <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
+                                        <p>You must print this approval letter and submit it to the Director's Office before scheduling your request.</p>
+                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="../transactions.php" class="btn btn-primary">Go to My Transactions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of success alert modal -->
                     </div>
                 </div>
             </div>
@@ -165,5 +206,31 @@
         </div>
     </div>
     <script src="../../jquery.js"></script>
+    <script>
+        // Function to handle form submission
+        function handleSubmit() {
+            validateForm();
+            if (document.getElementById('appointment-form').checkValidity()) {
+                $('#confirmSubmitModal').modal('show');
+            }
+        }
+        
+        // Add event listener to the submit button
+        document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+    </script>
+    <?php
+    if (isset($_SESSION['success'])) {
+        ?>
+        <script>
+            // window.location.href="http://localhost/student/guidance/clearance.php";
+            $(document).ready(function() {
+                $("#successModal").modal("show");
+            })
+        </script>
+        <?php
+        unset($_SESSION['success']);
+        exit();
+    }
+    ?>
 </body>
 </html>

@@ -1,6 +1,5 @@
 <?php
-    $office_name = "Guidance Office";
-    include "../navbar.php"; 
+require "../navbar.php"; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +21,7 @@
 <body>
     <div class="wrapper">
         <?php
+            $office_name = "Guidance Office";
             include "../../breadcrumb.php";
             include "../../conn.php";
 
@@ -47,7 +47,7 @@
                 $stmt->bind_param("siiid", $requestDescription, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
-                    header("Refresh:0");
+                    // header("Location: http://localhost/student/guidance/success.php");
                 }
                 else {
                     var_dump($stmt->error);
@@ -173,12 +173,11 @@
                             </div>
                         </form>
                         <!-- Success alert modal -->
-                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="successModalLabel">Success</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <p>Your request has been submitted successfully!</p>
@@ -187,7 +186,7 @@
                                         <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                        <a href="../transactions.php" class="btn btn-primary">Go to My Transactions</a>
                                     </div>
                                 </div>
                             </div>
@@ -221,16 +220,19 @@
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
-    <?php if (isset($_SESSION['success']) && $_SESSION['success']) {
-        echo "
+    <?php
+    if (isset($_SESSION['success'])) {
+        ?>
         <script>
-        $(window).on('load', function() {
-            $('#successModal').modal('show');
-        });
+            // window.location.href="http://localhost/student/guidance/clearance.php";
+            $(document).ready(function() {
+                $("#successModal").modal("show");
+            })
         </script>
-        ";
-    } 
-    unset($_SESSION['success']);
+        <?php
+        unset($_SESSION['success']);
+        exit();
+    }
     ?>
 </body>
 </html>
