@@ -1,19 +1,19 @@
 <?php
-include '../conn.php';
+    include '../../conn.php';
+    $office_name = "Registrar Office";
+    include "../navbar.php";
 
-    //fetching student info//
-    $result = mysqli_query($connect, "SELECT users.id, users.last_name, users.first_name, users.middle_name, users.extension_name, users.contact_no, users.email, students.student_no 
-    FROM users, students 
-    WHERE users.id=users_id 
-    ORDER BY users.id");
-	$row = mysqli_fetch_array($result);
+    $id = $_SESSION['user_id'];
+    $result = mysqli_query($connection, "SELECT student_no, last_name, first_name, middle_name, extension_name, contact_no, email FROM users
+    WHERE user_id = $id");
+    $row = mysqli_fetch_array($result);
 
     //fetching registrar services
-    $result1 = mysqli_query($connect, "SELECT * FROM reg_services");
+    $result1 = mysqli_query($connection, "SELECT * FROM reg_services");
     
     //for generate registrar code
     $code_query = "SELECT COUNT(reg_id) as count FROM reg_transaction";
-    $code_result = mysqli_query($connect, $code_query);
+    $code_result = mysqli_query($connection, $code_query);
     $code_row = mysqli_fetch_assoc($code_result);
     $count = $code_row['count'];
     // Assuming your text is in the format "REG-1"
@@ -26,27 +26,28 @@ include '../conn.php';
     // Increment the number
     $number++;
     $newText = preg_replace($pattern, $number, $text);
-    
+
     //for submit
     if(isset($_POST["submit"])){
+        $reg_id = $code_row['count'];
         $reg_code = $newText;
         $req_student_service = $_POST["req_student_service"];
-        $user_id = $row["id"];
-        $office_id = "1"; //1-Registrar Office
+        $user_id = $id;
+        $office_id = "3"; //1-Registrar Office
         $date = $_POST["date"];
         $status_id = "1"; //1-Pending
 
-        $query = "INSERT INTO reg_transaction VALUES('','$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
-        $result2 = mysqli_query($connect, $query);
+        $query = "INSERT INTO reg_transaction VALUES('$reg_id','$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
+        $result2 = mysqli_query($connection, $query);
         if ($result2) {
             // Data inserted successfully
             echo
             "<script> alert('Registration Successful'); </script>";
-          } else {
+        } else {
             // Error occurred while inserting data
             echo
             "<script> alert('Password Does Not Match'); </script>";
-          }
+        }
     }
 
 ?>
@@ -54,7 +55,6 @@ include '../conn.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Office - Create Request</title>
@@ -67,13 +67,15 @@ include '../conn.php';
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
-        <?php
-            $office_name = "Registrar Office";
-            include "../navbar.php";
-            include "../../breadcrumb.php";
+        <?php 
+        include "../../breadcrumb.php";
+
         ?>
         <div class="container-fluid p-4">
             <?php
@@ -134,15 +136,15 @@ include '../conn.php';
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" name= "middleName" id="middleName" value="<?php echo $row["middle_name"]; ?>" disabled required>
+                                <input type="text" class="form-control" name= "middleName" id="middleName" value="<?php echo $row["middle_name"]; ?>" disabled>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="extensionName" class="form-label">Extension Name</label>
-                                <input type="text" class="form-control" name="extensionName" id="extensionName" value="<?php echo $row["extension_name"]; ?>" disabled required>
+                                <input type="text" class="form-control" name="extensionName" id="extensionName" value="<?php echo $row["extension_name"]; ?>" disabled>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="text" class="form-control" id="contactNumber" name="contactNumber"  value="<?php echo $row["contact_no"]; ?>" disabled required>
+                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" value="<?php echo $row["contact_no"]; ?>" disabled required>
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>

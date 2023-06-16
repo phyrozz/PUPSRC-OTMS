@@ -2,18 +2,10 @@
 <form method="POST" enctype="multipart/form-data">
 <!-- Search -->
 <div class="d-flex w-100 justify-content-end p-0">
-    <div class="d-flex p-2">
-        <div class="input-group mb-3">
-        <select class="form-select">
-            <option value="">All</option>
-            <option value="">Request Code</option>
-            <option value="">Request</option>
-            <option value="">Schedule</option>
-            <option value="">Status</option>
-        </select>
-        <input type="text" name="search" id="search" class="form-control w-50" placeholder="Search Here..." value="">
-        <!-- <button type="submit" class="btn btn-outline-primary"><i class="fas fa-search"></i></button> -->
-        </div>
+    <div class="d-flex justify-content-end gap-2">
+        <div class="input-group mb-3 d-flex">
+            <button class="btn " type="button" disabled><i class="fas fa-search"></i></button>
+            <input type="text" name="search" id="search" class="form-control" placeholder="Search Here..." value="">
         </div>
     </div>
 </div>
@@ -31,12 +23,14 @@
     </thead>
     <tbody id="transactions_table">
           <?php 
+          $id = $_SESSION['user_id'];
           $query_set = "SELECT * FROM users
-          INNER JOIN reg_transaction ON  users.id = reg_transaction.user_id
-          INNER JOIN office ON reg_transaction.office_id = office.id
+          INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
+          INNER JOIN offices ON reg_transaction.office_id = offices.office_id
           INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-          INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id";
-          $query_run = mysqli_query($connect, $query_set);
+          INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id
+          WHERE users.user_id = $id";
+          $query_run = mysqli_query($connection, $query_set);
           if(mysqli_num_rows($query_run) > 0){
               foreach($query_run as $row){
                 if ($row['status_id'] == "1"){
@@ -45,7 +39,7 @@
                   <td class="text-center"><button type="button" id="editbtn" class="btn editbtn" style="background-color:transparent"><i class="fas fa-edit"></i></button></td>
                   <td style="display: none"><?=$row['reg_id'];?></td> <!--hidden-->
                   <td><?=$row['request_code'];?></td>
-                  <td><?=$row['offices'];?></td>
+                  <td><?=$row['office_name'];?></td>
                   <td><?=$row['services'];?></td>
                   <td style="display: none"><?=$row['services_id'];?></td> <!--hidden-->
                   <td><?=$row['schedule'];?></td>
@@ -57,7 +51,7 @@
           }else {
             ?>
               <tr>
-                <td colspan="5">No record found!</td>
+                <td class="text-center" colspan="6">No record found!</td>
               </tr>
             <?php
           }
@@ -92,7 +86,7 @@
                             <select name="request" id="request" class="form-control" required>
                                 <?php
                                 //fetching registrar service
-                                $result1 = mysqli_query($connect, "SELECT * FROM reg_services");
+                                $result1 = mysqli_query($connection, "SELECT * FROM reg_services");
                                 while ($dropdown = mysqli_fetch_assoc($result1)){
                                   echo '<option value="' . $dropdown['services_id'] . '">' . $dropdown['services'] . '</option>';
                                 }

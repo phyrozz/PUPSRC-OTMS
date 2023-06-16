@@ -1,9 +1,11 @@
 <?php
- $query = "SELECT * FROM users
- INNER JOIN reg_transaction ON  users.id = reg_transaction.user_id
- INNER JOIN office ON reg_transaction.office_id = office.id
- INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
- INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id";
+    $id = $_SESSION['user_id'];
+    $query = "SELECT * FROM users
+    INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
+    INNER JOIN offices ON reg_transaction.office_id = offices.office_id
+    INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
+    INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id
+    WHERE users.user_id = $id";
 ?>
 
 <!-- Modal -->
@@ -26,17 +28,10 @@
 <form method="" action="">
 <!-- Search -->
 <div class="d-flex w-100 justify-content-end p-0">
-    <div class="d-flex p-2">
-        <div class="input-group mb-3">
-        <select class="form-select">
-            <option name="all">All</option>
-            <option name="code">Request Code</option>
-            <option name="request">Request</option>
-            <option name="schedule">Schedule</option>
-            <option name="status">Status</option>
-        </select>
-        <input type="text" name="search" id="search" class="form-control w-50" placeholder="Search Here..." value="">
-        <!-- <button type="submit" class="btn btn-outline-primary"><i class="fas fa-search"></i></button> -->
+    <div class="d-flex justify-content-end gap-2">
+        <div class="input-group mb-3 d-flex">
+            <button class="btn " type="button" disabled><i class="fas fa-search"></i></button>
+            <input type="text" name="search" id="search" class="form-control" placeholder="Search Here..." value="">
         </div>
     </div>
 </div>
@@ -54,14 +49,14 @@
     </thead>
     <tbody id="transactions_table">
     <?php 
-        $query_run = mysqli_query($connect, $query);
+        $query_run = mysqli_query($connection, $query);
         if(mysqli_num_rows($query_run) > 0){
               foreach($query_run as $row) {
                 ?>
                 <tr>
                   <td><input class="userinfo" type="checkbox" data-id="<?=$row['reg_id'];?>" onclick="uncheckCheckbox(this)"></input></td>
                   <td><?=$row['request_code'];?></td>
-                  <td><?=$row['offices'];?></td>
+                  <td><?=$row['office_name'];?></td>
                   <td><?=$row['services'];?></td>
                   <td><?=$row['schedule'];?></td>
                   <?php if ($row['status_id'] == "1"){ ?>
@@ -81,13 +76,29 @@
         }else {
             ?>
               <tr>
-                <td colspan="5">No record found!</td>
+                <td class="text-center" colspan="6">No record found!</td>
               </tr>
             <?php
           }
           ?>     
     </tbody>
 </table>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item"disabled>
+      <a class="btn-primary page-link text-white" href="#" tabindex="-1">Previous</a>
+    </li>
+    <?php
+    //for ($i=1;$i<=$total_pages;$i++) { ?>
+    <li class="page-item"><a class="page-link btn-outline-primary " href="#"><?php //echo $i?>1</a></li>
+    <li class="page-item"><a class="page-link btn-outline-primary " href="#"><?php //echo $i?>2</a></li>
+    <!-- <li class="page-item"><a class="page-link btn-outline-primary" href="../your_transaction.php?page=<?php //echo $i?>"><?php //echo $i?>2</a></li> -->
+    <?php //}?>
+    <li class="page-item">
+      <a class="btn-primary page-link text-white" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
 </form>
 
 

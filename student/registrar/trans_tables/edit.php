@@ -5,7 +5,7 @@ $date = $_POST['date'];
 
 // Perform the database update
 // Replace "your_db_name", "your_table_name", "your_username", "your_password" with the appropriate values
-$connection = new PDO("mysql:host=localhost;dbname=reg_db", "root", "");
+$connection = new PDO("mysql:host=localhost;dbname=otms_db", "root", "");
 $query = "UPDATE reg_transaction SET services_id = :request, schedule = :date WHERE reg_id = :id";
 $statement = $connection->prepare($query);
 $statement->bindParam(':request', $request);

@@ -1,31 +1,31 @@
 <?php 
-$conn = new PDO("mysql:host=localhost;dbname=reg_db", "root", "");
- $sql = "SELECT * FROM reg_faq";
- $statement = $conn->prepare($sql);
- $statement->execute();
- $faqs = $statement->fetch();
-//$query_run = mysqli_query($connect, $query);
+include '../../conn.php';
+$query = "SELECT * FROM reg_faq";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Office - FAQs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../../assets/favicon.ico">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../style.css">
-    <link rel="stylesheet" href="FAQ.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
         <?php
             $office_name = "Registrar Office";
-            include "../../navbar.php";
+            include "../navbar.php";
             include "../../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">
@@ -48,150 +48,43 @@ $conn = new PDO("mysql:host=localhost;dbname=reg_db", "root", "");
                     <i class="fa-solid fa-circle-info"></i> Reminder
                     </h4>
                     <p class="mb-0"><strong>When claiming documents:</strong></p>
+                    <p class="mb-0">Kindly download the <a href="reg_request_letter.pdf" download>Request Letter file</a>, which is necessary for requesting the desired document.</p>
                     <p class="mb-0">Authorization letter and ID if claimant is immediate family member.</p>
                     <p class="mb-0">Special Power of Attorney (SPA) if the claimant is other than the immediate family.</p>     
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for FAQs...">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-primary" type="button"><i class="fas fa-search"></i></button>
-                    </div>
-                </div> 
-            </div>
-            <section class="main-content">
-                    <div class="row flex-center">   
-                    <div class="col-sm-10 offset-sm-1">\
-
-                    <?php //foreach($faqs as $faq) :?>
-                        <!-- for connect FAQ to DB (ongoing, trying, bahala naaa)
-                        <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $faq['faq_id']; ?>" aria-expanded="false" aria-controls="collapse<?php echo $faq['faq_id']; ?>">
-                                <div class="circle-icon"> <i class="fa fa-question"></i> </div>
-                            <span><?php //echo $faq['document']; ?></span></button>
-                            </button>
-                            </h2>
-                            <div id="collapse<?php //echo $faq['faq_id']; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $faq['faq_id']; ?>" data-bs-parent="#accordionExample">
-                            <div class="accordion-body"> 
-                            <strong>Requirements</strong>
-                            <?php //echo $faq['requirements']; ?>
-                            <strong>Payment</strong>
-                            <?php //echo $faq['payement']; ?>
-                            </div>
-                            </div>
-                        </div> -->
-                        <?php //endforeach;?>
-
-                        <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <div class="circle-icon"> <i class="fa fa-question"></i> </div>
-                            <span>Application for Graduation SIS and Non-SIS</span>
-                            </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                            <div class="accordion-body"> 
-                            <strong>Requirements</strong> 
-                            <li>Accomplished and printed copy of the Application for Graduation thru SIS Account (2 copies)</li>
-                            <li>Accomplished copy of the Application for Graduation for Non-SIS (2 copies)</li>
-                            <li>Proof of payment</li>
-                            <strong>Payment</strong> 
-                            <li>IF NOT COVERED BY FREE TUITION ACT: </li>
-                                <ul>
-                                    <li>P600.00 - Grad. Fee</li>
-                                    <li>P350.00 - Non Eng’g</li>
-                                    <li>P450.00 - Eng’g.</li>
-                                    <li>P200.00 - Diploma</li>
-                                    <li>P150.00 - Cert. of Grad.</li>
-                                    <li>P90.00 – documentary stamp tax</li>
-                                    <li>Non Eng’g courses – 1,590.00</li>
-                                    <li>Eng’g courses – 1,690.00</li>
-                                </ul>
-                            </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                <div class="circle-icon"> <i class="fa fa-question"></i> </div>
-                            <span>Correction of Entry of Grade, Completion of Incomplete Grade, and  Late Reporting of Grade</span> </button>
-                            </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                            <div class="accordion-body"> 
-                            <strong>Requirements</strong>
-                                <li>Accomplished Completion Form 3 copies</li>
-                                <li>Photocopy of Class Record of the Faculty</li>
-                                <li>Notarized Affidavit for the Change of Grades signed by the Professor</li>
-                                <li>Proof of payment</li>
-                            <strong>Payment</strong>
-                                <li>P30.00</li>
-                            </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> 
-                                <div class="circle-icon"> <i class="fa fa-question"></i> </div>
-                            <span>Processing of Request for Correction of Name in Conformity with the Philippines Statistics Authority Certificate of Live Birth </span> 
-                            </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                            <div class="accordion-body"> 
-                                <strong>Requirements</strong>
-                                <li>Letter address to the Campus Registrar</li>
-                                <li>Original Copy of PSA Birth Certificate </li>
-                                <li>Parent Affidavit / Affidavit of Discrepancy</li>
-                                <li>Joint Affidavit of Two Disinterested Person</li>
-                                <li>Corrected copy of F137A/TOR (if applicable)</li>
-                                <li>Original copy of Transcript of Records and Diploma (if previously issued) </li>
-                                <li>General Clearance showing the client is cleared of all accountabilities</li>
-                                <li>2 pcs. 2” x 2” picture in Formal Attire</li>
-                                <li>Proof of payment</li>
-                                <li>1 Long Brown Envelope</li>
-                                <strong>Payment</strong>
-                                <li>P150.00</li>
-                            </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFour">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"> 
-                                <div class="circle-icon"> <i class="fa fa-question"></i> </div>
-                            <span>Certification, Verification, Authentication (CAV/Apostile)</span> 
-                            </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                            <div class="accordion-body"> 
-                                <strong>Requirements</strong>
-                                <li>Student’s Request Letter</li>
-                                <li>General Clearance showing the client is cleared of all accountabilities</li>
-                                <li>Letter request addressed to CHED Regional Director (for CAV-CHED request only)</li>
-                                <li>2 pcs. 2” x 2” picture in Formal Attire</li>
-                                <li>Proof of payment</li>
-                                <li>1 Long Brown Envelope</li>
-                                <strong>Payment</strong>
-                                <li>P920.00 for DFA</li>
-                                <li>150.00 for Special Certification</li>
-                                <li>P620.00 for CHED</li>
-                                <li>P470.00 for PRC</li>
-                            </div>
-                            </div>
-                        </div>
-
-
-                        </div>
-                    </div>
-                    </div>
+                        <input type="text" name="search" id="search" class="form-control w-100" placeholder="Search for FAQs..." value="">
                 </div>
-            </section>
+            </div>
+
+            <div class="container-fluid p-4">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col">Document</th>
+                            <th class="text-center" scope="col">Requirements</th>
+                            <th class="text-center" scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions_table">
+                    <?php 
+                        $query_run = mysqli_query($connection, $query);
+                        if(mysqli_num_rows($query_run) > 0){
+                            foreach($query_run as $row) {
+                                ?>
+                                <tr>
+                                <td class="text-center w-25" scope="col"><?=$row['document'];?></td>
+                                <td scope="col"><?=$row['requirements'];?></td>
+                                <td scope="col"><?=$row['payment'];?></td>
+                                </tr>
+                                <?php
+                                } 
+                        }?>     
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
         <div class="push"></div>
     </div>
@@ -212,6 +105,31 @@ $conn = new PDO("mysql:host=localhost;dbname=reg_db", "root", "");
             e.preventDefault();
             });
         });
+
+        $(document).ready(function(){  
+           $('#search').keyup(function(){  
+                search_table($(this).val());  
+           });  
+           function search_table(value){  
+                $('#transactions_table tr').each(function(){  
+                     var found = 'false';  
+                     $(this).each(function(){  
+                          if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)  
+                          {  
+                               found = 'true';  
+                          }  
+                     });  
+                     if(found == 'true')  
+                     {  
+                          $(this).show();  
+                     }  
+                     else  
+                     {  
+                          $(this).hide();  
+                     }  
+                });  
+           }  
+      }); 
     </script>
 </body>
 </html>
