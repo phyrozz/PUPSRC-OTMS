@@ -11,7 +11,7 @@
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
 	<div class="container-fluid">
-		<img class="p-2" src="/assets/pup-logo.png" alt="PUP Logo" width="40">
+		<a href="/client/home.php"><img class="p-2" src="/assets/pup-logo.png" alt="PUP Logo" width="40"></a>
 		<a class="navbar-brand" href="/client/home.php"><strong>PUPSRC-OTMS</strong></a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,7 +100,7 @@
 						Juan Dela Cruz
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-						<li><a class="dropdown-item" href="/client/transactions.php">My Transactions</a></li>
+						<li><a class="dropdown-item" href="/client/registrar/your_transaction.php">My Transactions</a></li>
 						<li><a class="dropdown-item" href="#">Account Settings</a></li>
 						<li><a class="dropdown-item" href="http://localhost/sign_out.php"><i
 									class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
