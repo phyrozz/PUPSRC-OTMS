@@ -19,16 +19,19 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../../../navbar.php";
+            include "../../navbar.php";
+            include "../../../breadcrumb.php";
+            include "../../../conn.php";
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/student/guidance.php">Guidance Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Schedule Good Morals Retrieval</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'My Transactions', 'url' => '/student/transactions.php', 'active' => false],
+                ['text' => 'Schedule Good Moral Retrieval', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>Schedule Retrieval - Good Morals</h1>
@@ -51,9 +54,9 @@
                             <button class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
-                            <button class="btn btn-outline-primary mb-2">
+                            <a href="../help.php" class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-circle-question"></i> Help
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -172,5 +175,13 @@
         </div>
     </div>
     <script src="jquery.js"></script>
+    <script>
+        let currentDate = new Date().toISOString().split('T')[0];
+
+        var maxDate = "2033-12-31";
+
+        document.getElementById("date").min = currentDate;
+        document.getElementById("date").max = maxDate;
+    </script>
 </body>
 </html>

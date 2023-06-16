@@ -8,7 +8,6 @@
             $table = $_POST['table-select'];
         }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,18 +1,18 @@
 <?php
-require "connection.php";
+require "conn.php";
 
-function displayFacilities($conn, $filterCategory = null)
+function displayFacilities($facility_table, $connection, $filterCategory = null)
 {
-    $sql = "SELECT f.facility_id, f.facility_name, f.availability, f.facility_number, ft.facility_type
-            FROM facility AS f
-            INNER JOIN facility_type AS ft ON f.facility_type_id = ft.facility_type_id";
+    $sql = "SELECT f.*, ft.facility_type
+    FROM " . mysqli_real_escape_string($connection, $facility_table) . " AS f
+    INNER JOIN facility_type AS ft ON f.facility_type_id = ft.facility_type_id";
 
     if ($filterCategory) {
-        $filterCategory = mysqli_real_escape_string($conn, $filterCategory);
+        $filterCategory = mysqli_real_escape_string($connection, $filterCategory);
         $sql .= " WHERE ft.facility_type = '$filterCategory'";
     }
 
-    $result = $conn->query($sql);
+    $result = $connection->query($sql);
 
     if ($result->num_rows > 0) {
         echo "<table class='table table-hover table-bordered'>";
@@ -22,7 +22,7 @@ function displayFacilities($conn, $filterCategory = null)
                     <th>Availability</th>
                     <th>Number</th>
                     <th>Location</th>
-                    <th>Request</th>
+                    <th>Appointment</th>
                 </tr>
             </thead>";
         echo "<tbody>";
@@ -30,10 +30,37 @@ function displayFacilities($conn, $filterCategory = null)
         while ($row = $result->fetch_assoc()) {
             echo "<tr class='text-center'>";
             echo "<td>" . htmlspecialchars($row["facility_name"]) . "</td>";
-            echo "<td>" . htmlspecialchars($row["availability"]) . "</td>";
+            
+            // Check if the facility is available
+            $facilityAvailability = htmlspecialchars($row["availability"]);
+            
+            // Check if the facility has been appointed
+            $facilityId = $row["facility_id"];
+            $query = "SELECT * FROM appointment_facility WHERE facility_id = ?";
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("i", $facilityId);
+            $stmt->execute();
+            $appointmentResult = $stmt->get_result();
+            $facilityAppointment = $appointmentResult->fetch_assoc();
+            $stmt->close();
+
+            // Determine if the button should be disabled and change the text based on availability and appointment
+            if ($facilityAppointment !== null || $facilityAvailability === "Unavailable") {
+                $disabled = "disabled";
+                $buttonText = "Not Available";
+                $buttonClass = "btn-primary btn-dark text-black"; 
+            } else {
+                $disabled = "";
+                $buttonText = "Create Appointment";
+                $buttonClass = "btn-primary"; 
+            }
+
+            echo "<td>" . $facilityAvailability . "</td>";
             echo "<td>" . htmlspecialchars($row["facility_number"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["facility_type"]) . "</td>";
-            echo "<td><button class='btn btn-primary custom-font-size' onclick='redirectToRequest(" . htmlspecialchars($row["facility_id"]) . ", \"" . htmlspecialchars($row["facility_type"]) . "\")'>Create Request</button></td>";
+
+            echo "<td><button class='btn custom-font-size $buttonClass' onclick='redirectToRequest(" . htmlspecialchars($row["facility_id"]) . ", \"" . htmlspecialchars($facility_table) . "\", \"" . htmlspecialchars($row["facility_name"]) . "\",  \"" . htmlspecialchars($row["facility_number"]) . "\")' $disabled>$buttonText</button></td>";
+
             echo "</tr>";
         }
 
@@ -47,12 +74,11 @@ function displayFacilities($conn, $filterCategory = null)
 // Filter form handling
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $selectedCategory = $_POST["category"];
-    displayFacilities($conn, $selectedCategory);
+    displayFacilities("facility", $connection, $selectedCategory);
 } else {
     // Display the facilities table without filtering
-    displayFacilities($conn);
+    displayFacilities("facility", $connection);
 }
 
-$conn->close();
+$connection->close();
 ?>
-

@@ -1,126 +1,141 @@
-<?php include './functions.php';?>
-
-<?php
-    // Add pagination to the table
-    $rowsPerPage = 5;
-
-    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $offset = ($page - 1) * $rowsPerPage;
-
-    $sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'request_code';
-    $sortDirection = isset($_GET['dir']) ? $_GET['dir'] : 'DESC';
-
-    // Validate and sanitize the sort column
-    $validColumns = ['id', 'office_name', 'request_description', 'scheduled_datetime', 'status_name', 'amount_to_pay'];
-    if (!in_array($sortColumn, $validColumns)) {
-        $sortColumn = 'scheduled_datetime'; // Set a default sort column
-    }
-
-    // Validate and sanitize the sort direction
-    $sortDirection = strtoupper($sortDirection);
-    if ($sortDirection !== 'ASC' && $sortDirection !== 'DESC') {
-        $sortDirection = 'DESC'; // Set a default sort direction
-    }
-
-    $documentRequests = "SELECT request_id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
-                        FROM doc_requests
-                        INNER JOIN offices ON doc_requests.office_id = offices.office_id
-                        INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        WHERE user_id = 1 OR request_description <> NULL
-                        ORDER BY $sortColumn $sortDirection
-                        LIMIT $offset, $rowsPerPage";
-
-    $result = mysqli_query($connection, $documentRequests);
-?>
 <table id="transactions-table" class="table table-hover table-bordered">
     <thead>
         <tr>
-            <th class="text-center" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Request Code
-                    <?php if ($sortColumn === 'id') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
-            </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=office_name&dir=<?php echo $sortColumn === 'office_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Office
-                    <?php if ($sortColumn === 'office_name') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
-            </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=request_description&dir=<?php echo $sortColumn === 'request_description' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Request
-                    <?php if ($sortColumn === 'request_description') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
-            </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=scheduled_datetime&dir=<?php echo $sortColumn === 'scheduled_datetime' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Schedule
-                    <?php if ($sortColumn === 'scheduled_datetime') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
-            </th>
-            <th class="text-center" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=id&dir=<?php echo $sortColumn === 'amount_to_pay' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Amount to pay
-                    <?php if ($sortColumn === 'amount_to_pay') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
-            </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=status_name&dir=<?php echo $sortColumn === 'status_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Status
-                    <?php if ($sortColumn === 'status_name') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
-            </th>
+            <th class="text-center doc-request-id-header" scope="col">Request Code</th>
+            <th class="text-center doc-request-office-header sortable-header" data-column="1" scope="col">Office</th>
+            <th class="text-center doc-request-description-header sortable-header" data-column="2" scope="col">Request</th>
+            <th class="text-center doc-request-schedule-header sortable-header" data-column="3" scope="col">Schedule</th>
+            <th class="text-center doc-request-amount-header" scope="col">Amount to pay</th>
+            <th class="text-center doc-request-status-header sortable-header" data-column="5" scope="col">Status</th>
+            <th></th>
         </tr>
     </thead>
-    <tbody>
-        <?php
-            if ($result) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $requestId = $row['request_id'];
-                    $requestDescription = $row['request_description'];
-                    $scheduledDateTime = $row['scheduled_datetime'];
-                    $officeName = $row['office_name'];
-                    $statusName = $row['status_name'];
-                    $amountToPay = $row['amount_to_pay'];
-        ?>
-        <tr>
-            <td><?php echo "DR-"; echo $requestId; ?></td>
-            <td><?php echo $officeName; ?></td>
-            <td><?php echo $requestDescription; ?></td>
-            <td><a href="<?php echo getSchedulePageRedirect($requestDescription); ?>" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a> <?php echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A"); ?></td>
-            <td><?php echo "₱"; echo $amountToPay; ?></td>
-            <td class="text-center">
-                <span class="badge rounded-pill <?php echo getStatusBadgeClass($statusName); ?>">
-                    <?php echo $statusName; ?>
-                </span>
-            </td>
-        </tr>
-        <?php
-                }
-            }
-            else {
-                echo "Error executing the query: " . mysqli_error($connection);
-            }
-
-            $countTotalOnDocumentRequests = "SELECT COUNT(*) AS total FROM doc_requests WHERE user_id = 1";
-            $countResult = mysqli_query($connection, $countTotalOnDocumentRequests);
-            $countRow = mysqli_fetch_assoc($countResult);
-            $totalRows = $countRow['total'];
-
-            $totalPages = ceil($totalRows / $rowsPerPage);
-        ?>
+    <tbody id="table-body">
+        <!-- Table rows will be generated dynamically using JavaScript -->
     </tbody>
 </table>
+
+<div id="pagination" class="d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="pagination-links">
+            <!-- Pagination links will be generated dynamically using JavaScript -->
+        </ul>
+    </nav>
+</div>
+<script>
+    function getStatusBadgeClass(status) {
+        switch (status) {
+            case 'Approved':
+                return 'bg-success';
+            case 'Disapproved':
+                return 'bg-danger';
+            default:
+                return 'bg-warning text-dark';
+        }
+    }
+    
+    // Add more cases here for other office document requests
+    function getSchedulePageRedirect(request) {
+        switch (request) {
+            case "Request Good Moral Document":
+                return "/student/guidance/doc_appointments/good_morals.php";
+            case "Request Clearance":
+                return "/student/guidance/doc_appointments/clearance.php";
+            default:
+                return "#";
+        }
+    }
+
+    // Function to handle pagination using AJAX
+    function handleDeleteRequest(requestId) {
+        // Make an AJAX request to delete the document request
+        $.ajax({
+            url: 'transaction_tables/delete_document_request.php',
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function(response) {
+                // Handle the response after deleting the request
+                // For example, you can display a success message
+                console.log('Request deleted successfully');
+
+                // Refresh the table after deletion
+                handlePagination(1);
+            }
+        });
+    }
+
+    function handlePagination(page) {
+        // Make an AJAX request to fetch the document requests
+        $.ajax({
+            url: 'transaction_tables/fetch_document_requests.php',
+            method: 'POST',
+            data: { page: page },
+            success: function(response) {
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Update the table body with the received data
+                var tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+
+                if (data.total_records > 0) {
+                    for (var i = 0; i < data.document_requests.length; i++) {
+                        var request = data.document_requests[i];
+                        var row = '<tr>' +
+                            '<td>' + 'DR-' + request.request_id + '</td>' +
+                            '<td>' + request.office_name + '</td>' +
+                            '<td>' + request.request_description + '</td>' +
+                            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+                            '<td>' + '₱' + request.amount_to_pay + '</td>' +
+                            '<td class="text-center">' +
+                                '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
+                            '</td>' +
+                            '<td>' +
+                                '<form method="POST" >' +
+                                    '<a href="' + getSchedulePageRedirect(request.request_description) + '" class="btn btn-primary btn-sm"><i class="fa-brands fa-wpforms"></i></a>' +
+                                    '<input type="hidden" name="request_id" value="' + request.request_id + '">' +
+                                    (request.status_name === 'Pending' || request.status_name === 'Disapproved' ?
+                                        '<button type="submit" name="delete_request" class="btn btn-primary btn-sm"><i class="fa-solid fa-trash-can"></i></button>' :
+                                        '<button type="button" class="btn btn-sm" disabled><i class="fa-solid fa-trash-can"></i></button>') +
+                                '</form>' +
+                            '</td>' +
+                            '</tr>';
+                        tableBody.innerHTML += row;
+                    }
+                } else {
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    tableBody.innerHTML = noRecordsRow;
+                }
+
+                // Update the pagination links
+                var paginationLinks = document.getElementById('pagination-links');
+                paginationLinks.innerHTML = '';
+
+                if (data.total_pages > 1) {
+                    for (var i = 1; i <= data.total_pages; i++) {
+                        var pageLink = '<li class="page-item' + (i === data.current_page ? ' active' : '') + '">' +
+                            '<a class="page-link" href="#" onclick="handlePagination(' + i + ')">' + i + '</a>' +
+                            '</li>';
+                        paginationLinks.innerHTML += pageLink;
+                    }
+                }
+
+                // Add event listeners for delete buttons
+                var deleteButtons = document.getElementsByName('delete_request');
+                deleteButtons.forEach(function(button) {
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        if (confirm('Are you sure you want to delete this appointment?')) {
+                            var requestId = this.previousSibling.value;
+                            handleDeleteRequest(requestId);
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    // Initial pagination request (page 1)
+    handlePagination(1);
+
+</script>

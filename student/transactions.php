@@ -19,8 +19,9 @@
     <div class="wrapper">
         <?php
             $office_name = "Select an Office";
-            //include "../conn.php";
-            include "../navbar.php";
+            include "../conn.php";
+            include "navbar.php";
+            include "../breadcrumb.php";
 
             $table = 'document_request';
 
@@ -29,12 +30,13 @@
             }
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="academic.php">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">My Transactions</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'My Transactions', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>My Transactions</h1>
@@ -47,7 +49,7 @@
                         <i class="fa-solid fa-circle-info"></i> Reminder
                         </h4>
                         <p>You must set an appointment for approved document requests before retrieving it from their respective offices.</p>
-                        <p class="mb-0">To set or edit an appointment, click on the <i class="fa-brands fa-wpforms"></i> button on the table.</p>
+                        <p class="mb-0">To set or edit an appointment, click the <i class="fa-brands fa-wpforms"></i> button on the table.</p>
                     </div>
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
@@ -71,38 +73,16 @@
                         <?php
                             // Load the requested table
                             if ($table === 'document_request') {
-                                // include 'transaction_tables/document_request_table.php';
+                                include 'transaction_tables/document_request_table.php';
                             } elseif ($table === 'scheduled_appointments') {
-                                // include 'transaction_tables/scheduled_appointments_table.php';
+                                include 'transaction_tables/scheduled_appointments_table.php';
                             } elseif ($table === 'payments') {
-                                // include 'transaction_tables/payments_table.php';
+                                include 'transaction_tables/payments_table.php';
                             }
                         ?>
                     </div>
                 </div>
             </div>
-            <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <?php if ($page > 1) { ?>
-                        <a class="btn btn-outline-primary" href="?page=<?php echo $page - 1; ?>">Previous</a>
-                    <?php } ?>
-                    <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                        <?php if ($i == $page) { ?>
-                            <a class="btn btn-primary" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                        <?php } else { ?>
-                            <a class="btn btn-outline-primary" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                        <?php } ?>
-                    <?php } ?>
-                    <?php if ($page < $totalPages) { ?>
-                        <a class="btn btn-outline-primary" href="?page=<?php echo $page + 1; ?>">Next</a>
-                    <?php } ?>
-                </div>
-            </div>
-            
         </div>
         <div class="push"></div>
     </div>
@@ -126,6 +106,7 @@
             e.preventDefault();
             });
         });
+
     </script>
 </body>
 </html>

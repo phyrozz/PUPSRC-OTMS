@@ -1,3 +1,6 @@
+<?php
+require "../navbar.php"; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
@@ -16,19 +19,52 @@
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="wrapper">
+    <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../../navbar.php";
+            include "../../breadcrumb.php";
+            include "../../conn.php";
+
+            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
+            WHERE user_id = ?";
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("i", $_SESSION['user_id']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $userData = $result->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+
+            if(isset($_POST['clearanceFormSubmit'])) {
+                $requestDescription = "Request Clearance";
+                $officeId = 5;
+                $statusId = 3;
+                $amountToPay = 0.00;
+
+                $query = "INSERT INTO doc_requests (request_description, office_id, user_id, status_id, amount_to_pay)
+                VALUES (?, ?, ?, ?, ?)";
+
+                $stmt = $connection->prepare($query);
+                $stmt->bind_param("siiid", $requestDescription, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
+                if ($stmt->execute()) {
+                    $_SESSION['success'] = true;
+                    // header("Location: http://localhost/student/guidance/success.php");
+                }
+                else {
+                    var_dump($stmt->error);
+                }
+                $stmt->close();
+                $connection->close();
+            }
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../guidance.php">Guidance Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Request Clearance</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Guidance Office', 'url' => '/student/guidance.php', 'active' => false],
+                ['text' => 'Request Clearance', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>Request Document - Clearance</h1>
@@ -51,9 +87,9 @@
                             <button class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
-                            <button class="btn btn-outline-primary mb-2">
+                            <a href="help.php" class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-circle-question"></i> Help
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -62,36 +98,37 @@
                         <h6>Request Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="row g-3">
+                        <form action="clearance.php" id="appointment-form" class="row g-3" method="POST">
+                        <input type="hidden" name="form_type" value="clearance">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
                             <div class="form-group required col-12">
                                 <label for="studentNumber" class="form-label">Student Number</label>
-                                <input type="text" class="form-control" id="studentNumber" disabled required>
+                                <input type="text" class="form-control" id="studentNumber" value="<?php echo $userData[0]['student_no'] ?>" maxlength="15" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" disabled required>
+                                <input type="text" class="form-control" id="lastName" value="<?php echo $userData[0]['last_name'] ?>" maxlength="100" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="firstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" disabled required>
+                                <input type="text" class="form-control" id="firstName" value="<?php echo $userData[0]['first_name'] ?>" maxlength="100" disabled required>
                             </div>
-                            <div class="form-group required col-md-6">
+                            <div class="form-group col-md-6">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName" disabled required>
+                                <input type="text" class="form-control" id="middleName" value="<?php echo $userData[0]['middle_name'] ?>" maxlength="100" disabled>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="extensionName" class="form-label">Extension Name</label>
-                                <input type="text" class="form-control" id="extensionName" disabled required>
+                                <input type="text" class="form-control" id="extensionName" value="<?php echo $userData[0]['extension_name'] ?>" maxlength="11" disabled required>
                             </div>
-                            <div class="form-group required col-12">
+                            <div class="form-group col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" required>
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Request Information</h6>
                             <div class="form-group col-12">
@@ -114,7 +151,7 @@
                                 <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
                                     <i class="fa-solid fa-arrow-left"></i> Back
                                 </button>
-                                <input id="submitBtn" value="Submit "type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
+                                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
@@ -128,13 +165,33 @@
                                         Are you sure you want to submit this form?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <a href="#" id="submit" class="btn btn-primary">Submit</a>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                        <button type="submit" id="submit" class="btn btn-primary" name="clearanceFormSubmit">Yes</button>
                                     </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <!-- Success alert modal -->
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your request has been submitted successfully!</p>
+                                        <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
+                                        <p>You must print this approval letter and submit it to the Director's Office before scheduling your request.</p>
+                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="../transactions.php" class="btn btn-primary">Go to My Transactions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of success alert modal -->
                     </div>
                 </div>
             </div>
@@ -150,6 +207,32 @@
             <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
         </div>
     </div>
-    <script src="jquery.js"></script>
+    <script src="../../jquery.js"></script>
+    <script>
+        // Function to handle form submission
+        function handleSubmit() {
+            validateForm();
+            if (document.getElementById('appointment-form').checkValidity()) {
+                $('#confirmSubmitModal').modal('show');
+            }
+        }
+        
+        // Add event listener to the submit button
+        document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+    </script>
+    <?php
+    if (isset($_SESSION['success'])) {
+        ?>
+        <script>
+            // window.location.href="http://localhost/student/guidance/clearance.php";
+            $(document).ready(function() {
+                $("#successModal").modal("show");
+            })
+        </script>
+        <?php
+        unset($_SESSION['success']);
+        exit();
+    }
+    ?>
 </body>
 </html>

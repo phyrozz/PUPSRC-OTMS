@@ -17,22 +17,54 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="jumbotron container-lg bg-white d-flex">
-        <div class="container-lg container-fluid">
+    <?php
+    session_start();
+    include "../conn.php";
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $clientRole = 3;
+
+        $query = "SELECT user_id, email, first_name, last_name, password FROM users WHERE email = ? and user_role = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("si", $email, $clientRole);
+        $stmt->execute();
+        $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbPassword);
+        $stmt->fetch();
+
+        if ($dbEmail && password_verify($password, $dbPassword)) {
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['first_name'] = $dbFirstName;
+            $_SESSION['last_name'] = $dbLastName;
+            header("Location: ../admin/guidance.php");
+            exit();
+        } else {
+                $loginMessage = "Invalid credentials. Please try again.";
+            }
+    
+            $stmt->close();
+            $connection->close();
+        }
+    ?>
+    <div class="jumbotron bg-white d-flex">
+        <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center d-flex flex-column align-items-center justify-content-center">
+                <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
-                    <h1 class="display-4">PUP-SRC</h1>
-                    <h2>Online Transaction Management System</h2>
+                    <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
                     <p class="lead">Sign in as Faculty Admin</p>
 
-                    <form class="d-flex flex-column gap-2" action="admin.php">
+                    <form method="POST" class="d-flex flex-column gap-2" action="">
                         <div class="form-group col-12">
-                            <input type="text" class="form-control" id="email" placeholder="Email address"  maxlength="100" required>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Email address"  maxlength="100" required>
                         </div>
                         <div class="form-group col-12">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password"  maxlength="100" required>
                         </div>
+                        <?php if (isset($loginMessage)) { ?>
+                        <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
+                        <?php } ?>
                         <div class="alert alert-info" role="alert">
                             <h4 class="alert-heading">
                             <i class="fa-solid fa-circle-info"></i> Reminder

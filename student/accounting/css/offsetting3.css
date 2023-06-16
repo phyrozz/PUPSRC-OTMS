@@ -1,0 +1,38 @@
+.card1
+{
+    width: 70%;
+    height: 260px;
+    background-color: #800000;
+    color: white;
+    margin-top: 120px;
+    border: solid 10px #800000;
+    border-radius: 10px;
+}
+
+.card1 h1
+{
+    font-size: 40px;
+    padding-top: 40px;
+}
+
+.card1 h2
+{
+    font-size: 20px;
+    padding: 20px;
+    border: solid 5px #af8519;
+    border-radius: 10px;
+    background-color: white;
+    width: fit-content;
+    height: fit-content;
+    
+    
+}
+
+.card1 h3
+{
+    font-size: 15px;
+    text-align: center;
+    width:80%;
+
+    
+}
