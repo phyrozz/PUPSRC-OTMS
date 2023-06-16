@@ -1,14 +1,13 @@
 <?php
 
 include 'conn.php';
-session_start();
 
 $result = mysqli_query($connect, 
-	"SELECT request_code, DATE_FORMAT(schedule, '%M %e, %Y') 
-	AS schedule, services, status, office FROM reg_db.reg_transaction 
+	"SELECT reg_transaction.id AS request_code, DATE_FORMAT(schedule, '%M %e, %Y') 
+	AS schedule, services, status, office_name AS office FROM reg_transaction 
 	LEFT JOIN reg_services ON reg_services.id = reg_transaction.services_id 
 	LEFT JOIN reg_status ON reg_status.id = reg_transaction.status_id
-	LEFT JOIN office ON office.id = reg_transaction.office_id");
+	LEFT JOIN offices ON offices.office_id = reg_transaction.office_id");
 	
 
 ?>
@@ -35,7 +34,7 @@ $result = mysqli_query($connect,
 	<div class="wrapper">
 		<?php
             $office_name = "Registrar Office";
-            include "../navbar.php"
+            include "./navbar.php"
         ?>
 		<div class="container-fluid p-4">
 			<nav class="breadcrumb-nav" aria-label="breadcrumb">
