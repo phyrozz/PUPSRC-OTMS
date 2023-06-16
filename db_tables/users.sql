@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2023 at 08:02 PM
+-- Generation Time: Jun 15, 2023 at 08:25 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -35,6 +35,7 @@ CREATE TABLE `users` (
   `middle_name` varchar(100) DEFAULT NULL,
   `extension_name` varchar(11) DEFAULT NULL,
   `contact_no` varchar(13) DEFAULT NULL,
+  `birth_date` date NOT NULL DEFAULT current_timestamp(),
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `user_role` int(11) NOT NULL
@@ -44,18 +45,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle_name`, `extension_name`, `contact_no`, `email`, `password`, `user_role`) VALUES
-(1, '', 'Cruz', 'Juan', 'Dela', NULL, '09012345678', 'jdelacruz@gmail.com', NULL, 1),
-(2, '', 'Rosario', 'Anna', 'Lampara', NULL, '09056328999', 'anna122L@yahoo.com', NULL, 1),
-(3, '', 'Malabanan', 'Isaac', 'Dane', 'Jr.', '09054429918', 'malabanan2222@gmail.com', NULL, 1),
-(4, '', 'Austria', 'Skyler Jorden', 'Calapatia', NULL, '09025571297', 'skylerwhitey0@yahoo.com', NULL, 1),
-(5, '', 'Belloso', 'Collin', 'Magat', NULL, '09010110590', 'bestnn_2021@gmail.com', NULL, 1),
-(6, '', 'Reyes', 'Nataniel Urbano', 'Ynaya', NULL, '09087310002', 'urban_011@yahoo.com', NULL, 2),
-(7, '', 'Lorenzo', 'Vincente Dylan', 'Dioquino', NULL, '09051128492', 'vincente_999@yahoo.com', NULL, 3),
-(28, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '09087756313', 'joshuamalabanan70@gmail.com', '$2y$10$Tzsuk4BMbLY5ewMILCTTdeIk2/ufNWTbWQzOZcLlsH8Iy/LQmaC8a', 1),
-(31, '2020-00200-SR-0', 'Shandra', 'Miki', 'Brawl', 'Jr.', '09464032004', 'mmallow624@gmail.com', '$2y$10$orJgdEoFs1G066jHzilA4Or/WrvzNj8HDJVBk6pcJBtMhguQ6MlbG', 1),
-(32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', 'bussinbaldes@gmail.com', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
-(33, '2020-12356-SR-0', 'Magno', 'Dowel', 'P', 'Jr', '09645231211', 'mixelsynth69@gmail.com', '$2y$10$ZZFWcYG4TvuawhqLZfoNs.ijLIefE0k9rUJMhathYttUQqX8B1q66', 1);
+INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle_name`, `extension_name`, `contact_no`, `birth_date`, `email`, `password`, `user_role`) VALUES
+(28, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '09087756313', '2001-08-27', 'joshuamalabanan70@gmail.com', '$2y$10$Tzsuk4BMbLY5ewMILCTTdeIk2/ufNWTbWQzOZcLlsH8Iy/LQmaC8a', 1),
+(31, '2020-00200-SR-0', 'Shandra', 'Miki', 'Brawl', 'Jr.', '09464032004', '2023-06-16', 'mmallow624@gmail.com', '$2y$10$orJgdEoFs1G066jHzilA4Or/WrvzNj8HDJVBk6pcJBtMhguQ6MlbG', 1),
+(32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', '2023-06-16', 'bussinbaldes@gmail.com', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
+(33, '2020-12356-SR-0', 'Magno', 'Dowel', 'P', 'Jr', '09645231211', '2023-06-16', 'mixelsynth69@gmail.com', '$2y$10$ZZFWcYG4TvuawhqLZfoNs.ijLIefE0k9rUJMhathYttUQqX8B1q66', 1);
 
 --
 -- Indexes for dumped tables
