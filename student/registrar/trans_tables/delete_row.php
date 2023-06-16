@@ -44,11 +44,12 @@
                   <td><?=$row['schedule'];?></td>
                   <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status'];?></td>
                 </tr>
-                <td colspan="6"><input type="checkbox" name="del_all" onchange="checkAll(this)"> Select all</input></td>
                 <?php
               }
-            }
-          }else {
+            } ?>
+            <td colspan="6"><input type="checkbox" name="del_all" onchange="checkAll(this)"> Select all</input></td>
+          <?php }
+          else {
             ?>
               <tr>
                 <td class="text-center" colspan="6">No record found!</td>
@@ -57,7 +58,7 @@
             <?php
           }
           ?>
-          
+         
     </tbody>
 </table>
 
