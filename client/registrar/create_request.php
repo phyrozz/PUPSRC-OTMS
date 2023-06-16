@@ -4,37 +4,26 @@ session_start();
 //if($_SESSION['id']==''){
 	//header('#');
 	//}
-    //$id = $_SESSION['id'];
+	//$id = $_SESSION['id'];
+$_SESSION['id'] = 28;
+$user_id = $_SESSION['id'];
 
-    //fetching student info//
-    $result = mysqli_query($connect, "SELECT users.id, users.last_name, users.first_name, users.middle_name, users.extension_name, users.contact_no, users.email, students.student_no 
-    FROM users, students 
-    WHERE users.id=users_id 
-    ORDER BY users.id");
-	$row = mysqli_fetch_array($result);
-    //fetching registrar services
-    $result1 = mysqli_query($connect, "SELECT * FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.id > 22");
-    
-    if(isset($_POST["submit"])){
-        $reg_code = "REG001"; //sample REG001, need to increment
-        $req_student_service = $_POST["req_student_service"];
-        $user_id = $row["id"];
-        $office_id = "1"; //1-Registrar Office
-        $date = $_POST["date"];
-        $status_id = "1"; //1-Pending
+//fetching student info//
+$result = mysqli_query($connect, "SELECT users.user_id, users.last_name, users.first_name, users.middle_name, users.extension_name, users.contact_no, users.email, users.student_no 
+FROM users, students 
+WHERE users.user_id= $user_id
+ORDER BY users.user_id");
 
-        $query = "INSERT INTO reg_transaction VALUES('','$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
-        $result2 = mysqli_query($connect, $query);
-        if ($result2) {
-            // Data inserted successfully
-            echo
-            "<script> alert('Registration Successful'); </script>";
-          } else {
-            // Error occurred while inserting data
-            echo
-            "<script> alert('Password Does Not Match'); </script>";
-          }
-    }
+
+$row = mysqli_fetch_array($result);
+//fetching registrar services
+$requirements = mysqli_query($connect, "SELECT reg_services.id AS id, reg_requirements.id AS requirement_id, services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.id > 22");
+
+if(isset($_POST["submit"])){
+	$_SESSION['date'] = $_POST['date'];
+	$_SESSION['req_student_service'] = $_POST['req_student_service'];
+	header("Location: submit_request.php");
+};
 
 
 ?>
@@ -47,7 +36,7 @@ session_start();
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Registrar Office - Create Request</title>
-	<link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 	<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../../style.css">
 	<script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
@@ -68,7 +57,21 @@ session_start();
 				}
 			});
 		});
+
 	});
+
+	function validateForm() {
+		// Check if the form is valid
+		console.log(document.getElementById("appointment-form").checkValidity());
+
+		if (document.getElementById("appointment-form").checkValidity()) {
+			// Show the modal if the form is valid
+			$('#confirmSubmitModal').modal('show');
+		} else {
+			// Trigger HTML5 form validation to display error messages
+			document.getElementById("appointment-form").reportValidity();
+		}
+	}
 	</script>
 </head>
 
@@ -76,7 +79,7 @@ session_start();
 	<div class="wrapper">
 		<?php
             $office_name = "Registrar Office";
-            include "../navbar.php";
+						include "./navbar.php";
         ?>
 		<div class="container-fluid p-4">
 			<nav class="breadcrumb-nav" aria-label="breadcrumb">
@@ -104,7 +107,7 @@ session_start();
 								you may visit <a href="https://www.pup.edu.ph/privacy/"
 									target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
 						<div class="d-flex flex-column">
-							<a class="btn btn-outline-primary mb-2" href="#">
+							<a class="btn btn-outline-primary mb-2" href="./your_transaction.php">
 								<i class="fa-regular fa-clipboard"></i> My Transactions
 							</a>
 							<a class="btn btn-outline-primary mb-2">
@@ -153,7 +156,7 @@ session_start();
 								<input type="text" class="form-control" id="contactNumber" name="contactNumber"
 									value="<?php echo $row["contact_no"]; ?>" required>
 							</div>
-							<div class="form-group col-12">
+							<div class="form-group required col-12">
 								<label for="email" class="form-label">Email Address</label>
 								<input type="email" class="form-control" id="email" name="email" value="<?php echo $row["email"]; ?>"
 									required>
@@ -161,11 +164,11 @@ session_start();
 							<h6 class="mt-5">Request Information</h6>
 							<div class="form-group required col-md-12">
 								<label for="typeOfServices" class="form-label">Type of Services</label>
-								<select name="req_student_service" class="form-control" id="req_student_service">
-									<option hidden>--Select Here--</option>
+								<select required name="req_student_service" class="form-control" id="req_student_service">
+									<option value="" hidden>--Select Here--</option>
 									<!-- connect to db -->
 									<?php
-                                    while ($dropdown = mysqli_fetch_assoc($result1)){
+                                    while ($dropdown = mysqli_fetch_assoc($requirements)){
                                         echo '<option value="' . $dropdown['id'] . '">' . $dropdown['services'] . '</option>';
                                     }
                                     ?>
@@ -175,7 +178,9 @@ session_start();
 							<pre id="req_requirements"></pre>
 							<div class="form-group required col-md-12">
 								<label for="date" class="form-label">Date</label>
-								<input type="date" class="form-control" name="date" id="date" max="2023-12-31" required>
+								<input type="date" class="form-control" name="date" id="date" max="2023-12-31"
+									min="<?php echo date('Y-m-d'); ?>" required>
+
 							</div>
 							<div class="alert alert-info" role="alert">
 								<h4 class="alert-heading">
@@ -192,28 +197,28 @@ session_start();
 									<i class="fa-solid fa-arrow-left"></i> Back
 								</button>
 
-								<button name="submit" type="submit" class="btn btn-primary">Submit</button>
-
+								<input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25"
+									onclick="validateForm()" />
+								<div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												Are you sure you want to submit this form?
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+												<button name="submit" type="submit" value="submit" class="btn btn-primary">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<!-- Modal -->
-							<!-- <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
-                             <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to submit this form?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="button" name="submit" type="submit" value="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div> -->
+
 						</form>
 					</div>
 				</div>
