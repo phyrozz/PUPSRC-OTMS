@@ -12,8 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_name = $_POST["first_name"];
     $last_name = $_POST["last_name"];
     $student_no = $_POST["student_no"];
-
-    $sql = "SELECT * FROM users WHERE first_name = '$first_name' && last_name = '$last_name' && student_no = '$student_no'";
+    $birth_date = $_POST["birth_date"];
+    $sql = "SELECT * FROM users WHERE first_name = '$first_name' && last_name = '$last_name' && student_no = '$student_no' &&  birth_date = '$birth_date'";
     
     $result = $conn->query($sql);
 
