@@ -1,13 +1,9 @@
 <?php 
-include '../conn.php';
-    //fetching transaction info//
-    $result = mysqli_query($connect, "SELECT * FROM users
-    INNER JOIN reg_transaction ON  users.id = reg_transaction.user_id
-    INNER JOIN office ON reg_transaction.office_id = office.id
-    INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-    INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id");
+    include '../../conn.php';
+    $office_name = "Registrar Office";
+    include "../navbar.php";
    
-   $table = 'view_table';
+    $table = 'view_table';
         if (isset($_POST['submit'])) {
             $table = $_POST['table-select'];
         }
@@ -15,20 +11,13 @@ include '../conn.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Office - Your Registrar Transactions</title>
+    <title>Registrar Office - Registrar Transactions History</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <link rel="icon" type="image/x-icon" href="../../../assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../../assets/favicon.ico">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../style.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
@@ -36,13 +25,11 @@ include '../conn.php';
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
         <?php
-            $office_name = "Registrar Office";
-            include "../navbar.php";
             include "../../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">
@@ -56,7 +43,7 @@ include '../conn.php';
             ?>
         </div>
         <div class="container-fluid text-center p-4">
-            <h1>My Transactions</h1>
+            <h1>Registrar Transactions History</h1>
         </div>
         <div class="container-fluid">
             <div class="row">
@@ -88,6 +75,14 @@ include '../conn.php';
                     </div>
                     <div id="table-container">
                         <?php
+                            //fetching transaction info//
+                            $id = $_SESSION['user_id'];
+                            $result = mysqli_query($connection, "SELECT * FROM users
+                            INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
+                            INNER JOIN offices ON reg_transaction.office_id = offices.office_id
+                            INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
+                            INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id
+                            WHERE users.user_id = $id");
                             // Load the requested table
                             if ($table === 'view_table') {
                                 include 'trans_tables/view_row.php';
@@ -113,7 +108,7 @@ include '../conn.php';
         </div>
     </footer>
     <?php
-        mysqli_close($connect);
+        mysqli_close($connection);
     ?>
     <script>
         $(document).ready(function(){
