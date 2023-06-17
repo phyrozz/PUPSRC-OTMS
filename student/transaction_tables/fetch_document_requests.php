@@ -12,15 +12,26 @@ $recordsPerPage = 10;
 
 // Calculate the starting record for the requested page
 $startingRecord = ($page - 1) * $recordsPerPage;
+$searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
 // Retrieve the document requests
 $documentRequestsQuery = "SELECT request_id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
                         FROM doc_requests
                         INNER JOIN offices ON doc_requests.office_id = offices.office_id
                         INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL
-                        ORDER BY request_id DESC
-                        LIMIT $startingRecord, $recordsPerPage";
+                        WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL";
+
+if (!empty($searchTerm)) {
+    $query .= " AND (request_id LIKE '%$searchTerm%'
+                OR office_name LIKE '%$searchTerm%'
+                OR request_description LIKE '%$searchTerm%'
+                OR scheduled_datetime LIKE '%$searchTerm%'
+                OR status_name LIKE '%$searchTerm%'
+                OR amount_to_pay LIKE '%$searchTerm%')";
+}
+
+$documentRequestsQuery .= " ORDER BY request_id DESC
+LIMIT $startingRecord, $recordsPerPage";
 
 $result = mysqli_query($connection, $documentRequestsQuery);
 

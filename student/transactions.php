@@ -64,8 +64,8 @@
                         </div>
                         <div class="d-flex justify-content-end gap-2">
                             <div class="input-group mb-3 d-flex justify-content-end">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <button class="btn btn-outline-primary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+                                <input type="text" class="form-control" placeholder="Search..." id="search-input">
+                                <button class="btn btn-outline-primary" type="button" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </div>
@@ -100,11 +100,16 @@
     ?>
     <script>
         $(document).ready(function(){
-            $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
-            $(this).next('ul').toggle();
-            e.stopPropagation();
-            e.preventDefault();
+            $('#search-button').on('click', function() {
+                var searchTerm = $('#search-input').val();
+                handlePagination(1, searchTerm);
             });
+
+            // $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
+            //     $(this).next('ul').toggle();
+            //     e.stopPropagation();
+            //     e.preventDefault();
+            // });
         });
 
     </script>

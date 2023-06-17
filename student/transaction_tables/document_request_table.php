@@ -64,12 +64,12 @@
         });
     }
 
-    function handlePagination(page) {
+    function handlePagination(page, searchTerm = '') {
         // Make an AJAX request to fetch the document requests
         $.ajax({
             url: 'transaction_tables/fetch_document_requests.php',
             method: 'POST',
-            data: { page: page },
+            data: { page: page, searchTerm: searchTerm },
             success: function(response) {
                 // Parse the JSON response
                 var data = JSON.parse(response);
@@ -113,8 +113,8 @@
 
                 if (data.total_pages > 1) {
                     for (var i = 1; i <= data.total_pages; i++) {
-                        var pageLink = '<li class="page-item' + (i === data.current_page ? ' active' : '') + '">' +
-                            '<a class="page-link" href="#" onclick="handlePagination(' + i + ')">' + i + '</a>' +
+                        var pageLink = '<li class="page-item">' +
+                            '<a class="page-link' + (i === data.current_page ? ' btn-primary text-light' : ' text-dark btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ')">' + i + '</a>' +
                             '</li>';
                         paginationLinks.innerHTML += pageLink;
                     }
@@ -138,4 +138,10 @@
     // Initial pagination request (page 1)
     handlePagination(1);
 
+    $(document).ready(function() {
+        $('#button-addon2').click(function() {
+            var searchTerm = $('#search-input').val();
+            handlePagination(1, searchTerm);
+        });
+    });
 </script>

@@ -24,7 +24,7 @@
 	<?php
             $office_name = "Select an Office";
             include "../conn.php";
-            include "navbar.php";
+            include "./navbar.php";
         ?>
 	<div class="jumbotron container-lg bg-white d-flex vw-100">
 		<div class="container-lg container-fluid">

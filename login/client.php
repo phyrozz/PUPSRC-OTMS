@@ -38,6 +38,7 @@
             $_SESSION['user_id'] = $userId;
             $_SESSION['first_name'] = $dbFirstName;
             $_SESSION['last_name'] = $dbLastName;
+            $_SESSION['user_role'] = 2;
             header("Location: ../client/home.php");
             exit();
         } else {
