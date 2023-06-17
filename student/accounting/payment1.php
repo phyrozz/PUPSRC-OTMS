@@ -154,7 +154,7 @@ if (isset($_POST['submit'])) {
     <div class="container-fluid p-4">
         <nav class="breadcrumb-nav" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="home.php">Home</a></li>
                 <li class="breadcrumb-item"><a href="index.php">Accounting Services Office</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Payments</li>
             </ol>
