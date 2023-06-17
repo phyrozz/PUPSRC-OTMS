@@ -19,7 +19,7 @@
 <body>
     <div class="wrapper">
         <?php
-            include "navbar.php"
+            include "navbar.php";
         ?>
         <div class="container-fluid py-2">
             <div class="row">

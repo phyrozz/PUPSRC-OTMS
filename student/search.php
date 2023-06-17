@@ -43,24 +43,36 @@ $result = $connection->query($sql);
         ?>
     </div>
     <div class="container-fluid text-center p-4">
-        <h1 class="page-heading">Search Results - "<?php echo $query; ?>"</h1>
+        <?php
+        if ($query === "saygex") {
+            echo "<h1 class='page-heading'> Congratulations on finding this hidden search result! Here's your reward. :)</h1>";
+            echo '<img src="secret.png" alt="secret" width=350/>';
+        }
+        else {
+            echo '<h1 class="page-heading">Search Results - "' . $query . '"</h1>';
+        }
+        ?>
+        <!-- <h1 class="page-heading">Search Results - "<?php ; ?>"</h1> -->
     </div>
     <?php
     // Display the search results
     if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Display each search result
-        echo '<div class="search-result card m-2">';
-        echo '<a href="'. $row['url'] .'">';
-        echo '<div class="card-header">'. highlightText($row['office_name'], $query) .'</div>';
-        echo '<div class="card-body">';
-        echo '<h5 class="card-title">' . highlightText($row['service_name'], $query) . '</h3>';
-        echo '<p class="card-text">' . highlightText($row['service_description'], $query) . '</p>';
-        echo '</div>';
-        echo '</a>';
-        echo '</div>';
-    }
-    } else {
+        while ($row = $result->fetch_assoc()) {
+            // Display each search result
+            echo '<div class="search-result card m-2">';
+            echo '<a href="'. $row['url'] .'">';
+            echo '<div class="card-header">'. highlightText($row['office_name'], $query) .'</div>';
+            echo '<div class="card-body">';
+            echo '<h5 class="card-title">' . highlightText($row['service_name'], $query) . '</h3>';
+            echo '<p class="card-text">' . highlightText($row['service_description'], $query) . '</p>';
+            echo '</div>';
+            echo '</a>';
+            echo '</div>';
+        }
+    } else if ($query === 'saygex') {
+        echo '';
+    } 
+    else {
     echo '<p class="text-center">No results found.</p>';
     }
 
