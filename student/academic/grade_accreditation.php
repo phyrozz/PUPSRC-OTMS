@@ -108,9 +108,9 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            Assessed Fee
-                            <br/>
-                            <span class="subtext">(Picture of issued receipt)</span>
+						<div class="request-letter">Assessed Fee</div>
+							<div class="subtext">(<span class="justification">Picture of issued receipt</span>)</div>
+                            
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
@@ -167,5 +167,34 @@
 <script src="modal.js"></script>
 <script src="upload.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<script>
+        // Disable submit button initially
+        document.getElementById("submitBtn").disabled = true;
+
+        // Function to enable submit button if upload and edit buttons are clicked
+        function enableSubmitButton() {
+            var uploadButtonClicked = document.getElementById("uploadModal").getAttribute("data-clicked");
+            var editButtonClicked = document.getElementById("editModal").getAttribute("data-clicked");
+
+            if (uploadButtonClicked === "true" && editButtonClicked === "true") {
+                document.getElementById("submitBtn").disabled = false;
+            } else {
+                document.getElementById("submitBtn").disabled = true;
+            }
+        }
+
+        // Event listener for upload button click
+        document.getElementById("uploadModal").addEventListener("click", function() {
+            this.setAttribute("data-clicked", "true");
+            enableSubmitButton();
+        });
+
+        // Event listener for edit button click
+        document.getElementById("editModal").addEventListener("click", function() {
+            this.setAttribute("data-clicked", "true");
+            enableSubmitButton();
+        });
+    </script>
 </body>
 </html>

@@ -81,3 +81,9 @@ function checkRadioSelection() {
     });
   }
 }
+
+    function open_successModal() {
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+    }
+
