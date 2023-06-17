@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id']) or $_SESSION['user_role'] != 3) {
+    header('Location: http://localhost/index.php');
+    exit;
+}
+
+$isLoggedIn = true;
+?>
 <nav class="navbar navbar-expand-md navbar-dark bg-maroon p-3">
     <div class="container-fluid">
         <img class="p-2" src="/assets/pup-logo.png" alt="PUP Logo" width="40">

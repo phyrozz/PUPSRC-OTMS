@@ -20,7 +20,7 @@
     <div class="wrapper">
         <?php
             $office_name = "Academic Office";
-            include "navbar.php"
+            include "navbar.php";
         ?>
         <div class="container-fluid py-2">
             <div class="row">

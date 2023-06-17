@@ -37,6 +37,7 @@
             $_SESSION['user_id'] = $userId;
             $_SESSION['first_name'] = $dbFirstName;
             $_SESSION['last_name'] = $dbLastName;
+            $_SESSION['user_role'] = 3;
             header("Location: ../admin/guidance.php");
             exit();
         } else {
