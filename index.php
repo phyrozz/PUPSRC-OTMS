@@ -19,7 +19,15 @@
         session_start();
 
         if (!empty($_SESSION['user_id'])) {
-            header("Location: http://localhost/student/home.php");
+            if ($_SESSION['user_role'] == 1) {
+                header("Location: http://localhost/student/home.php");
+            }
+            else if ($_SESSION['user_role'] == 2) {
+                header("Location: http://localhost/client/home.php");
+            }
+            else {
+                header("Location: http://localhost/admin/guidance.php");
+            }
             exit;
         }
     ?>

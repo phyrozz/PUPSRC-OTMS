@@ -337,6 +337,11 @@ a .autocomplete-item:hover {
     
 }
 
+/* Style pagination buttons on Transactions page */
+/* .pagination-links {
+
+} */
+
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
         position: static;

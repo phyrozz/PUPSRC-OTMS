@@ -38,6 +38,7 @@
             $_SESSION['student_no'] = $dbStudentNo;
             $_SESSION['first_name'] = $dbFirstName;
             $_SESSION['last_name'] = $dbLastName;
+            $_SESSION['user_role'] = 1;
             header("Location: ../student/home.php");
             exit();
         } else {
@@ -114,19 +115,19 @@
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Last Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">First Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Middle Name</label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="on" class="form-control">
+                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
@@ -167,7 +168,7 @@
                                 <div class="form-group col-12">
                                     <label>Home Address <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" maxlength="255" size="255" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" minlength="2" maxlength="255" size="255" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
@@ -187,7 +188,7 @@
                                 <div class="form-group col-6">
                                     <label>Barangay <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Barangay" value="" id="Barangay" placeholder="Barangay" maxlength="100" size="50" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="Barangay" value="" id="Barangay" placeholder="Barangay" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
@@ -210,7 +211,7 @@
                                     <div class="form-group col-12">
                                         <label for="exampleInputEmail1">Email <code>*</code></label>
                                         <div class="input-group mb-0">
-                                            <input type="text" name="Email" value="" id="Email" placeholder="Complete Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" maxlength="100" size="100" autocomplete="on" class="form-control" required>
+                                            <input type="text" name="Email" value="" id="Email" placeholder="Complete Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="11" maxlength="50" size="50" autocomplete="on" class="form-control" required>
                                         </div>
                                         <div class="text-danger" id="emailError" style="display: none;">Invalid email address.</div>
                                     </div>
@@ -308,7 +309,7 @@
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
-            const contactNoValidPattern = /^090\d{1}-\d{3}-\d{4}$/;
+            const contactNoValidPattern = /^09\d{2}-\d{3}-\d{4}$/;
 
             if (!contactNoValidPattern.test(contactNo)) {
                 contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx'

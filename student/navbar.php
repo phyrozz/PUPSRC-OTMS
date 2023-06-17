@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) or $_SESSION['user_role'] != 1) {
     header('Location: http://localhost/index.php');
     exit;
 }
@@ -84,7 +84,7 @@ $isLoggedIn = true;
             <ul class="navbar-nav order-3 order-lg-3 w-50 gap-3">
                 <div class="d-flex navbar-nav justify-content-center me-auto order-2 order-lg-1 w-100">
                     <div class="d-flex w-100">
-                        <input class="form-control me-2" type="search" id="services-search" name="query" placeholder="Search for services..." aria-label="Search" minlength="5" maxlength="50" oninput="validateSearchInput(this); handleSearchAutocomplete(this)" autocomplete="off">
+                        <input class="form-control me-2" type="search" id="services-search" name="query" placeholder="Search for services..." aria-label="Search" minlength="3" maxlength="50" oninput="validateSearchInput(this); handleSearchAutocomplete(this)" autocomplete="off">
                         <button class="btn search-btn" onclick="submitSearch()"><strong>Search</strong></button>
                     </div>
                     <div id="autocomplete-list" class="autocomplete-list"></div>

@@ -84,7 +84,7 @@ require "../navbar.php";
                             <a class="btn btn-outline-primary mb-2">
                             <i class="fa-regular fa-flag"></i> Generate Inquiry
                             </a>
-                            <button class="btn btn-outline-primary mb-2">
+                            <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
                             <a href="help.php" class="btn btn-outline-primary mb-2">

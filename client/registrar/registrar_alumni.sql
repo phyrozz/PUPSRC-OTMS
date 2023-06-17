@@ -3,26 +3,26 @@ CREATE TABLE `reg_requirements` (
   `requirement` text NOT NULL,
   `payment` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `reg_services` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `services` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `services` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
   `requirement_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK.requirement` (`requirement_id`),
   CONSTRAINT `FK.REQUIREMENT_ID` FOREIGN KEY (`requirement_id`) REFERENCES `reg_requirements` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `reg_status` (
   `id` int NOT NULL AUTO_INCREMENT,
   `status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `reg_transaction` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `request_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `request_code` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
   `office_id` int NOT NULL,
   `services_id` int NOT NULL,
   `schedule` date NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `reg_transaction` (
   PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 
 INSERT INTO `reg_requirements` VALUES (1,'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\nLetter request addressed to CHED Regional Director (for CAV-CHED request only)\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope','920.00 for DFA\n150.00 for Special Certification\nP620.00 for CHED\nP470.00 for PRC'),(2,'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nOfficial receipt for documentary stamp\nProof of payment\n1 Long Brown Envelope','P150.00 per certificate'),(3,'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope','P150.00 per course description'),(4,'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope','P150.00 per certificate'),(5,'Accomplished and printed copy of the application and payment voucher from the branch/campus registrar\nGeneral Clearance showing the client is cleared of all accountabilities\nCertificate of Candidacy\nCertificate of Conferment of Degree (Dummy Diploma)\n2 pcs. 2” x 2” picture in Academic Gown\nDocumentary stamp\nProof of payments (for applicants not covered by RA 10931 otherwise known as Universal Access to Quality Tertiary Education Act of 2017)','N/A'),(6,'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment','P350.00 – Non Engineering\nP450.00 - Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),(7,'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment\nAcknowledged/Signed Copy of Transfer Credential/Honorable Dismissal','P400.00 - Non Engineering\nP500.00 – Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School');

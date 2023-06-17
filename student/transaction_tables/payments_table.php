@@ -11,9 +11,9 @@
     $sortDirection = isset($_GET['dir']) ? $_GET['dir'] : 'DESC';
 
     // Validate and sanitize the sort column
-    $validColumns = ['id', 'appointment_description', 'scheduled_datetime', 'status_name'];
+    $validColumns = ['request_id', 'office_name', 'request_description', 'amount_to_pay', 'status_name'];
     if (!in_array($sortColumn, $validColumns)) {
-        $sortColumn = 'scheduled_datetime'; // Set a default sort column
+        $sortColumn = 'amount_to_pay'; // Set a default sort column
     }
 
     // Validate and sanitize the sort direction
@@ -22,13 +22,13 @@
         $sortDirection = 'DESC'; // Set a default sort direction
     }
 
-    $appointmentSchedules = "SELECT request_id, appointment_description, scheduled_datetime, status_name, counseling_id
-                        FROM doc_requests
-                        INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        INNER JOIN counseling_schedules ON doc_requests.request_id = counseling_schedules.doc_requests_id
-                        WHERE user_id = ". $_SESSION['user_id'] ."
-                        ORDER BY $sortColumn $sortDirection
-                        LIMIT $offset, $rowsPerPage";
+    $appointmentSchedules = "SELECT request_id, office_name, request_description, amount_to_pay, status_name
+    FROM doc_requests
+    INNER JOIN offices ON doc_requests.office_id = offices.office_id
+    INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
+    WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL
+    ORDER BY $sortColumn $sortDirection
+    LIMIT $offset, $rowsPerPage";
 
     $result = mysqli_query($connection, $appointmentSchedules);
 ?>
@@ -36,9 +36,17 @@
     <thead>
         <tr>
             <th class="text-center" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=counseling_id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Reference Number
-                    <?php if ($sortColumn === 'counseling_id') { ?>
+                <a class="text-decoration-none text-dark" href="?sort=request_id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
+                    Request Code
+                    <?php if ($sortColumn === 'request_id') { ?>
+                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
+                    <?php } ?>
+                </a>
+            </th>
+            <th class="text-center sortable-header" scope="col">
+                <a class="text-decoration-none text-dark" href="?sort=appointment_description&dir=<?php echo $sortColumn === 'appointment_description' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
+                    Office
+                    <?php if ($sortColumn === 'appointment_description') { ?>
                         <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
@@ -52,9 +60,9 @@
                 </a>
             </th>
             <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=scheduled_datetime&dir=<?php echo $sortColumn === 'scheduled_datetime' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Amount
-                    <?php if ($sortColumn === 'scheduled_datetime') { ?>
+                <a class="text-decoration-none text-dark" href="?sort=amount_to_pay&dir=<?php echo $sortColumn === 'amount_to_pay' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
+                    Amount to Pay
+                    <?php if ($sortColumn === 'amount_to_pay') { ?>
                         <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
@@ -74,15 +82,17 @@
             if ($result) {
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $appointmentId = $row['counseling_id'];
-                        $appointmentDescription = $row['appointment_description'];
-                        $scheduledDateTime = $row['scheduled_datetime'];
+                        $requestId = $row['request_id'];
+                        $officeName = $row['office_name'];
+                        $requestDesc = $row['request_description'];
+                        $amountToPay = $row['amount_to_pay'];
                         $statusName = $row['status_name'];
         ?>
         <tr>
-            <td><?php echo "GO-"; echo $appointmentId; ?></td>
-            <td><?php echo $appointmentDescription; ?></td>
-            <td><a href="<?php echo getSchedulePageRedirect($appointmentDescription); ?>" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a> <?php echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A"); ?></td>
+            <td><?php echo "GO-"; echo $requestId; ?></td>
+            <td><?php echo $officeName; ?></td>
+            <td><?php echo $requestDesc; ?></td>
+            <td><?php echo $amountToPay; ?></td>
             <td class="text-center">
                 <span class="badge rounded-pill <?php echo getStatusBadgeClass($statusName); ?>">
                     <?php echo $statusName; ?>

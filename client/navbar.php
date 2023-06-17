@@ -1,7 +1,7 @@
 <?php
     session_start();
     
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['user_id']) or $_SESSION['user_role'] != 2) {
         header('Location: http://localhost/index.php');
         exit;
     }
