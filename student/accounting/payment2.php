@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
                 <div class="col-12">
-                    <a class="btn btn-primary next-button" href="index.php" type="submit">Accounting Office</a>
+                    <a class="btn btn-primary next-button" href="../accounting.php" type="submit">Accounting Office</a>
                 </div>
 
             </form>

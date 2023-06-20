@@ -149,7 +149,7 @@ if (isset($_POST['submit'])) {
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="course" class="form-label">Course</label>
+            <label for="course" class="form-label">Course <code>*</code></label>
             <select class="form-select" id="" name="course" required>
               <option value="">Select Course</option>
               <option value="Course 1">Course 1</option>
@@ -165,7 +165,7 @@ if (isset($_POST['submit'])) {
       
         <div class="col-md-6">
           <div class="form-group">
-            <label for="documentType" class="form-label">Document Type</label>
+            <label for="documentType" class="form-label">Document Type <code>*</code></label>
             <select class="form-select" id="" name="documentType" required>
               <option value="">Select Document Type</option>
               <option value="Document 1">Document 1</option>
@@ -183,47 +183,47 @@ if (isset($_POST['submit'])) {
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="firstname" class="form-label">First Name</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" value="" pattern="^[A-Za-z\s]+$" oninput="validateInput(this, 50)" required>
+        <label for="firstname" class="form-label">First Name <code>*</code></label>
+        <input type="text" class="form-control" id="firstname" name="firstname" value="" pattern="^[A-Za-z\s]+$" oninput="validateFirstName(this, 100)" required>
         <div class="invalid-feedback">
-          Please provide your first name.
+          Please provide a valid first name.
         </div>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="middlename" class="form-label">Middle Name (Optional)</label>
-        <input type="text" class="form-control" id="middlename" name="middlename" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 50); validateMiddleName(this)">
+        <label for="middlename" class="form-label">Middle Name</label>
+        <input type="text" class="form-control" id="middlename" name="middlename" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateMiddleName(this)">
         <div class="invalid-feedback">
-          Please provide a valid middle name with at least 2 characters.
+          Please provide a valid middle name.
         </div>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="surname" class="form-label">Last Name</label>
-        <input type="text" class="form-control" id="surname" name="surname" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 50); validateSurname(this)" required>
+        <label for="surname" class="form-label">Last Name <code>*</code></label>
+        <input type="text" class="form-control" id="surname" name="surname" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateSurname(this)" required>
         <div class="invalid-feedback">
-          Please provide a valid last name with at least 2 characters.
+          Please provide a valid last name.
         </div>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="studentNumber" class="form-label">Student Number</label>
+        <label for="studentNumber" class="form-label">Student Number <code>*</code></label>
         <input type="text" class="form-control" id="studentNumber" name="studentNumber" value="" required oninput="validateStudentNumber(this)" maxlength="15">
         <div class="invalid-feedback">
-          Please provide a valid student number with exactly 15 characters.
+          Please provide a valid student number.
         </div>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="amount" class="form-label">Amount</label>
+        <label for="amount" class="form-label">Amount <code>*</code></label>
         <input type="text" class="form-control" id="amount" name="amount" value="" required oninput="validateAmount(this)">
         <div class="invalid-feedback">
           Please provide a valid amount.
@@ -233,7 +233,7 @@ if (isset($_POST['submit'])) {
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="referenceNumber" class="form-label">Reference Number</label>
+        <label for="referenceNumber" class="form-label">Reference Number <code>*</code></label>
         <input type="text" class="form-control" id="referenceNumber" name="referenceNumber" value="" required oninput="validateReferenceNumber(this)" maxlength="20" >
         <div class="invalid-feedback">
           Please provide the reference number.
@@ -243,7 +243,7 @@ if (isset($_POST['submit'])) {
 
     
     <div class="d-flex justify-content-between">
-        <a class="btn btn-primary back-button" href="index.php">Back</a>
+        <a class="btn btn-primary back-button" href="../accounting.php">Back</a>
         <input style="margin-top: 0px; height: 35px; font-size: 15px" class="btn btn-primary" type="submit" name="submit" value="Submit" data-bs-toggle="tooltip" data-bs-placement="top" 
         title="Make sure all details are correct and true before submitting.">
     </div>
@@ -267,18 +267,22 @@ $(document).ready(function() {
 
 });
 
-function validateInput(input, maxLength) {
-  var value = input.value;
-  var regex = /^[A-Za-z\s]+$/;
+function validateFirstName(input, maxLength) {
+  var value = input.value.replace(/[^A-Za-z\s]/g, '');
 
-  if (!regex.test(value)) {
-    input.setCustomValidity('Please provide a valid input containing only letters and whitespace.');
-  } else if (value.length > maxLength) {
+  if (value.length > maxLength) {
     input.value = value.slice(0, maxLength);
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
     input.setCustomValidity('The input exceeds the maximum length of ' + maxLength + ' characters.');
   } else if (hasMoreThanThreeRepeatingChars(value)) {
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
     input.setCustomValidity('The input should not contain more than 3 repeating characters.');
   } else {
+    input.value = value;
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
     input.setCustomValidity('');
   }
 }
@@ -299,26 +303,59 @@ function hasMoreThanThreeRepeatingChars(value) {
 }
 
 function validateMiddleName(input) {
-  var value = input.value.trim();
+  var value = input.value.replace(/[^A-Za-z\s]/g, '');
+  input.value = value.trim();
+
+  // Skip validation if the input is empty
+  if (value === '') {
+    input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+    return;
+  }
+
   var minLength = 2; // Minimum required characters
 
   if (value.length < minLength) {
     input.setCustomValidity('Please provide a valid middle name with at least 2 characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else if (hasMoreThanThreeRepeatingChars(value)) {
+    input.setCustomValidity('The input should not contain more than 3 repeating characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
   } else {
     input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
   }
 }
 
+
+
+
 function validateSurname(input) {
-  var value = input.value.trim();
+  var value = input.value.replace(/[^A-Za-z\s]/g, '');
+  input.value = value.trim();
+
   var minLength = 2; // Minimum required characters
 
   if (value.length < minLength) {
     input.setCustomValidity('Please provide a valid last name with at least 2 characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else if (hasMoreThanThreeRepeatingChars(value)) {
+    input.setCustomValidity('The input should not contain more than 3 repeating characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
   } else {
     input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
   }
 }
+
+
 
 function validateStudentNumber(input) {
   var value = input.value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
@@ -338,10 +375,15 @@ function validateStudentNumber(input) {
 
   if (value.length === 15 && hasValidFormat && !containsOnlyLetters && !containsOnlyNumbers) {
     input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
   } else {
     input.setCustomValidity('Please provide a valid student number in this format: XXXX-XXXXX-SR-X.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
   }
 }
+
 
 function validateAmount(input) {
   var value = input.value;
@@ -350,33 +392,45 @@ function validateAmount(input) {
   input.value = value;
 
   var regex = /^\d{0,6}(\.\d{0,2})?$/; // Regex pattern to validate input with up to 6 digits and 2 decimal places
+
   if (!regex.test(input.value)) {
     input.setCustomValidity('Please provide a valid amount with up to 6 digits and 2 decimal places.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
   } else {
     input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
   }
 }
 
+
 function validateReferenceNumber(input) {
-  var value = input.value;
+  var value = input.value.replace(/[^0-9]/g, '');
+  input.value = value;
+
   var maxLength = 20; // Maximum allowed characters
 
   if (value.length > maxLength) {
     input.value = value.slice(0, maxLength); // Truncate the input value to the maximum length
   }
 
-  var regex = /^[0-9]*$/; // Regex pattern to validate numeric input
-
-  if (!regex.test(input.value)) {
-    input.setCustomValidity('Please provide a valid reference number containing only numbers.');
-  } else if (input.value.length !== maxLength) {
+  if (value.length !== maxLength) {
     input.setCustomValidity('Please provide a reference number with exactly 20 characters.');
-  } else if (/(\d)\1{4,}/.test(input.value)) {
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else if (/(\d)\1{4,}/.test(value)) {
     input.setCustomValidity('Reference number should not contain more than 5 consecutive repeating numbers.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
   } else {
     input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
   }
 }
+
+
 
 
 /*Validate Upload File if Empty */

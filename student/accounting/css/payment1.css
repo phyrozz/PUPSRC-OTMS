@@ -224,10 +224,6 @@ background-color: #ffc107;
 
 
 
-
-
-
-
 .qr-image {
 max-width: 200px;
 height: auto;
@@ -252,15 +248,6 @@ margin-left: 220px;
 .qr-details p {
 margin: 0;
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -325,8 +312,6 @@ border: 1px solid #ced4da;
 border-radius: 0.25rem;
 transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
-
 
 
 
@@ -399,6 +384,23 @@ border: 1px solid #ccc;
 padding: 10px;
 z-index: 1;
 }
+
+
+
+/*Box turns red*/
+.is-invalid {
+  border-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+.has-error .is-invalid {
+  border-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+
+
+
 
 
 
