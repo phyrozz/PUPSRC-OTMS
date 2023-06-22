@@ -26,6 +26,10 @@
             include "../breadcrumb.php";
         ?>
         <div class="container-fluid administrative-header header">
+            <a href="administrative/help.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">
+                    <i class="fa-regular fa-circle-question"></i>
+                    Help
+            </a>
             <?php
             $breadcrumbItems = [
                 ['text' => 'Administrative Office', 'active' => true],

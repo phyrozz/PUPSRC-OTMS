@@ -24,7 +24,7 @@
         include "../../breadcrumb.php";
         include "conn.php";
 
-        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users WHERE user_id = ?";
+        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, email FROM users WHERE user_id = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("i", $_SESSION['user_id']);
         $stmt->execute();
@@ -112,9 +112,9 @@
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
-                            <button class="btn btn-outline-primary mb-2">
+                            <a href="help.php" class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-circle-question"></i> Help
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                             </div> -->
                             <div class="form-group required col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required >
+                                <input type="email" class="form-control" id="email" name="email" value = "<?php echo $userData[0]['email'] ?>" maxlength="50" required disabled>
                                 <div class="invalid-feedback">Please input a valid email</div>
                             </div>
 
@@ -579,21 +579,19 @@
                 window.open(url, "_blank"); 
             }
 
-             //code that validates email with .com
-            var emailInput = document.getElementById('email');
-            
-            
+            //  //code that validates email with .com
+            // var emailInput = document.getElementById('email');
 
-            emailInput.addEventListener('input', function() {
-                var email = emailInput.value;
-                var domainExtension = email.substring(email.lastIndexOf('.') + 1);
+            // emailInput.addEventListener('input', function() {
+            //     var email = emailInput.value;
+            //     var domainExtension = email.substring(email.lastIndexOf('.') + 1);
 
-                if (domainExtension !== 'com') {
-                    emailInput.setCustomValidity('Please input a valid email address ');
-                } else {
-                    emailInput.setCustomValidity('');
-                }
-            });
+            //     if (domainExtension !== 'com') {
+            //         emailInput.setCustomValidity('Please input a valid email address ');
+            //     } else {
+            //         emailInput.setCustomValidity('');
+            //     }
+            // });
 
     </script>
 
