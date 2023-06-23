@@ -3,7 +3,7 @@
 include 'conn.php';
 
 $result = mysqli_query($connect, 
-	"SELECT reg_transaction.id AS request_code, DATE_FORMAT(schedule, '%M %e, %Y') 
+	"SELECT reg_transaction.id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
 	AS schedule, services, status, office_name AS office FROM reg_transaction 
 	LEFT JOIN reg_services ON reg_services.id = reg_transaction.services_id 
 	LEFT JOIN reg_status ON reg_status.id = reg_transaction.status_id
@@ -26,8 +26,10 @@ $result = mysqli_query($connect,
 	<script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
 	<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script type='text/javascript' src="https://cdn.datatables.net/plug-ins/1.13.4/sorting/datetime-moment.js"></script>
+	<script type='text/javascript' src="//cdn.datatables.net/plug-ins/1.13.4/sorting/natural.js"></script>
 	<link href="datatables.min.css" rel="stylesheet" />
-	<script src="datatables.min.js"></script>
+	<script type='text/javascript' src="datatables.min.js"></script>
 </head>
 
 <body>
@@ -77,7 +79,7 @@ $result = mysqli_query($connect,
 							<?php
 							while ($row = mysqli_fetch_assoc($result)){
 								echo '<tr>';
-								echo '<td>'. $row["request_code"] . '</td>';
+								echo '<td>'. 'REG-' . $row["request_code"] . '</td>';
 								echo '<td>'. $row["office"] . '</td>';
 								echo '<td>'. $row["services"] . '</td>';
 								echo '<td>'. $row["schedule"] . '</td>';
@@ -119,7 +121,30 @@ $result = mysqli_query($connect,
 			e.preventDefault();
 		});
 
-		$("#transaction_table").DataTable();
+		let table = new DataTable('#transaction_table', {
+			responsive: true,
+			columnDefs: [{
+					target: 0,
+					type: 'natural',
+				},
+				{
+					target: 4,
+					type: 'datetime-moment',
+				},
+			]
+		})
+
+		// $("#transaction_table").DataTable({
+		// 	'columnDefs': [{
+		// 			target: 0,
+		// 			type: 'intl',
+		// 		},
+		// 		{
+		// 			target: 4,
+		// 			type: 'date-eu',
+		// 		},
+		// 	]
+		// });
 	});
 	</script>
 
