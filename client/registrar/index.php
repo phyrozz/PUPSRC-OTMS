@@ -18,7 +18,7 @@
 	<div class="wrapper">
 		<?php
             $office_name = "Registrar Office";
-            include "./navbar.php"
+            include "../navbar.php"
         ?>
 		<div class="container-fluid registrarbanner header" style="background-image: url('./assets/registrar.jpg')">
 			<!-- <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
