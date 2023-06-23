@@ -70,7 +70,7 @@ $isLoggedIn = true;
                             case 'Accounting Office':
                                 echo '
                                 <li><a class="dropdown-item" href="/student/accounting/payment1.php">Payment</a></li>
-                                <li><a class="dropdown-item" href="/student/accounting/others/offsetting1.php">Offsetting</a></li>
+                                <li><a class="dropdown-item" href="/student/accounting/offsetting1.php">Offsetting</a></li>
                                 <li><a class="dropdown-item" href="../transactions.php">Registrar Transaction History</a></li>
                                 ';
                                 break;

@@ -56,10 +56,20 @@ include 'request_offset.php';
             </div>
             <div class="col-md-7">
                 <label for="amountToOffset" class="form-label2">Amount to be offset:</label>
-                <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required min="1">
+                <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required min="1" oninput="validateInput(this)">
                 <div class="invalid-feedback">
                     Please provide the amount to be offset.
                 </div>
+                <script>
+                    function validateInput(input) {
+                    var value = input.value;
+                    if (value.startsWith("0")) {
+                        input.setCustomValidity("Value cannot start with 0.");
+                    } else {
+                        input.setCustomValidity("");
+                    }
+                    }
+                </script>
             </div>
             <div class="col-12">
                 <button class="btn btn-primary" type="submit" name="submit">Submit</button>

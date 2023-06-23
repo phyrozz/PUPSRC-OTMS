@@ -1,146 +1,146 @@
-  .login-card {
-    width: 50%;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+.login-card {
+  width: 50%;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 /* Color scheme styling on buttons */
 .btn-student {
-    background-color: rgb(255, 63, 63);
-    color: #fff;
+  background-color: rgb(255, 63, 63);
+  color: #fff;
 }
 
 .btn-student:hover {
-    background-color: rgb(197, 50, 50);
-    color: #fff;
+  background-color: rgb(197, 50, 50);
+  color: #fff;
 }
 
 .btn-client {
-    background-color: rgb(49, 97, 255);
-    color: #fff;
+  background-color: rgb(49, 97, 255);
+  color: #fff;
 }
 
 .btn-client:hover {
-    background-color: rgb(40, 79, 207);
-    color: #fff;
+  background-color: rgb(40, 79, 207);
+  color: #fff;
 }
 
 .btn-admin {
-    background-color: rgb(29, 189, 29);
-    color: #fff;
+  background-color: rgb(29, 189, 29);
+  color: #fff;
 }
 
 .btn-admin:hover {
-    background-color: rgb(23, 143, 23);
-    color: #fff;
+  background-color: rgb(23, 143, 23);
+  color: #fff;
 }
 
 .bg-maroon {
-    background-color: #800000;
+  background-color: #800000;
 }
 
 .btn-primary {
-    background-color: #800000;
-    border: none;
+  background-color: #800000;
+  border: none;
 }
 
 .btn-primary:hover {
-    background-color: #520000;
+  background-color: #520000;
 }
 
 .btn-outline-primary {
-    color: #800000;
-    border-color: #800000;
+  color: #800000;
+  border-color: #800000;
 }
 
 .btn-outline-primary:hover {
-    border-color: #520000;
-    background-color: #520000;
+  border-color: #520000;
+  background-color: #520000;
 }
 
 .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 2;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .dropdown-item.active, .dropdown-item:active {
-    background-color: #520000;
+  background-color: #520000;
 }  
 
 .container-fluid {
-    position: relative;
+  position: relative;
 }
 
 .header {
-    background-image: url("assets/bg2.jpg");
-    background-size: cover;
-    background-position: center;
-    height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+  background-image: url("assets/bg2.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .header::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .header-text {
-    z-index: 1;
+  z-index: 1;
 }
 
 /* Start of custom breadcrumb styling
 Breadcrumb is a bootstrap component that shows the location of the user on the website. */
 .breadcrumb-nav {
-    z-index: 1;
-    position: absolute;
-    left: 24px;
-    top: 18px;
+  z-index: 1;
+  position: absolute;
+  left: 24px;
+  top: 18px;
 }
 
 .breadcrumb-container .breadcrumb-item + .breadcrumb-item::before {
-    font-weight: 100;
-    color: #fff;
-    content: "/";
+  font-weight: 100;
+  color: #fff;
+  content: "/";
 }
 
 .breadcrumb-container .breadcrumb-item a {
-    color: #fff;
+  color: #fff;
 }
 
 .breadcrumb-item a {
-    color: #000;
-    text-decoration: none;
-    transition: 0.2s ease-in-out;
-    padding: 5px 8px;
-    border-radius: 5px;
+  color: #000;
+  text-decoration: none;
+  transition: 0.2s ease-in-out;
+  padding: 5px 8px;
+  border-radius: 5px;
 }
 
 .breadcrumb-item a:hover {
-    background-color: #520000;
-    color: #fff;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  background-color: #520000;
+  color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
 .breadcrumb-container .breadcrumb .active {
-    color: #fff;
+  color: #fff;
 }
 
 .breadcrumb .active {
-    font-weight: 800;
+  font-weight: 800;
 }
 /* End of custom breadcrumb styling */
 
 .footer {
-    height: 100px;
+  height: 100px;
 }
 
 
@@ -148,237 +148,265 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 
 /*content*/
 .button-container {
-  text-align: center;
-  list-style-type: none;
-  font-family:'poppins';
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+text-align: center;
+list-style-type: none;
+font-family:'poppins';
+display: flex;
+flex-direction: column;
+align-items: center;
 }
 
 .button {
-  display: block;
-  width: 220px;
-  height: 100px;
-  background-color: #800000;
-  text-align: center;
-  line-height: 100px;
-  font-size: 24px;
-  color: #fff;
-  text-decoration: none;
-  margin-top: 100px;
-  margin-bottom: -80px;
-  border-radius: 10%;
-  
+display: block;
+width: 220px;
+height: 100px;
+background-color: #800000;
+text-align: center;
+line-height: 100px;
+font-size: 24px;
+color: #fff;
+text-decoration: none;
+margin-top: 100px;
+margin-bottom: -80px;
+border-radius: 10%;
+
 }
 .button-container {
-  text-align: center;
+text-align: center;
 }
+
 .qr-container {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  margin-left: 50px;
-  margin-right: 50px;
-  text-align: left;
+display: flex;
+flex-direction: column;
+align-items: left;
+margin-left: 50px;
+margin-right: 50px;
+text-align: left;
 }
 
 .upload-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left; /* Align the text to the left */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+text-align: left; /* Align the text to the left */
 }
 
 .upload-container .upload-button {
-  width: 400px; /* Set the desired width */
+width: 400px; /* Set the desired width */
 
 }
 
 .upload-container .form-label {
-  margin-bottom: 0.5rem; /* Add some spacing below the label */
+margin-bottom: 0.5rem; /* Add some spacing below the label */
 }
 
 .upload-container .invalid-feedback {
-  margin-top: 0.25rem; /* Add some spacing above the error message */
-  color: red; /* Set the color of the error message */
+margin-top: 0.25rem; /* Add some spacing above the error message */
+color: red; /* Set the color of the error message */
 }
 
+.box {
+margin-top: -15px;
+font-weight: bolder;
+border: 1px solid #ccc;
+border-radius: 10px;
+padding-top: 5px;
+padding-left: 8px;
+padding-bottom: 8px;
+background-color: #f5f5f5;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+width: var(--box-width, 421px);
+}
 
-
-
-
+.box {
+background-color: #ffc107;
+}
 
 
 
 .qr-image {
-  max-width: 200px;
-  height: auto;
-  border-radius: 30px;
-  align-items: center;
-  margin-top: -50px;
+max-width: 200px;
+height: auto;
+border-radius: 30px;
+align-items: center;
+margin-top: -50px;
 }
 
-
-
-
 .qr-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
-  margin-right: -80px;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+justify-content: flex-start;
+text-align: left;
+margin-right: -80px;
 }
 
 .qr-details {
-  margin-left: 220px;
+margin-left: 220px;
 }
 
 .qr-details p {
-  margin: 0;
+margin: 0;
 }
-
-
-
-
-
-
-
-
-
 
 
 
 .container-fluid-form{
-  margin-left: 50px;
-  margin-right: 50px;
-  text-align: left;
+margin-left: 50px;
+margin-right: 50px;
+text-align: left;
 }
 
 /*Text Description Above Input Boxes*/
 .container-fluid-form form .col-md-6 label {
-  text-align: left;
-  display: block;
-  margin-bottom: 5px;
+text-align: left;
+display: block;
+margin-bottom: 5px;
 }
 
 .btn-primary{
-  float:right;
-  width: 150px;
+float:right;
+width: 150px;
 }
 .back-button{
-  float: left;
+float: left;
 }
 .next-button{
-  margin-bottom: 200px;
-  bottom: -5px;
-  right: 50px;
+margin-bottom: 200px;
+bottom: -5px;
+right: 50px;
 }
 .alert-info{
-  margin-right: 50px;
-  width: 600px;
-  float: right;
-  top: 20px;
+margin-right: 50px;
+width: 600px;
+float: right;
+top: 20px;
 }
 .error-message{
-  margin-top: -15%;
+margin-top: -15%;
 }
 .alert {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #f8f9fa;
-  border: 1px solid #ced4da;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  font-size: 16px;
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background-color: #f8f9fa;
+border: 1px solid #ced4da;
+padding: 15px;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+font-family: Arial, sans-serif;
+font-size: 16px;
 }
 
 .form-group select {
-  flex-grow: 1;
-  width: 100%;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+flex-grow: 1;
+width: 100%;
+padding: 0.25rem 0.5rem;
+font-size: 0.875rem;
+line-height: 1.5;
+color: #495057;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #ced4da;
+border-radius: 0.25rem;
+transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
-
 
 
 
 /* Dropdown code */
 .form-group {
-  display: flex;
-  flex-direction: row;
-  align-items: left;
-  margin-bottom: 0rem;
+display: flex;
+flex-direction: row;
+align-items: left;
+margin-bottom: 0rem;
 }
 
 .form-group label {
-  font-weight: bold;
-  margin-right: 1rem;
+font-weight: bold;
+margin-right: 1rem;
 }
 
 .form-group select {
-  flex-grow: 1;
-  width: 50%;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+flex-grow: 1;
+width: 50%;
+padding: 0.25rem 0.5rem;
+font-size: 0.875rem;
+line-height: 1.5;
+color: #495057;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #ced4da;
+border-radius: 0.25rem;
+transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .form-group select:focus {
-  border-color: #80bdff;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+border-color: #80bdff;
+outline: 0;
+box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .form-group .invalid-feedback {
-  color: #dc3545;
-  display: none;
-  margin-top: 0.25rem;
+color: #dc3545;
+display: none;
+margin-top: 0.25rem;
 }
 
 .form-group .is-invalid ~ .invalid-feedback {
-  display: block;
+display: block;
 }
 
 .invalid-input {
-  border-color: red;
+border-color: red;
 }
 
 /* Input boxes background color */
 .form-control {
-  background-color: #ffffff;
+background-color: #ffffff;
 }
 
 #studentNumber,
 #amount {
-  background-color: #ffffff;
-  border: 0.5px solid #5f1010;
-  border: var(--bs-border-width) solid var(--bs-border-color);
+background-color: #ffffff;
+border: 0.5px solid #5f1010;
+border: var(--bs-border-width) solid var(--bs-border-color);
 }
 
 
-  /*end of content*/
+
+.popup {
+position: absolute;
+display: none;
+background-color: #f9f9f9;
+border: 1px solid #ccc;
+padding: 10px;
+z-index: 1;
+}
+
+
+
+/*Box turns red*/
+.is-invalid {
+  border-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+.has-error .is-invalid {
+  border-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+
+
+
+
+
+
+/*end of content*/
 @media only screen and (max-width: 768px) {
-    .login-card {
-        width: 100%;
-    }
+  .login-card {
+      width: 100%;
+  }
 }
