@@ -135,7 +135,7 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <a class="btn btn-outline-primary mb-2" href="transactions.php">
+                            <a class="btn btn-outline-primary mb-2" href="../transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
                            
