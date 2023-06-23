@@ -1,6 +1,3 @@
-<?php
-require "../navbar.php"; 
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +19,7 @@ require "../navbar.php";
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
+            include "../navbar.php"; 
             include "../../breadcrumb.php";
             include "../../conn.php";
 
@@ -198,15 +196,7 @@ require "../navbar.php";
         </div>
         <div class="push"></div>
     </div>
-    <div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </div>
+    <?php include '../../footer.php'; ?>
     <script src="../../jquery.js"></script>
     <script>
         // Function to handle form submission

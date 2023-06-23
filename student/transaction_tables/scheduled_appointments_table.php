@@ -1,172 +1,187 @@
-<?php include './functions.php';?>
-
-<?php
-    // if (isset($_POST['delete_appointment'])) {
-    //     $counselingId = $_POST['counseling_id'];
-
-    //     $deleteQuery = "DELETE FROM counseling_schedules WHERE counseling_id = $counselingId";
-    //     $deleteResult = mysqli_query($connection, $deleteQuery);
-    //     $deleteQuery = "DELETE FROM doc_requests WHERE "
-
-    //     if ($deleteResult) {
-    //         header("Refresh:0");
-    //         // exit();
-    //     }
-    // }
-
-    if (isset($_POST['delete_appointment'])) {
-        $counselingId = $_POST['counseling_id'];
-
-        // Get the request_id associated with the counseling_id
-        $getRequestIdQuery = "SELECT doc_requests_id FROM counseling_schedules WHERE counseling_id = $counselingId";
-        $getRequestIdResult = mysqli_query($connection, $getRequestIdQuery);
-
-        if ($getRequestIdResult && mysqli_num_rows($getRequestIdResult) > 0) {
-            $row = mysqli_fetch_assoc($getRequestIdResult);
-            $requestId = $row['doc_requests_id'];
-
-            // Perform the deletion on counseling_schedules table
-            $deleteCounselingQuery = "DELETE FROM counseling_schedules WHERE counseling_id = $counselingId";
-            $deleteCounselingResult = mysqli_query($connection, $deleteCounselingQuery);
-
-            if ($deleteCounselingResult) {
-                // Perform the deletion on doc_requests table
-                $deleteRequestQuery = "DELETE FROM doc_requests WHERE request_id = $requestId";
-                $deleteRequestResult = mysqli_query($connection, $deleteRequestQuery);
-
-                if ($deleteRequestResult) {
-                    header("Refresh:0");
-                    // exit();
-                }
-            }
-        }
-    }
-
-    // Add pagination to the table
-    $rowsPerPage = 5;
-
-    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $offset = ($page - 1) * $rowsPerPage;
-
-    $sortColumn = isset($_GET['sort']) ? $_GET['sort'] : '';
-    $sortDirection = isset($_GET['dir']) ? $_GET['dir'] : 'DESC';
-
-    // Validate and sanitize the sort column
-    $validColumns = ['counseling_id', 'appointment_description', 'scheduled_datetime', 'status_name'];
-    if (!in_array($sortColumn, $validColumns)) {
-        $sortColumn = 'scheduled_datetime'; // Set a default sort column
-    }
-
-    // Validate and sanitize the sort direction
-    $sortDirection = strtoupper($sortDirection);
-    if ($sortDirection !== 'ASC' && $sortDirection !== 'DESC') {
-        $sortDirection = 'DESC'; // Set a default sort direction
-    }
-
-    $appointmentSchedules = "SELECT request_id, appointment_description, scheduled_datetime, status_name, counseling_id
-                        FROM doc_requests
-                        INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        INNER JOIN counseling_schedules ON doc_requests.request_id = counseling_schedules.doc_requests_id
-                        WHERE user_id = ". $_SESSION['user_id'] ."
-                        ORDER BY $sortColumn $sortDirection
-                        LIMIT $offset, $rowsPerPage";
-
-    $result = mysqli_query($connection, $appointmentSchedules);
-?>
 <table id="transactions-table" class="table table-hover table-bordered">
     <thead>
         <tr>
-            <th class="text-center" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=counseling_id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Schedule Code
-                    <?php if ($sortColumn === 'counseling_id') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center"></th>
+            <th class="text-center doc-request-id-header sortable-header" data-column="1" scope="col" data-order="desc">
+                Schedule Code
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=appointment_description&dir=<?php echo $sortColumn === 'appointment_description' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Appointment Description
-                    <?php if ($sortColumn === 'appointment_description') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center doc-request-office-header sortable-header" data-column="2" scope="col" data-order="desc">
+                Description
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=scheduled_datetime&dir=<?php echo $sortColumn === 'scheduled_datetime' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Schedule
-                    <?php if ($sortColumn === 'scheduled_datetime') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center doc-request-description-header sortable-header" data-column="3" scope="col" data-order="desc">
+                Schedule
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=status_name&dir=<?php echo $sortColumn === 'status_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Status
-                    <?php if ($sortColumn === 'status_name') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="desc">
+                Status
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
         </tr>
     </thead>
-    <tbody>
-        <?php
-            if ($result) {
-                if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $appointmentId = $row['counseling_id'];
-                        $appointmentDescription = $row['appointment_description'];
-                        $scheduledDateTime = $row['scheduled_datetime'];
-                        $statusName = $row['status_name'];
-        ?>
-        <tr>
-            <td><?php echo "GO-"; echo $appointmentId; ?></td>
-            <td><?php echo $appointmentDescription; ?></td>
-            <td>
-                <?php echo (new DateTime($scheduledDateTime))->format("m/d/Y g:i A"); ?>
-            </td>
-            <td class="text-center">
-                <span class="badge rounded-pill <?php echo getStatusBadgeClass($statusName); ?>">
-                    <?php echo $statusName; ?>
-                </span>
-            </td>
-            <td class="text-center">
-                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?')">
-                    <a href="<?php echo getSchedulePageRedirect($appointmentDescription); ?>" class="btn btn-primary btn-sm"><i class="fa-brands fa-wpforms"></i></a>
-                    <input type="hidden" name="counseling_id" value="<?php echo $appointmentId; ?>">
-                    <?php
-                    if ($statusName == "Pending" || $statusName == "Disapproved") {
-                        echo '<button type="submit" name="delete_appointment" class="btn btn-primary btn-sm"><i class="fa-solid fa-trash-can"></i></button>';
-                    }
-                    else {
-                        echo '<button type="button" class="btn btn-sm" disabled><i class="fa-solid fa-trash-can"></i></button>';
-                    }
-                    ?>
-                </form>
-            </td>
-        </tr>
-        <?php
-                    }
-                }
-                else {
-        ?>
-        <tr>
-            <td class="text-center table-light p-4" colspan="4">No Transactions</td>
-        </tr>
-        <?php
-                }
-            }
-            else {
-                echo "Error executing the query: " . mysqli_error($connection);
-            }
-
-            $countTotal = "SELECT COUNT(*) AS total FROM counseling_schedules";
-            $countResult = mysqli_query($connection, $countTotal);
-            $countRow = mysqli_fetch_assoc($countResult);
-            $totalRows = $countRow['total'];
-
-            $totalPages = ceil($totalRows / $rowsPerPage);
-        ?>
+    <tbody id="table-body">
+        <!-- Table rows will be generated dynamically using JavaScript -->
     </tbody>
 </table>
+<div id="pagination" class="container-fluid p-0">
+    <nav aria-label="Page navigation">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
+            <ul class="pagination" id="pagination-links">
+                <!-- Pagination links will be generated dynamically using JavaScript -->
+            </ul>
+        </div>
+    </nav>
+</div>
+<script>
+    function getStatusBadgeClass(status) {
+        switch (status) {
+            case 'Approved':
+                return 'bg-success';
+            case 'Disapproved':
+                return 'bg-danger';
+            default:
+                return 'bg-warning text-dark';
+        }
+    }
+
+    function handleDeleteRequest(requestIds) {
+        // Make an AJAX request to delete the document requests
+        $.ajax({
+            url: 'transaction_tables/delete_counseling.php',
+            method: 'POST',
+            data: { request_id: requestIds },
+            success: function(response) {
+                console.log('Requests deleted successfully');
+                console.log(requestIds);
+
+                // Refresh the table after deletion
+                handlePagination(1, '');
+            }
+        });
+    }
+
+    function addDeleteButtonListeners() {
+        // Get the delete button element
+        var deleteButton = document.getElementById('delete-button');
+
+        // Get all the checkboxes
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        // Function to update the delete button state based on checkbox selection
+        function updateDeleteButtonState() {
+            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            deleteButton.disabled = checkedCheckboxes.length === 0;
+        }
+
+        // Add event listeners to checkboxes
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', updateDeleteButtonState);
+        });
+
+        // Add event listener to delete button
+        deleteButton.addEventListener('click', function () {
+            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            // Get the request ids of the checked rows
+            var requestIds = Array.from(checkedCheckboxes).map(function (checkbox) {
+                return checkbox.value;
+            });
+
+            if (confirm('Are you sure you want to delete the selected appointment(s)?')) {
+                handleDeleteRequest(requestIds);
+            }
+        });
+
+        // Update delete button state initially
+        updateDeleteButtonState();
+    }
+
+    function handlePagination(page, searchTerm = '', column = 'counseling_id', order = 'desc') {
+        // Make an AJAX request to fetch the document requests
+        $.ajax({
+            url: 'transaction_tables/fetch_counseling.php',
+            method: 'POST',
+            data: { page: page, searchTerm: searchTerm, column: column, order: order },
+            success: function(response) {
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Update the table body with the received data
+                var tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+
+                if (data.total_records > 0) {
+                    for (var i = 0; i < data.counseling_schedules.length; i++) {
+                        var schedules = data.counseling_schedules[i];
+                        var row = '<tr>' +
+                            '<td><input type="checkbox" id="' + schedules.counseling_id + '" name="' + schedules.counseling_id + '" value="' + schedules.counseling_id + '"></td>' +
+                            '<td>' + 'DR-' + schedules.counseling_id + '</td>' +
+                            '<td>' + schedules.appointment_description + '</td>' +
+                            '<td>' + (schedules.scheduled_datetime !== null ? (new Date(schedules.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+                            '<td class="text-center">' +
+                            '<span class="badge rounded-pill ' + getStatusBadgeClass(schedules.status_name) + '">' + schedules.status_name + '</span>' +
+                            '</td>' +
+                            '</tr>';
+                        tableBody.innerHTML += row;
+                    }
+                } else {
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    tableBody.innerHTML = noRecordsRow;
+                }
+
+                // Update the pagination links
+                var paginationLinks = document.getElementById('pagination-links');
+                paginationLinks.innerHTML = '';
+
+                if (data.total_pages > 1) {
+                    for (var i = 1; i <= data.total_pages; i++) {
+                        var pageLink = '<li class="page-item">' +
+                            '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ')">' + i + '</a>' +
+                            '</li>';
+                        paginationLinks.innerHTML += pageLink;
+                    }
+                }
+
+                // Add event listeners for delete buttons
+                addDeleteButtonListeners();
+            }
+        });
+    }
+
+    // Function to toggle the sort icons
+    function toggleSortIcons(header) {
+        var sortIcon = header.querySelector('.sort-icon');
+        sortIcon.classList.toggle('fa-caret-down');
+        sortIcon.classList.toggle('fa-caret-up');
+    }
+
+    // Add event listeners to sortable headers
+    var sortableHeaders = document.querySelectorAll('.sortable-header');
+    sortableHeaders.forEach(function (sortableHeader) {
+        sortableHeader.addEventListener('click', function () {
+            var column = sortableHeader.getAttribute('data-column');
+            var order = sortableHeader.getAttribute('data-order');
+
+            // Toggle the sort icons
+            toggleSortIcons(sortableHeader);
+
+            // Update the data-order attribute
+            sortableHeader.setAttribute('data-order', order === 'asc' ? 'desc' : 'asc');
+
+            // Call the pagination function with the updated sorting parameters
+            handlePagination(1, '', column, order);
+        });
+    });
+
+    // Initial pagination request (page 1)
+    handlePagination(1, '', 'request_id', 'desc');
+
+    $(document).ready(function() {
+        $('#button-addon2').click(function() {
+            var searchTerm = $('#search-input').val();
+            handlePagination(1, searchTerm, 'request_id', 'desc');
+        });
+    });
+</script>

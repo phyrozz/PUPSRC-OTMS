@@ -15,42 +15,41 @@ $startingRecord = ($page - 1) * $recordsPerPage;
 $searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
 // Retrieve the sorting parameters from the AJAX request
-$column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
-$order = isset($_POST['order']) ? $_POST['order'] : 'asc';
+$column = isset($_POST['column']) ? $_POST['column'] : 'counseling_id';
+$order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 
 // Retrieve the document requests
-$documentRequestsQuery = "SELECT request_id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
-                        FROM doc_requests
-                        INNER JOIN offices ON doc_requests.office_id = offices.office_id
-                        INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL";
+$counselingQuery = "SELECT counseling_schedules.counseling_id, counseling_schedules.appointment_description, doc_requests.scheduled_datetime, statuses.status_name
+FROM counseling_schedules
+INNER JOIN doc_requests ON counseling_schedules.doc_requests_id = doc_requests.request_id
+INNER JOIN offices ON doc_requests.office_id = offices.office_id
+INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
+WHERE user_id = " . $_SESSION['user_id'];
 
 if (!empty($searchTerm)) {
-    $documentRequestsQuery .= " AND (request_id LIKE '%$searchTerm%'
-                           OR office_name LIKE '%$searchTerm%'
-                           OR request_description LIKE '%$searchTerm%'
+    $counselingQuery .= " AND (counseling_id LIKE '%$searchTerm%'
+                           OR appointment_description LIKE '%$searchTerm%'
                            OR scheduled_datetime LIKE '%$searchTerm%'
-                           OR status_name LIKE '%$searchTerm%'
-                           OR amount_to_pay LIKE '%$searchTerm%')";
+                           OR status_name LIKE '%$searchTerm%')";
 }
 
 // Add the sorting parameters to the query
-$documentRequestsQuery .= " ORDER BY $column $order
+$counselingQuery .= " ORDER BY $column $order
 LIMIT $startingRecord, $recordsPerPage";
 
 
-$result = mysqli_query($connection, $documentRequestsQuery);
+$result = mysqli_query($connection, $counselingQuery);
 
 if ($result) {
-    $documentRequests = array();
+    $counseling_schedules = array();
     while ($row = mysqli_fetch_assoc($result)) {
-        $documentRequests[] = $row;
+        $counseling_schedules[] = $row;
     }
 
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
                           FROM doc_requests
-                          WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL";
+                          WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NULL";
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
     $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
     $totalRecords = $totalRecordsRow['total_records'];
@@ -60,7 +59,7 @@ if ($result) {
 
     // Prepare the JSON response
     $response = array(
-        'document_requests' => $documentRequests,
+        'counseling_schedules' => $counseling_schedules,
         'total_records' => $totalRecords,
         'total_pages' => $totalPages,
         'current_page' => $page

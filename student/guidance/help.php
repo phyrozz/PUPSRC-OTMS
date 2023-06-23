@@ -121,7 +121,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" pattern="[A-Za-z0-9]+" name="guidanceFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" required></textarea>
+                    <textarea class="form-control" pattern="[A-Za-z0-9]+" name="guidanceFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" style="resize: none;" required></textarea>
                     <div class="invalid-feedback">Invalid feedback.</div>
                 </div>
                 <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
@@ -180,7 +180,7 @@
         messageTextarea.addEventListener('input', function() {
             const inputValue = messageTextarea.value;
 
-            const pattern = /^[a-zA-Z0-9]{5,}\s[a-zA-Z0-9\s]*$/;
+            const pattern = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9\s]*$/;
             const isValid = pattern.test(inputValue);
 
             if (isValid) {
