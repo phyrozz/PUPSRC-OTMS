@@ -33,18 +33,6 @@ html, body {
     cursor: pointer;
 }
 
-.sort-icon {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    margin-left: 5px;
-    vertical-align: middle;
-    font-size: 0.75rem;
-    vertical-align: middle;
-}
-
 .asc {
     content: '\25B2';
     border-bottom: 5px solid;
@@ -116,6 +104,8 @@ html, body {
 }
 
 .btn-primary:disabled {
+    color: #757575;
+    border-color: #757575;
     background-color: #bbbbbb;
 }
 
@@ -338,9 +328,14 @@ a .autocomplete-item:hover {
 }
 
 /* Style pagination buttons on Transactions page */
-/* .pagination-links {
+.page-link {
+    text-align: center;
+    width: 40px;
+}
 
-} */
+.page-link:hover {
+    color: white;
+}
 
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
