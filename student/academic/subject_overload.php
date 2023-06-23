@@ -22,7 +22,7 @@
         $office_name = "Academic Office";
         include('../navbar.php');
         include('uploadmodal.php');
-        include('editmodal-se.php');
+        include('editmodal-so.php');
         include '../../breadcrumb.php';
         //include('generate_pdf.php')
     ?>
@@ -106,11 +106,12 @@
                     </div>
                 </div>
                 <div class="card-body">
+				
                     <div class="row">
                         <div class="col-sm-6">
-                            Request Letter for Overload
-                            <br/><span class="subtext">(Letter that contains justification of the need for overload)</span>
-                        </div>
+							<div class="request-letter">Request Letter for Overload</div>
+							<div class="subtext">(<span class="justification">Letter that contains justification of the need for overload</span>)</div>
+						</div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
                         </div>
@@ -123,10 +124,12 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
                         </div>
                     </div>
+					
                     <div class="row">
                         <div class="col-sm-6">
-                            ACE Form
-                            <br/><span class="subtext">(Adding of Subject/s)</span>
+						<div class="request-letter">ACE FORM</div>
+						<div class="subtext">(<span class="justification">Adding of Subject/s</span>)</div>
+                            
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
@@ -142,8 +145,9 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            Certificate of Registration
-                            <br/><span class="subtext">(Current semester)</span>
+						<div class="request-letter">Certificate of Registration</div>
+						<div class="subtext">(<span class="justification">Current semester</span>)</div>
+                       
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Verified</button>
@@ -154,7 +158,7 @@
                             </form>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inquiryModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
                         </div>
                     </div>
                 </div>
@@ -179,8 +183,20 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a href="../survey.php" class="btn btn-primary">Submit</a>
+                                <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                <div class="modal-body">
+                    Application successfully submitted!
+                </div>
+                <div class="modal-footer">
+                <a href="../survey.php" class="btn btn-primary">Okay</a>
+                </div>
                         </div>
                     </div>
                 </div>
@@ -200,5 +216,34 @@
     <script src="modal.js"></script>
     <script src="upload.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	
+    <script>
+        // Disable submit button initially
+        document.getElementById("submitBtn").disabled = true;
+
+        // Function to enable submit button if upload and edit buttons are clicked
+        function enableSubmitButton() {
+            var uploadButtonClicked = document.getElementById("uploadModal").getAttribute("data-clicked");
+            var editButtonClicked = document.getElementById("editModal").getAttribute("data-clicked");
+
+            if (uploadButtonClicked === "true" && editButtonClicked === "true") {
+                document.getElementById("submitBtn").disabled = false;
+            } else {
+                document.getElementById("submitBtn").disabled = true;
+            }
+        }
+
+        // Event listener for upload button click
+        document.getElementById("uploadModal").addEventListener("click", function() {
+            this.setAttribute("data-clicked", "true");
+            enableSubmitButton();
+        });
+
+        // Event listener for edit button click
+        document.getElementById("editModal").addEventListener("click", function() {
+            this.setAttribute("data-clicked", "true");
+            enableSubmitButton();
+        });
+    </script>
 </body>
 </html>

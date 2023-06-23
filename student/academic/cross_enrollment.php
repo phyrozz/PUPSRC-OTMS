@@ -124,5 +124,26 @@
 <script src="modal.js"></script>
 <script src="upload.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+        // Disable submit button initially
+        document.getElementById("submitBtn").disabled = true;
+
+        // Function to enable submit button if upload and edit buttons are clicked
+        function enableSubmitButton() {
+            var editButtonClicked = document.getElementById("editModal").getAttribute("data-clicked");
+
+            if (editButtonClicked === "true") {
+                document.getElementById("submitBtn").disabled = false;
+            } else {
+                document.getElementById("submitBtn").disabled = true;
+            }
+        }
+
+        // Event listener for edit button click
+        document.getElementById("editModal").addEventListener("click", function() {
+            this.setAttribute("data-clicked", "true");
+            enableSubmitButton();
+        });
+    </script>
 </body>
 </html>
