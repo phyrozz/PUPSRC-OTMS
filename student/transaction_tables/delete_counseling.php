@@ -4,15 +4,18 @@ include '../functions.php';
 
 session_start();
 
-// Check if the request_ids is provided
+// Check if the request_ids are provided
 $requestIds = $_POST['request_id'];
 
-// Prepare and execute the SQL query to delete the document requests
+// Prepare and execute the SQL query to delete the counseling schedules and document requests
 $placeholders = implode(',', array_fill(0, count($requestIds), '?'));
-$sql = "DELETE FROM doc_requests WHERE request_id IN ($placeholders)";
+$sql = "DELETE counseling_schedules, doc_requests
+        FROM counseling_schedules
+        INNER JOIN doc_requests ON counseling_schedules.doc_requests_id = doc_requests.request_id
+        WHERE counseling_schedules.counseling_id IN ($placeholders)";
 $stmt = $connection->prepare($sql);
 
-// Bind parameters dynamically based on the number of request IDs
+// Bind parameters dynamically based on the number of counseling IDs
 $types = str_repeat('s', count($requestIds));
 $stmt->bind_param($types, ...$requestIds);
 $stmt->execute();
