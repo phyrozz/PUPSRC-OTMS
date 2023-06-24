@@ -23,7 +23,8 @@ if(isset($_SESSION['appointment_details'])) {
     $section = $appointmentDetails['section'];
 
 
-    $currentDate = date("F j, Y"); // ge the current date
+        $currentDate = new DateTime("now", new DateTimeZone("Asia/Manila"));
+        $currentTime = $currentDate->format("F j, Y ");
 
         // Query to retrieve user data
         $userQuery = "SELECT last_name, first_name FROM users WHERE user_id = ?";
@@ -200,7 +201,7 @@ $html = <<<EOD
     </div>
     
     <div class="date">
-        <h4><span id="current-date">$currentDate</span></h4>
+        <h4><span id="current-date">$currentTime</span></h4>
     </div>
     
     <div class="reciever">

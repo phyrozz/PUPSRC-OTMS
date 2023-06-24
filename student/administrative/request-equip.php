@@ -26,7 +26,7 @@
         include "conn.php";
 
         // Query to retrieve user data
-        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users WHERE user_id = ?";
+        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, email FROM users WHERE user_id = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("i", $_SESSION['user_id']);
         $stmt->execute();
@@ -184,14 +184,15 @@
                             </div> -->
                             
                             <div class="form-group required col-12">
+                                
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" maxlength="50" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder = "example@gmail.com" maxlength="50" required >
                                 <div class="invalid-feedback">Please input a valid email</div>
                             </div>
 
                             <h6 class="mt-5">Request Information</h6>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group required col-md-6">
                                 <label for="equipName" class="form-label">Equipment Name</label>
                                 <input type="text" class="form-control" id="equipment_name" name="equipment_name" value="<?php echo isset($_GET['equipment_name']) ? $_GET['equipment_name'] : ''; ?>" disabled>
                                 <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>">
@@ -202,7 +203,7 @@
                             <div class="form-group required col-md-6">
                                 <label for="quantityequip" class="form-label">Quantity</label>
                                 <!-- get the current quantity of an equipment from equipment table and make it a max quantity  -->
-                                <input type="number" class="form-control" id="quantityequip" name="quantityequip" min="1" max="<?php echo isset($_GET['quantity']) ? $_GET['quantity'] : ''; ?>" required> 
+                                <input type="number" class="form-control" id="quantityequip" name="quantityequip" oninput="validateQuantity(this)" min="1" max="<?php echo isset($_GET['quantity']) ? $_GET['quantity'] : ''; ?>" required> 
                                 <div class="invalid-feedback">Please input a valid quantity (Max. <?php echo isset($_GET['quantity']) ? $_GET['quantity'] : ''; ?>).</div>
                             </div>
 
@@ -341,10 +342,25 @@
             document.getElementById("date").min = currentDate;
             document.getElementById("date").max = maxDate;
 
+            document.addEventListener("DOMContentLoaded", function() {
+            var dateInput = document.getElementById("date");
+
+            dateInput.addEventListener("change", function() {
+                var selectedDate = new Date(this.value);
+
+                if (selectedDate.getDay() === 0) {
+                this.setCustomValidity("Sundays are not allowed. Please choose a different date.");
+                } else {
+                this.setCustomValidity("");
+                }
+            });
+            });
+
             function validateForm() {
                 var form = document.getElementById('request-form');
                 var selectFields = form.querySelectorAll('select[required]');
                 var quantityField = document.getElementById('quantityequip');
+                var emailInput = document.getElementById('email');
                 var quantityValue = parseInt(quantityField.value);
 
                 if (quantityValue < 0) {
@@ -366,12 +382,42 @@
                     }
                 }
 
+                quantityField.addEventListener('input', function() {
+                    //  limit the length of the input
+                if (quantityField.value.length >= 2) {
+                    quantityField.value = quantityField.value.slice(0, 2);
+                }
+                
+                });
+
+                // emailInput.addEventListener('input', function() {
+                // var email = emailInput.value;
+                // var domainExtension = email.substring(email.lastIndexOf('.') + 1);
+
+                // if (domainExtension !== 'com') {
+                //     emailInput.setCustomValidity('Please input a valid email address ');
+                // } else {
+                //     emailInput.setCustomValidity('');
+                // }
+
+                
+                // });
+
                 if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
                 form.classList.add('was-validated');
+
+                
+              
             }
+
+            function validateQuantity(input) {
+                input.value = input.value.replace(/\D/g, ''); // Remove non-digit characters
+            }
+
+            
 
                 // Function to handle form submission
                 function handleSubmit() {
@@ -383,17 +429,7 @@
                 document.getElementById('submitBtn').addEventListener('click', handleSubmit);
 
 
-
-
-
-            // Add event listener to limit the length of the input
-            var quantityField = document.getElementById('quantityequip');
-            quantityField.addEventListener('input', function() {
-
-                if (quantityField.value.length >= 2) {
-                    quantityField.value = quantityField.value.slice(0, 2);
-                }
-            });
+           
 
             function redirectToViewEquipment() {
                 // Redirect to the view-equipment.php page
@@ -405,21 +441,10 @@
             }
             
             
-            //code that validates email with .com
-            var emailInput = document.getElementById('email');
-            
-            
 
-            emailInput.addEventListener('input', function() {
-                var email = emailInput.value;
-                var domainExtension = email.substring(email.lastIndexOf('.') + 1);
 
-                if (domainExtension !== 'com') {
-                    emailInput.setCustomValidity('Please input a valid email address ');
-                } else {
-                    emailInput.setCustomValidity('');
-                }
-            });
+            
+           
 
 
         </script>
