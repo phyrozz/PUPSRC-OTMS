@@ -79,9 +79,6 @@
                             <a class="btn btn-outline-primary mb-2" href="/student/transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
-                            <a class="btn btn-outline-primary mb-2">
-                            <i class="fa-regular fa-flag"></i> Generate Inquiry
-                            </a>
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
@@ -120,9 +117,10 @@
                                 <label for="extensionName" class="form-label">Extension Name</label>
                                 <input type="text" class="form-control" id="extensionName" value="<?php echo $userData[0]['extension_name'] ?>" maxlength="11" disabled required>
                             </div>
-                            <div class="form-group col-12">
+                            <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
+                                <div id="contactNoValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
@@ -199,6 +197,22 @@
     <?php include '../../footer.php'; ?>
     <script src="../../jquery.js"></script>
     <script>
+        const contactNoInput = document.getElementById('contactNumber'); // Corrected typo
+        const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+
+        contactNoInput.addEventListener('input', () => {
+            const contactNo = contactNoInput.value.trim();
+            const contactNoValidPattern = /^09\d{2}-\d{3}-\d{4}$/;
+
+            if (!contactNoValidPattern.test(contactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx';
+                contactNoInput.classList.add('is-invalid');
+            } else {
+                contactNoValidationMessage.textContent = '';
+                contactNoInput.classList.remove('is-invalid');
+            }
+        });
+
         // Function to handle form submission
         function handleSubmit() {
             validateForm();

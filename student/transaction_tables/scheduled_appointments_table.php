@@ -1,4 +1,4 @@
-<table id="transactions-table" class="table table-hover table-bordered">
+<table id="transactions-table" class="table table-hover table-bordered hidden">
     <thead>
         <tr>
             <th class="text-center"></th>
@@ -41,8 +41,16 @@
                 return 'bg-success';
             case 'Disapproved':
                 return 'bg-danger';
-            default:
+            case 'For receiving':
                 return 'bg-warning text-dark';
+            case 'For evaluation':
+                return 'bg-primary';
+            case 'Ready for pickup':
+                return 'bg-info';
+            case 'Released':
+                return 'bg-success';
+            default:
+                return 'bg-dark';
         }
     }
 
@@ -99,12 +107,26 @@
     }
 
     function handlePagination(page, searchTerm = '', column = 'counseling_id', order = 'desc') {
+        // Show the loading indicator
+        var loadingIndicator = document.getElementById('loading-indicator');
+        loadingIndicator.style.display = 'block';
+
+        // Hide the table
+        var table = document.getElementById('transactions-table');
+        table.classList.add('hidden');
+        
         // Make an AJAX request to fetch the document requests
         $.ajax({
             url: 'transaction_tables/fetch_counseling.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
+                // Hide the loading indicator
+                loadingIndicator.style.display = 'none';
+
+                // Show the table
+                table.classList.remove('hidden');
+
                 // Parse the JSON response
                 var data = JSON.parse(response);
 
@@ -119,7 +141,15 @@
                             '<td><input type="checkbox" id="' + schedules.counseling_id + '" name="' + schedules.counseling_id + '" value="' + schedules.counseling_id + '"></td>' +
                             '<td>' + 'DR-' + schedules.counseling_id + '</td>' +
                             '<td>' + schedules.appointment_description + '</td>' +
-                            '<td>' + (schedules.scheduled_datetime !== null ? (new Date(schedules.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+                            '<td>' + (schedules.scheduled_datetime !== null ? (new Date(schedules.scheduled_datetime)).toLocaleString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                            }) : 'Not yet scheduled')
+                            + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(schedules.status_name) + '">' + schedules.status_name + '</span>' +
                             '</td>' +

@@ -69,12 +69,15 @@
                                 <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
                             </form>
                         </div>
-                        <!-- <div class="d-flex justify-content-end gap-2">
-                            <div class="input-group mb-3 d-flex justify-content-end">
+                        <div class="d-flex justify-content-end p-2">
+                            <div class="input-group d-flex justify-content-end">
                                 <input type="text" class="form-control" placeholder="Search..." id="search-input">
                                 <button class="btn btn-outline-primary" type="button" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
                         </div> -->
+                    </div>
+                    <div id="loading-indicator" class="text-center">
+                        Loading...
                     </div>
                     <div id="table-container">
                         <?php
