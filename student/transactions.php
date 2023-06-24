@@ -74,7 +74,7 @@
                                 <input type="text" class="form-control" placeholder="Search..." id="search-input">
                                 <button class="btn btn-outline-primary" type="button" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <div id="loading-indicator" class="text-center">
                         Loading...
