@@ -342,6 +342,20 @@
             document.getElementById("date").min = currentDate;
             document.getElementById("date").max = maxDate;
 
+            document.addEventListener("DOMContentLoaded", function() {
+            var dateInput = document.getElementById("date");
+
+            dateInput.addEventListener("change", function() {
+                var selectedDate = new Date(this.value);
+
+                if (selectedDate.getDay() === 0) {
+                this.setCustomValidity("Sundays are not allowed. Please choose a different date.");
+                } else {
+                this.setCustomValidity("");
+                }
+            });
+            });
+
             function validateForm() {
                 var form = document.getElementById('request-form');
                 var selectFields = form.querySelectorAll('select[required]');
@@ -375,8 +389,7 @@
                 }
                 
                 });
-                
-                
+
                 // emailInput.addEventListener('input', function() {
                 // var email = emailInput.value;
                 // var domainExtension = email.substring(email.lastIndexOf('.') + 1);

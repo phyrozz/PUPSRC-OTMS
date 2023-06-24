@@ -219,12 +219,12 @@
                             <div class="form-group required col-md-6">
                                 <label for="startDate" class="form-label">Date Requested</label>
                                 <input type="date" class="form-control" name="startDate" id="startDate" required>
-                                <div class="invalid-feedback">Please choose a requested date</div>
+                                <div class="invalid-feedback">Please choose a different request date</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="endDate" class="form-label">Date Ended</label>
                                 <input type="date" class="form-control" name="endDate" id="endDate" required>
-                                <div class="invalid-feedback">Please choose an end date.</div>
+                                <div class="invalid-feedback">Please choose a different end date.</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="startTime" class="form-label">Time Requested</label>
@@ -396,7 +396,6 @@
         });
 
 
-        
         // Get the date requested and date ended input elements
         const startDateInput = document.getElementById("startDate");
         const endDateInput = document.getElementById("endDate");
@@ -404,6 +403,8 @@
         // Get the time requested and time ended input elements
         const startTimeInput = document.getElementById("startTime");
         const endTimeInput = document.getElementById("endTime");
+        
+
 
         // Function to update the options in the time ended dropdown based on selected dates
         function updateEndTimeOptions() {
@@ -515,6 +516,30 @@
 
 
     <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the date input elements
+            var startDateInput = document.getElementById("startDate");
+            var endDateInput = document.getElementById("endDate");
+
+            // Add event listeners for when the dates change
+            startDateInput.addEventListener("change", validateDate);
+            endDateInput.addEventListener("change", validateDate);
+
+            function validateDate() {
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+
+            // Check if either the start date or end date is a Sunday
+            if (startDate.getDay() === 0 || endDate.getDay() === 0) {
+                startDateInput.setCustomValidity("Sundays are not allowed. Please choose different dates.");
+                endDateInput.setCustomValidity("Sundays are not allowed. Please choose different dates.");
+            } else {
+                startDateInput.setCustomValidity("");
+                endDateInput.setCustomValidity("");
+            }
+            }
+        });
 
         function validateForm() {
             var form = document.getElementById('appointment-form');
