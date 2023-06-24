@@ -61,7 +61,7 @@ if (lastNameInput.value.trim() === "") {
 }
 
 // Validate student number
-var studentNumberInput = document.getElementById("studentNumber");
+var studentNumberInput = document.getElementById("student-number");
 if (studentNumberInput.value.trim() === "") {
     studentNumberInput.classList.add("is-invalid");
     isValid = false;

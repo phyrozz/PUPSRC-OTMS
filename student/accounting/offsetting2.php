@@ -44,7 +44,7 @@ include 'request_offset.php';
         <h2>Select type of offset</h2>
         <div class="row g-3">
             <div class="col-md-6">
-                <label for="offsetType" class="form-label">Offset Type</label>
+                <label for="offsetType" class="form-label">Offset Type<code>*</code></label>
                 <select class="form-select" id="offsetType"name="offsetType" required>
                     <option value="" selected disabled>Select an option</option>
                     <option value="tuitionFee" >Tuition Fee</option>
@@ -55,7 +55,7 @@ include 'request_offset.php';
                 </div>
             </div>
             <div class="col-md-7">
-                <label for="amountToOffset" class="form-label2">Amount to be offset:</label>
+                <label for="amountToOffset" class="form-label2">Amount to be offset:<code>*</code></label>
                 <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required min="1" oninput="validateInput(this)">
                 <div class="invalid-feedback">
                     Please provide the amount to be offset.
