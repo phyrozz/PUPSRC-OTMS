@@ -76,7 +76,7 @@ include 'verification.php';
             </div>
             <div class="col-md-6">
                 <label for="birthdate" class="form-label">Birth Date<code>*</code></label>
-                <input type="date" class="form-control" id="birthdate"name="birth_date" required value="<?php echo isset($fetch['birth_date']) ? $fetch['birth_date'] : ''; ?>" readonly>
+                <input type="date" class="form-control" id="birthdate"name="birth_date" required value="<?php echo isset($fetch['birth_date']) ? $fetch['birth_date'] : ''; ?>">
                 <div class="invalid-feedback">
                     Please provide a birth date.
                 </div>
