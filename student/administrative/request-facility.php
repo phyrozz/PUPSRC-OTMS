@@ -154,7 +154,7 @@
                             <div class="form-group required col-12">
                                 
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" value = "<?php echo $userData[0]['email'] ?>" maxlength="50" required disabled>
+                                <input type="email" class="form-control" id="email" name="email" placeholder = "example@gmail.com" maxlength="50" required>
                                 <div class="invalid-feedback">Please input a valid email</div>
                             </div>
 
