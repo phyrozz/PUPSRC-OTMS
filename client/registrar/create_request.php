@@ -49,7 +49,6 @@ if(isset($_POST["submit"])){
 	<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	Usage
 	<!-- <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 	<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../../style.css">
@@ -104,8 +103,8 @@ if(isset($_POST["submit"])){
 		<div class="container-fluid p-4">
 			<nav class="breadcrumb-nav" aria-label="breadcrumb">
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item"><a href="index.php">Registrar Office</a></li>
+					<li class="breadcrumb-item"><a href="../home.php">Home</a></li>
+					<li class="breadcrumb-item"><a href="../registrar.php">Registrar Office</a></li>
 					<li class="breadcrumb-item active" aria-current="page">Create Request</li>
 				</ol>
 			</nav>
