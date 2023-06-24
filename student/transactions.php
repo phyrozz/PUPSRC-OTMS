@@ -64,16 +64,17 @@
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
+                                    <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                 </select>
                                 <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
                             </form>
                         </div>
-                        <div class="d-flex justify-content-end gap-2">
+                        <!-- <div class="d-flex justify-content-end gap-2">
                             <div class="input-group mb-3 d-flex justify-content-end">
                                 <input type="text" class="form-control" placeholder="Search..." id="search-input">
                                 <button class="btn btn-outline-primary" type="button" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div id="table-container">
                         <?php
@@ -84,6 +85,8 @@
                                 include 'transaction_tables/scheduled_appointments_table.php';
                             } elseif ($table === 'payments') {
                                 include 'transaction_tables/payments_table.php';
+                            } elseif ($table === 'request_equipment') {
+                                include 'transaction_tables/request_equipment_table.php';
                             }
                         ?>
                     </div>
