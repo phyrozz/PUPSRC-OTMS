@@ -1,4 +1,4 @@
-<table id="transactions-table" class="table table-hover table-bordered">
+<table id="transactions-table" class="table table-hover table-bordered hidden">
     <thead>
         <tr>
             <th class="text-center"></th>
@@ -127,12 +127,26 @@
     }
 
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+        // Show the loading indicator
+        var loadingIndicator = document.getElementById('loading-indicator');
+        loadingIndicator.style.display = 'block';
+
+        // Hide the table
+        var table = document.getElementById('transactions-table');
+        table.classList.add('hidden');
+        
         // Make an AJAX request to fetch the document requests
         $.ajax({
             url: 'transaction_tables/fetch_document_requests.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
+                // Hide the loading indicator
+                loadingIndicator.style.display = 'none';
+
+                // Show the table
+                table.classList.remove('hidden');
+
                 // Parse the JSON response
                 var data = JSON.parse(response);
 
@@ -187,6 +201,13 @@
 
                 // Add event listeners for delete buttons
                 addDeleteButtonListeners();
+            },
+            error: function() {
+                // Hide the loading indicator in case of an error
+                loadingIndicator.style.display = 'none';
+
+                // Handle the error appropriately
+                console.log('Error occurred while fetching data.');
             }
         });
     }
