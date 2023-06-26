@@ -219,6 +219,7 @@
                                         <input type="password" name="ConfirmPassword" value="" id="ConfirmPassword" placeholder="Retype Password" minlength="8" maxlength="80" size="80" autocomplete="on" class="form-control" required>
                                         </div>
                                     </div>
+                                    <ul id="passwordChecklist"></ul>
                                     <div class="form-group mt-3">
                                         <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
                                             <h4>Data Privacy Notice</h4>
@@ -256,7 +257,45 @@
             </div>
         </div>
     </div>
-    <?php if (isset($_SESSION['account_created']) && $_SESSION['account_created']) {
+    <!-- End of success alert modal -->
+    <!-- Account already exists modal -->
+    <div id="accountExistsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="accountExistsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="accountExistsModalLabel">Create Account Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>The account details you provided already exists. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of account already exists modal -->
+    <!-- Create account failed modal -->
+    <div id="createAccountFailedModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createAccountFailedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createAccountFailedModalLabel">Create Account Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Failed to create an account. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of create account failed modal -->
+    <?php 
+    if (isset($_SESSION['account_created']) && $_SESSION['account_created']) {
         echo "
         <script>
         $(window).on('load', function() {
@@ -264,8 +303,29 @@
         });
         </script>
         ";
-    } 
+    }
+    if (isset($_SESSION['account_exists']) && $_SESSION['account_exists']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#accountExistsModal').modal('show');
+        });
+        </script>
+        ";
+    }
+    if (isset($_SESSION['account_failed']) && $_SESSION['account_failed']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#createAccountFailedModal').modal('show');
+        });
+        </script>
+        ";
+    }
+
     unset($_SESSION['account_created']);
+    unset($_SESSION['account_exists']);
+    unset($_SESSION['account_failed']);
     ?>
     <!-- End of success alert modal -->
 
@@ -283,14 +343,30 @@
         var confirmPasswordInput = document.getElementById("ConfirmPassword");
         var submitButton = document.getElementById("submitBtn");
 
-        // Validation event listeners
+        const passwordPattern = /^(?=.*\d).{8,}$/;
 
+        // Validation event listeners
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
-            const contactNoValidPattern = /^090\d{1}-\d{3}-\d{4}$/;
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
 
-            if (!contactNoValidPattern.test(contactNo)) {
-                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx'
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
                 contactNoInput.classList.add('is-invalid');
             } else {
                 contactNoValidationMessage.textContent = '';

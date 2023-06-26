@@ -130,9 +130,10 @@
                                 <label for="extensionName" class="form-label">Extension Name</label>
                                 <input type="text" class="form-control" id="extensionName" value="<?php echo $userData[0]['extension_name'] ?>" maxlength="11" disabled required>
                             </div>
-                            <div class="form-group col-12">
+                            <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
+                                <div id="contactNoValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
@@ -263,6 +264,9 @@
     <?php include '../../footer.php'; ?>
     <script src="../../jquery.js"></script>
     <script>
+        const contactNoInput = document.getElementById('contactNumber');
+        const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+
         let currentDate = new Date().toISOString().split('T')[0];
 
         var maxDate = "2033-12-31";
@@ -305,6 +309,34 @@
                 dateInput.setCustomValidity('');
             }
         }
+
+        contactNoInput.addEventListener('input', () => {
+            const contactNo = contactNoInput.value.trim();
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
+
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
+                contactNoInput.classList.add('is-invalid');
+            } else {
+                contactNoValidationMessage.textContent = '';
+                contactNoInput.classList.remove('is-invalid');
+            }
+        });
 
         // Function to handle form submission
         function handleSubmit() {

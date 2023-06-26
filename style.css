@@ -210,8 +210,18 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 }
 
 .breadcrumb .active {
+    padding: 0.3px 8px;
     font-weight: 800;
 }
+
+.breadcrumb-item+.breadcrumb-item::before {
+    display: none;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.75rem;
+}
+
 /* End of custom breadcrumb styling */
 
 /* Different select option colors of statuses for admin pages */
@@ -317,6 +327,11 @@ a .autocomplete-item:hover {
     font-size: 12px;
 }
 
+.text-success {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
 /* Overwrite default style of accordions on the Help page */
 .accordion {
     --bs-accordion-btn-color: #000;
@@ -355,6 +370,14 @@ a .autocomplete-item:hover {
     animation: spin 1s infinite linear;
     margin-left: 5px;
     vertical-align: middle;
+}
+
+#passwordChecklist {
+    margin-top: 5px;
+}
+
+#passwordChecklist li {
+    list-style: none;
 }
 
 @keyframes spin {

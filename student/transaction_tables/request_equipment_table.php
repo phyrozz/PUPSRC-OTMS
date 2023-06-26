@@ -41,7 +41,7 @@
                 <a class="text-decoration-none text-dark" href="?sort=request_id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Request Code
                     <?php if ($sortColumn === 'request_id') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
+                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
             </th>
@@ -50,7 +50,7 @@
                 <a class="text-decoration-none text-dark" href="?sort=equipment_name&dir=<?php echo $sortColumn === 'equipment_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Equipment Name
                     <?php if ($sortColumn === 'equipment_name') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
+                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
             </th>
@@ -59,7 +59,7 @@
                 <a class="text-decoration-none text-dark" href="?sort=quantity_equip&dir=<?php echo $sortColumn === 'quantity_equip' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Quantity
                     <?php if ($sortColumn === 'quantity_equip') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
+                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
             </th>
@@ -67,7 +67,7 @@
                 <a class="text-decoration-none text-dark" href="?sort=datetime_schedule&dir=<?php echo $sortColumn === 'datetime_schedule' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Schedule
                     <?php if ($sortColumn === 'datetime_schedule') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
+                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
             </th>
@@ -76,7 +76,7 @@
                 <a class="text-decoration-none text-dark" href="?sort=status_name&dir=<?php echo $sortColumn === 'status_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
                     Status
                     <?php if ($sortColumn === 'status_name') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'ASC' ? 'asc' : 'desc'; ?>"></span>
+                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
                     <?php } ?>
                 </a>
             </th>
@@ -112,7 +112,7 @@
                 else {
         ?>
         <tr>
-            <td class="text-center table-light p-4" colspan="4">No Transactions</td>
+            <td class="text-center table-light p-4" colspan="5">No Transactions</td>
         </tr>
         <?php
                 }

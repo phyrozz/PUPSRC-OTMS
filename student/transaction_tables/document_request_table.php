@@ -26,6 +26,7 @@
                 Status
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody id="table-body">
@@ -126,6 +127,22 @@
         updateDeleteButtonState();
     }
 
+    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
+    function generateUrlToOfficeColumn(officeName) {
+        switch (officeName) {
+            case 'Guidance Office':
+                return 'http://localhost/student/guidance.php';
+            case 'Registrar Office':
+                return 'http://localhost/student/registrar.php';
+            case 'Academic Office':
+                return 'http://localhost/student/academic.php';
+            case 'Accounting Office':
+                return 'http://localhost/student/accounting.php';
+            case 'Administrative Office':
+                return 'http://localhost/student/administrative.php';
+        }
+    }
+
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
@@ -168,7 +185,7 @@
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
                             '<td>' + 'DR-' + request.request_id + '</td>' +
-                            '<td>' + request.office_name + '</td>' +
+                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
                             '<td>' + request.request_description + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
@@ -178,11 +195,12 @@
                             // '<td class="text-center">' +
                             // scheduleButton +
                             // '</td>' +
+                            '<td><a href="#" class="btn btn-primary btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' + 
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 

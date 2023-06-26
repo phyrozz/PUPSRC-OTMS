@@ -65,7 +65,7 @@
             ?>
         </div>
         <div class="container-fluid text-center p-4">
-            <h1>Request Document - Good Morals</h1>
+            <h1>Request Document - Good Moral</h1>
         </div>
         <div class="container-fluid">
             <div class="row g-1">
@@ -109,7 +109,7 @@
                                 <label for="firstName" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="firstName" value="<?php echo $userData[0]['first_name'] ?>" maxlength="100" disabled required>
                             </div>
-                            <div class="form-group required col-md-6">
+                            <div class="form-group col-md-6">
                                 <label for="middleName" class="form-label">Middle Name</label>
                                 <input type="text" class="form-control" id="middleName" value="<?php echo $userData[0]['middle_name'] ?>" maxlength="100" disabled>
                             </div>
@@ -197,15 +197,30 @@
     <?php include '../../footer.php'; ?>
     <script src="../../jquery.js"></script>
     <script>
-        const contactNoInput = document.getElementById('contactNumber'); // Corrected typo
+        const contactNoInput = document.getElementById('contactNumber');
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
-            const contactNoValidPattern = /^09\d{2}-\d{3}-\d{4}$/;
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
 
-            if (!contactNoValidPattern.test(contactNo)) {
-                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx';
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
                 contactNoInput.classList.add('is-invalid');
             } else {
                 contactNoValidationMessage.textContent = '';
