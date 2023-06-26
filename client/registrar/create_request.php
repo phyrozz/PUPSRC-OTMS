@@ -1,4 +1,5 @@
 <?php
+
 $office_name = "Registrar Office";
 include "../navbar.php";
 include "../../conn.php";
@@ -174,7 +175,7 @@ if(isset($_POST["submit"])){
 									<!-- connect to db -->
 									<?php
 										while ($dropdown = mysqli_fetch_assoc($requirements)){
-												echo '<option value="' . $dropdown['id'] . '">' . $dropdown['services'] . '</option>';
+												echo '<option value="' . $dropdown['services_id'] . '">' . $dropdown['services'] . '</option>';
 										}
 									?>
 

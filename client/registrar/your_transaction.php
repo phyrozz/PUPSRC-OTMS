@@ -1,13 +1,23 @@
 <?php
-
+$office_name = "Registrar Office";
 include "../../conn.php";
+include "../navbar.php";
+include "../../breadcrumb.php";
+$user_id = $_SESSION['user_id'];
 
-$result = mysqli_query($connection, 
-	"SELECT reg_transaction.reg_id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
+$query = "SELECT reg_transaction.reg_id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
 	AS schedule, services, status, office_name AS office FROM reg_transaction 
 	LEFT JOIN reg_services ON reg_services.services_id = reg_transaction.services_id 
 	LEFT JOIN reg_status ON reg_status.status_id = reg_transaction.status_id
-	LEFT JOIN offices ON offices.office_id = reg_transaction.office_id");
+	LEFT JOIN offices ON offices.office_id = reg_transaction.office_id
+	WHERE user_id = ?";
+	$stmt = $connection->prepare($query);
+	$stmt->bind_param("i", $user_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$data = $result->fetch_all(MYSQLI_ASSOC);
+	$stmt->close();
+
 	
 
 ?>
@@ -35,9 +45,7 @@ $result = mysqli_query($connection,
 <body>
 	<div class="wrapper">
 		<?php
-            $office_name = "Registrar Office";
-            include "../navbar.php";
-            include "../../breadcrumb.php";
+            
         ?>
 		<div class="container-fluid p-4">
 			<?php
@@ -79,7 +87,7 @@ $result = mysqli_query($connection,
 						<tbody>
 
 							<?php
-							while ($row = mysqli_fetch_assoc($result)){
+							foreach ($data as $row){
 								echo '<tr>';
 								echo '<td>'. 'REG-' . $row["request_code"] . '</td>';
 								echo '<td>'. $row["office"] . '</td>';
