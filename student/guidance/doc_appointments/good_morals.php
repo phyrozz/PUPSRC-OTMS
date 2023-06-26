@@ -48,10 +48,7 @@
                             <a class="btn btn-outline-primary mb-2" href="/student/transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
-                            <a class="btn btn-outline-primary mb-2">
-                            <i class="fa-regular fa-flag"></i> Generate Inquiry
-                            </a>
-                            <button class="btn btn-outline-primary mb-2">
+                            <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
                             <a href="../help.php" class="btn btn-outline-primary mb-2">
@@ -165,15 +162,7 @@
         </div>
         <div class="push"></div>
     </div>
-    <div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </div>
+    <?php include '../../../footer.php'; ?>
     <script src="jquery.js"></script>
     <script>
         let currentDate = new Date().toISOString().split('T')[0];

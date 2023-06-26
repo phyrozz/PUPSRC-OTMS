@@ -92,9 +92,6 @@
                             <a class="btn btn-outline-primary mb-2" href="/student/transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
-                            <a class="btn btn-outline-primary mb-2">
-                            <i class="fa-regular fa-flag"></i> Generate Inquiry
-                            </a>
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
@@ -162,7 +159,7 @@
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" name="date" id="date" required>
+                                <input type="date" class="form-control" name="date" id="date" required onchange="validateDate()">
                                 <div class="invalid-feedback">Please choose a valid date.</div>
                             </div>
                             <div class="form-group required col-md-6">
@@ -170,17 +167,29 @@
                                 <select class="form-control form-select" name="time" id="time" required>
                                     <option value="">--Select--</option>
                                     <option value="08:00:00">8:00 AM</option>
+                                    <option value="08:30:00">8:30 AM</option>
                                     <option value="09:00:00">9:00 AM</option>
+                                    <option value="09:30:00">9:30 AM</option>
                                     <option value="10:00:00">10:00 AM</option>
+                                    <option value="10:30:00">10:30 AM</option>
                                     <option value="11:00:00">11:00 AM</option>
+                                    <option value="11:30:00">11:30 AM</option>
                                     <option value="12:00:00">12:00 PM</option>
+                                    <option value="12:30:00">12:30 PM</option>
                                     <option value="13:00:00">1:00 PM</option>
+                                    <option value="13:30:00">1:30 PM</option>
                                     <option value="14:00:00">2:00 PM</option>
+                                    <option value="14:30:00">2:30 PM</option>
                                     <option value="15:00:00">3:00 PM</option>
+                                    <option value="15:30:00">3:30 PM</option>
                                     <option value="16:00:00">4:00 PM</option>
+                                    <option value="16:30:00">4:30 PM</option>
                                     <option value="17:00:00">5:00 PM</option>
+                                    <option value="17:30:00">5:30 PM</option>
                                     <option value="18:00:00">6:00 PM</option>
+                                    <option value="18:30:00">6:30 PM</option>
                                     <option value="19:00:00">7:00 PM</option>
+                                    <option value="19:30:00">7:30 PM</option>
                                     <option value="20:00:00">8:00 PM</option>
                                 </select>
                                 <div class="invalid-feedback">Please choose a time.</div>
@@ -251,15 +260,7 @@
         </div>
         <div class="push"></div>
     </div>
-    <div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </div>
+    <?php include '../../footer.php'; ?>
     <script src="../../jquery.js"></script>
     <script>
         let currentDate = new Date().toISOString().split('T')[0];
@@ -291,6 +292,18 @@
                 event.stopPropagation();
             }
             form.classList.add('was-validated');
+        }
+
+        function validateDate() {
+            var dateInput = document.getElementById('date');
+            var selectedDate = new Date(dateInput.value);
+
+            // Check if the selected date is a Sunday (day of the week: 0)
+            if (selectedDate.getDay() === 0) {
+                dateInput.setCustomValidity('Sundays are not allowed. Please choose another date.');
+            } else {
+                dateInput.setCustomValidity('');
+            }
         }
 
         // Function to handle form submission

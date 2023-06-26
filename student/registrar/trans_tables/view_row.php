@@ -1,12 +1,39 @@
 <?php
     $id = $_SESSION['user_id'];
+
+    //get page number
+    if(isset($_GET['page_no']) && $_GET['page_no'] !== "") {
+        $page_no = $_GET['page_no'];
+    } else {
+        $page_no = 1;
+    }
+
+    //total rows or records to display
+    $total_records_per_page = 10;
+    //get the page offset for the LIMIT query
+    $offset = ($page_no - 1) * $total_records_per_page;
+    //get previous page
+    $previous_page = $page_no - 1;
+    //get next page
+    $next_page = $page_no + 1;
+    //get the total count of records
+    $result_count = mysqli_query($connection, "SELECT COUNT(*) as total_records FROM reg_transaction");
+    //total records
+    $records = mysqli_fetch_array($result_count);
+    //store total_records to a variable
+    $total_records = $records['total_records'];
+    //get total pages
+    $total_no_of_pages = ceil($total_records / $total_records_per_page);
+
     $query = "SELECT * FROM users
     INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
     INNER JOIN offices ON reg_transaction.office_id = offices.office_id
     INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
     INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id
-    WHERE users.user_id = $id";
+    WHERE users.user_id = $id LIMIT $offset, $total_records_per_page";
 ?>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog" tabindex="-1">
@@ -30,8 +57,8 @@
 <div class="d-flex w-100 justify-content-end p-0">
     <div class="d-flex justify-content-end gap-2">
         <div class="input-group mb-3 d-flex">
-            <button class="btn " type="button" disabled><i class="fas fa-search"></i></button>
-            <input type="text" name="search" id="search" class="form-control" placeholder="Search Here..." value="">
+            <button class="btn " type="button" name="query" disabled><i class="fas fa-search"></i></button>
+            <input type="text" name="search" id="search" class="form-control" placeholder="Search Here...">
         </div>
     </div>
 </div>
@@ -84,21 +111,29 @@
     </tbody>
 </table>
 <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    <li class="page-item"disabled>
-      <a class="btn-primary page-link text-white" href="#" tabindex="-1">Previous</a>
-    </li>
-    <?php
-    //for ($i=1;$i<=$total_pages;$i++) { ?>
-    <li class="page-item"><a class="page-link btn-outline-primary " href="#"><?php //echo $i?>1</a></li>
-    <li class="page-item"><a class="page-link btn-outline-primary " href="#"><?php //echo $i?>2</a></li>
-    <!-- <li class="page-item"><a class="page-link btn-outline-primary" href="../your_transaction.php?page=<?php //echo $i?>"><?php //echo $i?>2</a></li> -->
-    <?php //}?>
-    <li class="page-item">
-      <a class="btn-primary page-link text-white" href="#">Next</a>
-    </li>
+  <ul class="pagination">
+  <div class="d-flex w-100 justify-content-between p-2">
+        <li class="page-item"><a class="btn btn-primary text-white<?= ($page_no <= 1)? 'disabled' : '';?>" 
+            <?= ($page_no > 1)? 'href=?page_no='.$previous_page : '';?> >Previous</a></li>
+
+        <div class="d-flex justify-content-center">
+            <?php for($counter = 1; $counter <= $total_no_of_pages; $counter++){ ?>
+            <li class="page-item"><a class="page-link btn-outline-primary border-0" href="?page_no=<?= $counter; ?>"><u><?= $counter; ?></u></a></li>
+            <?php } ?> 
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <li class="page-item"><a class="btn btn-primary text-white<?= ($page_no >= $total_no_of_pages)? 'disabled' : '';?>"
+                <?= ($page_no < $total_no_of_pages)? 'href=?page_no='.$next_page : '';?> >Next</a></li>
+        </div>
+    </div>
   </ul>
 </nav>
+<div class="p-10">
+    <strong>
+        Page <?= $page_no ?> of <?= $total_no_of_pages ?>
+    </strong>
+</div>
 </form>
 
 

@@ -22,7 +22,7 @@
             $office_name = "Academic Office";
             include ('../navbar.php');
             include ('uploadmodal.php');
-            include ('editmodal-se.php');
+            include ('editmodal-so.php');
             include '../../breadcrumb.php';
         ?>
 
@@ -118,8 +118,8 @@
   <div class="card-body">
   <div class="row">
     <div class="col-sm-6">
-      Request Letter for Shifting
-      <br/><span class="subtext">(Letter that contains justification of the need to shift)</span>
+	<div class="request-letter"> Request Letter for Shifting</div>
+	<div class="subtext">(<span class="justification">Letter that contains justification of the need to shift</span>)</div>
     </div>
     <div class="col-sm-2">
     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
@@ -134,10 +134,10 @@
 
     </div>
   </div>
-  <div class="row">
+ <div class="row">
     <div class="col-sm-6">
-    Certified Copy of Grades (Soft Copy)
-      <br/><span class="subtext">(Picture of issued copy)</span>
+	<div class="request-letter">Certified Copy of Grades (Soft Copy)</div>
+	<div class="subtext">(<span class="justification">Picture of issued copy</span>)</div>
     </div>
     <div class="col-sm-2">
     <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
@@ -152,10 +152,10 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-    Certified Copy of Grades (Soft Copy)
-      <br/><span class="subtext">(To be submitted at the Academic Office)</span>
+	<div class="request-letter">Certified Copy of Grades (Soft Copy)</div>
+	<div class="subtext">(<span class="justification">To be submitted at the Academic Office</span>)</div>
     </div>
-    <div class="col-sm-2">
+     <div class="col-sm-2">
     <button type="button" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Verified</button>
     </div>
     <div class="col-sm-2">
@@ -210,5 +210,28 @@
     <script src="modal.js"></script>
     <script src="upload.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	
+	 <script>
+        // Disable submit button initially
+        document.getElementById("submitBtn").disabled = true;
+
+        // Function to enable submit button if upload and edit buttons are clicked
+        function enableSubmitButton() {
+            var uploadButtonClicked = document.getElementById("uploadModal").getAttribute("data-clicked");
+
+            if (uploadButtonClicked === "true") {
+                document.getElementById("submitBtn").disabled = false;
+            } else {
+                document.getElementById("submitBtn").disabled = true;
+            }
+        }
+
+        // Event listener for upload button click
+        document.getElementById("uploadModal").addEventListener("click", function() {
+            this.setAttribute("data-clicked", "true");
+            enableSubmitButton();
+        });
+
+    </script>
 </body>
 </html>

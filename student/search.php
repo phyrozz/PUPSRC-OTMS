@@ -43,10 +43,11 @@ $result = $connection->query($sql);
         ?>
     </div>
     <div class="container-fluid text-center p-4">
+        <!-- Easter egg hahaha -->
         <?php
         if ($query === "saygex") {
-            echo "<h1 class='page-heading'> Congratulations on finding this hidden search result! Here's your reward. :)</h1>";
-            echo '<img src="secret.png" alt="secret" width=350/>';
+            echo "<h1 class='page-heading'>Well, you asked for it. Here you go :)</h1>";
+            echo '<img src="../assets/secret.png" alt="secret" width=350/>';
         }
         else {
             echo '<h1 class="page-heading">Search Results - "' . $query . '"</h1>';

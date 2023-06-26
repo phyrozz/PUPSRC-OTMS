@@ -1,7 +1,5 @@
 <?php 
     include '../../conn.php';
-    $office_name = "Registrar Office";
-    include "../navbar.php";
    
     $table = 'view_table';
         if (isset($_POST['submit'])) {
@@ -17,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="../../../assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../style.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
@@ -30,7 +28,9 @@
 <body>
     <div class="wrapper">
         <?php
-            include "../../breadcrumb.php";
+        $office_name = "Registrar Office";
+        include "../navbar.php";
+        include "../../breadcrumb.php";
         ?>
         <div class="container-fluid p-4">
             <?php
@@ -65,9 +65,9 @@
                         <div class="d-flex p-2">
                             <form class="d-flex" action="your_transaction.php" method="post">
                                 <select class="form-select" name="table-select">
-                                    <option value="view_table" <?php if ($table === 'view_table') echo 'selected'; ?>>View Table</option>
-                                    <option value="delete_table" <?php if ($table === 'delete_table') echo 'selected'; ?>>Delete Table</option>
-                                    <option value="edit_table" <?php if ($table === 'edit_table') echo 'selected'; ?>>Edit Table</option>
+                                    <option value="view_table" <?php if ($table === 'view_table') echo 'selected'; ?>>View All Transactions</option>
+                                    <option value="delete_table" <?php if ($table === 'delete_table') echo 'selected'; ?>>Delete Transaction</option>
+                                    <option value="edit_table" <?php if ($table === 'edit_table') echo 'selected'; ?>>Edit Transaction</option>
                                 </select>
                                 <button type="submit" name="submit" class="btn btn-primary">Filter</button>
                             </form>

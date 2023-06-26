@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2023 at 04:27 AM
+-- Generation Time: Jun 19, 2023 at 08:14 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -24,38 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reference`
---
-
-CREATE TABLE `reference` (
-  `reference_id` int(11) NOT NULL,
-  `referenceNumber` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reference`
---
-
-INSERT INTO `reference` (`reference_id`, `referenceNumber`) VALUES
-(23, '123456789'),
-(24, '123');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `student_info`
 --
 
 CREATE TABLE `student_info` (
   `course` varchar(50) NOT NULL,
   `documentType` varchar(50) NOT NULL,
-  `student_id` int(11) NOT NULL,
+  `payment_id` int(11) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `middlename` varchar(50) NOT NULL,
   `surname` varchar(50) NOT NULL,
   `studentNumber` varchar(15) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
-  `referenceNumber` int(20) NOT NULL,
+  `referenceNumber` varchar(20) NOT NULL,
+  `image_url` text NOT NULL,
   `date&time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -63,73 +45,37 @@ CREATE TABLE `student_info` (
 -- Dumping data for table `student_info`
 --
 
-INSERT INTO `student_info` (`course`, `documentType`, `student_id`, `firstname`, `middlename`, `surname`, `studentNumber`, `amount`, `referenceNumber`, `date&time`) VALUES
-('Course 1', 'Document 1', 36, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '500.00', 0, '2023-05-22 02:02:20'),
-('Course 1', 'Document 2', 37, 'Mark', 'Mark', 'Mark', '123SSDASDASDASD', '123.00', 0, '2023-05-22 02:02:20'),
-('Course 1', 'Document 1', 38, 'Mark', 'Mark', 'Mark', '123123123123123', '12.00', 123, '2023-05-22 02:17:06'),
-('Course 1', 'Document 1', 39, 'Mark', 'Mark', 'Mark', '123123123123123', '123.00', 123, '2023-05-22 02:17:22'),
-('Course 1', 'Document 1', 40, 'John', 'John', 'John', '123123123123123', '555.00', 555, '2023-05-22 02:22:17'),
-('Course 1', 'Document 1', 41, 'a', 'a', 'a', '123123123123123', '123.00', 123, '2023-05-22 02:26:59'),
-('Course 1', 'Document 1', 42, 'John', 'Mark', 'Garapan', '2020-00585-SR-0', '100.00', 1234567890, '2023-05-22 02:30:28'),
-('Course 2', 'Document 2', 43, 'Dorothy Grace', 'Dauan', 'Garapan', '2020-00599-SR-0', '500.00', 123456, '2023-05-22 18:25:25'),
-('Course 1', 'Document 1', 44, 'John', 'Sata', 'Kennedy', '2020-00234-SR-0', '122.34', 123456, '2023-05-27 07:25:37');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `uploaded_files`
---
-
-CREATE TABLE `uploaded_files` (
-  `id` int(11) NOT NULL,
-  `filename` varchar(255) NOT NULL,
-  `file_path` varchar(255) NOT NULL,
-  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `student_info` (`course`, `documentType`, `payment_id`, `firstname`, `middlename`, `surname`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `date&time`) VALUES
+('Course 1', 'Document 1', 106, 'ttt', 'ttt', 'ttt', '707070707070707', '70.00', '2147483647', 'uploads/payment_106_ttt_ttt.jpg', '2023-06-16 13:08:19'),
+('Course 1', 'Document 1', 107, 'dad', 'dad', 'dad', '123312312312312', '544.00', '2147483647', 'uploads/payment_107_dad_dad.png', '2023-06-16 13:18:13'),
+('Course 2', 'Document 1', 108, 'rrr', 'rrr', 'rrr', 'RRRRRRRRRRRRRRR', '24.00', '2147483647', 'uploads/payment_108_rrr_rrr.png', '2023-06-16 13:23:39'),
+('Course 1', 'Document 1', 114, 'dad', 'dad', 'dad', '313131313131313', '31.00', '13131313131313131331', 'uploads/payment_114_dad_dad.png', '2023-06-16 14:06:25'),
+('Course 2', 'Document 2', 115, 'xax', 'xax', 'xax', '212121212121212', '21.00', '21212121212121212121', 'uploads/payment_115_xax_xax.jpg', '2023-06-16 14:20:17'),
+('Course 2', 'Document 2', 116, 'aa', 'aa', 'aa', '231312312312312', '22.00', '32131321231231231312', 'uploads/payment_116_aa_aa.png', '2023-06-16 14:28:16'),
+('Course 1', 'Document 1', 117, 'vav', 'vav', 'vav', 'EE1E2EDADAWDADS', '2.00', '32132131231231231231', 'uploads/payment_117_vav_vav.png', '2023-06-16 14:41:01'),
+('Course 2', 'Document 2', 118, 'Sophie', 'Serrano', 'Luna', '2020-00589-SR-0', '22.00', '31231231231231231231', 'uploads/payment_118_Sophie_Luna.png', '2023-06-17 01:16:14'),
+('Course 2', 'Document 1', 119, 'DAD', 'DAD', 'DAD', '2312-77753-SR-0', '222.00', '31231232312323123123', 'uploads/payment_119_DAD_DAD.png', '2023-06-17 17:35:05'),
+('Course 2', 'Document 2', 120, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '920.00', '45645645645645645645', 'uploads/payment_120_John Mark_Garapan.jpg', '2023-06-20 02:13:34');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `reference`
---
-ALTER TABLE `reference`
-  ADD PRIMARY KEY (`reference_id`);
-
---
 -- Indexes for table `student_info`
 --
 ALTER TABLE `student_info`
-  ADD PRIMARY KEY (`student_id`);
-
---
--- Indexes for table `uploaded_files`
---
-ALTER TABLE `uploaded_files`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`payment_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `reference`
---
-ALTER TABLE `reference`
-  MODIFY `reference_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
-
---
--- AUTO_INCREMENT for table `uploaded_files`
---
-ALTER TABLE `uploaded_files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
