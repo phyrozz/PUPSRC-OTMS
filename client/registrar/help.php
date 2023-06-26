@@ -77,15 +77,6 @@
 		<div class="container-fluid text-center p-4">
 			<h3>Requirements and Payments</h3>
 		</div>
-		<?php
-			// Get all services, requirements and payments
-			$query = "SELECT services, requirement, payment FROM reg_services LEFT JOIN reg_requirements ON reg_services.requirement_id = reg_requirements.id WHERE reg_services.id > 22";
-			$stmt = $connection->prepare($query);
-			$stmt->execute();
-			$result = $stmt->get_result();
-			$data = $result->fetch_all(MYSQLI_ASSOC);
-			$stmt->close();
-		?>
 		<div class="accordion p-4" id="faqAccordion">
 
 			<div class="accordion-item">
