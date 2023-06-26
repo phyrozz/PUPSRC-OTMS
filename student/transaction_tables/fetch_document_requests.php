@@ -14,6 +14,10 @@ $recordsPerPage = 10;
 $startingRecord = ($page - 1) * $recordsPerPage;
 $searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
+// Retrieve the sorting parameters from the AJAX request
+$column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
+$order = isset($_POST['order']) ? $_POST['order'] : 'asc';
+
 // Retrieve the document requests
 $documentRequestsQuery = "SELECT request_id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
                         FROM doc_requests
@@ -22,16 +26,18 @@ $documentRequestsQuery = "SELECT request_id, office_name, request_description, s
                         WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL";
 
 if (!empty($searchTerm)) {
-    $query .= " AND (request_id LIKE '%$searchTerm%'
-                OR office_name LIKE '%$searchTerm%'
-                OR request_description LIKE '%$searchTerm%'
-                OR scheduled_datetime LIKE '%$searchTerm%'
-                OR status_name LIKE '%$searchTerm%'
-                OR amount_to_pay LIKE '%$searchTerm%')";
+    $documentRequestsQuery .= " AND (request_id LIKE '%$searchTerm%'
+                           OR office_name LIKE '%$searchTerm%'
+                           OR request_description LIKE '%$searchTerm%'
+                           OR scheduled_datetime LIKE '%$searchTerm%'
+                           OR status_name LIKE '%$searchTerm%'
+                           OR amount_to_pay LIKE '%$searchTerm%')";
 }
 
-$documentRequestsQuery .= " ORDER BY request_id DESC
+// Add the sorting parameters to the query
+$documentRequestsQuery .= " ORDER BY $column $order
 LIMIT $startingRecord, $recordsPerPage";
+
 
 $result = mysqli_query($connection, $documentRequestsQuery);
 

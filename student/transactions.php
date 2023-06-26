@@ -48,26 +48,36 @@
                         <h4 class="alert-heading">
                         <i class="fa-solid fa-circle-info"></i> Reminder
                         </h4>
-                        <p>You must set an appointment for approved document requests before retrieving it from their respective offices.</p>
-                        <p class="mb-0">To set or edit an appointment, click the <i class="fa-brands fa-wpforms"></i> button on the table.</p>
+                        <p class="mb-0" >Always check your transaction status to follow instructions.</p>
+                        <p class="mb-0">You can delete and edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
+                        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle the deficiency/ies to necessary office.</small></p>
+                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For receiving</span> - The request is currently in Receiving window and waiting for submission of requirements.</small></p>
+                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small></p>
+                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for pickup</span> - The requested document/s is/are already available for pickup at the releasing section of student records.</small></p>
+                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> - The requested document/s was/were claimed.</small></p>
+                        <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
                     </div>
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
-                            <form class="d-flex" action="transactions.php" method="post">
+                            <form class="d-flex input-group" action="transactions.php" method="post">
                                 <select class="form-select" name="table-select">
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
+                                    <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                 </select>
                                 <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
                             </form>
                         </div>
-                        <div class="d-flex justify-content-end gap-2">
-                            <div class="input-group mb-3 d-flex justify-content-end">
+                        <div class="d-flex justify-content-end p-2">
+                            <div class="input-group d-flex justify-content-end">
                                 <input type="text" class="form-control" placeholder="Search..." id="search-input">
                                 <button class="btn btn-outline-primary" type="button" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
+                    </div>
+                    <div id="loading-indicator" class="text-center">
+                        Loading...
                     </div>
                     <div id="table-container">
                         <?php
@@ -78,6 +88,8 @@
                                 include 'transaction_tables/scheduled_appointments_table.php';
                             } elseif ($table === 'payments') {
                                 include 'transaction_tables/payments_table.php';
+                            } elseif ($table === 'request_equipment') {
+                                include 'transaction_tables/request_equipment_table.php';
                             }
                         ?>
                     </div>
@@ -86,20 +98,29 @@
         </div>
         <div class="push"></div>
     </div>
-    <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </footer>
     <?php
+        include "../footer.php";
         mysqli_close($connection);
     ?>
     <script>
         $(document).ready(function(){
+            $('.sortable-header').on('click', function() {
+                var column = $(this).data('column');
+                var order = $(this).data('order');
+
+                // Toggle the sort order
+                order = (order === 'asc') ? 'desc' : 'asc';
+
+                // Reset the sort icons
+                $('.sortable-header').data('order', 'asc').find('.sort-icon').removeClass('fa-sort-up fa-sort-down').addClass('fa-sort');
+
+                // Update the clicked header's sort order and icon
+                $(this).data('order', order).find('.sort-icon').removeClass('fa-sort').addClass(order === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+
+                // Call the handlePagination function with the updated sort parameters
+                handlePagination(1, '', column, order);
+            });
+
             $('#search-button').on('click', function() {
                 var searchTerm = $('#search-input').val();
                 handlePagination(1, searchTerm);

@@ -1,4 +1,21 @@
 <!-- Modal -->
+<?php
+// $office_name = "Guidance Office";
+// include "../../conn.php";
+
+// $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
+// WHERE user_id = ?";
+// $stmt = $connection->prepare($query);
+// $stmt->bind_param("i", $_SESSION['user_id']);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// $userData = $result->fetch_all(MYSQLI_ASSOC);
+// $stmt->close();
+
+// $stmt->close();
+// $connection->close();
+?>
+<form method="POST">
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog editmod" role="document">
     <div class="modal-content">
@@ -13,25 +30,25 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input1">First Name</label>
-                <input type="text" class="form-control" id="input1" value="Juan" disabled>
+                <input type="text" name="firstName" class="form-control" id="input1" value="Juan" disabled>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input2">Middle</label>
-                <input type="text" class="form-control" id="input2" value="Dela" disabled>
+                <input type="text" name="middleName" class="form-control" id="input2" value="Dela" disabled>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input3">Last Name</label>
-                <input type="text" class="form-control" id="input3" value="Cruz" disabled>
+                <input type="text" name="lastName" class="form-control" id="input3" value="Cruz" disabled>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input4">Suffix</label>
-                <input type="text" class="form-control" id="input4" value="" disabled>
+                <input type="text" name="extensionName" class="form-control" id="input4" value="" disabled>
               </div>
             </div>
           </div>
@@ -40,7 +57,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input5">Student Number</label>
-                <input type="text" class="form-control" id="input5" value="2020-00000-SR-0" disabled>
+                <input type="text" name="studentNumber" class="form-control" id="input5" value="2020-00000-SR-0" disabled>
               </div>
             </div>
             <div class="col-md-3">
@@ -185,3 +202,4 @@
     </div>
   </div>
 </div>
+  </form>

@@ -2,6 +2,7 @@
 $office_name = "Registrar Office";
 include "../navbar.php";
 include "../../conn.php";
+
 //if($_SESSION['id']==''){
 	//header('#');
 	//}
@@ -17,7 +18,9 @@ ORDER BY users.user_id");
 
 $row = mysqli_fetch_array($result);
 //fetching registrar services
+
 $requirements = mysqli_query($connection, "SELECT reg_services.id AS id, reg_requirements.id AS requirement_id, services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.id > 22");
+
 
 if(isset($_POST["submit"])){
 	$_SESSION['date'] = $_POST['date'];

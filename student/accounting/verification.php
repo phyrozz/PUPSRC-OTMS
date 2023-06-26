@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     padding: 10px;
     text-align: center;
     margin-bottom: 10px;
-    display: none; /* Hide the alert by default */
+    display: none; 
 }
 .custom-alert {
     position: fixed;
