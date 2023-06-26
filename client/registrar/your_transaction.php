@@ -3,10 +3,10 @@
 include "../../conn.php";
 
 $result = mysqli_query($connection, 
-	"SELECT reg_transaction.id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
+	"SELECT reg_transaction.reg_id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
 	AS schedule, services, status, office_name AS office FROM reg_transaction 
-	LEFT JOIN reg_services ON reg_services.id = reg_transaction.services_id 
-	LEFT JOIN reg_status ON reg_status.id = reg_transaction.status_id
+	LEFT JOIN reg_services ON reg_services.services_id = reg_transaction.services_id 
+	LEFT JOIN reg_status ON reg_status.status_id = reg_transaction.status_id
 	LEFT JOIN offices ON offices.office_id = reg_transaction.office_id");
 	
 
