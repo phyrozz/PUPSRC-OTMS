@@ -1,7 +1,7 @@
 <?php
 $office_name = "Registrar Office";
 include "../navbar.php";
-include 'conn.php';
+include "../../conn.php";
 //if($_SESSION['id']==''){
 	//header('#');
 	//}
@@ -9,7 +9,7 @@ include 'conn.php';
 $user_id = $_SESSION['user_id'];
 
 //fetching student info//
-$result = mysqli_query($connect, "SELECT users.user_id, users.last_name, users.first_name, users.middle_name, users.extension_name, users.contact_no, users.email, users.student_no 
+$result = mysqli_query($connection, "SELECT users.user_id, users.last_name, users.first_name, users.middle_name, users.extension_name, users.contact_no, users.email, users.student_no 
 FROM users
 WHERE users.user_id= $user_id
 ORDER BY users.user_id");
@@ -17,7 +17,7 @@ ORDER BY users.user_id");
 
 $row = mysqli_fetch_array($result);
 //fetching registrar services
-$requirements = mysqli_query($connect, "SELECT reg_services.id AS id, reg_requirements.id AS requirement_id, services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.id > 22");
+$requirements = mysqli_query($connection, "SELECT reg_services.id AS id, reg_requirements.id AS requirement_id, services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.id > 22");
 
 if(isset($_POST["submit"])){
 	$_SESSION['date'] = $_POST['date'];

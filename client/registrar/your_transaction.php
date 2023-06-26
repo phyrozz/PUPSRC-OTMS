@@ -1,8 +1,8 @@
 <?php
 
-include 'conn.php';
+include "../../conn.php";
 
-$result = mysqli_query($connect, 
+$result = mysqli_query($connection, 
 	"SELECT reg_transaction.id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
 	AS schedule, services, status, office_name AS office FROM reg_transaction 
 	LEFT JOIN reg_services ON reg_services.id = reg_transaction.services_id 
