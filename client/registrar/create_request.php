@@ -2,6 +2,7 @@
 $office_name = "Registrar Office";
 include "../navbar.php";
 include "../../conn.php";
+include "../../breadcrumb.php";
 
 $user_id = $_SESSION['user_id'];
 
@@ -15,7 +16,7 @@ ORDER BY users.user_id");
 $row = mysqli_fetch_array($result);
 //fetching registrar services
 
-$requirements = mysqli_query($connection, "SELECT reg_services.id AS id, reg_requirements.id AS requirement_id, services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.id > 22");
+$requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE services_id > 22;");
 
 
 if(isset($_POST["submit"])){
@@ -65,20 +66,6 @@ if(isset($_POST["submit"])){
 			]
 		};
 		$("#date").flatpickr(optional_config);
-
-		$('#req_student_service').change(function() {
-			var optionValue = $(this).val();
-			$.ajax({
-				url: 'get_requirement_text.php', // Path to the PHP script
-				type: 'POST',
-				data: {
-					optionValue: optionValue
-				},
-				success: function(response) {
-					$('#req_requirements').text(response);
-				}
-			});
-		});
 
 	});
 
@@ -193,7 +180,6 @@ if(isset($_POST["submit"])){
 
 								</select>
 							</div>
-							<pre id="req_requirements"></pre>
 							<div class="form-group required col-md-12">
 								<label for="date" class="form-label">Date</label>
 								<input type="date" class="form-control" name="date" id="date" max="2023-12-31"
