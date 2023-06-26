@@ -2,10 +2,8 @@
 $office_name = "Registrar Office";
 include "../navbar.php";
 include "../../conn.php";
-//if($_SESSION['id']==''){
-	//header('#');
-	//}
-	//$id = $_SESSION['id'];	
+include "../../breadcrumb.php";
+
 $user_id = $_SESSION['user_id'];
 
 //fetching student info//
@@ -101,13 +99,14 @@ if(isset($_POST["submit"])){
 <body>
 	<div class="wrapper">
 		<div class="container-fluid p-4">
-			<nav class="breadcrumb-nav" aria-label="breadcrumb">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-					<li class="breadcrumb-item"><a href="../registrar.php">Registrar Office</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Create Request</li>
-				</ol>
-			</nav>
+			<?php
+			$breadcrumbItems = [
+					['text' => 'Registrar Office', 'url' => '/client/registrar.php', 'active' => false],
+					['text' => 'Create Request', 'active' => true],
+			];
+
+			echo generateBreadcrumb($breadcrumbItems, true);
+		?>
 		</div>
 		<div class="container-fluid text-center p-4">
 			<h1>Create Request</h1>
@@ -133,9 +132,10 @@ if(isset($_POST["submit"])){
 							<button class="btn btn-outline-primary mb-2" onclick="location.reload()">
 								<i class="fa-solid fa-arrows-rotate"></i> Reset Form
 							</button>
-							<button class="btn btn-outline-primary mb-2">
+
+							<a class="btn btn-outline-primary mb-2" href='./help.php'>
 								<i class="fa-solid fa-circle-question"></i> FAQ
-							</button>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -185,10 +185,10 @@ if(isset($_POST["submit"])){
 									<option value="" hidden>--Select Here--</option>
 									<!-- connect to db -->
 									<?php
-                                    while ($dropdown = mysqli_fetch_assoc($requirements)){
-                                        echo '<option value="' . $dropdown['id'] . '">' . $dropdown['services'] . '</option>';
-                                    }
-                                    ?>
+										while ($dropdown = mysqli_fetch_assoc($requirements)){
+												echo '<option value="' . $dropdown['id'] . '">' . $dropdown['services'] . '</option>';
+										}
+									?>
 
 								</select>
 							</div>
