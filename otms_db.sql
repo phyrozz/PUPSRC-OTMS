@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2023 at 10:04 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- Generation Time: Jun 26, 2023 at 06:18 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -182,26 +182,26 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-(27, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(28, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(29, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(30, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(31, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(32, NULL, '2023-06-16 01:00:00', 5, 31, 3, '0.00', ''),
-(33, NULL, '2023-06-16 01:00:00', 5, 31, 3, '0.00', ''),
-(34, NULL, '2023-06-04 08:00:00', 5, 31, 3, '0.00', ''),
-(35, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(36, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(37, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(38, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(39, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(40, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(41, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(42, NULL, '0000-00-00 00:00:00', 5, 31, 3, '0.00', ''),
-(43, NULL, '2023-06-16 15:00:00', 5, 35, 3, '0.00', ''),
-(44, NULL, '2023-06-16 15:00:00', 5, 35, 3, '0.00', ''),
-(45, NULL, '2023-06-16 10:00:00', 5, 35, 3, '0.00', ''),
-(46, NULL, '2023-06-30 20:00:00', 5, 35, 3, '0.00', '');
+(27, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(28, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(29, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(30, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(31, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(32, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
+(33, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
+(34, NULL, '2023-06-04 08:00:00', 5, 31, 3, 0.00, ''),
+(35, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(36, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(37, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(38, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(39, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(40, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(41, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(42, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
+(43, NULL, '2023-06-16 15:00:00', 5, 35, 3, 0.00, ''),
+(44, NULL, '2023-06-16 15:00:00', 5, 35, 3, 0.00, ''),
+(45, NULL, '2023-06-16 10:00:00', 5, 35, 3, 0.00, ''),
+(46, NULL, '2023-06-30 20:00:00', 5, 35, 3, 0.00, '');
 
 -- --------------------------------------------------------
 
@@ -228,11 +228,11 @@ INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quan
 (3, 'Badminton Shuttlecock', 'Available', 20, 2, 1),
 (4, 'Basketball', 'Available', 10, 2, 1),
 (5, 'BasketBall Ring and Net', 'Available', 20, 2, 1),
-(6, 'Brush', 'Available', 20, 3, 1),
+(6, 'Brush', 'Available', 19, 3, 1),
 (7, 'Bucket', 'Available', 15, 3, 1),
 (8, 'Chairs', 'Unavailable', 0, 1, 1),
 (9, 'Cleaning Detergent', 'Available', 20, 3, 1),
-(10, 'Curtains', 'Available', 4, 1, 1),
+(10, 'Curtains', 'Available', 3, 1, 1),
 (11, 'Chess Board', 'Available', 20, 2, 1),
 (12, 'Digital Scoreboard', 'Available', 20, 1, 1),
 (13, 'Mop', 'Available', 10, 3, 1),
@@ -631,10 +631,10 @@ CREATE TABLE `reg_transaction` (
 --
 
 INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`, `services_id`, `schedule`, `status_id`) VALUES
+(3, 'REG-4', 28, 3, 22, '2023-06-30', 1),
 (5, 'REG-6', 35, 3, 6, '2023-06-23', 1),
 (6, 'REG-7', 35, 3, 3, '2023-06-23', 1),
-(7, 'REG-8', 35, 3, 7, '2023-06-21', 1),
-(3, 'REG-4', 28, 3, 22, '2023-06-30', 1);
+(7, 'REG-8', 35, 3, 7, '2023-06-21', 1);
 
 -- --------------------------------------------------------
 
@@ -652,6 +652,14 @@ CREATE TABLE `request_equipment` (
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `request_equipment`
+--
+
+INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `email`, `purpose`, `equipment_id`) VALUES
+(4, 28, '2023-06-29 12:00:00', 1, 3, 'joshuamalabanan70@gmail.com', 'basta', 10),
+(5, 28, '2023-06-27 15:00:00', 1, 3, 'joshuamalabanan70@gmail.com', 'basta', 6);
 
 -- --------------------------------------------------------
 
@@ -672,35 +680,7 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`services_id`, `service_name`, `service_description`, `office_id`, `url`) VALUES
-(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 3, 'http://localhost/student/registrar/create_request.php'),
-(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://localhost/student/guidance/counseling.php'),
-(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://localhost/student/guidance/good_morals.php'),
-(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://localhost/student/guidance/clearance.php'),
-(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://localhost/student/academic/subject_overload.php'),
-(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://localhost/student/academic/grade_accreditation.php'),
-(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://localhost/student/academic/cross_enrollment.php'),
-(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://localhost/student/academic/shifting.php'),
-(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://localhost/student/academic/manual_enrollment.php'),
-(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://localhost/student/academic/servicesinsistools.php'),
-(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://localhost/student/accounting/payment1.php'),
-(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://localhost/student/accounting/offsetting1.php'),
-(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://localhost/student/administrative/view-equipment.php'),
-(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://localhost/student/administrative/view-facility.php'),
-(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 3, 'http://localhost/student/registrar/create_request.php'),
-(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://localhost/student/guidance/counseling.php'),
-(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://localhost/student/guidance/good_morals.php'),
-(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://localhost/student/guidance/clearance.php'),
-(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://localhost/student/academic/subject_overload.php'),
-(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://localhost/student/academic/grade_accreditation.php'),
-(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://localhost/student/academic/cross_enrollment.php'),
-(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://localhost/student/academic/shifting.php'),
-(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://localhost/student/academic/manual_enrollment.php'),
-(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://localhost/student/academic/servicesinsistools.php'),
-(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://localhost/student/accounting/payment1.php'),
-(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://localhost/student/accounting/offsetting1.php'),
-(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://localhost/student/administrative/view-equipment.php'),
-(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://localhost/student/administrative/view-facility.php'),
-(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 3, 'http://localhost/student/registrar/create_request.php'),
+(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 2, 'http://localhost/student/registrar/create_request.php'),
 (2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://localhost/student/guidance/counseling.php'),
 (3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://localhost/student/guidance/good_morals.php'),
 (4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://localhost/student/guidance/clearance.php'),
@@ -755,17 +735,6 @@ CREATE TABLE `student_info` (
   `date&time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `student_info`
---
-
-INSERT INTO `student_info` (`course`, `documentType`, `payment_id`, `firstname`, `middlename`, `surname`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `date&time`) VALUES
-('Course 1', 'Document 1', 3, 'John Mark', 'Dauan', 'Garapans', '1111-11111-SR-1', '222.00', '12312312312312312312', 'uploads/payment_3_John Mark_Garapans.png', '2023-06-24 15:49:24'),
-('Course 2', 'Document 2', 4, 'Joy', 'Joy', 'Joy', '2222-22222-SR-2', '22.00', '23123123123123123123', 'uploads/payment_4_Joy_Joy.png', '2023-06-24 15:50:17'),
-('Course 2', 'Document 2', 5, 'Mark', 'Mark', 'Mark', '1111-11111-SR-1', '111.00', '12312312312312312312', 'uploads/payment_5_Mark_Mark.png', '2023-06-24 15:53:00'),
-('Course 1', 'Document 1', 6, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '111.00', '21231231231231231231', 'uploads/payment_6_John Mark_Garapan.png', '2023-06-24 15:57:51'),
-('Course 1', 'Document 1', 7, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '100.00', '12312312312312312312', 'uploads/payment_7_John Mark_Garapan.png', '2023-06-24 16:01:33');
-
 -- --------------------------------------------------------
 
 --
@@ -814,8 +783,7 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (31, '2020-00200-SR-0', 'Shandra', 'Miki', 'Brawl', 'Jr.', '09464032004', 'mmallow624@gmail.com', '2023-06-24', '$2y$10$orJgdEoFs1G066jHzilA4Or/WrvzNj8HDJVBk6pcJBtMhguQ6MlbG', 1),
 (32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', 'bussinbaldes@gmail.com', '2023-06-24', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
 (34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
-(35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
-(39, '2020-00585-SR-0', 'Garapan', 'John Mark', 'Dauan', '', '0901-234-5678', 'johnmarkgarapan2@gmail.com', '2000-05-31', '$2y$10$XYPIdivyQB5y3iaF8k0iAOjCwKO0guw6diCVDLPAOOUwJZMnsigB.', 1);
+(35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1);
 
 -- --------------------------------------------------------
 
@@ -934,6 +902,12 @@ ALTER TABLE `reg_services`
   ADD PRIMARY KEY (`services_id`);
 
 --
+-- Indexes for table `reg_transaction`
+--
+ALTER TABLE `reg_transaction`
+  ADD PRIMARY KEY (`reg_id`);
+
+--
 -- Indexes for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
@@ -941,6 +915,13 @@ ALTER TABLE `request_equipment`
   ADD KEY `user_id` (`user_id`),
   ADD KEY `status_id` (`status_id`),
   ADD KEY `request_equipment_ibfk_3` (`equipment_id`);
+
+--
+-- Indexes for table `services`
+--
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`services_id`),
+  ADD KEY `office_id` (`office_id`);
 
 --
 -- Indexes for table `statuses`
@@ -1054,7 +1035,13 @@ ALTER TABLE `reg_services`
 -- AUTO_INCREMENT for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `services`
+--
+ALTER TABLE `services`
+  MODIFY `services_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `statuses`
@@ -1066,7 +1053,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `student_record`
@@ -1078,7 +1065,7 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -1156,6 +1143,18 @@ ALTER TABLE `request_equipment`
   ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
   ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
+
+--
+-- Constraints for table `services`
+--
+ALTER TABLE `services`
+  ADD CONSTRAINT `fk_services_office_id1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `student_record`
+--
+ALTER TABLE `student_record`
+  ADD CONSTRAINT `fk_student_record_students1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `users`
