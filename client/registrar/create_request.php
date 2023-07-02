@@ -2,6 +2,7 @@
 $office_name = "Registrar Office";
 include "../navbar.php";
 include '../../conn.php';
+include '../../breadcrumb.php';
 //if($_SESSION['id']==''){
 	//header('#');
 	//}
@@ -17,7 +18,7 @@ ORDER BY users.user_id");
 
 $row = mysqli_fetch_array($result);
 //fetching registrar services
-$requirements = mysqli_query($connection, "SELECT reg_services.services , reg_requirements.id AS requirement_id, services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.services > 22");
+$requirements = mysqli_query($connection, "SELECT reg_services.services, reg_requirements.id AS services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = requirement WHERE reg_services.services > 22");
 
 if(isset($_POST["submit"])){
 	$_SESSION['date'] = $_POST['date'];
@@ -101,13 +102,14 @@ if(isset($_POST["submit"])){
 <body>
 	<div class="wrapper">
 		<div class="container-fluid p-4">
-			<nav class="breadcrumb-nav" aria-label="breadcrumb">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-					<li class="breadcrumb-item"><a href="../registrar.php">Registrar Office</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Create Request</li>
-				</ol>
-			</nav>
+			<?php
+			$breadcrumbItems = [
+				['text' => 'Registrar Office', 'url' => '/client/registrar.php', 'active' => false],
+				['text' => 'Create Request', 'active' => true],
+			];
+
+			echo generateBreadcrumb($breadcrumbItems, true);
+			?>
 		</div>
 		<div class="container-fluid text-center p-4">
 			<h1>Create Request</h1>
@@ -243,17 +245,6 @@ if(isset($_POST["submit"])){
 		</div>
 		<div class="push"></div>
 	</div>
-	<div
-		class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-		<div>
-			<small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-		</div>
-		<div>
-			<small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-			<small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy
-					Statement</a></small>
-		</div>
-	</div>
+	<?php include '../../footer.php'; ?>
 </body>
-
 </html>

@@ -19,7 +19,7 @@ if (isset($_POST['studentSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://localhost/login/student.php");
+        header("Location: http://pup.otms.local/login/student.php");
         $_SESSION['account_exists'] = true;
         exit();
     }
@@ -53,11 +53,11 @@ if (isset($_POST['studentSignup'])) {
             $stmt->bind_param("isssssi", $gender, $address, $province, $city, $barangay, $zipCode, $lastId);
             $stmt->execute();
             $stmt->close();
-            header("Location: http://localhost/login/student.php");
+            header("Location: http://pup.otms.local/login/student.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://localhost/login/student.php");
+            header("Location: http://pup.otms.local/login/student.php");
             $_SESSION['account_failed'] = true;
         }
         $connection->close();
@@ -78,7 +78,7 @@ else if (isset($_POST['clientSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://localhost/login/client.php");
+        header("Location: http://pup.otms.local/login/client.php");
         $_SESSION['account_exists'] = true;
         exit();
     }
@@ -111,11 +111,11 @@ else if (isset($_POST['clientSignup'])) {
             $stmt->bind_param("isssssi", $gender, $address, $province, $city, $barangay, $zipCode, $lastId);
             $stmt->execute();
             $stmt->close();
-            header("Location: http://localhost/login/client.php");
+            header("Location: http://pup.otms.local/login/client.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://localhost/login/client.php");
+            header("Location: http://pup.otms.local/login/client.php");
             $_SESSION['account_failed'] = true;
             // $loginMessage = "Sign up failed. Please try again.";
         }

@@ -6,7 +6,7 @@ $result = mysqli_query($connect,
 	"SELECT reg_transaction.reg_id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
 	AS schedule, services, status, office_name AS office FROM reg_transaction 
 	LEFT JOIN reg_services ON reg_services.services_id = reg_transaction.services_id 
-	LEFT JOIN reg_status ON reg_status.id = reg_transaction.status_id
+	LEFT JOIN reg_status ON reg_status.status_id = reg_transaction.status_id
 	LEFT JOIN offices ON offices.office_id = reg_transaction.office_id");
 	
 
@@ -20,6 +20,11 @@ $result = mysqli_query($connect,
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Registrar Office - Your Registrar Transactions</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+		rel="stylesheet">
 	<link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
 	<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../../style.css">
@@ -36,16 +41,18 @@ $result = mysqli_query($connect,
 	<div class="wrapper">
 		<?php
             $office_name = "Registrar Office";
-            include "../navbar.php"
+            include "../navbar.php";
+			include '../../breadcrumb.php';
         ?>
 		<div class="container-fluid p-4">
-			<nav class="breadcrumb-nav" aria-label="breadcrumb">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-					<li class="breadcrumb-item"><a href="../registrar.php">Registrar Office</a></li>
-					<li class="breadcrumb-item active" aria-current="page">My Transactions</li>
-				</ol>
-			</nav>
+			<?php
+			$breadcrumbItems = [
+				['text' => 'Registrar Office', 'url' => '/client/registrar.php', 'active' => false],
+				['text' => 'Your Transaction', 'active' => true],
+			];
+
+			echo generateBreadcrumb($breadcrumbItems, true);
+			?>
 		</div>
 		<div class="container-fluid text-center p-4">
 			<h1>Your Transactions</h1>

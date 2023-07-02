@@ -133,6 +133,17 @@
             // });
         });
 
+        function checkViewport() {
+            if (window.innerWidth < 768) {
+                document.getElementById('transactions-table').classList.add('text-nowrap', 'w-auto');
+            } else {
+                document.getElementById('transactions-table').classList.remove('text-nowrap', 'w-auto');
+            }
+        }
+
+        // Check viewport initially and on window resize
+        window.addEventListener('DOMContentLoaded', checkViewport);
+        window.addEventListener('resize', checkViewport);
     </script>
 </body>
 </html>

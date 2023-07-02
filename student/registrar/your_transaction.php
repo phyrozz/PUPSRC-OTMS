@@ -81,7 +81,7 @@
                             INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
                             INNER JOIN offices ON reg_transaction.office_id = offices.office_id
                             INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-                            INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id
+                            INNER JOIN reg_status ON reg_transaction.status_id = reg_status.status_id
                             WHERE users.user_id = $id");
                             // Load the requested table
                             if ($table === 'view_table') {

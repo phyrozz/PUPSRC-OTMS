@@ -25,7 +25,7 @@
         include "navbar.php";
         include "../breadcrumb.php";
 
-        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, contact_no, email, birth_date FROM users WHERE user_id = ?";
+        $query = "SELECT last_name, first_name, middle_name, extension_name, contact_no, email, birth_date FROM users WHERE user_id = ?";
         $userDetailsQuery = "SELECT sex, home_address, province, city, barangay, zip_code FROM user_details WHERE user_id = ?";
 
         // Fetch user table
@@ -60,7 +60,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card px-5 py-3 mb-3 shadow-lg">
+                    <div class="card px-5 py-3 mb-3">
                         <div class="container">
                             <div class="row d-flex flex-row justify-content-between">
                                 <h4 class="pb-3 text-md-start text-center">Account Details</h4>
@@ -121,7 +121,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card mb-4 px-5 py-3 shadow-lg">
+                    <div class="card mb-4 px-5 py-3">
                         <h4 class="pb-3 text-md-start text-center">Settings</h4>
                         <div class="m-0 py-3">
                             <p class="fs-6 m-0 my-1"><strong>Enable Dark Mode</strong></p>
