@@ -1,4 +1,4 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
+<table id="transactions-table" class="table table-hover hidden">
     <thead>
         <tr>
             <th class="text-center doc-request-id-header sortable-header" data-column="1" scope="col" data-order="desc">

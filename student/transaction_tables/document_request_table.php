@@ -186,7 +186,7 @@
 
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
-                            '<td>' + 'DR-' + request.request_id + '</td>' +
+                            '<td>' + request.request_id + '</td>' +
                             '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
                             '<td>' + request.request_description + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +

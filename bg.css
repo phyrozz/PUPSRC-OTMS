@@ -6,3 +6,20 @@ body {
     background-size: cover;
     backdrop-filter: blur(6px);
 }
+
+.dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.dark-overlay.dark-mode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Adjust the alpha (4th value) to control darkness */
+}

@@ -65,5 +65,6 @@
     </div>
     <?php include '../../footer.php'; ?>
     <script src="../../jquery.js"></script>
+    <script src="../../dark_mode.js"></script>
 </body>
 </html>

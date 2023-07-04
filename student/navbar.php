@@ -96,7 +96,7 @@ $isLoggedIn = true;
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="http://pup.otms.local/student/transactions.php">My Transactions</a></li>
-                        <li><a class="dropdown-item" href="my_account.php">Account Settings</a></li>
+                        <li><a class="dropdown-item" href="http://pup.otms.local/student/my_account.php">Account Settings</a></li>
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Help</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpDropdown">

@@ -646,7 +646,7 @@
             });
         });
     </script>
-
+    <script src="../../dark_mode.js"></script>
     <?php if (isset($_SESSION['success']) && $_SESSION['success']) {
         echo "
         <script>
