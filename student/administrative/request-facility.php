@@ -601,7 +601,7 @@
                 window.location.href = "view-facility.php";
             }
             function redirectToAnotherPage() {
-                var url = "http://localhost/student/administrative/generate-letter.php";
+                var url = "http://pup.otms.local/student/administrative/generate-letter.php";
                 window.open(url, "_blank"); 
             }
 

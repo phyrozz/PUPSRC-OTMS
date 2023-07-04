@@ -78,7 +78,7 @@
                             <p class="mb-0"><small>By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></small></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <a class="btn btn-outline-primary px-4" href="http://localhost/index.php">
+                            <a class="btn btn-outline-primary px-4" href="http://pup.otms.local/index.php">
                                 <i class="fa-solid fa-arrow-left"></i> Back
                             </a>
                             <input id="submitBtn" value="Login" type="submit" class="btn btn-primary w-25" />

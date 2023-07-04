@@ -19,7 +19,7 @@ if (isset($_POST['studentSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://localhost/login/student.php");
+        header("Location: http://pup.otms.local/login/student.php");
         // $loginMessage = "An account already exists with the information you provided.";
         // exit();
     }
@@ -59,11 +59,11 @@ if (isset($_POST['studentSignup'])) {
             // $studentsStmt = $connection->prepare($studentsQuery);
             // $studentsStmt->bind_param("is", $userId, $studentNo);
             // $studentsStmt->close();
-            header("Location: http://localhost/login/student.php");
+            header("Location: http://pup.otms.local/login/student.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://localhost/index.php");
+            header("Location: http://pup.otms.local/index.php");
             // $loginMessage = "Sign up failed. Please try again.";
         }
     }
@@ -83,7 +83,7 @@ else if (isset($_POST['clientSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://localhost/login/client.php");
+        header("Location: http://pup.otms.local/login/client.php");
         // $loginMessage = "An account already exists with the information you provided.";
         // exit();
     }
@@ -109,11 +109,11 @@ else if (isset($_POST['clientSignup'])) {
         $stmt->bind_param("ssssssssi", $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
 
         if ($stmt->execute()) {
-            header("Location: http://localhost/login/client.php");
+            header("Location: http://pup.otms.local/login/client.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://localhost/index.php");
+            header("Location: http://pup.otms.local/index.php");
             // $loginMessage = "Sign up failed. Please try again.";
         }
     }

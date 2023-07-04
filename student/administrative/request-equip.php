@@ -436,7 +436,7 @@
                 window.location.href = "view-equipment.php";
             }
             function redirectToAnotherPage() {
-                var url = "http://localhost/student/administrative/generate-slip.php";
+                var url = "http://pup.otms.local/student/administrative/generate-slip.php";
                 window.open(url, "_blank"); 
             }
             
