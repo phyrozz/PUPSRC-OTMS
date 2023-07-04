@@ -145,8 +145,6 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 
 
 
-
-
 /*content*/
   .container-fluid-form {
     display: flex;
@@ -188,16 +186,17 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     width: 100%;
-    max-width: 600px; /* Adjust the maximum width as per your preference */
+    max-width: 1300px; /* Adjust the maximum width as per your preference */
     margin-left: auto;
     margin-right: auto;
     margin-bottom: -10px;
 }
 
-  
 .payment-summary h1 {
     text-align: center;
 }
+
+
 
   /*end of content*/
 @media only screen and (max-width: 768px) {

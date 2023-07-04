@@ -5,34 +5,6 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "otms_db";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Check if form is submitted
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Get the form inputs
-    $course = isset($_POST['course']) ? $_POST['course'] : '';
-    $documentType = isset($_POST['documentType']) ? $_POST['documentType'] : '';
-    $firstname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
-    $middlename = isset($_POST['middlename']) ? $_POST['middlename'] : '';
-    $surname = isset($_POST['surname']) ? $_POST['surname'] : '';
-    $studentNumber = isset($_POST['studentNumber']) ? $_POST['studentNumber'] : '';
-    $amount = isset($_POST['amount']) ? $_POST['amount'] : '';
-    $referenceNumber = isset($_POST['referenceNumber']) ? $_POST['referenceNumber'] : '';
-
-    // Set the session variables
-    $_SESSION['course'] = $course;
-    $_SESSION['documentType'] = $documentType;
-    $_SESSION['firstname'] = $firstname;
-    $_SESSION['middlename'] = $middlename;
-    $_SESSION['surname'] = $surname;
-    $_SESSION['studentNumber'] = $studentNumber;
-    $_SESSION['amount'] = $amount;
-    $_SESSION['referenceNumber'] = $referenceNumber;
-}
 ?>
 
 
@@ -48,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/payment2.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -75,41 +48,85 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form id="studentForm" method="post" class="row g-3 needs-validation" novalidate>
 
                 
-
                 <div class="col-12 payment-summary">
+                    <h1> Payment Summary </h1>
                     <?php
-                    // Check if session variables are set and display the summary
-                    if (isset($_SESSION['course']) && isset($_SESSION['documentType']) && isset($_SESSION['firstname']) && isset($_SESSION['middlename']) && isset($_SESSION['surname']) && isset($_SESSION['studentNumber']) && isset($_SESSION['amount']) && isset($_SESSION['referenceNumber'])) {
-                        // Get the form inputs
-                        $course = $_SESSION['course'];
-                        $documentType = $_SESSION['documentType'];
-                        $firstname = $_SESSION['firstname'];
-                        $middlename = $_SESSION['middlename'];
-                        $surname = $_SESSION['surname'];
-                        $studentNumber = $_SESSION['studentNumber'];
-                        $amount = $_SESSION['amount'];
-                        $referenceNumber = $_SESSION['referenceNumber'];
+                    include '../../conn.php';
+                    include '../functions.php';
 
-                        // Get the current date
-                        $date = date('F j, Y');
+                    // Check if a session has already been started
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                    }
 
-                        // Display the summary of the inputs
-                        echo "<h1>Transaction Summary</h1>";
-                        echo "<p><strong>Course:</strong> $course</p>";
-                        echo "<p><strong>Document Type:</strong> $documentType</p>";
-                        echo "<p><strong>First Name:</strong> $firstname</p>";
-                        echo "<p><strong>Middle Name:</strong> $middlename</p>";
-                        echo "<p><strong>Last Name:</strong> $surname</p>";
-                        echo "<p><strong>Student Number:</strong> $studentNumber</p>";
-                        echo "<p><strong>Amount:</strong> $amount</p>";
-                        echo "<p><strong>Reference Number:</strong> $referenceNumber</p>";
-                        echo "<p><strong>Date:</strong> $date</p>";
+                    // Set the time zone to Philippine time
+                     date_default_timezone_set('Asia/Manila');
+
+                    // Retrieve the latest payment data from the database
+                    $paymentQuery = "SELECT payment_id, firstname, middlename, surname, studentNumber, course, documentType, amount, referenceNumber
+                                    FROM student_info
+                                    WHERE studentNumber = '" . $_SESSION['student_no'] . "'
+                                    ORDER BY payment_id DESC
+                                    LIMIT 1";
+
+                    $result = mysqli_query($connection, $paymentQuery);
+
+                    if ($result) {
+                        $paymentData = mysqli_fetch_assoc($result);
+                        ?>
+
+                        <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Payment ID</th>
+                                <td><?php echo $paymentData['payment_id']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>First Name</th>
+                                <td><?php echo $paymentData['firstname']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Middle Name</th>
+                                <td><?php echo $paymentData['middlename']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Last Name</th>
+                                <td><?php echo $paymentData['surname']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Student Number</th>
+                                <td><?php echo $paymentData['studentNumber']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Course</th>
+                                <td><?php echo $paymentData['course']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Document Type</th>
+                                <td><?php echo $paymentData['documentType']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Amount</th>
+                                <td><?php echo $paymentData['amount']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Reference Number</th>
+                                <td><?php echo $paymentData['referenceNumber']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Date</th>
+                                <td><?php echo date('Y-m-d'); ?></td>
+                            </tr>
+                        </tbody>
+                        </table>
+
+                        <?php
                     } else {
-                        echo "<h1>Error</h1>";
-                        echo "<p>Payment details not found.</p>";
+                        echo "Error executing the query: " . mysqli_error($connection);
                     }
                     ?>
                 </div>
+
 
 
                 <div class="col-12">
