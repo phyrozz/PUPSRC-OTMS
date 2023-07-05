@@ -20,6 +20,8 @@ function enableDarkMode() {
     $('table').addClass('table-dark');
     $('table').addClass('text-light');
     $('.bg-maroon').addClass('dark-mode');
+    $('#loader').addClass('dark-mode');
+    $('.loading-text').addClass('dark-mode');
     $('.btn-primary').addClass('dark-mode');
     $('.btn-outline-primary').addClass('dark-mode');
     $('.input-group').addClass('bg-dark');
@@ -50,6 +52,8 @@ function disableDarkMode() {
     $('table').removeClass('table-dark');
     $('table').removeClass('text-light');
     $('.bg-maroon').removeClass('dark-mode');
+    $('#loader').removeClass('dark-mode');
+    $('#loading-text').remove('dark-mode');
     $('.btn-primary').removeClass('dark-mode');
     $('.btn-outline-primary').removeClass('dark-mode');
     $('.input-group').removeClass('bg-dark');
@@ -57,8 +61,8 @@ function disableDarkMode() {
     $('.accordion').removeClass('dark-mode');
     $('.accordion-body').removeClass('dark-mode');
     $('.card').removeClass('bg-dark');
-    $('.card-header').addClass('text-light');
-    $('.card-body').addClass('text-light');
+    $('.card-header').removeClass('text-light');
+    $('.card-body').removeClass('text-light');
     $('.btn-close').removeClass('bg-light');
     $('.modal-header').removeClass('bg-dark');
     $('.modal-body').removeClass('bg-secondary');
