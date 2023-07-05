@@ -3,15 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2023 at 02:34 PM
+-- Generation Time: Jun 25, 2023 at 09:19 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -43,26 +41,26 @@ CREATE TABLE `equipment` (
 --
 
 INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quantity`, `equipment_type_id`, `request`) VALUES
-(1, 'Badminton Net', 'Available', 4, 2, 1),
-(2, 'Badminton Racket', 'Available', 15, 2, 1),
-(3, 'Badminton Shuttlecock', 'Available', 20, 2, 1),
+(1, 'Badminton Net', 'Available', 1, 2, 1),
+(2, 'Badminton Racket', 'Available', 9, 2, 1),
+(3, 'Badminton Shuttlecock', 'Available', 15, 2, 1),
 (4, 'Basketball', 'Available', 10, 2, 1),
-(5, 'BasketBall Ring and Net', 'Available', 2, 2, 1),
-(6, 'Brush', 'Available', 12, 3, 1),
+(5, 'BasketBall Ring and Net', 'Available', 10, 2, 1),
+(6, 'Brush', 'Available', 18, 3, 1),
 (7, 'Bucket', 'Available', 15, 3, 1),
-(8, 'Chairs', 'Available', 20, 1, 1),
+(8, 'Chairs', 'Available', 14, 1, 1),
 (9, 'Cleaning Detergent', 'Available', 20, 3, 1),
-(10, 'Curtains', 'Available', 6, 1, 1),
-(11, 'Chess Board', 'Available', 5, 2, 1),
-(12, 'Digital Scoreboard', 'Available', 1, 1, 1),
-(13, 'Mop', 'Available', 10, 3, 1),
-(14, 'Projectors', 'Available', 3, 1, 1),
-(15, 'Scoreboard', 'Available', 2, 2, 1),
-(16, 'Vacuum', 'Available', 5, 3, 1),
+(10, 'Curtains', 'Available', 4, 1, 1),
+(11, 'Chess Board', 'Available', 20, 2, 1),
+(12, 'Digital Scoreboard', 'Available', 16, 1, 1),
+(13, 'Mop', 'Available', 8, 3, 1),
+(14, 'Projectors', 'Available', 18, 1, 1),
+(15, 'Scoreboard', 'Available', 6, 2, 1),
+(16, 'Vacuum', 'Available', 20, 3, 1),
 (17, 'Volleyball', 'Available', 6, 2, 1),
 (18, 'Volleyball Net', 'Available', 3, 2, 1),
-(19, 'Tables', 'Available', 10, 1, 1),
-(20, 'TV', 'Available', 3, 1, 1);
+(19, 'Tables', 'Available', 4, 1, 1),
+(20, 'TV', 'Available', 16, 1, 1);
 
 --
 -- Indexes for dumped tables
