@@ -109,7 +109,7 @@
                                 <label for="firstName" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="firstName" value="<?php echo $userData[0]['first_name'] ?>" maxlength="100" disabled required>
                             </div>
-                            <div class="form-group required col-md-6">
+                            <div class="form-group col-md-6">
                                 <label for="middleName" class="form-label">Middle Name</label>
                                 <input type="text" class="form-control" id="middleName" value="<?php echo $userData[0]['middle_name'] ?>" maxlength="100" disabled>
                             </div>

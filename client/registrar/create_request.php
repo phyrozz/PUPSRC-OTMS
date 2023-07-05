@@ -1,11 +1,10 @@
 <?php
+
 $office_name = "Registrar Office";
 include "../navbar.php";
-include '../../conn.php';
-//if($_SESSION['id']==''){
-	//header('#');
-	//}
-	//$id = $_SESSION['id'];	
+include "../../conn.php";
+include "../../breadcrumb.php";
+
 $user_id = $_SESSION['user_id'];
 
 //fetching student info//
@@ -17,7 +16,9 @@ ORDER BY users.user_id");
 
 $row = mysqli_fetch_array($result);
 //fetching registrar services
-$requirements = mysqli_query($connection, "SELECT reg_services.services , reg_requirements.id AS requirement_id, services, requirement FROM reg_services LEFT JOIN reg_requirements ON reg_requirements.id = reg_services.requirement_id WHERE reg_services.services > 22");
+
+$requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE services_id > 22;");
+
 
 if(isset($_POST["submit"])){
 	$_SESSION['date'] = $_POST['date'];
@@ -67,20 +68,6 @@ if(isset($_POST["submit"])){
 		};
 		$("#date").flatpickr(optional_config);
 
-		$('#req_student_service').change(function() {
-			var optionValue = $(this).val();
-			$.ajax({
-				url: 'get_requirement_text.php', // Path to the PHP script
-				type: 'POST',
-				data: {
-					optionValue: optionValue
-				},
-				success: function(response) {
-					$('#req_requirements').text(response);
-				}
-			});
-		});
-
 	});
 
 	function validateForm() {
@@ -101,13 +88,14 @@ if(isset($_POST["submit"])){
 <body>
 	<div class="wrapper">
 		<div class="container-fluid p-4">
-			<nav class="breadcrumb-nav" aria-label="breadcrumb">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-					<li class="breadcrumb-item"><a href="../registrar.php">Registrar Office</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Create Request</li>
-				</ol>
-			</nav>
+			<?php
+			$breadcrumbItems = [
+					['text' => 'Registrar Office', 'url' => '/client/registrar.php', 'active' => false],
+					['text' => 'Create Request', 'active' => true],
+			];
+
+			echo generateBreadcrumb($breadcrumbItems, true);
+		?>
 		</div>
 		<div class="container-fluid text-center p-4">
 			<h1>Create Request</h1>
@@ -133,9 +121,10 @@ if(isset($_POST["submit"])){
 							<button class="btn btn-outline-primary mb-2" onclick="location.reload()">
 								<i class="fa-solid fa-arrows-rotate"></i> Reset Form
 							</button>
-							<button class="btn btn-outline-primary mb-2">
+
+							<a class="btn btn-outline-primary mb-2" href='./help.php'>
 								<i class="fa-solid fa-circle-question"></i> FAQ
-							</button>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -185,14 +174,13 @@ if(isset($_POST["submit"])){
 									<option value="" hidden>--Select Here--</option>
 									<!-- connect to db -->
 									<?php
-                                    while ($dropdown = mysqli_fetch_assoc($requirements)){
-                                        echo '<option value="' . $dropdown['id'] . '">' . $dropdown['services'] . '</option>';
-                                    }
-                                    ?>
+										while ($dropdown = mysqli_fetch_assoc($requirements)){
+												echo '<option value="' . $dropdown['services_id'] . '">' . $dropdown['services'] . '</option>';
+										}
+									?>
 
 								</select>
 							</div>
-							<pre id="req_requirements"></pre>
 							<div class="form-group required col-md-12">
 								<label for="date" class="form-label">Date</label>
 								<input type="date" class="form-control" name="date" id="date" max="2023-12-31"
