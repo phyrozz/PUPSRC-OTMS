@@ -71,6 +71,7 @@
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
+                                    <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                 </select>
                                 <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
                             </form>
@@ -96,6 +97,8 @@
                                 include 'transaction_tables/payments_table.php';
                             } elseif ($table === 'request_equipment') {
                                 include 'transaction_tables/request_equipment_table.php';
+                            } elseif ($table === 'appointment_facility') {
+                                include 'transaction_tables/appointment_facility_table.php';
                             }
                         ?>
                     </div>

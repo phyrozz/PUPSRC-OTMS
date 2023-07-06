@@ -340,7 +340,7 @@
                                     <div class="modal-body">
                                         <p>Your appointment request has been submitted successfully!</p>
                                         <p>You can check the status of your appointment request on the <b>My Transactions</b> page.</p>
-                                        <p>You must print this letter and submit it to the Administrative Office before your request.</p>
+                                        <p><b>You must print this letter and submit it to the Administrative Office before your request.</b></p>
                                         <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Letter</button>
                                     </div>
                                     <div class="modal-footer">

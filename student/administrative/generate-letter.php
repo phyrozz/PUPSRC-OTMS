@@ -272,6 +272,18 @@ $dompdf->loadHtml($html);
 
 $dompdf->render();
 
+
+$facilityNameModified = strtolower(str_replace(' ', '', $facilityName));
+
+// Generate the file name with the current time, unique identifier, and equipment name
+$fileName = 'appointment_letter'. '_'.  $facilityNameModified . '_' . uniqid(). '.pdf';
+
+
+// Save the PDF to a directory in your file system
+$directoryPath = 'C:/xampp/htdocs/student/administrative/appointment-letter/';
+$filePath = $directoryPath . $fileName;
+file_put_contents($filePath, $dompdf->output());
+
 // Output the PDF to the browser
 $dompdf->stream("letter.pdf", ["Attachment" => false]);
 ?>

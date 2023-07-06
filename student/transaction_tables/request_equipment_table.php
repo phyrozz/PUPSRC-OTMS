@@ -1,132 +1,175 @@
-<?php include './functions.php';?>
-
-<?php
-    // Add pagination to the table
-    $rowsPerPage = 5;
-
-    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $offset = ($page - 1) * $rowsPerPage;
-
-    $sortColumn = isset($_GET['sort']) ? $_GET['sort'] : '';
-    $sortDirection = isset($_GET['dir']) ? $_GET['dir'] : 'DESC';
-
-    // Validate and sanitize the sort column
-    $validColumns = ['request_id', 'equipment_name', 'quantity_equip', 'datetime_schedule', 'status_name'];
-    if (!in_array($sortColumn, $validColumns)) {
-        $sortColumn = 'request_id'; // Set a default sort column
-    }
-
-    // Validate and sanitize the sort direction
-    $sortDirection = strtoupper($sortDirection);
-    if ($sortDirection !== 'ASC' && $sortDirection !== 'DESC') {
-        $sortDirection = 'DESC'; // Set a default sort direction
-    }
-
-    $requestEquipment = "SELECT request_id, equipment_name, quantity_equip, datetime_schedule, status_name
-    FROM request_equipment
-    -- INNER JOIN offices ON request_equipment.office_id = offices.office_id
-    INNER JOIN statuses ON request_equipment.status_id = statuses.status_id
-    INNER JOIN equipment ON request_equipment.equipment_id = equipment.equipment_id
-    -- INNER JOIN equipment_type ON request_equipment.equipment_type_id = equipment.equipment_type_id
-    WHERE user_id = " . $_SESSION['user_id'] . " AND datetime_schedule IS NOT NULL
-    ORDER BY $sortColumn $sortDirection
-    LIMIT $offset, $rowsPerPage";
-
-    $result = mysqli_query($connection, $requestEquipment);
-?>
-<table id="transactions-table" class="table table-hover table-bordered">
+<table id="transactions-table" class="table table-hover table-bordered hidden">
     <thead>
         <tr>
-            <th class="text-center" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=request_id&dir=<?php echo $sortColumn === 'id' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Request Code
-                    <?php if ($sortColumn === 'request_id') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center request-equipment-id-header sortable-header" data-column="1" scope="col" data-order="asc">
+                Request Code
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=equipment_name&dir=<?php echo $sortColumn === 'equipment_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Equipment Name
-                    <?php if ($sortColumn === 'equipment_name') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center request-equipment-name-header sortable-header" data-column="2" scope="col" data-order="asc">
+                Equipment Name
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-   
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=quantity_equip&dir=<?php echo $sortColumn === 'quantity_equip' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Quantity
-                    <?php if ($sortColumn === 'quantity_equip') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center request-equipment-quantity-header sortable-header" data-column="3" scope="col" data-order="asc">
+                Quantity
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=datetime_schedule&dir=<?php echo $sortColumn === 'datetime_schedule' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Schedule
-                    <?php if ($sortColumn === 'datetime_schedule') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
+                Schedule
+                <i class="sort-icon fa-solid fa-caret-down"></i>
+            </th> -->
+            <th class="text-center request-equipment-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
+                Schedule
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-
-            <th class="text-center sortable-header" scope="col">
-                <a class="text-decoration-none text-dark" href="?sort=status_name&dir=<?php echo $sortColumn === 'status_name' && $sortDirection === 'ASC' ? 'DESC' : 'ASC'; ?>">
-                    Status
-                    <?php if ($sortColumn === 'status_name') { ?>
-                        <span class="sort-icon <?php echo $sortDirection === 'DESC' ? 'asc' : 'desc'; ?>"></span>
-                    <?php } ?>
-                </a>
+            <th class="text-center request-equipment-status-header sortable-header" data-column="5" scope="col" data-order="asc">
+                Status
+                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
+            <!-- <th class="text-center doc-request-status-header" scope="col">
+                Generate Slip
+            </th> -->
         </tr>
     </thead>
-    <tbody>
-        <?php
-            if ($result) {
-                if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $requestId = $row['request_id'];
-                        $equipmentName = $row['equipment_name'];
-                        $quantity = $row['quantity_equip'];
-                        $schedule = $row['datetime_schedule'];
-                        $statusName = $row['status_name'];
-                        $formattedSchedule = date("F j, Y | g:i a", strtotime($schedule));
-        ?>
-        <tr>
-            <td><?php echo "AO-"; echo $requestId; ?></td>
-            <td><?php echo $equipmentName; ?></td>
-            <td><?php echo $quantity; ?></td>
-            <td><?php echo $formattedSchedule; ?></td>
-
-            <td class="text-center">
-                <span class="badge rounded-pill bg-dark text-white <?php echo getStatusBadgeClass($statusName); ?>">
-                    <?php echo $statusName; ?>
-                </span>
-            </td>
-        </tr>
-        <?php
-                    }
-                }
-                else {
-        ?>
-        <tr>
-            <td class="text-center table-light p-4" colspan="5">No Transactions</td>
-        </tr>
-        <?php
-                }
-            }
-            else {
-                echo "Error executing the query: " . mysqli_error($connection);
-            }
-
-            $countTotal = "SELECT COUNT(*) AS total FROM request_equipment";
-            $countResult = mysqli_query($connection, $countTotal);
-            $countRow = mysqli_fetch_assoc($countResult);
-            $totalRows = $countRow['total'];
-
-            $totalPages = ceil($totalRows / $rowsPerPage);
-        ?>
+    <tbody id="table-body">
+        <!-- Table rows will be generated dynamically using JavaScript -->
     </tbody>
 </table>
+<div id="pagination" class="container-fluid p-0">
+    <nav aria-label="Page navigation">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <ul class="pagination" id="pagination-links">
+                <!-- Pagination links will be generated dynamically using JavaScript -->
+            </ul>
+        </div>
+    </nav>
+</div>
+<script>
+    function getStatusBadgeClass(status) {
+        switch (status) {
+            case 'Approved':
+                return 'bg-success';
+            case 'Disapproved':
+                return 'bg-danger';
+            case 'For receiving':
+                return 'bg-warning text-dark';
+            case 'For evaluation':
+                return 'bg-primary';
+            case 'Ready for pickup':
+                return 'bg-info';
+            case 'Released':
+                return 'bg-success';
+            default:
+                return 'bg-dark';
+        }
+    }
+
+    function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+        // Show the loading indicator
+        var loadingIndicator = document.getElementById('loading-indicator');
+        loadingIndicator.style.display = 'block';
+
+        // Hide the table
+        var table = document.getElementById('transactions-table');
+        table.classList.add('hidden');
+        
+        // Make an AJAX request to fetch the equipment requests
+        $.ajax({
+            url: 'transaction_tables/fetch_equipment_table.php',
+            method: 'POST',
+            data: { page: page, searchTerm: searchTerm, column: column, order: order },
+            success: function(response) {
+                // Hide the loading indicator
+                loadingIndicator.style.display = 'none';
+
+                // Show the table
+                table.classList.remove('hidden');
+
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Update the table body with the received data
+                var tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+
+                if (data.total_records > 0) {
+                    for (var i = 0; i < data.request_equip.length; i++) {
+                        var requestEquipment = data.request_equip[i];
+
+                        var row = '<tr>' +
+                            '<td>' + 'ASO-' + requestEquipment.request_id.toString().padStart(2, '0') + '</td>' +
+                            '<td>' +  requestEquipment.equipment_name + '</td>' +
+                            '<td class="text-center">' +  requestEquipment.quantity_equip + '</td>' +
+                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+                            '<td class="text-center">' + new Date(requestEquipment.datetime_schedule).toLocaleString('en-US', { 
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                hour12: true
+                                }) + '</td>' +
+                            // '<td class="text-center">' +
+                            // scheduleButton +
+                            // '</td>' +
+                            '<td class="text-center">' +
+                            '<span class="badge rounded-pill ' + getStatusBadgeClass(requestEquipment.status_name) + '">' + requestEquipment.status_name + '</span>' +
+                            '</td>' +
+
+                            '</tr>';
+                        tableBody.innerHTML += row;
+                    }
+                }  else {
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    tableBody.innerHTML = noRecordsRow;
+                }
+                // Update the pagination links
+                var paginationLinks = document.getElementById('pagination-links');
+                paginationLinks.innerHTML = '';
+
+                if (data.total_pages > 1) {
+                    for (var i = 1; i <= data.total_pages; i++) {
+                        var pageLink = '<li class="page-item">' +
+                            '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ')">' + i + '</a>' +
+                            '</li>';
+                        paginationLinks.innerHTML += pageLink;
+                    }
+                }
+            }
+        });
+    }
+
+    // Function to toggle the sort icons
+    function toggleSortIcons(header) {
+        var sortIcon = header.querySelector('.sort-icon');
+        sortIcon.classList.toggle('fa-caret-down');
+        sortIcon.classList.toggle('fa-caret-up');
+    }
+
+    // Add event listeners to sortable headers
+    var sortableHeaders = document.querySelectorAll('.sortable-header');
+    sortableHeaders.forEach(function (sortableHeader) {
+        sortableHeader.addEventListener('click', function () {
+            var column = sortableHeader.getAttribute('data-column');
+            var order = sortableHeader.getAttribute('data-order');
+
+            // Toggle the sort icons
+            toggleSortIcons(sortableHeader);
+
+            // Update the data-order attribute
+            sortableHeader.setAttribute('data-order', order === 'asc' ? 'desc' : 'asc');
+
+            // Call the pagination function with the updated sorting parameters
+            handlePagination(1, '', column, order);
+        });
+    });
+
+    // Initial pagination request (page 1)
+    handlePagination(1, '', 'request_id', 'desc');
+
+    $(document).ready(function() {
+        $('#button-addon2').click(function() {
+            var searchTerm = $('#search-input').val();
+            handlePagination(1, searchTerm, 'request_id', 'desc');
+        });
+    });
+</script>
