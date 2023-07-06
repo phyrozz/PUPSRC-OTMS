@@ -84,5 +84,6 @@ $result = $connection->query($sql);
         return $highlightedText;
     }
     ?>
+    <script src="../../dark_mode.js"></script>
 </body>
 </html>

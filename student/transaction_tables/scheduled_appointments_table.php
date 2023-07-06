@@ -1,4 +1,4 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
+<table id="transactions-table" class="table table-hover hidden">
     <thead>
         <tr>
             <th class="text-center"></th>
@@ -139,7 +139,7 @@
                         var schedules = data.counseling_schedules[i];
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + schedules.counseling_id + '" name="' + schedules.counseling_id + '" value="' + schedules.counseling_id + '"></td>' +
-                            '<td>' + 'DR-' + schedules.counseling_id + '</td>' +
+                            '<td>' + schedules.counseling_id + '</td>' +
                             '<td>' + schedules.appointment_description + '</td>' +
                             '<td>' + (schedules.scheduled_datetime !== null ? (new Date(schedules.scheduled_datetime)).toLocaleString('en-US', {
                             month: 'long',

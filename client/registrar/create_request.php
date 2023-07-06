@@ -16,9 +16,7 @@ ORDER BY users.user_id");
 
 $row = mysqli_fetch_array($result);
 //fetching registrar services
-
 $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE services_id > 22;");
-
 
 if(isset($_POST["submit"])){
 	$_SESSION['date'] = $_POST['date'];
@@ -231,17 +229,6 @@ if(isset($_POST["submit"])){
 		</div>
 		<div class="push"></div>
 	</div>
-	<div
-		class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-		<div>
-			<small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-		</div>
-		<div>
-			<small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-			<small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy
-					Statement</a></small>
-		</div>
-	</div>
+	<?php include '../../footer.php'; ?>
 </body>
-
 </html>

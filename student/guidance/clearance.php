@@ -11,6 +11,12 @@
     <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -195,17 +201,33 @@
         <div class="push"></div>
     </div>
     <?php include '../../footer.php'; ?>
+    <script src="../../loading.js"></script>
     <script src="../../jquery.js"></script>
     <script>
-        const contactNoInput = document.getElementById('contactNumber'); // Corrected typo
+        const contactNoInput = document.getElementById('contactNumber');
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
-            const contactNoValidPattern = /^09\d{2}-\d{3}-\d{4}$/;
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
 
-            if (!contactNoValidPattern.test(contactNo)) {
-                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx';
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
                 contactNoInput.classList.add('is-invalid');
             } else {
                 contactNoValidationMessage.textContent = '';
@@ -220,10 +242,11 @@
                 $('#confirmSubmitModal').modal('show');
             }
         }
-        
+
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
+    <script src="../../dark_mode.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>

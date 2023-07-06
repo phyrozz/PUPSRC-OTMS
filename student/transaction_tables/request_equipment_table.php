@@ -122,7 +122,6 @@
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
-
                 // Update the pagination links
                 var paginationLinks = document.getElementById('pagination-links');
                 paginationLinks.innerHTML = '';

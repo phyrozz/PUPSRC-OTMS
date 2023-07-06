@@ -2,7 +2,7 @@
     session_start();
     
     if (!isset($_SESSION['user_id']) or $_SESSION['user_role'] != 2) {
-        header('Location: http://localhost/index.php');
+        header('Location: http://pup.otms.local/index.php');
         exit;
     }
 
@@ -10,9 +10,9 @@
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
 	<div class="container-fluid">
-		<a href="http://localhost/client/home.php"><img class="p-2" src="http://localhost/assets/pup-logo.png"
+		<a href="http://pup.otms.local/client/home.php"><img class="p-2" src="http://pup.otms.local/assets/pup-logo.png"
 				alt="PUP Logo" width="40"></a>
-		<a class="navbar-brand" href="http://localhost/client/home.php"><strong>PUPSRC-OTMS</strong></a>
+		<a class="navbar-brand" href="http://pup.otms.local/client/home.php"><strong>PUPSRC-OTMS</strong></a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -27,10 +27,10 @@
                         ?>
 					</a>
 					<ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-						<li><a class="dropdown-item" href="http://localhost/client/registrar.php">Registrar</a></li>
-						<li><a class="dropdown-item" href="http://localhost/client/guidance.php">Guidance</a></li>
-						<li><a class="dropdown-item" href="http://localhost/client/accounting.php">Accounting</a></li>
-						<li><a class="dropdown-item" href="http://localhost/client/administrative.php">Administrative Services</a>
+						<li><a class="dropdown-item" href="http://pup.otms.local/client/registrar.php">Registrar</a></li>
+						<li><a class="dropdown-item" href="http://pup.otms.local/client/guidance.php">Guidance</a></li>
+						<li><a class="dropdown-item" href="http://pup.otms.local/client/accounting.php">Accounting</a></li>
+						<li><a class="dropdown-item" href="http://pup.otms.local/client/administrative.php">Administrative Services</a>
 						</li>
 					</ul>
 				</li>
@@ -48,12 +48,12 @@
                             case 'Administrative Office':
                                 echo '';
                                 break;
-																case 'Registrar Office':
-																	echo '
-																	<li><a class="dropdown-item" href="/client/registrar/create_request.php">Create Request</a></li>
-																	<li><a class="dropdown-item" href="/client/registrar/your_transaction.php">Your Registrar Transactions</a></li>
-																	';
-																	break;
+							case 'Registrar Office':
+								echo '
+								<li><a class="dropdown-item" href="/client/registrar/create_request.php">Create Request</a></li>
+								<li><a class="dropdown-item" href="/client/registrar/your_transaction.php">Your Registrar Transactions</a></li>
+								';
+								break;
                             case 'Accounting Office':
                                 echo '';
                                 break;
@@ -78,9 +78,9 @@
 						<?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-						<li><a class="dropdown-item" href="http://localhost/client/transactions.php">My Transactions</a></li>
-						<li><a class="dropdown-item" href="#">Account Settings</a></li>
-						<li><a class="dropdown-item" href="http://localhost/sign_out.php"><i
+						<li><a class="dropdown-item" href="http://pup.otms.local/client/transactions.php">My Transactions</a></li>
+						<li><a class="dropdown-item" href="my_account.php">Account Settings</a></li>
+						<li><a class="dropdown-item" href="http://pup.otms.local/sign_out.php"><i
 									class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
 					</ul>
 				</li>

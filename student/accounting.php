@@ -61,6 +61,7 @@
             });
         });
     </script>
+    <script src="../dark_mode.js"></script>
     <!--End of content-->
 </body>
 </html>

@@ -40,5 +40,6 @@
         <li><a class="button" href="transactions.php">Transaction History</a></li>
         </ul>
         <script src="accounting/js/script.js"></script>
+        <script src="../dark_mode.js"></script>
 </body>
 </html>

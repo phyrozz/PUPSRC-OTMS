@@ -11,9 +11,16 @@
     <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -47,19 +54,22 @@
                 $stmt = $connection->prepare($query);
                 $stmt->bind_param("siiid", $dateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
                 $stmt->execute();
-                $insertedId = $connection->insert_id;
-                if (!$insertedId > 0) {
-                    $connection->close();
-                    // header("Location: http://localhost/student/guidance/counseling.php");
-                    exit();
-                }
+                // Uncomment if primary key id of doc_requests table is AUTO_INCREMENT int
+
+                // $insertedId = $connection->insert_id;
+                // if (!$insertedId > 0) {
+                //     $connection->close();
+                //     // header("Location: http://localhost/student/guidance/counseling.php");
+                //     exit();
+                // }
                 $stmt->close();
 
                 $query = "INSERT INTO counseling_schedules (appointment_description, doc_requests_id)
                 VALUES (?, ?)";
+                $docRequestsId = 'DR-' . time();
 
                 $stmt = $connection->prepare($query);
-                $stmt->bind_param("si", $counselingDescription, $insertedId);
+                $stmt->bind_param("ss", $counselingDescription, $docRequestsId);
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
                 }
@@ -130,9 +140,10 @@
                                 <label for="extensionName" class="form-label">Extension Name</label>
                                 <input type="text" class="form-control" id="extensionName" value="<?php echo $userData[0]['extension_name'] ?>" maxlength="11" disabled required>
                             </div>
-                            <div class="form-group col-12">
+                            <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
+                                <div id="contactNoValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
@@ -153,14 +164,19 @@
                                         <option value="Report Issue">Report Issue</option>
                                         <option value="Other">Other</option>
                                     </select>
-                                    <div class="invalid-feedback">Please choose an option.</div>
+                                    <div class="invalid-feedback" id="reasonSelectMessage">Please choose an option.</div>
                                 </div>
                                 
                             </div>
-                            <div class="form-group required col-md-6">
+                            <!-- <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
                                 <input type="date" class="form-control" name="date" id="date" required onchange="validateDate()">
                                 <div class="invalid-feedback">Please choose a valid date.</div>
+                            </div> -->
+                            <div class="form-group required col-md-6">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="text" class="form-control" name="date" id="datepicker" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
+                                <div id="dateValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="time" class="form-label">Time</label>
@@ -192,7 +208,12 @@
                                     <option value="19:30:00">7:30 PM</option>
                                     <option value="20:00:00">8:00 PM</option>
                                 </select>
-                                <div class="invalid-feedback">Please choose a time.</div>
+                                <div class="invalid-feedback" id="timeSelectMessage">Please choose a time.</div>
+                            </div>
+                            <div class="form-group col-12 required" id="reasonTextField" style="display: none;">
+                                <label for="reasonText" class="form-label">Reason</label>
+                                <textarea class="form-control" name="reasonText" id="reasonText" style="resize: none;" rows="3" required></textarea>
+                                <div id="reasonValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
@@ -261,28 +282,59 @@
         <div class="push"></div>
     </div>
     <?php include '../../footer.php'; ?>
+    <script src="../../loading.js"></script>
     <script src="../../jquery.js"></script>
     <script>
-        let currentDate = new Date().toISOString().split('T')[0];
+        const contactNoInput = document.getElementById('contactNumber');
+        const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+        const dateValidation = document.getElementById('datepicker');
+        const dateValidationMessage = document.getElementById('dateValidationMessage');
+        const timeSelect = document.getElementById('time');
+        const timeSelectMessage = document.getElementById('timeSelectMessage');
+        const reasonSelect = document.getElementById('counseling_description');
+        const reasonSelectMessage = document.getElementById('reasonSelectMessage');
+        const reasonText = document.getElementById('reasonText');
+        const reasonValidationMessage = document.getElementById('reasonValidationMessage');
 
-        var maxDate = "2033-12-31";
+        // let currentDate = new Date().toISOString().split('T')[0];
 
-        document.getElementById("date").min = currentDate;
-        document.getElementById("date").max = maxDate;
+        // var maxDate = "2033-12-31";
 
-        var counselingDesc = document.getElementById('counseling_description').value;
+        // document.getElementById("date").min = currentDate;
+        // document.getElementById("date").max = maxDate;
 
         function validateForm() {
             var form = document.getElementById('appointment-form');
             var selectFields = form.querySelectorAll('select[required]');
+            var reasonText = document.getElementById('reasonText');
+            var counselingDesc = document.getElementById('counseling_description').value;
+
+            if (counselingDesc === 'Other') {
+                reasonText.setAttribute('required', 'required');
+                if (reasonText.value.trim() === '') {
+                    reasonText.classList.add('is-invalid');
+                } else {
+                    reasonText.classList.remove('is-invalid');
+                }
+            } else {
+                reasonText.removeAttribute('required');
+                reasonText.classList.remove('is-invalid');
+            }
+
+            if (dateValidation.value.trim() === '') {
+                dateValidationMessage.textContent = "Please select a date.";
+                dateValidation.classList.add('is-invalid');
+            }
+            else {
+                dateValidationMessage.textContent = "";
+                dateValidation.classList.remove('is-invalid');
+            }
 
             for (var i = 0; i < selectFields.length; i++) {
                 var selectField = selectFields[i];
                 if (selectField.value === "") {
                     selectField.classList.add('is-invalid');
-                    selectField.classList.remove('is-valid');
                 } else {
-                    selectField.classList.add('is-valid');
                     selectField.classList.remove('is-invalid');
                 }
             }
@@ -291,32 +343,142 @@
                 event.preventDefault();
                 event.stopPropagation();
             }
-            form.classList.add('was-validated');
+            contactNoValidation();
         }
 
-        function validateDate() {
-            var dateInput = document.getElementById('date');
-            var selectedDate = new Date(dateInput.value);
+        dateValidation.addEventListener('change', () => {
+            const dateValue = dateValidation.value.trim();
 
-            // Check if the selected date is a Sunday (day of the week: 0)
-            if (selectedDate.getDay() === 0) {
-                dateInput.setCustomValidity('Sundays are not allowed. Please choose another date.');
-            } else {
-                dateInput.setCustomValidity('');
+            if (dateValue === '') {
+                dateValidationMessage.textContent = "Please select a date.";
+                dateValidation.classList.add('is-invalid');
+            }
+            else {
+                dateValidationMessage.textContent = "";
+                dateValidation.classList.remove('is-invalid');
+            }
+
+            console.log(dateValue);
+        });
+
+        timeSelect.addEventListener('change', () => {
+            if (timeSelect.value == '') {
+                timeSelectMessage.textContent = "Please select a time.";
+                timeSelect.classList.add('is-invalid');
+            }
+            else {
+                timeSelectMessage.textContent = "";
+                timeSelect.classList.remove('is-invalid');
+            }
+        });
+
+        reasonSelect.addEventListener('change', () => {
+            if (reasonSelect.value == '') {
+                reasonSelectMessage.textContent = "Please select a reason for counseling.";
+                reasonSelect.classList.add('is-invalid');
+            }
+            else {
+                reasonSelectMessage.textContent = "";
+                reasonSelect.classList.remove('is-invalid');
+            }
+        })
+
+        reasonText.addEventListener('input', () => {
+            if (reasonText.value.trim() === '') {
+                reasonValidationMessage.textContent = "Please state a reason why you want to counsel.";
+                reasonText.classList.add('is-invalid');
+            }
+            else {
+                reasonValidationMessage.textContent = "";
+                reasonText.classList.remove('is-invalid');
+            }
+        })
+
+        function contactNoValidation() {
+            const contactNo = contactNoInput.value.trim();
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
+
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                if (contactNo == '') {
+                    contactNoValidationMessage.textContent = 'Please enter a contact number.';
+                    contactNoInput.classList.add('is-invalid');
+                } 
+                else {
+                    contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
+                    contactNoInput.classList.add('is-invalid');
+                }
+            }
+            else {
+                contactNoValidationMessage.textContent = '';
+                contactNoInput.classList.remove('is-invalid');
             }
         }
+
+        contactNoInput.addEventListener('input', () => {
+            contactNoValidation();
+        });
 
         // Function to handle form submission
         function handleSubmit() {
             validateForm();
-            if (document.getElementById('appointment-form').checkValidity()) {
+            const dateValue = dateValidation.value.trim();
+            if (document.getElementById('appointment-form').checkValidity() && dateValue !== '') {
                 $('#confirmSubmitModal').modal('show');
+                $('#loadingModal').modal('show');
             }
         }
         
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+
+        $(document).ready(function() {
+            $('#loadingModal').modal('show');
+
+            $('#counseling_description').on('change', function() {
+                if ($(this).val() == 'Other') {
+                    $('#reasonTextField').slideToggle(); // Fade in the element
+                } else {
+                    $('#reasonTextField').fadeOut(); // Fade out the element
+                }
+            });
+        });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#datepicker", {
+            altInput: true,
+            dateFormat: "Y-m-d",
+            theme: "custom-datepicker",
+            minDate: "today",
+            maxDate: "31.12.2033",
+            disable: [
+                function(date) {
+                    // Disable date on Sundays
+                    return (date.getDay() === 0);
+
+                }
+            ],
+            locale: {
+                "firstDayOfWeek": 1 // start week on Monday
+            },
+        });
+    </script>
+    <script src="../../dark_mode.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>
