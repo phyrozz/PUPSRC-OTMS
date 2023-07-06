@@ -169,7 +169,7 @@
     messageTextarea.addEventListener('input', function() {
         const inputValue = messageTextarea.value;
 
-        const pattern = /^[a-zA-Z0-9]{3,}\s[a-zA-Z0-9\s]*$/;
+        const pattern = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9\s]*$/;
         const isValid = pattern.test(inputValue);
 
         if (isValid) {
