@@ -194,7 +194,7 @@
 
                             <div class="form-group required col-md-6">
                                 <label for="equipName" class="form-label">Equipment Name</label>
-                                <input type="text" class="form-control" id="equipment_name" name="equipment_name" value="<?php echo isset($_GET['equipment_name']) ? $_GET['equipment_name'] : ''; ?>" disabled>
+                                <input type="text" class="form-control" id="equipName" name="equipName" value="<?php echo isset($_GET['equipment_name']) ? $_GET['equipment_name'] : ''; ?>" disabled>
                                 <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>">
                                 <div class="invalid-feedback">Please input a valid email address.</div>
                             </div>
@@ -287,7 +287,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -298,7 +298,7 @@
                                     <div class="modal-body">
                                         <p>Your request has been submitted successfully!</p>
                                         <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
-                                        <p>You must print this slip and submit it to the Administrative Office before your request.</p>
+                                        <p><b>You must print this slip and submit it to the Administrative Office before your request.</b></p>
                                         <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Slip</button>
                                     </div>
                                     <div class="modal-footer">
@@ -442,14 +442,7 @@
             
             
 
-
-            
-           
-
-
         </script>
-
-
             <?php if (isset($_SESSION['success']) && $_SESSION['success']) {
                     echo "
                     <script>
@@ -482,7 +475,7 @@
                     }
                 });
             });
-
+            
         </script>
         <script src="../../dark_mode.js"></script>
 </body>

@@ -86,9 +86,7 @@ $html = <<<EOD
         <td></td>
         <td></td>
         <td></td>
-
       </tr>
-
     </tbody>
   </table>
 
@@ -110,7 +108,29 @@ $dompdf->loadHtml($html);
 
 $dompdf->render();
 
+
+
+
+
+$equipmentNameModified = strtolower(str_replace(' ', '', $equipmentName));
+
+// Generate the file name with the current time, unique identifier, and equipment name
+$fileName = 'requisition_slip' . '_' . $equipmentNameModified . '_' . uniqid(). '.pdf';
+
+// Save the PDF to a directory in your file system
+$directoryPath = 'C:/xampp/htdocs/student/administrative/requisition-slip/';
+$filePath = $directoryPath . $fileName;
+file_put_contents($filePath, $dompdf->output());
+
+// Store the PDF file path in the database
+$pdfFilePath = 'requisition-slip/' . $fileName;
+
+// Update the request_equipment table with the PDF file path
+$pdfUpdateQuery = "UPDATE request_equipment SET slip_content = ? WHERE request_id = ?";
+$pdfUpdateStmt = $connection->prepare($pdfUpdateQuery);
+$pdfUpdateStmt->bind_param("bi", $pdfFilePath, $requestId);
+$pdfUpdateStmt->execute();
+$pdfUpdateStmt->close();
+
 // Output the PDF to the browser
-$dompdf->stream("slip.pdf", ["Attachment" => false]);
-
-
+$dompdf->stream($fileName, ["Attachment" => false]);
