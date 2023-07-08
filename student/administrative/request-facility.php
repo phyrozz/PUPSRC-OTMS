@@ -24,7 +24,7 @@
         include "../../breadcrumb.php";
         include "conn.php";
 
-        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users WHERE user_id = ?";
+        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, email FROM users WHERE user_id = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("i", $_SESSION['user_id']);
         $stmt->execute();
@@ -112,9 +112,9 @@
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
-                            <button class="btn btn-outline-primary mb-2">
+                            <a href="help.php" class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-circle-question"></i> Help
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -152,8 +152,9 @@
                                 <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div> -->
                             <div class="form-group required col-12">
+                                
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value = "" maxlength="50" required >
+                                <input type="email" class="form-control" id="email" name="email" placeholder = "example@gmail.com" maxlength="50" required>
                                 <div class="invalid-feedback">Please input a valid email</div>
                             </div>
 
@@ -218,12 +219,12 @@
                             <div class="form-group required col-md-6">
                                 <label for="startDate" class="form-label">Date Requested</label>
                                 <input type="date" class="form-control" name="startDate" id="startDate" required>
-                                <div class="invalid-feedback">Please choose a requested date</div>
+                                <div class="invalid-feedback">Please choose a different request date</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="endDate" class="form-label">Date Ended</label>
                                 <input type="date" class="form-control" name="endDate" id="endDate" required>
-                                <div class="invalid-feedback">Please choose an end date.</div>
+                                <div class="invalid-feedback">Please choose a different end date.</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="startTime" class="form-label">Time Requested</label>
@@ -339,7 +340,7 @@
                                     <div class="modal-body">
                                         <p>Your appointment request has been submitted successfully!</p>
                                         <p>You can check the status of your appointment request on the <b>My Transactions</b> page.</p>
-                                        <p>You must print this letter and submit it to the Administrative Office before your request.</p>
+                                        <p><b>You must print this letter and submit it to the Administrative Office before your request.</b></p>
                                         <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Letter</button>
                                     </div>
                                     <div class="modal-footer">
@@ -395,7 +396,6 @@
         });
 
 
-        
         // Get the date requested and date ended input elements
         const startDateInput = document.getElementById("startDate");
         const endDateInput = document.getElementById("endDate");
@@ -403,6 +403,8 @@
         // Get the time requested and time ended input elements
         const startTimeInput = document.getElementById("startTime");
         const endTimeInput = document.getElementById("endTime");
+        
+
 
         // Function to update the options in the time ended dropdown based on selected dates
         function updateEndTimeOptions() {
@@ -515,6 +517,30 @@
 
     <script>
 
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the date input elements
+            var startDateInput = document.getElementById("startDate");
+            var endDateInput = document.getElementById("endDate");
+
+            // Add event listeners for when the dates change
+            startDateInput.addEventListener("change", validateDate);
+            endDateInput.addEventListener("change", validateDate);
+
+            function validateDate() {
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+
+            // Check if either the start date or end date is a Sunday
+            if (startDate.getDay() === 0 || endDate.getDay() === 0) {
+                startDateInput.setCustomValidity("Sundays are not allowed. Please choose different dates.");
+                endDateInput.setCustomValidity("Sundays are not allowed. Please choose different dates.");
+            } else {
+                startDateInput.setCustomValidity("");
+                endDateInput.setCustomValidity("");
+            }
+            }
+        });
+
         function validateForm() {
             var form = document.getElementById('appointment-form');
             var selectFields = form.querySelectorAll('select[required]');
@@ -579,21 +605,19 @@
                 window.open(url, "_blank"); 
             }
 
-             //code that validates email with .com
-            var emailInput = document.getElementById('email');
-            
-            
+            //  //code that validates email with .com
+            // var emailInput = document.getElementById('email');
 
-            emailInput.addEventListener('input', function() {
-                var email = emailInput.value;
-                var domainExtension = email.substring(email.lastIndexOf('.') + 1);
+            // emailInput.addEventListener('input', function() {
+            //     var email = emailInput.value;
+            //     var domainExtension = email.substring(email.lastIndexOf('.') + 1);
 
-                if (domainExtension !== 'com') {
-                    emailInput.setCustomValidity('Please input a valid email address ');
-                } else {
-                    emailInput.setCustomValidity('');
-                }
-            });
+            //     if (domainExtension !== 'com') {
+            //         emailInput.setCustomValidity('Please input a valid email address ');
+            //     } else {
+            //         emailInput.setCustomValidity('');
+            //     }
+            // });
 
     </script>
 

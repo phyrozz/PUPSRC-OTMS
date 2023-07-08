@@ -113,7 +113,7 @@
 <nav aria-label="Page navigation example">
   <ul class="pagination">
   <div class="d-flex w-100 justify-content-between p-2">
-        <li class="page-item"><a class="page-link btn btn-primary text-white<?= ($page_no <= 1)? 'disabled' : '';?>" 
+        <li class="page-item"><a class="btn btn-primary text-white<?= ($page_no <= 1)? 'disabled' : '';?>" 
             <?= ($page_no > 1)? 'href=?page_no='.$previous_page : '';?> >Previous</a></li>
 
         <div class="d-flex justify-content-center">
@@ -123,7 +123,7 @@
         </div>
 
         <div class="d-flex justify-content-end gap-2">
-            <li class="page-item"><a class="page-link btn btn-primary text-white<?= ($page_no >= $total_no_of_pages)? 'disabled' : '';?>"
+            <li class="page-item"><a class="btn btn-primary text-white<?= ($page_no >= $total_no_of_pages)? 'disabled' : '';?>"
                 <?= ($page_no < $total_no_of_pages)? 'href=?page_no='.$next_page : '';?> >Next</a></li>
         </div>
     </div>

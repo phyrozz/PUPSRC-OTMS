@@ -337,6 +337,36 @@ a .autocomplete-item:hover {
     color: white;
 }
 
+/* Loading indicator styles on Transactions page */
+#loading-indicator {
+    display: none;
+    text-align: center;
+    padding: 150px 0;
+}
+
+#loading-indicator::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid #d49797;
+    border-top-color: #520000;
+    animation: spin 1s infinite linear;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none;
+}
+
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
         position: static;

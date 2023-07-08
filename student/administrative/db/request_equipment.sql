@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2023 at 09:02 AM
+-- Generation Time: Jun 25, 2023 at 09:19 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -35,7 +35,8 @@ CREATE TABLE `request_equipment` (
   `status_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
-  `equipment_id` INT(11) NOT NULL
+  `equipment_id` int(11) NOT NULL,
+  `slip_content` LONGBLOB
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -52,8 +53,8 @@ CREATE TABLE `request_equipment` (
 ALTER TABLE `request_equipment`
   ADD PRIMARY KEY (`request_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `status_id` (`status_id`);
-
+  ADD KEY `status_id` (`status_id`),
+  ADD KEY `request_equipment_ibfk_3` (`equipment_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -74,7 +75,7 @@ ALTER TABLE `request_equipment`
 --
 ALTER TABLE `request_equipment`
   ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`);
+  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
   ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 COMMIT;
 

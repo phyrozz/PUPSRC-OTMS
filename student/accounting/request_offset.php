@@ -14,7 +14,7 @@ if (isset($_POST['submit'])) {
     session_start();
     $user_id = $_SESSION['user_id'];
 
-    $checkFormQuery = "SELECT * FROM offsettingtb WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
+    $checkFormQuery = "SELECT COUNT(*) as submission_count FROM offsettingtb WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $checkFormQuery)) {
         echo "Error";
@@ -22,10 +22,12 @@ if (isset($_POST['submit'])) {
         mysqli_stmt_bind_param($stmt, 'i', $user_id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        $submissionCount = $row['submission_count'];
 
-        if (mysqli_num_rows($result) > 0) {
+        if ($submissionCount >= 3) {
             echo "<div class='custom-alert' id='custom-alert'>
-            <div class='custom-alert-message'>You can only submit one request every 24 hours to ensure fair usage and timely processing. Please note that you will need to wait for 24 hours before submitting another request. Thank you for your understanding.</div>
+            <div class='custom-alert-message'>You have reached the maximum number of submissions (3) within the last 24 hours. Please wait for 24 hours before submitting another request. Thank you for your understanding.</div>
             <button class='custom-alert-close' onclick='redirectToIndex()'>Go Back</button>
           </div>";
             echo "<script>

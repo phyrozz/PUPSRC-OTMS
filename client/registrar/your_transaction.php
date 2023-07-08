@@ -1,13 +1,23 @@
 <?php
+$office_name = "Registrar Office";
+include "../../conn.php";
+include "../navbar.php";
+include "../../breadcrumb.php";
+$user_id = $_SESSION['user_id'];
 
-include 'conn.php';
-
-$result = mysqli_query($connect, 
-	"SELECT reg_transaction.id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
+$query = "SELECT reg_transaction.reg_id AS request_code, DATE_FORMAT(schedule, '%Y-%m-%d') 
 	AS schedule, services, status, office_name AS office FROM reg_transaction 
-	LEFT JOIN reg_services ON reg_services.id = reg_transaction.services_id 
-	LEFT JOIN reg_status ON reg_status.id = reg_transaction.status_id
-	LEFT JOIN offices ON offices.office_id = reg_transaction.office_id");
+	LEFT JOIN reg_services ON reg_services.services_id = reg_transaction.services_id 
+	LEFT JOIN reg_status ON reg_status.status_id = reg_transaction.status_id
+	LEFT JOIN offices ON offices.office_id = reg_transaction.office_id
+	WHERE user_id = ?";
+	$stmt = $connection->prepare($query);
+	$stmt->bind_param("i", $user_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$data = $result->fetch_all(MYSQLI_ASSOC);
+	$stmt->close();
+
 	
 
 ?>
@@ -35,17 +45,17 @@ $result = mysqli_query($connect,
 <body>
 	<div class="wrapper">
 		<?php
-            $office_name = "Registrar Office";
-            include "../navbar.php"
+            
         ?>
 		<div class="container-fluid p-4">
-			<nav class="breadcrumb-nav" aria-label="breadcrumb">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item"><a href="index.php">Registrar Office</a></li>
-					<li class="breadcrumb-item active" aria-current="page">My Transactions</li>
-				</ol>
-			</nav>
+			<?php
+			$breadcrumbItems = [
+					['text' => 'Registrar Office', 'url' => '/client/registrar.php', 'active' => false],
+					['text' => 'Create Request', 'active' => true],
+			];
+
+			echo generateBreadcrumb($breadcrumbItems, true);
+		?>
 		</div>
 		<div class="container-fluid text-center p-4">
 			<h1>Your Transactions</h1>
@@ -77,7 +87,7 @@ $result = mysqli_query($connect,
 						<tbody>
 
 							<?php
-							while ($row = mysqli_fetch_assoc($result)){
+							foreach ($data as $row){
 								echo '<tr>';
 								echo '<td>'. 'REG-' . $row["request_code"] . '</td>';
 								echo '<td>'. $row["office"] . '</td>';
@@ -133,111 +143,10 @@ $result = mysqli_query($connect,
 				},
 			]
 		})
-
-		// $("#transaction_table").DataTable({
-		// 	'columnDefs': [{
-		// 			target: 0,
-		// 			type: 'intl',
-		// 		},
-		// 		{
-		// 			target: 4,
-		// 			type: 'date-eu',
-		// 		},
-		// 	]
-		// });
 	});
 	</script>
 
-	<!-- <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            const dropdown = document.getElementById('transaction-type');
-            const table = document.getElementById('transactions-table');
 
-            const defaultTable = `<thead>
-                    <tr>
-                        <th class="text-center" scope="col">Request Code</th>
-                        <th class="text-center" scope="col">Office</th>
-                        <th class="text-center" scope="col">Request</th>
-                        <th class="text-center" scope="col">Schedule</th>
-                        <th class="text-center" scope="col">Status</th>
-                        <th class="text-center" scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>RE-0003</td>
-                        <td>Registrar Office</td>
-                        <td>Certification of Grades</td>
-                        <td>12/05/2023</td>
-                        <td class="text-center"><span class="badge rounded-pill bg-dark">Pending</span></td>
-                        <td class="text-center">
-                        <a href="#" class="btn btn-primary px-2 py-0" data-bs-toggle="modal" data-bs-target="#viewDetailsModal"><i class="fa-brands fa-wpforms"></i></a>
-
-                        <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModal" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="viewDetailsModal">See Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Request Code: RE-0003</p>
-                                        <p>Office: Registrar Office</p>
-                                        <p>Request: Certification of Grades</p>
-                                        <p>Schedule: 12/05/2023 </p>
-                                        <p>Status: Completed - 12/06/2023</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <a href="#" id="edit" class="btn btn-primary">Edit</a>
-                                    </div>
-                                    </div>
-                                </div>
-                        </div>
-
-                        <button class="btn btn-primary px-2 py-0" onclick="#"> <i class="fa fa-trash-o fa-lg"></i> </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>RE-0004</td>
-                        <td>Registrar Office</td>
-                        <td>Certified True Copy of Registration Form</td>
-                        <td>12/05/2023</td>
-                        <td class="text-center"><span class="badge rounded-pill bg-info">For Evaluation</span></td>
-                        <td class="text-center">
-                        <a href="#" class="btn btn-primary px-2 py-0" data-bs-toggle="modal" data-bs-target="#viewDetailsModal"><i class="fa-brands fa-wpforms"></i></a>
-
-                        <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModal" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="viewDetailsModal">See Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Request Code: RE-0004</p>
-                                        <p>Office: Registrar Office</p>
-                                        <p>Request: Certified True Copy of Registration Form</p>
-                                        <p>Schedule: 12/05/2023 </p>
-                                        <p>Status: Completed - 12/06/2023</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    </div>
-                                    </div>
-                                </div>
-                        </div>
-
-                        <button class="btn btn-primary px-2 py-0" onclick="#" disabled> <i class="fa fa-trash-o fa-lg"></i> </button>
-                        </td>
-                    </tr>
-                </tbody>
-            `;
-            table.innerHTML = defaultTable;
-            
-        })
-        
-    </script> -->
 </body>
 
 </html>

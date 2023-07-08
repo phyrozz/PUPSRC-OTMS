@@ -1,10 +1,9 @@
 -- phpMyAdmin SQL Dump
-
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2023 at 07:32 PM
+-- Generation Time: Jun 26, 2023 at 06:18 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -21,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Database: `otms_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `administrative_feedbacks`
+--
+
+CREATE TABLE `administrative_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `administrative_feedbacks`
+--
+
+INSERT INTO `administrative_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
+(8, 28, 'joshuamalabanan70@gmail.com', 'test lang po');
 
 -- --------------------------------------------------------
 
@@ -119,6 +138,31 @@ INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `courses`
+--
+
+CREATE TABLE `courses` (
+  `id` int(11) NOT NULL,
+  `course_code` int(20) DEFAULT NULL,
+  `course_description` varchar(100) DEFAULT NULL,
+  `units` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cross_enrollments`
+--
+
+CREATE TABLE `cross_enrollments` (
+  `student_id` int(15) DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `enrollment_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `doc_requests`
 --
 
@@ -184,15 +228,15 @@ INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quan
 (3, 'Badminton Shuttlecock', 'Available', 20, 2, 1),
 (4, 'Basketball', 'Available', 10, 2, 1),
 (5, 'BasketBall Ring and Net', 'Available', 20, 2, 1),
-(6, 'Brush', 'Available', 20, 3, 1),
+(6, 'Brush', 'Available', 19, 3, 1),
 (7, 'Bucket', 'Available', 15, 3, 1),
 (8, 'Chairs', 'Unavailable', 0, 1, 1),
 (9, 'Cleaning Detergent', 'Available', 20, 3, 1),
-(10, 'Curtains', 'Available', 5, 1, 1),
+(10, 'Curtains', 'Available', 3, 1, 1),
 (11, 'Chess Board', 'Available', 20, 2, 1),
 (12, 'Digital Scoreboard', 'Available', 20, 1, 1),
 (13, 'Mop', 'Available', 10, 3, 1),
-(14, 'Projectors', 'Available', 20, 1, 1),
+(14, 'Projectors', 'Available', 18, 1, 1),
 (15, 'Scoreboard', 'Available', 2, 2, 1),
 (16, 'Vacuum', 'Available', 20, 3, 1),
 (17, 'Volleyball', 'Available', 6, 2, 1),
@@ -305,6 +349,67 @@ INSERT INTO `facility_type` (`facility_type_id`, `facility_type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `grades`
+--
+
+CREATE TABLE `grades` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `subject_id` int(11) DEFAULT NULL,
+  `grade` decimal(4,2) DEFAULT NULL,
+  `semester` enum('First Semester','Second Semester','Summer') DEFAULT NULL,
+  `acad_year` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `guidance_feedbacks`
+--
+
+CREATE TABLE `guidance_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `instructors`
+--
+
+CREATE TABLE `instructors` (
+  `id` int(11) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `office`
+--
+
+CREATE TABLE `office` (
+  `id` int(11) NOT NULL,
+  `offices` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `office`
+--
+
+INSERT INTO `office` (`id`, `offices`) VALUES
+(1, 'Registration Office'),
+(1, 'Registration Office'),
+(1, 'Registration Office');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `offices`
 --
 
@@ -323,6 +428,20 @@ INSERT INTO `offices` (`office_id`, `office_name`) VALUES
 (3, 'Registrar Office'),
 (4, 'Academic Office'),
 (5, 'Guidance Office');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `offsettingtb`
+--
+
+CREATE TABLE `offsettingtb` (
+  `offsetting_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `amountToOffset` decimal(6,2) NOT NULL,
+  `offsetType` varchar(45) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -371,7 +490,52 @@ INSERT INTO `reg_faq` (`faq_id`, `document`, `requirements`, `payment`) VALUES
 (9, 'Certificate of Medium of Instruction', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
 (10, 'Certificate of General Weighted Average (GWA)\r\n', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
 (11, 'Non Issuance of Special Order ', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
-(12, 'Certified True Copy', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>');
+(12, 'Certified True Copy', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
+(1, 'Application for Graduation SIS and Non-SIS', '<li>Accomplished and printed copy of the Application for Graduation thru SIS Account (2 copies)</li>\n<li>Accomplished copy of the Application for Graduation for Non-SIS (2 copies)</li>\n<li>Proof of payment</li>', '<li>IF NOT COVERED BY FREE TUITION ACT: </li>\r\n<ul>\r\n                                    <li>P600.00 - Grad. Fee</li>\r\n                                    <li>P350.00 - Non Eng’g</li>\r\n                                    <li>P450.00 - Eng’g.</li>\r\n                                    <li>P200.00 - Diploma</li>\r\n                                    <li>P150.00 - Cert. of Grad.</li>\r\n                                    <li>P90.00 – documentary stamp tax</li>\r\n                                    <li>'),
+(2, 'Correction of Entry of Grade', '<li>Accomplished Completion Form 3 copies</li>                                 <li>Photocopy of Class Record of the Faculty</li>                                 <li>Notarized Affidavit for the Change of Grades signed by the Professor</li>                                 <li>Proof of payment</li>', '<li>P30.00</li>'),
+(1, 'Application for Graduation SIS and Non-SIS', '<li>Accomplished and printed copy of the Application for Graduation thru SIS Account (2 copies)</li>\n<li>Accomplished copy of the Application for Graduation for Non-SIS (2 copies)</li>\n<li>Proof of payment</li>', '<li>IF NOT COVERED BY FREE TUITION ACT: </li>\r\n<ul>\r\n                                    <li>P600.00 - Grad. Fee</li>\r\n                                    <li>P350.00 - Non Eng’g</li>\r\n                                    <li>P450.00 - Eng’g.</li>\r\n                                    <li>P200.00 - Diploma</li>\r\n                                    <li>P150.00 - Cert. of Grad.</li>\r\n                                    <li>P90.00 – documentary stamp tax</li>\r\n                                    <li>'),
+(2, 'Correction of Entry of Grade', '<li>Accomplished Completion Form 3 copies</li>                                 <li>Photocopy of Class Record of the Faculty</li>                                 <li>Notarized Affidavit for the Change of Grades signed by the Professor</li>                                 <li>Proof of payment</li>', '<li>P30.00</li>'),
+(1, 'Application for Graduation SIS and Non-SIS', '<li>Accomplished and printed copy of the Application for Graduation thru SIS Account (2 copies)</li>\n<li>Accomplished copy of the Application for Graduation for Non-SIS (2 copies)</li>\n<li>Proof of payment</li>', '<li>IF NOT COVERED BY FREE TUITION ACT: </li>\r\n<ul>\r\n                                    <li>P600.00 - Grad. Fee</li>\r\n                                    <li>P350.00 - Non Eng’g</li>\r\n                                    <li>P450.00 - Eng’g.</li>\r\n                                    <li>P200.00 - Diploma</li>\r\n                                    <li>P150.00 - Cert. of Grad.</li>\r\n                                    <li>P90.00 – documentary stamp tax</li>\r\n                                    <li>'),
+(2, 'Correction of Entry of Grade', '<li>Accomplished Completion Form 3 copies</li>                                 <li>Photocopy of Class Record of the Faculty</li>                                 <li>Notarized Affidavit for the Change of Grades signed by the Professor</li>                                 <li>Proof of payment</li>', '<li>P30.00</li>');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reg_requirements`
+--
+
+CREATE TABLE `reg_requirements` (
+  `id` int(11) NOT NULL,
+  `requirement` text NOT NULL,
+  `payment` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reg_requirements`
+--
+
+INSERT INTO `reg_requirements` (`id`, `requirement`, `payment`) VALUES
+(1, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\nLetter request addressed to CHED Regional Director (for CAV-CHED request only)\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', '920.00 for DFA\n150.00 for Special Certification\nP620.00 for CHED\nP470.00 for PRC'),
+(2, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nOfficial receipt for documentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
+(3, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per course description'),
+(4, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
+(5, 'Accomplished and printed copy of the application and payment voucher from the branch/campus registrar\nGeneral Clearance showing the client is cleared of all accountabilities\nCertificate of Candidacy\nCertificate of Conferment of Degree (Dummy Diploma)\n2 pcs. 2” x 2” picture in Academic Gown\nDocumentary stamp\nProof of payments (for applicants not covered by RA 10931 otherwise known as Universal Access to Quality Tertiary Education Act of 2017)', 'N/A'),
+(6, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment', 'P350.00 – Non Engineering\nP450.00 - Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
+(7, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment\nAcknowledged/Signed Copy of Transfer Credential/Honorable Dismissal', 'P400.00 - Non Engineering\nP500.00 – Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
+(1, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\nLetter request addressed to CHED Regional Director (for CAV-CHED request only)\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', '920.00 for DFA\n150.00 for Special Certification\nP620.00 for CHED\nP470.00 for PRC'),
+(2, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nOfficial receipt for documentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
+(3, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per course description'),
+(4, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
+(5, 'Accomplished and printed copy of the application and payment voucher from the branch/campus registrar\nGeneral Clearance showing the client is cleared of all accountabilities\nCertificate of Candidacy\nCertificate of Conferment of Degree (Dummy Diploma)\n2 pcs. 2” x 2” picture in Academic Gown\nDocumentary stamp\nProof of payments (for applicants not covered by RA 10931 otherwise known as Universal Access to Quality Tertiary Education Act of 2017)', 'N/A'),
+(6, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment', 'P350.00 – Non Engineering\nP450.00 - Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
+(7, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment\nAcknowledged/Signed Copy of Transfer Credential/Honorable Dismissal', 'P400.00 - Non Engineering\nP500.00 – Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
+(1, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\nLetter request addressed to CHED Regional Director (for CAV-CHED request only)\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', '920.00 for DFA\n150.00 for Special Certification\nP620.00 for CHED\nP470.00 for PRC'),
+(2, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nOfficial receipt for documentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
+(3, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per course description'),
+(4, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
+(5, 'Accomplished and printed copy of the application and payment voucher from the branch/campus registrar\nGeneral Clearance showing the client is cleared of all accountabilities\nCertificate of Candidacy\nCertificate of Conferment of Degree (Dummy Diploma)\n2 pcs. 2” x 2” picture in Academic Gown\nDocumentary stamp\nProof of payments (for applicants not covered by RA 10931 otherwise known as Universal Access to Quality Tertiary Education Act of 2017)', 'N/A'),
+(6, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment', 'P350.00 – Non Engineering\nP450.00 - Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
+(7, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment\nAcknowledged/Signed Copy of Transfer Credential/Honorable Dismissal', 'P400.00 - Non Engineering\nP500.00 – Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School');
 
 -- --------------------------------------------------------
 
@@ -432,7 +596,19 @@ INSERT INTO `reg_status` (`id`, `status`) VALUES
 (2, 'For Receiving'),
 (3, 'For Evaluation'),
 (4, 'Ready for Pickup'),
-(5, 'Released');
+(5, 'Released'),
+(1, 'Pending'),
+(2, 'For Receiving'),
+(3, 'For Evaluating'),
+(4, 'Released'),
+(1, 'Pending'),
+(2, 'For Receiving'),
+(3, 'For Evaluating'),
+(4, 'Released'),
+(1, 'Pending'),
+(2, 'For Receiving'),
+(3, 'For Evaluating'),
+(4, 'Released');
 
 -- --------------------------------------------------------
 
@@ -455,6 +631,7 @@ CREATE TABLE `reg_transaction` (
 --
 
 INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`, `services_id`, `schedule`, `status_id`) VALUES
+(3, 'REG-4', 28, 3, 22, '2023-06-30', 1),
 (5, 'REG-6', 35, 3, 6, '2023-06-23', 1),
 (6, 'REG-7', 35, 3, 3, '2023-06-23', 1),
 (7, 'REG-8', 35, 3, 7, '2023-06-21', 1);
@@ -481,7 +658,42 @@ CREATE TABLE `request_equipment` (
 --
 
 INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `email`, `purpose`, `equipment_id`) VALUES
-(1, 35, '2023-06-16 08:30:00', 2, 3, 'tracialampino071202@gmail.com', 'noneee', 8);
+(4, 28, '2023-06-29 12:00:00', 1, 3, 'joshuamalabanan70@gmail.com', 'basta', 10),
+(5, 28, '2023-06-27 15:00:00', 1, 3, 'joshuamalabanan70@gmail.com', 'basta', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `services`
+--
+
+CREATE TABLE `services` (
+  `services_id` int(11) NOT NULL,
+  `service_name` varchar(100) NOT NULL,
+  `service_description` text NOT NULL,
+  `office_id` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `services`
+--
+
+INSERT INTO `services` (`services_id`, `service_name`, `service_description`, `office_id`, `url`) VALUES
+(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 2, 'http://localhost/student/registrar/create_request.php'),
+(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://localhost/student/guidance/counseling.php'),
+(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://localhost/student/guidance/good_morals.php'),
+(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://localhost/student/guidance/clearance.php'),
+(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://localhost/student/academic/subject_overload.php'),
+(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://localhost/student/academic/grade_accreditation.php'),
+(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://localhost/student/academic/cross_enrollment.php'),
+(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://localhost/student/academic/shifting.php'),
+(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://localhost/student/academic/manual_enrollment.php'),
+(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://localhost/student/academic/servicesinsistools.php'),
+(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://localhost/student/accounting/payment1.php'),
+(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://localhost/student/accounting/offsetting1.php'),
+(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://localhost/student/administrative/view-equipment.php'),
+(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://localhost/student/administrative/view-facility.php');
 
 -- --------------------------------------------------------
 
@@ -506,26 +718,22 @@ INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `students`
+-- Table structure for table `student_info`
 --
 
-CREATE TABLE `students` (
-  `student_id` int(11) NOT NULL,
-  `users_id` int(11) NOT NULL,
-  `student_no` varchar(15) NOT NULL,
-  `is_complete` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `students`
---
-
-INSERT INTO `students` (`student_id`, `users_id`, `student_no`, `is_complete`) VALUES
-(1, 1, '2020-01234-SR-0', 0),
-(2, 2, '2020-00329-SR-0', 0),
-(3, 3, '2020-00189-SR-0', 0),
-(4, 4, '2020-00984-SR-0', 0),
-(5, 5, '2020-00104-SR-0', 0);
+CREATE TABLE `student_info` (
+  `course` varchar(50) NOT NULL,
+  `documentType` varchar(50) NOT NULL,
+  `payment_id` int(11) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `middlename` varchar(50) NOT NULL,
+  `surname` varchar(50) NOT NULL,
+  `studentNumber` varchar(15) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `referenceNumber` varchar(20) NOT NULL,
+  `image_url` text NOT NULL,
+  `date&time` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -554,6 +762,7 @@ CREATE TABLE `users` (
   `extension_name` varchar(11) DEFAULT NULL,
   `contact_no` varchar(13) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `birth_date` date NOT NULL DEFAULT current_timestamp(),
   `password` varchar(255) DEFAULT NULL,
   `user_role` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -562,19 +771,19 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle_name`, `extension_name`, `contact_no`, `email`, `password`, `user_role`) VALUES
-(1, '', 'Cruz', 'Juan', 'D', NULL, '09012345678', 'jdelacruz@gmail.com', NULL, 1),
-(2, '', 'Rosario', 'Anna', 'Lampara', NULL, '09056328999', 'anna122L@yahoo.com', NULL, 1),
-(3, '', 'Malabanan', 'Isaac', 'Dane', 'Jr.', '09054429918', 'malabanan2222@gmail.com', NULL, 1),
-(4, '', 'Austria', 'Skyler Jorden', 'Calapatia', NULL, '09025571297', 'skylerwhitey0@yahoo.com', NULL, 1),
-(5, '', 'Belloso', 'Collin', 'Magat', NULL, '09010110590', 'bestnn_2021@gmail.com', NULL, 1),
-(6, '', 'Reyes', 'Nataniel Urbano', 'Ynaya', NULL, '09087310002', 'urban_011@yahoo.com', NULL, 2),
-(7, '', 'Lorenzo', 'Vincente Dylan', 'Dioquino', NULL, '09051128492', 'vincente_999@yahoo.com', NULL, 3),
-(28, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '09087756313', 'joshuamalabanan70@gmail.com', '123456789', 1),
-(31, '2020-00200-SR-0', 'Shandra', 'Miki', 'Brawl', 'Jr.', '09464032004', 'mmallow624@gmail.com', '$2y$10$orJgdEoFs1G066jHzilA4Or/WrvzNj8HDJVBk6pcJBtMhguQ6MlbG', 1),
-(32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', 'bussinbaldes@gmail.com', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
-(34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
-(35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1);
+INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle_name`, `extension_name`, `contact_no`, `email`, `birth_date`, `password`, `user_role`) VALUES
+(1, '', 'Cruz', 'Juan', 'D', NULL, '09012345678', 'jdelacruz@gmail.com', '2023-06-24', NULL, 1),
+(2, '', 'Rosario', 'Anna', 'Lampara', NULL, '09056328999', 'anna122L@yahoo.com', '2023-06-24', NULL, 1),
+(3, '', 'Malabanan', 'Isaac', 'Dane', 'Jr.', '09054429918', 'malabanan2222@gmail.com', '2023-06-24', NULL, 1),
+(4, '', 'Austria', 'Skyler Jorden', 'Calapatia', NULL, '09025571297', 'skylerwhitey0@yahoo.com', '2023-06-24', NULL, 1),
+(5, '', 'Belloso', 'Collin', 'Magat', NULL, '09010110590', 'bestnn_2021@gmail.com', '2023-06-24', NULL, 1),
+(6, '', 'Reyes', 'Nataniel Urbano', 'Ynaya', NULL, '09087310002', 'urban_011@yahoo.com', '2023-06-24', NULL, 2),
+(7, '', 'Lorenzo', 'Vincente Dylan', 'Dioquino', NULL, '09051128492', 'vincente_999@yahoo.com', '2023-06-24', NULL, 3),
+(28, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '09087756313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$Tzsuk4BMbLY5ewMILCTTdeIk2/ufNWTbWQzOZcLlsH8Iy/LQmaC8a', 1),
+(31, '2020-00200-SR-0', 'Shandra', 'Miki', 'Brawl', 'Jr.', '09464032004', 'mmallow624@gmail.com', '2023-06-24', '$2y$10$orJgdEoFs1G066jHzilA4Or/WrvzNj8HDJVBk6pcJBtMhguQ6MlbG', 1),
+(32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', 'bussinbaldes@gmail.com', '2023-06-24', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
+(34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
+(35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1);
 
 -- --------------------------------------------------------
 
@@ -599,6 +808,13 @@ INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `administrative_feedbacks`
+--
+ALTER TABLE `administrative_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `user_id` (`user_id`) USING BTREE;
 
 --
 -- Indexes for table `admins`
@@ -686,6 +902,12 @@ ALTER TABLE `reg_services`
   ADD PRIMARY KEY (`services_id`);
 
 --
+-- Indexes for table `reg_transaction`
+--
+ALTER TABLE `reg_transaction`
+  ADD PRIMARY KEY (`reg_id`);
+
+--
 -- Indexes for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
@@ -695,17 +917,23 @@ ALTER TABLE `request_equipment`
   ADD KEY `request_equipment_ibfk_3` (`equipment_id`);
 
 --
+-- Indexes for table `services`
+--
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`services_id`),
+  ADD KEY `office_id` (`office_id`);
+
+--
 -- Indexes for table `statuses`
 --
 ALTER TABLE `statuses`
   ADD PRIMARY KEY (`status_id`);
 
 --
--- Indexes for table `students`
+-- Indexes for table `student_info`
 --
-ALTER TABLE `students`
-  ADD PRIMARY KEY (`student_id`),
-  ADD KEY `fk_students_users1_idx` (`users_id`);
+ALTER TABLE `student_info`
+  ADD PRIMARY KEY (`payment_id`);
 
 --
 -- Indexes for table `student_record`
@@ -732,6 +960,12 @@ ALTER TABLE `user_roles`
 --
 
 --
+-- AUTO_INCREMENT for table `administrative_feedbacks`
+--
+ALTER TABLE `administrative_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
@@ -741,7 +975,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `appointment_facility`
 --
 ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -753,13 +987,13 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT for table `counseling_schedules`
 --
 ALTER TABLE `counseling_schedules`
-  MODIFY `counseling_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `counseling_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `doc_requests`
 --
 ALTER TABLE `doc_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
 
 --
 -- AUTO_INCREMENT for table `equipment`
@@ -801,7 +1035,13 @@ ALTER TABLE `reg_services`
 -- AUTO_INCREMENT for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `services`
+--
+ALTER TABLE `services`
+  MODIFY `services_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `statuses`
@@ -810,10 +1050,10 @@ ALTER TABLE `statuses`
   MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `students`
+-- AUTO_INCREMENT for table `student_info`
 --
-ALTER TABLE `students`
-  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `student_info`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `student_record`
@@ -825,7 +1065,7 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -836,6 +1076,12 @@ ALTER TABLE `user_roles`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `administrative_feedbacks`
+--
+ALTER TABLE `administrative_feedbacks`
+  ADD CONSTRAINT `fk_user_id1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `admins`
@@ -899,10 +1145,10 @@ ALTER TABLE `request_equipment`
   ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 
 --
--- Constraints for table `students`
+-- Constraints for table `services`
 --
-ALTER TABLE `students`
-  ADD CONSTRAINT `fk_students_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `services`
+  ADD CONSTRAINT `fk_services_office_id1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `student_record`

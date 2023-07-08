@@ -23,7 +23,8 @@ if(isset($_SESSION['appointment_details'])) {
     $section = $appointmentDetails['section'];
 
 
-    $currentDate = date("F j, Y"); // ge the current date
+        $currentDate = new DateTime("now", new DateTimeZone("Asia/Manila"));
+        $currentTime = $currentDate->format("F j, Y ");
 
         // Query to retrieve user data
         $userQuery = "SELECT last_name, first_name FROM users WHERE user_id = ?";
@@ -200,7 +201,7 @@ $html = <<<EOD
     </div>
     
     <div class="date">
-        <h4><span id="current-date">$currentDate</span></h4>
+        <h4><span id="current-date">$currentTime</span></h4>
     </div>
     
     <div class="reciever">
@@ -270,6 +271,18 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->loadHtml($html);
 
 $dompdf->render();
+
+
+$facilityNameModified = strtolower(str_replace(' ', '', $facilityName));
+
+// Generate the file name with the current time, unique identifier, and equipment name
+$fileName = 'appointment_letter'. '_'.  $facilityNameModified . '_' . uniqid(). '.pdf';
+
+
+// Save the PDF to a directory in your file system
+$directoryPath = 'C:/xampp/htdocs/student/administrative/appointment-letter/';
+$filePath = $directoryPath . $fileName;
+file_put_contents($filePath, $dompdf->output());
 
 // Output the PDF to the browser
 $dompdf->stream("letter.pdf", ["Attachment" => false]);
