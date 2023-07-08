@@ -195,7 +195,7 @@
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
-    <script src="../../dark_mode.js"></script>
+    <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>

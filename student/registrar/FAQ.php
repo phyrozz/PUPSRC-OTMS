@@ -131,5 +131,6 @@ $query = "SELECT * FROM reg_faq";
            }  
       }); 
     </script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

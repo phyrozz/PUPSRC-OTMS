@@ -130,10 +130,26 @@
                 <div class="col-md-12">
                     <div class="card mb-4 px-5 py-5 shadow-lg">
                         <h4 class="pb-3 text-md-start text-center">Settings</h4>
-                        <div class="m-0 py-3">
+                        <div class="m-0 pt-3">
+                            <p class="fs-6 m-0 my-1"><strong>Default Transactions table</strong></p>
+                            <select id="transactionTableSelect" class="form-select-sm">
+                                <option value="document_request">Document Requests</option>
+                                <option value="scheduled_appointments">Counseling Schedules</option>
+                                <option value="payments">Payments</option>
+                                <option value="request_equipment">Request of Equipment</option>
+                                <option value="appointment_facility">Facility Appointment</option>
+                            </select>
+                        </div>
+                        <hr />
+                        <div class="m-0 pt-3">
                             <p class="fs-6 m-0 my-1"><strong>Enable Dark Mode</strong></p>
                             <input id="darkModeSwitch" type="checkbox" data-toggle="switchbutton" data-width="75">
                             <div id="switchValue" class="pt-3"></div>
+                        </div>
+                        <div class="m-0 pb-3">
+                            <p class="fs-6 m-0 my-1"><strong>Allow editing on contact number and email fields</strong></p>
+                            <input id="disabledFieldsOrNot" type="checkbox" data-toggle="switchbutton" data-width="75">
+                            <div id="disabledSwitchValue" class="pt-3"></div>
                         </div>
                         <hr />
                         <div class="m-0">
@@ -200,9 +216,11 @@
     </div>
     <?php include '../footer.php'; ?>
     <script src="../loading.js"></script>
+    <script src="../saved_settings.js"></script>
     <script>
         $(document).ready(function() {
             document.getElementById('darkModeSwitch').switchButton();
+            document.getElementById('disabledFieldsOrNot').switchButton();
 
             // Hide additional details initially
             $('#birthDateDetails').hide();
@@ -313,6 +331,5 @@
             });
         });
   </script>
-  <script src="../dark_mode.js"></script>
 </body>
 </html>

@@ -1,20 +1,20 @@
 <table id="transactions-table" class="table table-hover hidden">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th class="text-center"></th>
-            <th class="text-center doc-request-id-header sortable-header" data-column="1" scope="col" data-order="desc">
+            <th class="text-center doc-request-id-header sortable-header" data-column="counseling_id" scope="col" data-order="desc">
                 Schedule Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-office-header sortable-header" data-column="2" scope="col" data-order="desc">
+            <th class="text-center doc-request-office-header sortable-header" data-column="appointment_description" scope="col" data-order="desc">
                 Description
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-description-header sortable-header" data-column="3" scope="col" data-order="desc">
+            <th class="text-center doc-request-description-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
                 Schedule
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="desc">
+            <th class="text-center doc-request-schedule-header sortable-header" data-column="status_name" scope="col" data-order="desc">
                 Status
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
@@ -37,18 +37,16 @@
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Approved':
-                return 'bg-success';
-            case 'Disapproved':
-                return 'bg-danger';
-            case 'For receiving':
-                return 'bg-warning text-dark';
-            case 'For evaluation':
-                return 'bg-primary';
-            case 'Ready for pickup':
-                return 'bg-info';
             case 'Released':
                 return 'bg-success';
+            case 'Rejected':
+                return 'bg-danger';
+            case 'For Receiving':
+                return 'bg-warning text-dark';
+            case 'For Evaluation':
+                return 'bg-primary';
+            case 'Ready for Pickup':
+                return 'bg-info';
             default:
                 return 'bg-dark';
         }

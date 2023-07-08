@@ -44,5 +44,6 @@
     </div>
 </center>
     <script src="js/offsetting_script.js"></script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

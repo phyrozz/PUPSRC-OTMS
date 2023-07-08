@@ -216,6 +216,7 @@
         </div>
     </div>
     <script src="../../jquery.js"></script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>
 

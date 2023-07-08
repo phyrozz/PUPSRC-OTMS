@@ -1,33 +1,35 @@
 <table id="transactions-table" class="table table-hover hidden">
     <thead>
         <tr class="table-active">
-            <th class="text-center request-equipment-id-header sortable-header" data-column="1" scope="col" data-order="asc">
-                Request Code
+            <th class="text-center"></th>
+            <th class="text-center doc-request-id-header sortable-header" data-column="counseling_id" scope="col" data-order="desc">
+                Schedule Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center request-equipment-name-header sortable-header" data-column="2" scope="col" data-order="asc">
-                Equipment Name
+            <th class="text-center doc-request-id-header sortable-header" data-column="counseling_id" scope="col" data-order="desc">
+                Date requested
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center request-equipment-quantity-header sortable-header" data-column="3" scope="col" data-order="asc">
-                Quantity
+            <th class="text-center doc-request-requestor-header sortable-header" data-column="last_name" scope="col" data-order="desc">
+                Requestor
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
+            <th class="text-center doc-request-student-or-client-header sortable-header" data-column="role" scope="col" data-order="desc">
+                Student/Client
+                <i class="sort-icon fa-solid fa-caret-down"></i>
+            </th>
+            <th class="text-center doc-request-office-header sortable-header" data-column="appointment_description" scope="col" data-order="desc">
+                Description
+                <i class="sort-icon fa-solid fa-caret-down"></i>
+            </th>
+            <th class="text-center doc-request-description-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
                 Schedule
                 <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th> -->
-            <th class="text-center request-equipment-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                Schedule
-                <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center request-equipment-status-header sortable-header" data-column="5" scope="col" data-order="asc">
+            <th class="text-center doc-request-schedule-header sortable-header" data-column="status_name" scope="col" data-order="desc">
                 Status
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <!-- <th class="text-center doc-request-status-header" scope="col">
-                Generate Slip
-            </th> -->
         </tr>
     </thead>
     <tbody id="table-body">
@@ -46,24 +48,22 @@
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Approved':
-                return 'bg-success';
-            case 'Disapproved':
-                return 'bg-danger';
-            case 'For receiving':
-                return 'bg-warning text-dark';
-            case 'For evaluation':
-                return 'bg-primary';
-            case 'Ready for pickup':
-                return 'bg-info';
             case 'Released':
                 return 'bg-success';
+            case 'Rejected':
+                return 'bg-danger';
+            case 'For Receiving':
+                return 'bg-warning text-dark';
+            case 'For Evaluation':
+                return 'bg-primary';
+            case 'Ready for Pickup':
+                return 'bg-info';
             default:
                 return 'bg-dark';
         }
     }
 
-    function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+    function handlePagination(page, searchTerm = '', column = 'counseling_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
         loadingIndicator.style.display = 'block';
@@ -72,9 +72,9 @@
         var table = document.getElementById('transactions-table');
         table.classList.add('hidden');
         
-        // Make an AJAX request to fetch the equipment requests
+        // Make an AJAX request to fetch the document requests
         $.ajax({
-            url: 'transaction_tables/fetch_equipment_table.php',
+            url: 'tables/guidance/fetch_counseling.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
@@ -92,36 +92,42 @@
                 tableBody.innerHTML = '';
 
                 if (data.total_records > 0) {
-                    for (var i = 0; i < data.request_equip.length; i++) {
-                        var requestEquipment = data.request_equip[i];
+                    for (var i = 0; i < data.counseling_schedules.length; i++) {
+                        var schedules = data.counseling_schedules[i];
+
+                        // Convert the timestamp int value of request_id into a formatted datetime for the Date Requested column
+                        var timestamp = schedules.counseling_id;
+                        parsedTimestamp = parseInt(timestamp.substring(3));
+                        var date = new Date(parsedTimestamp * 1000);
+                        var formattedDate = date.toLocaleString();
 
                         var row = '<tr>' +
-                            '<td>' + 'ASO-' + requestEquipment.request_id.toString().padStart(2, '0') + '</td>' +
-                            '<td>' +  requestEquipment.equipment_name + '</td>' +
-                            '<td class="text-center">' +  requestEquipment.quantity_equip + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-                            '<td class="text-center">' + new Date(requestEquipment.datetime_schedule).toLocaleString('en-US', { 
-                                month: 'long',
-                                day: 'numeric',
-                                year: 'numeric',
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                hour12: true
-                                }) + '</td>' +
-                            // '<td class="text-center">' +
-                            // scheduleButton +
-                            // '</td>' +
+                            '<td><input type="checkbox" id="' + schedules.counseling_id + '" name="' + schedules.counseling_id + '" value="' + schedules.counseling_id + '"></td>' +
+                            '<td>' + schedules.counseling_id + '</td>' +
+                            '<td>' + formattedDate + '</td>' +
+                            '<td>' + schedules.last_name + ", " + schedules.first_name + " " + schedules.middle_name + " " + schedules.extension_name + '</td>' +
+                            '<td>' + schedules.role + '</td>' +
+                            '<td>' + schedules.appointment_description + '</td>' +
+                            '<td>' + (schedules.scheduled_datetime !== null ? (new Date(schedules.scheduled_datetime)).toLocaleString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                            }) : 'Not yet scheduled')
+                            + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill ' + getStatusBadgeClass(requestEquipment.status_name) + '">' + requestEquipment.status_name + '</span>' +
+                            '<span class="badge rounded-pill ' + getStatusBadgeClass(schedules.status_name) + '">' + schedules.status_name + '</span>' +
                             '</td>' +
-
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
-                }  else {
+                } else {
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
+
                 // Update the pagination links
                 var paginationLinks = document.getElementById('pagination-links');
                 paginationLinks.innerHTML = '';

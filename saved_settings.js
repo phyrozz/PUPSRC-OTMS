@@ -1,3 +1,17 @@
+// Retrieve the default transaction table from localStorage
+var defaultTable = localStorage.getItem('defaultTransactionTable');
+  
+// Set the initial value of the select dropdown based on the retrieved value
+$('#transactionTableSelect').val(defaultTable);
+
+// Change event listener for the select dropdown
+$('#transactionTableSelect').change(function() {
+  var selectedTable = $(this).val();
+  
+  // Store the selected table in localStorage
+  localStorage.setItem('defaultTransactionTable', selectedTable);
+});
+
 // Check if dark mode is enabled in localStorage
 var isDarkMode = localStorage.getItem('darkMode');
 if (isDarkMode === 'true') {
@@ -17,8 +31,8 @@ $('#darkModeSwitch').change(function() {
 function enableDarkMode() {     
     $('body').addClass('dark-mode');
     $('.dark-overlay').addClass('dark-mode');
-    $('table').addClass('table-dark');
-    $('table').addClass('text-light');
+    $('.table').addClass('table-dark');
+    $('.table').addClass('text-light');
     $('.bg-maroon').addClass('dark-mode');
     $('#loader').addClass('dark-mode');
     $('.loading-text').addClass('dark-mode');
@@ -33,6 +47,7 @@ function enableDarkMode() {
     $('.card-body').addClass('text-light');
     $('.btn-close').addClass('bg-light');
     $('.modal-header').addClass('bg-dark');
+    $('.modal-content').addClass('bg-dark');
     $('.modal-body').addClass('bg-secondary');
     $('.modal-footer').addClass('bg-dark');
     $('.dropdown-menu').addClass('bg-dark');
@@ -49,8 +64,8 @@ function enableDarkMode() {
 function disableDarkMode() {
     $('body').removeClass('dark-mode');
     $('.dark-overlay').removeClass('dark-mode');
-    $('table').removeClass('table-dark');
-    $('table').removeClass('text-light');
+    $('.table').removeClass('table-dark');
+    $('.table').removeClass('text-light');
     $('.bg-maroon').removeClass('dark-mode');
     $('#loader').removeClass('dark-mode');
     $('#loading-text').remove('dark-mode');
@@ -65,6 +80,7 @@ function disableDarkMode() {
     $('.card-body').removeClass('text-light');
     $('.btn-close').removeClass('bg-light');
     $('.modal-header').removeClass('bg-dark');
+    $('.modal-content').removeClass('bg-dark');
     $('.modal-body').removeClass('bg-secondary');
     $('.modal-footer').removeClass('bg-dark');
     $('.dropdown-menu').removeClass('bg-dark');
@@ -77,3 +93,20 @@ function disableDarkMode() {
     // Store dark mode state in localStorage
     localStorage.setItem('darkMode', 'false');
 }
+
+// Check if "Allow editing name fields" is enabled in localStorage
+var isSwitchOn = localStorage.getItem('disabledFieldsOrNot') === 'true';
+  
+$('#disabledFieldsOrNot').prop('checked', isSwitchOn);
+toggleFieldsDisabledState(isSwitchOn);
+
+$('#disabledFieldsOrNot').change(function() {
+  var isSwitchOn = $(this).prop('checked');
+  toggleFieldsDisabledState(isSwitchOn);
+  localStorage.setItem('disabledFieldsOrNot', isSwitchOn.toString());
+});
+
+function toggleFieldsDisabledState(isDisabled) {
+    $('#contactNumber').prop('disabled', !isDisabled);
+    $('#email').prop('disabled', !isDisabled);
+  }

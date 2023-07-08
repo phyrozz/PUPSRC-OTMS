@@ -82,4 +82,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 $connection->close();
 ?>
-<script src="../../dark_mode.js"></script>
+<script src="../../saved_settings.js"></script>

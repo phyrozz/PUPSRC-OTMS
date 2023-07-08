@@ -453,7 +453,7 @@ function validateForm(event) {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="#"></script>
-
+<script src="../../saved_settings.js"></script>
 
 </body>
 </html>

@@ -138,5 +138,6 @@ $dbname = "otms_db";
 
         <script src="#"></script>
     </div>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

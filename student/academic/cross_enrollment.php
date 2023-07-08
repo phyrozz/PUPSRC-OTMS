@@ -145,5 +145,6 @@
             enableSubmitButton();
         });
     </script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

@@ -24,21 +24,21 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $clientRole = 3;
 
-        $query = "SELECT user_id, email, first_name, last_name, password FROM users WHERE email = ? and user_role = ?";
+        $query = "SELECT admins.admin_id, admins.email, admins.first_name, admins.last_name, admins.password, offices.office_name FROM admins INNER JOIN offices ON admins.office_id = offices.office_id WHERE admins.email = ?";
         $stmt = $connection->prepare($query);
-        $stmt->bind_param("si", $email, $clientRole);
+        $stmt->bind_param("s", $email);
         $stmt->execute();
-        $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbPassword);
+        $stmt->bind_result($adminId, $dbEmail, $dbFirstName, $dbLastName, $dbPassword, $dbOffice);
         $stmt->fetch();
 
         if ($dbEmail && password_verify($password, $dbPassword)) {
-            $_SESSION['user_id'] = $userId;
+            $_SESSION['admin_id'] = $adminId;
             $_SESSION['first_name'] = $dbFirstName;
             $_SESSION['last_name'] = $dbLastName;
-            $_SESSION['user_role'] = 3;
-            header("Location: ../admin/guidance.php");
+            $_SESSION['email'] = $dbEmail;
+            $_SESSION['office_name'] = $dbOffice;
+            header("Location: http://pup.otms.local/admin/redirect.php");
             exit();
         } else {
                 $loginMessage = "Invalid credentials. Please try again.";

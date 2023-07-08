@@ -147,6 +147,6 @@
                     <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
                 </div>
             </footer>
-            <script src="../../dark_mode.js"></script>
+            <script src="../../saved_settings.js"></script>
 </body>
 </html>

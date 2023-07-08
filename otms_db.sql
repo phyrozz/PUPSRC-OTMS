@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2023 at 06:18 AM
+-- Generation Time: Jul 08, 2023 at 09:00 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -49,7 +49,12 @@ INSERT INTO `administrative_feedbacks` (`feedback_id`, `user_id`, `email`, `feed
 
 CREATE TABLE `admins` (
   `admin_id` int(11) NOT NULL,
-  `users_id` int(11) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `middle_name` varchar(100) DEFAULT NULL,
+  `extension_name` varchar(11) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   `office_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -57,8 +62,12 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`admin_id`, `users_id`, `office_id`) VALUES
-(1, 7, 5);
+INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `extension_name`, `email`, `password`, `office_id`) VALUES
+(1, 'Salmingo', 'Leny', NULL, NULL, 'test_administrative@admin.com', '$2y$10$KuniRiDPitLlx/V7fEVxy.sC2LIPEEdC58Ps9QqQwVjtl0vXJXjCy', 1),
+(2, 'Salmingo', 'Leny', NULL, NULL, 'test_accounting@admin.com', '$2y$10$KuniRiDPitLlx/V7fEVxy.sC2LIPEEdC58Ps9QqQwVjtl0vXJXjCy', 2),
+(3, 'Salmingo', 'Leny', NULL, NULL, 'test_registrar@admin.com', '$2y$10$KuniRiDPitLlx/V7fEVxy.sC2LIPEEdC58Ps9QqQwVjtl0vXJXjCy', 3),
+(4, 'Salmingo', 'Leny', NULL, NULL, 'test_academic@admin.com', '$2y$10$KuniRiDPitLlx/V7fEVxy.sC2LIPEEdC58Ps9QqQwVjtl0vXJXjCy', 4),
+(5, 'Salmingo', 'Leny', NULL, NULL, 'test_guidance@admin.com', '$2y$10$KuniRiDPitLlx/V7fEVxy.sC2LIPEEdC58Ps9QqQwVjtl0vXJXjCy', 5);
 
 -- --------------------------------------------------------
 
@@ -79,6 +88,13 @@ CREATE TABLE `appointment_facility` (
   `facility_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `appointment_facility`
+--
+
+INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `email`, `purpose`, `facility_id`) VALUES
+(3, 39, 3, 'BSIT', '3-1', '2023-07-12 15:30:00', '2023-07-13 16:00:00', 'joshuamalabanan70@gmail.com', 'basta', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -90,13 +106,6 @@ CREATE TABLE `clients` (
   `users_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Dumping data for table `clients`
---
-
-INSERT INTO `clients` (`client_id`, `users_id`) VALUES
-(1, 6);
-
 -- --------------------------------------------------------
 
 --
@@ -104,9 +113,9 @@ INSERT INTO `clients` (`client_id`, `users_id`) VALUES
 --
 
 CREATE TABLE `counseling_schedules` (
-  `counseling_id` int(11) NOT NULL,
+  `counseling_id` varchar(50) NOT NULL DEFAULT concat('GC-',unix_timestamp()),
   `appointment_description` varchar(255) DEFAULT NULL,
-  `doc_requests_id` int(11) NOT NULL
+  `doc_requests_id` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -114,26 +123,7 @@ CREATE TABLE `counseling_schedules` (
 --
 
 INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `doc_requests_id`) VALUES
-(9, NULL, 27),
-(10, NULL, 28),
-(11, NULL, 29),
-(12, NULL, 30),
-(13, NULL, 31),
-(14, NULL, 32),
-(15, NULL, 33),
-(16, NULL, 34),
-(17, NULL, 35),
-(18, NULL, 36),
-(19, NULL, 37),
-(20, NULL, 38),
-(21, NULL, 39),
-(22, NULL, 40),
-(23, NULL, 41),
-(24, NULL, 42),
-(25, 'Academic Performance', 43),
-(26, 'Academic Performance', 44),
-(27, 'Goal Setting', 45),
-(28, 'Academic Guidance', 46);
+('GC-1688797180', 'Academic Performance', 'DR-1688797180');
 
 -- --------------------------------------------------------
 
@@ -167,7 +157,7 @@ CREATE TABLE `cross_enrollments` (
 --
 
 CREATE TABLE `doc_requests` (
-  `request_id` int(11) NOT NULL,
+  `request_id` varchar(50) NOT NULL DEFAULT concat('DR-',unix_timestamp()),
   `request_description` varchar(255) DEFAULT NULL,
   `scheduled_datetime` datetime DEFAULT NULL,
   `office_id` int(11) NOT NULL,
@@ -182,26 +172,9 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-(27, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(28, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(29, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(30, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(31, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(32, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
-(33, NULL, '2023-06-16 01:00:00', 5, 31, 3, 0.00, ''),
-(34, NULL, '2023-06-04 08:00:00', 5, 31, 3, 0.00, ''),
-(35, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(36, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(37, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(38, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(39, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(40, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(41, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(42, NULL, '0000-00-00 00:00:00', 5, 31, 3, 0.00, ''),
-(43, NULL, '2023-06-16 15:00:00', 5, 35, 3, 0.00, ''),
-(44, NULL, '2023-06-16 15:00:00', 5, 35, 3, 0.00, ''),
-(45, NULL, '2023-06-16 10:00:00', 5, 35, 3, 0.00, ''),
-(46, NULL, '2023-06-30 20:00:00', 5, 35, 3, 0.00, '');
+('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, ''),
+('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, ''),
+('DR-1688797180', NULL, '2023-07-14 12:30:00', 5, 39, 1, 0.00, '');
 
 -- --------------------------------------------------------
 
@@ -232,7 +205,7 @@ INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quan
 (7, 'Bucket', 'Available', 15, 3, 1),
 (8, 'Chairs', 'Unavailable', 0, 1, 1),
 (9, 'Cleaning Detergent', 'Available', 20, 3, 1),
-(10, 'Curtains', 'Available', 3, 1, 1),
+(10, 'Curtains', 'Available', 1, 1, 1),
 (11, 'Chess Board', 'Available', 20, 2, 1),
 (12, 'Digital Scoreboard', 'Available', 20, 1, 1),
 (13, 'Mop', 'Available', 10, 3, 1),
@@ -284,7 +257,7 @@ CREATE TABLE `facility` (
 --
 
 INSERT INTO `facility` (`facility_id`, `facility_name`, `availability`, `facility_number`, `facility_type_id`, `request`) VALUES
-(1, 'Campus Court', 'Available', '101', 1, 1),
+(1, 'Campus Court', 'Unavailable', '101', 1, 1),
 (2, 'Room 102', 'Available', '102', 1, 1),
 (3, 'Room 103', 'Available', '103', 1, 1),
 (4, 'Room 104', 'Available', '104', 1, 1),
@@ -403,9 +376,7 @@ CREATE TABLE `office` (
 --
 
 INSERT INTO `office` (`id`, `offices`) VALUES
-(1, 'Registration Office'),
-(1, 'Registration Office'),
-(1, 'Registration Office');
+(1, 'Registrar Office');
 
 -- --------------------------------------------------------
 
@@ -490,13 +461,7 @@ INSERT INTO `reg_faq` (`faq_id`, `document`, `requirements`, `payment`) VALUES
 (9, 'Certificate of Medium of Instruction', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
 (10, 'Certificate of General Weighted Average (GWA)\r\n', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
 (11, 'Non Issuance of Special Order ', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
-(12, 'Certified True Copy', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>'),
-(1, 'Application for Graduation SIS and Non-SIS', '<li>Accomplished and printed copy of the Application for Graduation thru SIS Account (2 copies)</li>\n<li>Accomplished copy of the Application for Graduation for Non-SIS (2 copies)</li>\n<li>Proof of payment</li>', '<li>IF NOT COVERED BY FREE TUITION ACT: </li>\r\n<ul>\r\n                                    <li>P600.00 - Grad. Fee</li>\r\n                                    <li>P350.00 - Non Eng’g</li>\r\n                                    <li>P450.00 - Eng’g.</li>\r\n                                    <li>P200.00 - Diploma</li>\r\n                                    <li>P150.00 - Cert. of Grad.</li>\r\n                                    <li>P90.00 – documentary stamp tax</li>\r\n                                    <li>'),
-(2, 'Correction of Entry of Grade', '<li>Accomplished Completion Form 3 copies</li>                                 <li>Photocopy of Class Record of the Faculty</li>                                 <li>Notarized Affidavit for the Change of Grades signed by the Professor</li>                                 <li>Proof of payment</li>', '<li>P30.00</li>'),
-(1, 'Application for Graduation SIS and Non-SIS', '<li>Accomplished and printed copy of the Application for Graduation thru SIS Account (2 copies)</li>\n<li>Accomplished copy of the Application for Graduation for Non-SIS (2 copies)</li>\n<li>Proof of payment</li>', '<li>IF NOT COVERED BY FREE TUITION ACT: </li>\r\n<ul>\r\n                                    <li>P600.00 - Grad. Fee</li>\r\n                                    <li>P350.00 - Non Eng’g</li>\r\n                                    <li>P450.00 - Eng’g.</li>\r\n                                    <li>P200.00 - Diploma</li>\r\n                                    <li>P150.00 - Cert. of Grad.</li>\r\n                                    <li>P90.00 – documentary stamp tax</li>\r\n                                    <li>'),
-(2, 'Correction of Entry of Grade', '<li>Accomplished Completion Form 3 copies</li>                                 <li>Photocopy of Class Record of the Faculty</li>                                 <li>Notarized Affidavit for the Change of Grades signed by the Professor</li>                                 <li>Proof of payment</li>', '<li>P30.00</li>'),
-(1, 'Application for Graduation SIS and Non-SIS', '<li>Accomplished and printed copy of the Application for Graduation thru SIS Account (2 copies)</li>\n<li>Accomplished copy of the Application for Graduation for Non-SIS (2 copies)</li>\n<li>Proof of payment</li>', '<li>IF NOT COVERED BY FREE TUITION ACT: </li>\r\n<ul>\r\n                                    <li>P600.00 - Grad. Fee</li>\r\n                                    <li>P350.00 - Non Eng’g</li>\r\n                                    <li>P450.00 - Eng’g.</li>\r\n                                    <li>P200.00 - Diploma</li>\r\n                                    <li>P150.00 - Cert. of Grad.</li>\r\n                                    <li>P90.00 – documentary stamp tax</li>\r\n                                    <li>'),
-(2, 'Correction of Entry of Grade', '<li>Accomplished Completion Form 3 copies</li>                                 <li>Photocopy of Class Record of the Faculty</li>                                 <li>Notarized Affidavit for the Change of Grades signed by the Professor</li>                                 <li>Proof of payment</li>', '<li>P30.00</li>');
+(12, 'Certified True Copy', '<li>Student’s Request Letter </li>\r\n<li>General Clearance showing the client is cleared of all accountabilities </li>\r\n<li>2 pcs. 2” x 2” picture in Formal Attire </li>\r\n<li>Official receipt for documentary stamp </li>\r\n<li>Proof of payment </li>\r\n<li>1 Long Brown Envelope </li>', '<li>P150.00 per \r\ncertificate\r\n</li>');
 
 -- --------------------------------------------------------
 
@@ -515,20 +480,6 @@ CREATE TABLE `reg_requirements` (
 --
 
 INSERT INTO `reg_requirements` (`id`, `requirement`, `payment`) VALUES
-(1, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\nLetter request addressed to CHED Regional Director (for CAV-CHED request only)\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', '920.00 for DFA\n150.00 for Special Certification\nP620.00 for CHED\nP470.00 for PRC'),
-(2, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nOfficial receipt for documentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
-(3, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per course description'),
-(4, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
-(5, 'Accomplished and printed copy of the application and payment voucher from the branch/campus registrar\nGeneral Clearance showing the client is cleared of all accountabilities\nCertificate of Candidacy\nCertificate of Conferment of Degree (Dummy Diploma)\n2 pcs. 2” x 2” picture in Academic Gown\nDocumentary stamp\nProof of payments (for applicants not covered by RA 10931 otherwise known as Universal Access to Quality Tertiary Education Act of 2017)', 'N/A'),
-(6, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment', 'P350.00 – Non Engineering\nP450.00 - Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
-(7, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment\nAcknowledged/Signed Copy of Transfer Credential/Honorable Dismissal', 'P400.00 - Non Engineering\nP500.00 – Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
-(1, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\nLetter request addressed to CHED Regional Director (for CAV-CHED request only)\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', '920.00 for DFA\n150.00 for Special Certification\nP620.00 for CHED\nP470.00 for PRC'),
-(2, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nOfficial receipt for documentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
-(3, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per course description'),
-(4, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
-(5, 'Accomplished and printed copy of the application and payment voucher from the branch/campus registrar\nGeneral Clearance showing the client is cleared of all accountabilities\nCertificate of Candidacy\nCertificate of Conferment of Degree (Dummy Diploma)\n2 pcs. 2” x 2” picture in Academic Gown\nDocumentary stamp\nProof of payments (for applicants not covered by RA 10931 otherwise known as Universal Access to Quality Tertiary Education Act of 2017)', 'N/A'),
-(6, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment', 'P350.00 – Non Engineering\nP450.00 - Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
-(7, 'Letter of request by the student\n2” x 2” picture in formal attire\nDocumentary Stamp\nProof of payment\nAcknowledged/Signed Copy of Transfer Credential/Honorable Dismissal', 'P400.00 - Non Engineering\nP500.00 – Engineering\nP20.00 for White Long Envelope for TOR Copy for Another School'),
 (1, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\nLetter request addressed to CHED Regional Director (for CAV-CHED request only)\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', '920.00 for DFA\n150.00 for Special Certification\nP620.00 for CHED\nP470.00 for PRC'),
 (2, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nOfficial receipt for documentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per certificate'),
 (3, 'Student’s Request Letter\nGeneral Clearance showing the client is cleared of all accountabilities\n2 pcs. 2” x 2” picture in Formal Attire\nDocumentary stamp\nProof of payment\n1 Long Brown Envelope', 'P150.00 per course description'),
@@ -574,7 +525,19 @@ INSERT INTO `reg_services` (`services_id`, `services`) VALUES
 (19, ' Course Accreditation Service (For Shiftees and \r\nRegular Students)\r\n'),
 (20, 'Course Accreditation Service (for Transferees)'),
 (21, 'Informative Copy of Grades'),
-(22, 'Leave of Absence');
+(22, 'Leave of Absence'),
+(23, 'Certification, Verification, Authentication (CAV/Apostile)'),
+(24, 'Certificates of Attendance'),
+(25, 'Certificate of Graduation'),
+(26, 'Certificate of Medium of Instruction'),
+(27, 'Certificate of General Weighted Average (GWA)'),
+(28, 'Non-Issuance of Special Order'),
+(29, 'Certified True Copy'),
+(30, 'Course/Subject Description'),
+(31, 'Certificate of Transfer Credential/Honorable Dismissal'),
+(32, 'Transcript of Records (First Copy)'),
+(33, 'Transcript of Records (Second and succeeding copies)'),
+(34, 'Transcript of Records (Copy for Another School)');
 
 -- --------------------------------------------------------
 
@@ -583,7 +546,7 @@ INSERT INTO `reg_services` (`services_id`, `services`) VALUES
 --
 
 CREATE TABLE `reg_status` (
-  `id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL,
   `status` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -591,24 +554,13 @@ CREATE TABLE `reg_status` (
 -- Dumping data for table `reg_status`
 --
 
-INSERT INTO `reg_status` (`id`, `status`) VALUES
+INSERT INTO `reg_status` (`status_id`, `status`) VALUES
 (1, 'Pending'),
 (2, 'For Receiving'),
 (3, 'For Evaluation'),
 (4, 'Ready for Pickup'),
 (5, 'Released'),
-(1, 'Pending'),
-(2, 'For Receiving'),
-(3, 'For Evaluating'),
-(4, 'Released'),
-(1, 'Pending'),
-(2, 'For Receiving'),
-(3, 'For Evaluating'),
-(4, 'Released'),
-(1, 'Pending'),
-(2, 'For Receiving'),
-(3, 'For Evaluating'),
-(4, 'Released');
+(6, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -631,10 +583,10 @@ CREATE TABLE `reg_transaction` (
 --
 
 INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`, `services_id`, `schedule`, `status_id`) VALUES
-(3, 'REG-4', 28, 3, 22, '2023-06-30', 1),
-(5, 'REG-6', 35, 3, 6, '2023-06-23', 1),
-(6, 'REG-7', 35, 3, 3, '2023-06-23', 1),
-(7, 'REG-8', 35, 3, 7, '2023-06-21', 1);
+(1, '', 39, 3, 28, '2023-06-28', 1),
+(2, '', 41, 3, 25, '2023-07-12', 1),
+(3, '', 41, 3, 23, '2023-07-05', 1),
+(4, '', 41, 3, 29, '2023-07-05', 1);
 
 -- --------------------------------------------------------
 
@@ -658,8 +610,7 @@ CREATE TABLE `request_equipment` (
 --
 
 INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `email`, `purpose`, `equipment_id`) VALUES
-(4, 28, '2023-06-29 12:00:00', 1, 3, 'joshuamalabanan70@gmail.com', 'basta', 10),
-(5, 28, '2023-06-27 15:00:00', 1, 3, 'joshuamalabanan70@gmail.com', 'basta', 6);
+(6, 39, '2023-07-19 11:30:00', 2, 3, 'joshuamalabanan70@gmail.com', 'basta', 10);
 
 -- --------------------------------------------------------
 
@@ -711,9 +662,12 @@ CREATE TABLE `statuses` (
 --
 
 INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
-(1, 'Approved'),
-(2, 'Disapproved'),
-(3, 'Pending');
+(1, 'Pending'),
+(2, 'For Receiving'),
+(3, 'For Evaluation'),
+(4, 'Ready for Pickup'),
+(5, 'Released'),
+(6, 'Rejected');
 
 -- --------------------------------------------------------
 
@@ -756,14 +710,14 @@ CREATE TABLE `student_record` (
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `student_no` varchar(15) NOT NULL,
-  `last_name` varchar(100) DEFAULT NULL,
-  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
   `middle_name` varchar(100) DEFAULT NULL,
   `extension_name` varchar(11) DEFAULT NULL,
-  `contact_no` varchar(13) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
+  `contact_no` varchar(13) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `birth_date` date NOT NULL DEFAULT current_timestamp(),
-  `password` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   `user_role` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -772,18 +726,37 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle_name`, `extension_name`, `contact_no`, `email`, `birth_date`, `password`, `user_role`) VALUES
-(1, '', 'Cruz', 'Juan', 'D', NULL, '09012345678', 'jdelacruz@gmail.com', '2023-06-24', NULL, 1),
-(2, '', 'Rosario', 'Anna', 'Lampara', NULL, '09056328999', 'anna122L@yahoo.com', '2023-06-24', NULL, 1),
-(3, '', 'Malabanan', 'Isaac', 'Dane', 'Jr.', '09054429918', 'malabanan2222@gmail.com', '2023-06-24', NULL, 1),
-(4, '', 'Austria', 'Skyler Jorden', 'Calapatia', NULL, '09025571297', 'skylerwhitey0@yahoo.com', '2023-06-24', NULL, 1),
-(5, '', 'Belloso', 'Collin', 'Magat', NULL, '09010110590', 'bestnn_2021@gmail.com', '2023-06-24', NULL, 1),
-(6, '', 'Reyes', 'Nataniel Urbano', 'Ynaya', NULL, '09087310002', 'urban_011@yahoo.com', '2023-06-24', NULL, 2),
-(7, '', 'Lorenzo', 'Vincente Dylan', 'Dioquino', NULL, '09051128492', 'vincente_999@yahoo.com', '2023-06-24', NULL, 3),
-(28, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '09087756313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$Tzsuk4BMbLY5ewMILCTTdeIk2/ufNWTbWQzOZcLlsH8Iy/LQmaC8a', 1),
 (31, '2020-00200-SR-0', 'Shandra', 'Miki', 'Brawl', 'Jr.', '09464032004', 'mmallow624@gmail.com', '2023-06-24', '$2y$10$orJgdEoFs1G066jHzilA4Or/WrvzNj8HDJVBk6pcJBtMhguQ6MlbG', 1),
 (32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', 'bussinbaldes@gmail.com', '2023-06-24', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
 (34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
-(35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1);
+(35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
+(39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$WuFz92Ko1kz0TTve.Vig5.KjjP.vkZg6AZph18up9c8xyzlyvGA7C', 1),
+(41, '', 'Dela Cruz', 'Pedro', 'Penduko', '', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$8VUfrpqEcVxjtaPTII0KqeV6mAty/ngEj.PKEwExrjmsaQ2LRN/xq', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_details`
+--
+
+CREATE TABLE `user_details` (
+  `user_detail_id` int(11) NOT NULL,
+  `sex` tinyint(1) NOT NULL,
+  `home_address` varchar(255) NOT NULL,
+  `province` varchar(100) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `barangay` varchar(100) NOT NULL,
+  `zip_code` varchar(6) DEFAULT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_details`
+--
+
+INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `user_id`) VALUES
+(1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 39),
+(2, 1, 'Biringan', 'TAWI-TAWI', 'SAPA-SAPA', '1', '1234', 40);
 
 -- --------------------------------------------------------
 
@@ -801,8 +774,8 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
-(1, 'students'),
-(2, 'clients'),
+(1, 'Student'),
+(2, 'Alumni/Client'),
 (3, 'admin');
 
 --
@@ -821,8 +794,7 @@ ALTER TABLE `administrative_feedbacks`
 --
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`admin_id`),
-  ADD KEY `fk_admins_offices1_idx` (`office_id`),
-  ADD KEY `fk_admins_users1_idx` (`users_id`);
+  ADD KEY `fk_admins_offices1_idx` (`office_id`);
 
 --
 -- Indexes for table `appointment_facility`
@@ -883,6 +855,12 @@ ALTER TABLE `facility_type`
   ADD PRIMARY KEY (`facility_type_id`);
 
 --
+-- Indexes for table `office`
+--
+ALTER TABLE `office`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `offices`
 --
 ALTER TABLE `offices`
@@ -896,10 +874,28 @@ ALTER TABLE `personal_details`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `reg_faq`
+--
+ALTER TABLE `reg_faq`
+  ADD PRIMARY KEY (`faq_id`);
+
+--
+-- Indexes for table `reg_requirements`
+--
+ALTER TABLE `reg_requirements`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reg_services`
 --
 ALTER TABLE `reg_services`
   ADD PRIMARY KEY (`services_id`);
+
+--
+-- Indexes for table `reg_status`
+--
+ALTER TABLE `reg_status`
+  ADD PRIMARY KEY (`status_id`);
 
 --
 -- Indexes for table `reg_transaction`
@@ -950,6 +946,13 @@ ALTER TABLE `users`
   ADD KEY `fk_users_user_roles1_idx` (`user_role`);
 
 --
+-- Indexes for table `user_details`
+--
+ALTER TABLE `user_details`
+  ADD PRIMARY KEY (`user_detail_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `user_roles`
 --
 ALTER TABLE `user_roles`
@@ -969,31 +972,19 @@ ALTER TABLE `administrative_feedbacks`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `appointment_facility`
 --
 ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
   MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `counseling_schedules`
---
-ALTER TABLE `counseling_schedules`
-  MODIFY `counseling_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
-
---
--- AUTO_INCREMENT for table `doc_requests`
---
-ALTER TABLE `doc_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
 
 --
 -- AUTO_INCREMENT for table `equipment`
@@ -1020,6 +1011,12 @@ ALTER TABLE `facility_type`
   MODIFY `facility_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `office`
+--
+ALTER TABLE `office`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `personal_details`
 --
 ALTER TABLE `personal_details`
@@ -1029,13 +1026,25 @@ ALTER TABLE `personal_details`
 -- AUTO_INCREMENT for table `reg_services`
 --
 ALTER TABLE `reg_services`
-  MODIFY `services_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `services_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `reg_status`
+--
+ALTER TABLE `reg_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `reg_transaction`
+--
+ALTER TABLE `reg_transaction`
+  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -1047,7 +1056,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `statuses`
 --
 ALTER TABLE `statuses`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `student_info`
@@ -1065,7 +1074,13 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT for table `user_details`
+--
+ALTER TABLE `user_details`
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -1078,89 +1093,10 @@ ALTER TABLE `user_roles`
 --
 
 --
--- Constraints for table `administrative_feedbacks`
---
-ALTER TABLE `administrative_feedbacks`
-  ADD CONSTRAINT `fk_user_id1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `admins`
 --
 ALTER TABLE `admins`
-  ADD CONSTRAINT `fk_admins_offices1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_admins_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `appointment_facility`
---
-ALTER TABLE `appointment_facility`
-  ADD CONSTRAINT `appointment_facility_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `appointment_facility_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
-  ADD CONSTRAINT `appointment_facility_ibfk_3` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`);
-
---
--- Constraints for table `clients`
---
-ALTER TABLE `clients`
-  ADD CONSTRAINT `fk_clients_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `counseling_schedules`
---
-ALTER TABLE `counseling_schedules`
-  ADD CONSTRAINT `fk_schedules_doc_requests1` FOREIGN KEY (`doc_requests_id`) REFERENCES `doc_requests` (`request_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `doc_requests`
---
-ALTER TABLE `doc_requests`
-  ADD CONSTRAINT `fk_doc_requests_offices1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_doc_requests_statuses1` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_doc_requests_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `equipment`
---
-ALTER TABLE `equipment`
-  ADD CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`equipment_type_id`) REFERENCES `equipment_type` (`equipment_type_id`);
-
---
--- Constraints for table `facility`
---
-ALTER TABLE `facility`
-  ADD CONSTRAINT `facility_ibfk_1` FOREIGN KEY (`facility_type_id`) REFERENCES `facility_type` (`facility_type_id`);
-
---
--- Constraints for table `personal_details`
---
-ALTER TABLE `personal_details`
-  ADD CONSTRAINT `personal_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
--- Constraints for table `request_equipment`
---
-ALTER TABLE `request_equipment`
-  ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
-  ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
-
---
--- Constraints for table `services`
---
-ALTER TABLE `services`
-  ADD CONSTRAINT `fk_services_office_id1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `student_record`
---
-ALTER TABLE `student_record`
-  ADD CONSTRAINT `fk_student_record_students1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `fk_users_user_roles1` FOREIGN KEY (`user_role`) REFERENCES `user_roles` (`user_role_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_admins_offices1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

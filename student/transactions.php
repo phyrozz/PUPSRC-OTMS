@@ -57,6 +57,7 @@
                         <p class="mb-0" >Always check your transaction status to follow instructions.</p>
                         <p class="mb-0">You can delete and edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
                         <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle the deficiency/ies to necessary office.</small></p>
+                        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected by the admin.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For receiving</span> - The request is currently in Receiving window and waiting for submission of requirements.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for pickup</span> - The requested document/s is/are already available for pickup at the releasing section of student records.</small></p>
@@ -65,8 +66,8 @@
                     </div>
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
-                            <form class="d-flex input-group" action="transactions.php" method="post">
-                                <select class="form-select" name="table-select">
+                            <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
+                                <select id="transactionTableSelect" class="form-select" name="table-select">
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
@@ -113,7 +114,7 @@
     ?>
     <script src="../loading.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('.sortable-header').on('click', function() {
                 var column = $(this).data('column');
                 var order = $(this).data('order');
@@ -155,6 +156,6 @@
         window.addEventListener('DOMContentLoaded', checkViewport);
         window.addEventListener('resize', checkViewport);
     </script>
-    <script src="../../dark_mode.js"></script>
+    <script src="../saved_settings.js"></script>
 </body>
 </html>

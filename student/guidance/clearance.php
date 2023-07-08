@@ -29,7 +29,7 @@
             include "../../breadcrumb.php";
             include "../../conn.php";
 
-            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
+            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, contact_no, email FROM users
             WHERE user_id = ?";
             $stmt = $connection->prepare($query);
             $stmt->bind_param("i", $_SESSION['user_id']);
@@ -41,7 +41,7 @@
             if(isset($_POST['clearanceFormSubmit'])) {
                 $requestDescription = "Request Clearance";
                 $officeId = 5;
-                $statusId = 3;
+                $statusId = 1;
                 $amountToPay = 0.00;
 
                 $query = "INSERT INTO doc_requests (request_description, office_id, user_id, status_id, amount_to_pay)
@@ -125,12 +125,12 @@
                             </div>
                             <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
+                                <input type="tel" class="form-control" id="contactNumber" value="<?php echo $userData[0]['contact_no'] ?>" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
                                 <div id="contactNoValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" maxlength="100">
+                                <input type="email" class="form-control" id="email" value="<?php echo $userData[0]['email'] ?>" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Request Information</h6>
                             <div class="form-group col-12">
@@ -246,7 +246,7 @@
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
-    <script src="../../dark_mode.js"></script>
+    <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>

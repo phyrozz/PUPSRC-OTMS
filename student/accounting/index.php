@@ -70,5 +70,6 @@
         });
     </script>
     <!--End of content-->
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

@@ -7,18 +7,22 @@
                     Request Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="desc">
-                    Office
+                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
+                    Date requested
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-requestor-header sortable-header" data-column="last_name" scope="col" data-order="desc">
+                    Requestor
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-student-or-client-header sortable-header" data-column="role" scope="col" data-order="desc">
+                    Student/Client
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
                     Request
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                    Schedule
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th> -->
                 <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
                     Amount to pay
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -27,7 +31,6 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -35,10 +38,20 @@
         </tbody>
     </table>
 </div>
-<div id="pagination" class="container-fluid p-0">
+<div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
+    <div class="d-flex gap-2">
+        <select class="form-select" name="update-status" id="update-status" disabled>
+            <option value="1">Pending</option>
+            <option value="2">For Receiving</option>
+            <option value="3">For Evaluation</option>
+            <option value="4">Ready for Pickup</option>
+            <option value="5">Released</option>
+            <option value="6">Rejected</option>
+        </select>
+        <button id="update-status-button" class="btn btn-primary" disabled>Update</button>
+    </div>    
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
-            <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
             <ul class="pagination" id="pagination-links">
                 <!-- Pagination links will be generated dynamically using JavaScript -->
             </ul>
@@ -62,95 +75,6 @@
                 return 'bg-dark';
         }
     }
-    
-    // Add more cases here for other office document requests
-    function getSchedulePageRedirect(request) {
-        switch (request) {
-            case "Request Good Moral Document":
-                return "/student/guidance/doc_appointments/good_morals.php";
-            case "Request Clearance":
-                return "/student/guidance/doc_appointments/clearance.php";
-            default:
-                return "#";
-        }
-    }
-
-    function handleDeleteRequest(requestIds) {
-        // Make an AJAX request to delete the document requests
-        $.ajax({
-            url: 'transaction_tables/delete_document_request.php',
-            method: 'POST',
-            data: { request_id: requestIds },
-            success: function(response) {
-                console.log('Requests deleted successfully');
-                console.log(requestIds);
-
-                // Refresh the table after deletion
-                handlePagination(1, '');
-            }
-        });
-    }
-
-    function addDeleteButtonListeners() {
-        var deleteButton = document.getElementById('delete-button');
-
-        // Get all the checkboxes
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-        // Function to update the delete button state based on checkbox selection and status_id value
-        function updateDeleteButtonState() {
-            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
-            // Check the status_id value of the selected rows
-            var canDelete = Array.from(checkedCheckboxes).every(function (checkbox) {
-                var row = checkbox.closest('tr');
-                var statusCell = row.querySelector('.doc-request-status-cell');
-                var status = statusCell.textContent.trim();
-                
-                return status === 'Pending' || status === 'Rejected';
-            });
-
-            deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
-        }
-
-        // Add event listeners to checkboxes
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', updateDeleteButtonState);
-        });
-
-        // Add event listener to delete button
-        deleteButton.addEventListener('click', function () {
-            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
-            // Get the request ids of the checked rows
-            var requestIds = Array.from(checkedCheckboxes).map(function (checkbox) {
-                return checkbox.value;
-            });
-
-            if (confirm('Are you sure you want to delete the selected appointment(s)?')) {
-                handleDeleteRequest(requestIds);
-            }
-        });
-
-        // Update delete button state initially
-        updateDeleteButtonState();
-    }
-
-    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
-    function generateUrlToOfficeColumn(officeName) {
-        switch (officeName) {
-            case 'Guidance Office':
-                return 'http://pup.otms.local/student/guidance.php';
-            case 'Registrar Office':
-                return 'http://pup.otms.local/student/registrar.php';
-            case 'Academic Office':
-                return 'http://pup.otms.local/student/academic.php';
-            case 'Accounting Office':
-                return 'http://pup.otms.local/student/accounting.php';
-            case 'Administrative Office':
-                return 'http://pup.otms.local/student/administrative.php';
-        }
-    }
 
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
         // Show the loading indicator
@@ -163,7 +87,7 @@
         
         // Make an AJAX request to fetch the document requests
         $.ajax({
-            url: 'transaction_tables/fetch_document_requests.php',
+            url: 'tables/guidance/fetch_doc_requests.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
@@ -185,26 +109,33 @@
                         var request = data.document_requests[i];
                         var scheduleButton = '';
 
-                        // Add schedule button if the status is "Pending"
-                        if (request.status_name === 'Pending') {
-                            var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
-                            scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
-                        }
+                        // // Add schedule button if the status is "Pending"
+                        // if (request.status_name === 'Pending') {
+                        //     var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
+                        //     scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
+                        // }
+
+                        // Convert the timestamp int value of request_id into a formatted datetime for the Date Requested column
+                        var timestamp = request.request_id;
+                        parsedTimestamp = parseInt(timestamp.substring(3));
+                        var date = new Date(parsedTimestamp * 1000);
+                        var formattedDate = date.toLocaleString();
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
+                            '<td><input type="checkbox" name="request-checkbox" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
-                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
+                            '<td>' + formattedDate + '</td>' +
+                            '<td>' + request.last_name + ", " + request.first_name + " " + request.middle_name + " " + request.extension_name + '</td>' +
+                            '<td>' + request.role + '</td>' +
                             '<td>' + request.request_description + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
+                            '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
                             '</td>' +
                             // '<td class="text-center">' +
                             // scheduleButton +
                             // '</td>' +
-                            '<td><a href="#" class="btn btn-primary btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' + 
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
@@ -225,9 +156,6 @@
                         paginationLinks.innerHTML += pageLink;
                     }
                 }
-
-                // Add event listeners for delete buttons
-                addDeleteButtonListeners();
             },
             error: function() {
                 // Hide the loading indicator in case of an error
@@ -268,9 +196,98 @@
     handlePagination(1, '', 'request_id', 'desc');
 
     $(document).ready(function() {
-        $('#button-addon2').click(function() {
+        $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
             handlePagination(1, searchTerm, 'request_id', 'desc');
+        });
+
+        $('#filterButton').on('click', function() {
+            var searchTerm = $('#search-input').val();
+            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+        });
+
+        // Perform search functionality when either the Filter or Search button is pressed
+        function filterDocType() {
+            var filterByDocTypeVal = $('#filterByDocType').val();
+            
+            switch (filterByDocTypeVal) {
+                case 'goodMoral':
+                    return ' request good moral document';
+                    break;
+                case 'clearance':
+                    return ' request clearance';
+                    break;
+                default:
+                    return '';
+            }
+        }
+
+        function filterStatus() {
+            var filterByStatusVal = $('#filterByStatus').val();
+            
+            switch (filterByStatusVal) {
+                case '1':
+                    return ' pending';
+                    break;
+                case '2':
+                    return ' for receiving';
+                    break;
+                case '3':
+                    return ' for evaluation';
+                    break;
+                case '4':
+                    return ' ready for pickup';
+                    break;
+                case '5':
+                    return ' released';
+                    break;
+                case '6':
+                    return ' rejected';
+                    break;
+                default:
+                    return '';
+            }
+        }
+
+        // Update status button listener
+        $('#update-status-button').on('click', function() {
+            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
+            var requestIds = checkedCheckboxes.map(function() {
+                return $(this).val();
+            }).get();
+            var statusId = $('#update-status').val(); // Get the selected status ID
+
+            $.ajax({
+                url: 'tables/guidance/update_doc_requests.php',
+                method: 'POST',
+                data: { requestIds: requestIds, statusId: statusId }, // Include the selected status ID in the data
+                success: function(response) {
+                    // Handle the success response
+                    console.log('Status updated successfully');
+
+                    // Refresh the table after status update
+                    handlePagination(1, '', 'request_id', 'desc');
+                },
+                error: function() {
+                    // Handle the error response
+                    console.log('Error occurred while updating status');
+                }
+            });
+        });
+
+        // Checkbox change listener
+        $('input[name="request-checkbox"]').on('change', function() {
+            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
+            var updateButton = $('#update-status-button');
+            var statusDropdown = $('#update-status');
+
+            if (checkedCheckboxes.length > 0) {
+                updateButton.prop('disabled', false);
+                statusDropdown.prop('disabled', false);
+            } else {
+                updateButton.prop('disabled', true);
+                statusDropdown.prop('disabled', true);
+            }
         });
     });
 </script>

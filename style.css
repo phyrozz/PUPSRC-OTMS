@@ -162,7 +162,7 @@ body.dark-mode {
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 99999999999;
 }
 
 .dropdown-item.dark-mode {

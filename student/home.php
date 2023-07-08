@@ -86,7 +86,7 @@
             });
         });
     </script>
-    <script src="../dark_mode.js"></script>
+    <script src="../saved_settings.js"></script>
     </div>
 </body>
 </html>

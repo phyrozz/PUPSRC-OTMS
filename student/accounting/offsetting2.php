@@ -86,5 +86,6 @@ include 'request_offset.php';
                             <p>We prioritize the confidentiality of your money-related information and remain committed to providing a secure and reliable experience for all our users.</p>
                             </div>
     <script src="js/offsetting_script.js"></script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>
