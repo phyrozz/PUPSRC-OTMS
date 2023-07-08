@@ -19,9 +19,9 @@ if (isset($_POST['studentSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://localhost/login/student.php");
-        // $loginMessage = "An account already exists with the information you provided.";
-        // exit();
+        header("Location: http://pup.otms.local/login/student.php");
+        $_SESSION['account_exists'] = true;
+        exit();
     }
     else {
         // Retrieve the form values
@@ -41,31 +41,26 @@ if (isset($_POST['studentSignup'])) {
 
         $query = "INSERT INTO users (student_no, last_name, first_name, middle_name, extension_name, contact_no, email, birth_date, password, user_role)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $userDetailsQuery = "INSERT INTO user_details (sex, home_address, province, city, barangay, zip_code, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     
         $stmt = $connection->prepare($query);
         $stmt->bind_param("sssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
 
         if ($stmt->execute()) {
-            // $stmt->close();
-            // $checkUserId = "SELECT user_id FROM users WHERE email = ?";
-            // $checkUserIdstmt = $connection->prepare($checkUserId);
-            // $checkUserIdstmt->bind_param("s", $email);
-            // $checkUserIdstmt->execute();
-            // $checkUserIdstmt->bind_result($userId);
-            // $checkUserIdstmt->fetch();
-            // $checkUserIdstmt->close();
-
-            // $studentsQuery = "INSERT INTO students (users_id, student_no) VALUES (?, ?)";
-            // $studentsStmt = $connection->prepare($studentsQuery);
-            // $studentsStmt->bind_param("is", $userId, $studentNo);
-            // $studentsStmt->close();
-            header("Location: http://localhost/login/student.php");
+            $stmt->close();
+            $lastId = $connection->insert_id;
+            $stmt = $connection->prepare($userDetailsQuery);
+            $stmt->bind_param("isssssi", $gender, $address, $province, $city, $barangay, $zipCode, $lastId);
+            $stmt->execute();
+            $stmt->close();
+            header("Location: http://pup.otms.local/login/student.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://localhost/index.php");
-            // $loginMessage = "Sign up failed. Please try again.";
+            header("Location: http://pup.otms.local/login/student.php");
+            $_SESSION['account_failed'] = true;
         }
+        $connection->close();
     }
 }
 else if (isset($_POST['clientSignup'])) {
@@ -83,9 +78,9 @@ else if (isset($_POST['clientSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://localhost/login/client.php");
-        // $loginMessage = "An account already exists with the information you provided.";
-        // exit();
+        header("Location: http://pup.otms.local/login/client.php");
+        $_SESSION['account_exists'] = true;
+        exit();
     }
     else {
         $extensionName = $_POST['EName'];
@@ -104,16 +99,24 @@ else if (isset($_POST['clientSignup'])) {
 
         $query = "INSERT INTO users (last_name, first_name, middle_name, extension_name, contact_no, email, birth_date, password, user_role)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $userDetailsQuery = "INSERT INTO user_details (sex, home_address, province, city, barangay, zip_code, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     
         $stmt = $connection->prepare($query);
         $stmt->bind_param("ssssssssi", $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
 
         if ($stmt->execute()) {
-            header("Location: http://localhost/login/client.php");
+            $stmt->close();
+            $lastId = $connection->insert_id;
+            $stmt = $connection->prepare($userDetailsQuery);
+            $stmt->bind_param("isssssi", $gender, $address, $province, $city, $barangay, $zipCode, $lastId);
+            $stmt->execute();
+            $stmt->close();
+            header("Location: http://pup.otms.local/login/client.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://localhost/index.php");
+            header("Location: http://pup.otms.local/login/client.php");
+            $_SESSION['account_failed'] = true;
             // $loginMessage = "Sign up failed. Please try again.";
         }
     }

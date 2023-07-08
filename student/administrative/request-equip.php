@@ -12,6 +12,12 @@
     <link rel="icon" href="../../assets/icon/pup-logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -325,6 +331,7 @@
             <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
         </div>
     </div>
+    <script src="../../loading.js"></script>
     <script src="jquery.js"></script>
         <script>
             var date = new Date();
@@ -477,6 +484,6 @@
             });
             
         </script>
-
+        <script src="../../saved_settings.js"></script>
 </body>
 </html>

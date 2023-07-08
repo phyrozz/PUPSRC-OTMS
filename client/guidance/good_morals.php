@@ -11,6 +11,12 @@
     <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -23,7 +29,7 @@
             include "../../breadcrumb.php";
             include "../../conn.php";
 
-            $query = "SELECT last_name, first_name, middle_name, extension_name, email FROM users
+            $query = "SELECT last_name, first_name, middle_name, extension_name, contact_no, email FROM users
             WHERE user_id = ?";
             $stmt = $connection->prepare($query);
             $stmt->bind_param("i", $_SESSION['user_id']);
@@ -35,7 +41,7 @@
             if(isset($_POST['goodMoralsFormSubmit'])) {
                 $requestDescription = "Request Good Moral Document";
                 $officeId = 5;
-                $statusId = 3;
+                $statusId = 1;
                 $amountToPay = 0.00;
 
                 $query = "INSERT INTO doc_requests (request_description, office_id, user_id, status_id, amount_to_pay)
@@ -65,7 +71,7 @@
             ?>
         </div>
         <div class="container-fluid text-center p-4">
-            <h1>Request Document - Good Morals</h1>
+            <h1>Request Document - Good Moral</h1>
         </div>
         <div class="container-fluid">
             <div class="row g-1">
@@ -115,7 +121,7 @@
                             </div>
                             <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
+                                <input type="tel" class="form-control" id="contactNumber" value="<?php echo $userData[0]['contact_no'] ?>" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
                                 <div id="contactNoValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
@@ -221,6 +227,8 @@
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
+    <script src="../../loading.js"></script>
+    <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>

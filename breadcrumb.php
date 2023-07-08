@@ -10,16 +10,24 @@ function generateBreadcrumb($items, $isTextBlack) {
         $color = "text-light";
     }
 
-    $breadcrumbHTML .= '<li class="breadcrumb-item"><a class="' . $color . '" href="/">Home</a></li>';
+    $breadcrumbHTML .= '<li class="breadcrumb-item">';
+    $breadcrumbHTML .= '<a class="breadcrumb-link ' . $color . '" href="/">Home</a>';
+    $breadcrumbHTML .= '<i class="breadcrumb-separator fas fa-chevron-right ' . $color . '"></i>';
+    $breadcrumbHTML .= '</li>';
     
-    foreach ($items as $item) {
+    foreach ($items as $index => $item) {
         $breadcrumbHTML .= '<li class="breadcrumb-item ' . $color;
         
         if ($item['active']) {
             $breadcrumbHTML .= ' active" aria-current="page">';
             $breadcrumbHTML .= $item['text'];
         } else {
-            $breadcrumbHTML .= '"><a class="' . $color . '" href="' . $item['url'] . '">' . $item['text'] . '</a>';
+            $breadcrumbHTML .= '"><a class="breadcrumb-link ' . $color . '" href="' . $item['url'] . '">' . $item['text'] . '</a>';
+        }
+        
+        // Add FontAwesome chevron after each breadcrumb item, except the last one
+        if ($index < count($items) - 1) {
+            $breadcrumbHTML .= ' <i class="breadcrumb-separator fas fa-chevron-right ' . $color . '"></i>';
         }
         
         $breadcrumbHTML .= '</li>';
@@ -31,3 +39,4 @@ function generateBreadcrumb($items, $isTextBlack) {
     return $breadcrumbHTML;
 }
 ?>
+

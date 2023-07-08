@@ -1,15 +1,15 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
+<table id="transactions-table" class="table table-hover hidden">
     <thead>
-        <tr>
-            <th class="text-center doc-request-id-header sortable-header" data-column="1" scope="col" data-order="desc">
+        <tr class="table-active">
+            <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
                 Payment Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-office-header sortable-header" data-column="2" scope="col" data-order="desc">
+            <th class="text-center doc-request-office-header sortable-header" data-column="course" scope="col" data-order="desc">
                 Course
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-description-header sortable-header" data-column="3" scope="col" data-order="desc">
+            <th class="text-center doc-request-description-header sortable-header" data-column="documentType" scope="col" data-order="desc">
                 Document Type
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
@@ -17,11 +17,11 @@
                 Schedule
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th> -->
-            <th class="text-center doc-request-amount-header sortable-header" data-column="4" scope="col" data-order="desc">
+            <th class="text-center doc-request-amount-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
                 Reference Number
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-status-header sortable-header" data-column="5" scope="col" data-order="desc">
+            <th class="text-center doc-request-status-header sortable-header" data-column="amount" scope="col" data-order="desc">
                 Amount
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>

@@ -46,8 +46,8 @@ $result = $connection->query($sql);
         <!-- Easter egg hahaha -->
         <?php
         if ($query === "saygex") {
-            echo "<h1 class='page-heading'>Well, you asked for it. Here you go :)</h1>";
-            echo '<img src="../assets/secret.png" alt="secret" width=350/>';
+            // echo "<h1 class='page-heading'>Well, you asked for it. Here you go :)</h1>";
+            echo '<img src="../assets/secret.png" alt="secret" width=350 style="filter: invert(93.5%);"/>';
         }
         else {
             echo '<h1 class="page-heading">Search Results - "' . $query . '"</h1>';
@@ -84,5 +84,6 @@ $result = $connection->query($sql);
         return $highlightedText;
     }
     ?>
+    <script src="../saved_settings.js"></script>
 </body>
 </html>

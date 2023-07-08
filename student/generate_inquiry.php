@@ -107,6 +107,7 @@
                             </div>
         <div class="push"></div>
     </div>
+    <script src="../saved_settings.js"></script>
     <?php include '../footer.php'; ?>
 </body>
 </html>

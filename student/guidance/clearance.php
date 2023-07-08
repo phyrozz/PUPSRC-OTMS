@@ -11,6 +11,12 @@
     <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -23,7 +29,7 @@
             include "../../breadcrumb.php";
             include "../../conn.php";
 
-            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
+            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, contact_no, email FROM users
             WHERE user_id = ?";
             $stmt = $connection->prepare($query);
             $stmt->bind_param("i", $_SESSION['user_id']);
@@ -35,7 +41,7 @@
             if(isset($_POST['clearanceFormSubmit'])) {
                 $requestDescription = "Request Clearance";
                 $officeId = 5;
-                $statusId = 3;
+                $statusId = 1;
                 $amountToPay = 0.00;
 
                 $query = "INSERT INTO doc_requests (request_description, office_id, user_id, status_id, amount_to_pay)
@@ -119,12 +125,12 @@
                             </div>
                             <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
+                                <input type="tel" class="form-control" id="contactNumber" value="<?php echo $userData[0]['contact_no'] ?>" name="contactNumber" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" required>
                                 <div id="contactNoValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" maxlength="100">
+                                <input type="email" class="form-control" id="email" value="<?php echo $userData[0]['email'] ?>" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Request Information</h6>
                             <div class="form-group col-12">
@@ -195,17 +201,33 @@
         <div class="push"></div>
     </div>
     <?php include '../../footer.php'; ?>
+    <script src="../../loading.js"></script>
     <script src="../../jquery.js"></script>
     <script>
-        const contactNoInput = document.getElementById('contactNumber'); // Corrected typo
+        const contactNoInput = document.getElementById('contactNumber');
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
-            const contactNoValidPattern = /^09\d{2}-\d{3}-\d{4}$/;
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
 
-            if (!contactNoValidPattern.test(contactNo)) {
-                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx';
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
                 contactNoInput.classList.add('is-invalid');
             } else {
                 contactNoValidationMessage.textContent = '';
@@ -220,10 +242,11 @@
                 $('#confirmSubmitModal').modal('show');
             }
         }
-        
+
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
+    <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>

@@ -5,6 +5,6 @@
 
     $isLoggedIn = false;
 
-    header("Location: index.php");
+    header("Location: http://pup.otms.local/index.php");
     exit();
 ?>

@@ -1,6 +1,6 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
+<table id="transactions-table" class="table table-hover hidden">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th class="text-center appointment-facility-id-header sortable-header" data-column="1" scope="col" data-order="asc">
                 Request Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>

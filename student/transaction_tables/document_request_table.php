@@ -1,37 +1,40 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
-    <thead>
-        <tr>
-            <th class="text-center"></th>
-            <th class="text-center doc-request-id-header sortable-header" data-column="1" scope="col" data-order="asc">
-                Request Code
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-office-header sortable-header" data-column="2" scope="col" data-order="asc">
-                Office
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-description-header sortable-header" data-column="3" scope="col" data-order="asc">
-                Request
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                Schedule
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th> -->
-            <th class="text-center doc-request-amount-header sortable-header" data-column="5" scope="col" data-order="asc">
-                Amount to pay
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-status-header sortable-header" data-column="6" scope="col" data-order="asc">
-                Status
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-        </tr>
-    </thead>
-    <tbody id="table-body">
-        <!-- Table rows will be generated dynamically using JavaScript -->
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table id="transactions-table" class="table table-hover hidden">
+        <thead>
+            <tr class="table-active">
+                <th class="text-center"></th>
+                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
+                    Request Code
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="desc">
+                    Office
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
+                    Request
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
+                    Schedule
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th> -->
+                <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
+                    Amount to pay
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
+                    Status
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Table rows will be generated dynamically using JavaScript -->
+        </tbody>
+    </table>
+</div>
 <div id="pagination" class="container-fluid p-0">
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
@@ -45,18 +48,16 @@
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Approved':
-                return 'bg-success';
-            case 'Disapproved':
-                return 'bg-danger';
-            case 'For receiving':
-                return 'bg-warning text-dark';
-            case 'For evaluation':
-                return 'bg-primary';
-            case 'Ready for pickup':
-                return 'bg-info';
             case 'Released':
                 return 'bg-success';
+            case 'Rejected':
+                return 'bg-danger';
+            case 'For Receiving':
+                return 'bg-warning text-dark';
+            case 'For Evaluation':
+                return 'bg-primary';
+            case 'Ready for Pickup':
+                return 'bg-info';
             default:
                 return 'bg-dark';
         }
@@ -91,16 +92,25 @@
     }
 
     function addDeleteButtonListeners() {
-        // Get the delete button element
         var deleteButton = document.getElementById('delete-button');
 
         // Get all the checkboxes
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-        // Function to update the delete button state based on checkbox selection
+        // Function to update the delete button state based on checkbox selection and status_id value
         function updateDeleteButtonState() {
             var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            deleteButton.disabled = checkedCheckboxes.length === 0;
+
+            // Check the status_id value of the selected rows
+            var canDelete = Array.from(checkedCheckboxes).every(function (checkbox) {
+                var row = checkbox.closest('tr');
+                var statusCell = row.querySelector('.doc-request-status-cell');
+                var status = statusCell.textContent.trim();
+                
+                return status === 'Pending' || status === 'Rejected';
+            });
+
+            deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
         }
 
         // Add event listeners to checkboxes
@@ -124,6 +134,22 @@
 
         // Update delete button state initially
         updateDeleteButtonState();
+    }
+
+    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
+    function generateUrlToOfficeColumn(officeName) {
+        switch (officeName) {
+            case 'Guidance Office':
+                return 'http://pup.otms.local/student/guidance.php';
+            case 'Registrar Office':
+                return 'http://pup.otms.local/student/registrar.php';
+            case 'Academic Office':
+                return 'http://pup.otms.local/student/academic.php';
+            case 'Accounting Office':
+                return 'http://pup.otms.local/student/accounting.php';
+            case 'Administrative Office':
+                return 'http://pup.otms.local/student/administrative.php';
+        }
     }
 
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
@@ -167,22 +193,23 @@
 
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
-                            '<td>' + 'DR-' + request.request_id + '</td>' +
-                            '<td>' + request.office_name + '</td>' +
+                            '<td>' + request.request_id + '</td>' +
+                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
                             '<td>' + request.request_description + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
+                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
                             '</td>' +
                             // '<td class="text-center">' +
                             // scheduleButton +
                             // '</td>' +
+                            '<td><a href="#" class="btn btn-primary btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' + 
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 

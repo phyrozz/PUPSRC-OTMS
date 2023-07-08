@@ -1,6 +1,6 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
+<table id="transactions-table" class="table table-hover hidden">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th class="text-center request-equipment-id-header sortable-header" data-column="1" scope="col" data-order="asc">
                 Request Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -122,7 +122,6 @@
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
-
                 // Update the pagination links
                 var paginationLinks = document.getElementById('pagination-links');
                 paginationLinks.innerHTML = '';

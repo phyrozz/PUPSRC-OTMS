@@ -66,4 +66,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 $connection->close();
 ?>
-
+<script src="../../saved_settings.js"></script>

@@ -11,6 +11,12 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -51,6 +57,7 @@
                         <p class="mb-0" >Always check your transaction status to follow instructions.</p>
                         <p class="mb-0">You can delete and edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
                         <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle the deficiency/ies to necessary office.</small></p>
+                        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected by the admin.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For receiving</span> - The request is currently in Receiving window and waiting for submission of requirements.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for pickup</span> - The requested document/s is/are already available for pickup at the releasing section of student records.</small></p>
@@ -59,8 +66,8 @@
                     </div>
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
-                            <form class="d-flex input-group" action="transactions.php" method="post">
-                                <select class="form-select" name="table-select">
+                            <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
+                                <select id="transactionTableSelect" class="form-select" name="table-select">
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
@@ -105,8 +112,9 @@
         include "../footer.php";
         mysqli_close($connection);
     ?>
+    <script src="../loading.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('.sortable-header').on('click', function() {
                 var column = $(this).data('column');
                 var order = $(this).data('order');
@@ -136,6 +144,18 @@
             // });
         });
 
+        function checkViewport() {
+            if (window.innerWidth < 768) {
+                document.getElementById('transactions-table').classList.add('text-nowrap', 'w-auto');
+            } else {
+                document.getElementById('transactions-table').classList.remove('text-nowrap', 'w-auto');
+            }
+        }
+
+        // Check viewport initially and on window resize
+        window.addEventListener('DOMContentLoaded', checkViewport);
+        window.addEventListener('resize', checkViewport);
     </script>
+    <script src="../saved_settings.js"></script>
 </body>
 </html>

@@ -18,6 +18,12 @@
     <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -81,7 +87,7 @@
                             INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
                             INNER JOIN offices ON reg_transaction.office_id = offices.office_id
                             INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-                            INNER JOIN reg_status ON reg_transaction.status_id = reg_status.id
+                            INNER JOIN reg_status ON reg_transaction.status_id = reg_status.status_id
                             WHERE users.user_id = $id");
                             // Load the requested table
                             if ($table === 'view_table') {
@@ -107,6 +113,7 @@
             <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
         </div>
     </footer>
+    <script src="../../loading.js"></script>
     <?php
         mysqli_close($connection);
     ?>
@@ -119,5 +126,6 @@
             });
         });
     </script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

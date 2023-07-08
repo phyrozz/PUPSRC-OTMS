@@ -2,15 +2,15 @@
     <thead>
         <tr>
             <th class="text-center"></th>
-            <th class="text-center doc-request-id-header sortable-header" data-column="1" scope="col" data-order="asc">
+            <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="asc">
                 Request Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-office-header sortable-header" data-column="2" scope="col" data-order="asc">
+            <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="asc">
                 Office
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-description-header sortable-header" data-column="3" scope="col" data-order="asc">
+            <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="asc">
                 Request
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
@@ -18,11 +18,11 @@
                 Schedule
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th> -->
-            <th class="text-center doc-request-amount-header sortable-header" data-column="5" scope="col" data-order="asc">
+            <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="asc">
                 Amount to pay
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-status-header sortable-header" data-column="6" scope="col" data-order="asc">
+            <th class="text-center doc-request-status-header sortable-header" data-column="status" scope="col" data-order="asc">
                 Status
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
@@ -45,18 +45,16 @@
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Approved':
-                return 'bg-success';
-            case 'Disapproved':
-                return 'bg-danger';
-            case 'For receiving':
-                return 'bg-warning text-dark';
-            case 'For evaluation':
-                return 'bg-primary';
-            case 'Ready for pickup':
-                return 'bg-info';
             case 'Released':
                 return 'bg-success';
+            case 'Rejected':
+                return 'bg-danger';
+            case 'For Receiving':
+                return 'bg-warning text-dark';
+            case 'For Evaluation':
+                return 'bg-primary';
+            case 'Ready for Pickup':
+                return 'bg-info';
             default:
                 return 'bg-dark';
         }
@@ -126,6 +124,21 @@
         updateDeleteButtonState();
     }
 
+    function generateUrlToOfficeColumn(officeName) {
+        switch (officeName) {
+            case 'Guidance Office':
+                return 'http://pup.otms.local/client/guidance.php';
+            case 'Registrar Office':
+                return 'http://pup.otms.local/client/registrar.php';
+            case 'Academic Office':
+                return 'http://pup.otms.local/client/academic.php';
+            case 'Accounting Office':
+                return 'http://pup.otms.local/client/accounting.php';
+            case 'Administrative Office':
+                return 'http://pup.otms.local/client/administrative.php';
+        }
+    }
+
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
@@ -167,8 +180,8 @@
 
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
-                            '<td>' + 'DR-' + request.request_id + '</td>' +
-                            '<td>' + request.office_name + '</td>' +
+                            '<td>' + request.request_id + '</td>' +
+                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
                             '<td>' + request.request_description + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
