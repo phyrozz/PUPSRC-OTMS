@@ -140,15 +140,15 @@
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
             case 'Guidance Office':
-                return 'http://pup.otms.local/student/guidance.php';
+                return 'http://localhost/student/guidance.php';
             case 'Registrar Office':
-                return 'http://pup.otms.local/student/registrar.php';
+                return 'http://localhost/student/registrar.php';
             case 'Academic Office':
-                return 'http://pup.otms.local/student/academic.php';
+                return 'http://localhost/student/academic.php';
             case 'Accounting Office':
-                return 'http://pup.otms.local/student/accounting.php';
+                return 'http://localhost/student/accounting.php';
             case 'Administrative Office':
-                return 'http://pup.otms.local/student/administrative.php';
+                return 'http://localhost/student/administrative.php';
         }
     }
 

@@ -24,7 +24,7 @@
 
             // Avoid admin user from accessing other office pages
             if ($_SESSION['office_name'] != "Academic Office") {
-                header("Location: http://pup.otms.local/admin/redirect.php");
+                header("Location: http://localhost/admin/redirect.php");
             }
         ?>
         <div class="container-fluid py-2">

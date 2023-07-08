@@ -30,7 +30,7 @@
 
             // Avoid admin user from accessing other office pages
             if ($_SESSION['office_name'] != "Guidance Office") {
-                header("Location: http://pup.otms.local/admin/redirect.php");
+                header("Location: http://localhost/admin/redirect.php");
             }
 
             $table = 'document_request';

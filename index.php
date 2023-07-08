@@ -20,16 +20,16 @@
 
         if (!empty($_SESSION['user_id'])) {
             if ($_SESSION['user_role'] == 1) {
-                header("Location: http://pup.otms.local/student/home.php");
+                header("Location: http://localhost/student/home.php");
             }
             else if ($_SESSION['user_role'] == 2) {
-                header("Location: http://pup.otms.local/client/home.php");
+                header("Location: http://localhost/client/home.php");
             }
             // else if (!empty($_SESSION['admin_id'])) {
-            //     header("Location: http://pup.otms.local/admin/redirect.php");
+            //     header("Location: http://localhost/admin/redirect.php");
             // }
             else {
-                header("Location: http://pup.otms.local/admin/redirect.php");
+                header("Location: http://localhost/admin/redirect.php");
             }
             exit;
         }
