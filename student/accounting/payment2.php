@@ -20,6 +20,12 @@ $dbname = "otms_db";
     <link rel="stylesheet" href="css/payment2.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -139,5 +145,6 @@ $dbname = "otms_db";
         <script src="#"></script>
     </div>
     <script src="../../saved_settings.js"></script>
+    <script src="../../loading.js"></script>
 </body>
 </html>

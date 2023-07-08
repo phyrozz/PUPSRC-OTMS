@@ -228,6 +228,7 @@
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
     <script src="../../loading.js"></script>
+    <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>

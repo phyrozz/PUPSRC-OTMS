@@ -135,5 +135,6 @@
         });
     </script>
     <script src="../loading.js"></script>
+    <script src="../saved_settings.js"></script>
 </body>
 </html>

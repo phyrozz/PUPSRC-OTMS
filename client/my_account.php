@@ -11,6 +11,12 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -60,9 +66,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card px-5 py-3 mb-3">
+                    <div class="card pt-5 px-5 py-3 mb-3 shadow-lg">
                         <div class="container">
                             <div class="row d-flex flex-row justify-content-between">
+                                <button id="editButton" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary position-absolute end-0 mx-5 w-auto"><i class="fa-solid fa-pen-to-square"></i></button>
                                 <h4 class="pb-3 text-md-start text-center">Account Details</h4>
                                 <div class="col-md-3">
                                     <div class="d-flex align-items-center justify-content-center user-avatar-container pb-4">
@@ -121,20 +128,86 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card mb-4 px-5 py-3">
+                    <div class="card mb-4 px-5 py-5 shadow-lg">
                         <h4 class="pb-3 text-md-start text-center">Settings</h4>
-                        <div class="m-0 py-3">
+                        <div class="m-0 pt-3">
+                            <p class="fs-6 m-0 my-1"><strong>Default Transactions table</strong></p>
+                            <select id="transactionTableSelect" class="form-select-sm">
+                                <option value="document_request">Document Requests</option>
+                                <option value="scheduled_appointments">Counseling Schedules</option>
+                                <option value="payments">Payments</option>
+                                <option value="request_equipment">Request of Equipment</option>
+                                <option value="appointment_facility">Facility Appointment</option>
+                            </select>
+                        </div>
+                        <hr />
+                        <div class="m-0 pt-3">
                             <p class="fs-6 m-0 my-1"><strong>Enable Dark Mode</strong></p>
-                            <input type="checkbox" data-toggle="switchbutton">
+                            <input id="darkModeSwitch" type="checkbox" data-toggle="switchbutton" data-width="75">
+                            <div id="switchValue" class="pt-3"></div>
+                        </div>
+                        <div class="m-0 pb-3">
+                            <p class="fs-6 m-0 my-1"><strong>Allow editing on contact number and email fields</strong></p>
+                            <input id="disabledFieldsOrNot" type="checkbox" data-toggle="switchbutton" data-width="75">
+                            <div id="disabledSwitchValue" class="pt-3"></div>
                         </div>
                         <hr />
                         <div class="m-0">
-                            <h5 style="color: maroon;" class="mb-4">Dangerous Settings</h5>
+                            <h5 class="mb-4">Dangerous Settings</h5>
                             <div class="d-flex align-items-center gap-4">
                                 <a href="#" class="btn btn-primary">Delete Account</a>
-                                <a href="#" class="btn btn-outline-primary">Delete All Transactions</a>
+                                <a href="#" class="btn btn-primary">Delete All Transactions</a>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Account Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form for editing details -->
+                        <form id="editForm">
+                            <div class="mb-3 form-group">
+                                <label for="editLastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="editLastName" name="editLastName" value="<?php echo $userData[0]['last_name']; ?>" required>
+                                <div class="invalid-feedback">Please enter your last name.</div>
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="editFirstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="editFirstName" name="editFirstName" value="<?php echo $userData[0]['first_name']; ?>" required>
+                                <div class="invalid-feedback">Please enter your first name.</div>
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="editMiddleName" class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" id="editMiddleName" name="editMiddleName" value="<?php echo $userData[0]['middle_name']; ?>">
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="editExtensionName" class="form-label">Extension Name</label>
+                                <input type="text" name="editExtensionName" value="<?php echo $userData[0]['extension_name']; ?>" id="editExtensionName" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="11" size="11" autocomplete="on" class="form-control">
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="editContactNumber" class="form-label">Contact Number</label>
+                                <input type="text" name="editContactNumber" value="<?php echo $userData[0]['contact_no']; ?>" id="editContactNumber" placeholder="Eg. 0901-234-5678" pattern="^090\d{1}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control" required>
+                                <div class="invalid-feedback">Please enter a valid contact number.</div>
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="editEmail" class="form-label">Email Address</label>
+                                <input type="text" name="editEmail" value="<?php echo $userData[0]['email']; ?>" id="editEmail" placeholder="Complete Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="11" maxlength="50" size="50" autocomplete="on" class="form-control" required>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                            <!-- Add more fields for other details to edit -->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="saveChangesButton" type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </div>
             </div>
@@ -142,8 +215,13 @@
         <div class="push"></div>
     </div>
     <?php include '../footer.php'; ?>
+    <script src="../loading.js"></script>
+    <script src="../saved_settings.js"></script>
     <script>
         $(document).ready(function() {
+            document.getElementById('darkModeSwitch').switchButton();
+            document.getElementById('disabledFieldsOrNot').switchButton();
+
             // Hide additional details initially
             $('#birthDateDetails').hide();
             $('#contactDetails').hide();
@@ -161,7 +239,96 @@
                 $('#addressDetails').slideToggle();
             });
 
-            $('#switchButton').bootstrapSwitch();
+            function validateContactNumber(contactNumber) {
+                var pattern = /^0\d{3}-\d{3}-\d{4}$/;
+                return pattern.test(contactNumber);
+            }
+
+            function formatContactNumber(input) {
+                // Remove dashes and non-numeric characters
+                var number = input.replace(/[^0-9]/g, '');
+
+                // Format the number with dashes
+                var formattedNumber = '';
+                for (let i = 0; i < number.length; i++) {
+                    if (i === 4 || i === 7) {
+                        formattedNumber += '-';
+                    }
+                    formattedNumber += number[i];
+                }
+
+                return formattedNumber;
+            }
+
+            function validateEmail(email) {
+                var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return pattern.test(email);
+            }
+
+            // Add event listeners for input validation
+            $('#editFirstName').on('input', function() {
+                var input = $(this).val();
+                var isValid = input.trim() !== '';
+                $(this).toggleClass('is-invalid', !isValid);
+            });
+
+            $('#editLastName').on('input', function() {
+                var input = $(this).val();
+                var isValid = input.trim() !== '';
+                $(this).toggleClass('is-invalid', !isValid);
+            });
+
+            $('#editContactNumber').on('input', function() {
+                var input = $(this).val();
+
+                var formattedInput = formatContactNumber(input);
+
+                $(this).val(formattedInput);
+
+                var isValid = validateContactNumber(formattedInput);
+                $(this).toggleClass('is-invalid', !isValid);
+            });
+
+            $('#editEmail').on('input', function() {
+                var email = $(this).val();
+                var isValid = validateEmail(email);
+                $(this).toggleClass('is-invalid', !isValid);
+            });
+
+            // Click event for the "Save Changes" button in the modal
+            $('#saveChangesButton').click(function() {
+                var formData = $('#editForm').serialize();
+
+                // Validate the form inputs before submitting
+                var isValidFirstName = $('#editFirstName').val();
+                var isValidLastName = $('#editLastName').val();
+
+                var contactNumber = $('#editContactNumber').val();
+                var isValidContactNumber = validateContactNumber(contactNumber);
+                $('#editContactNumber').toggleClass('is-invalid', !isValidContactNumber);
+
+                var email = $('#editEmail').val();
+                var isValidEmail = validateEmail(email);
+                $('#editEmail').toggleClass('is-invalid', !isValidEmail);
+
+                if (!isValidContactNumber || !isValidEmail || isValidFirstName.trim() == '' || isValidLastName.trim() == '') {
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'update_details.php',
+                    data: formData,
+                    success: function(response) {
+                        console.log('Details updated successfully');
+                    },
+                    error: function(error) {
+                        console.error('Error updating details:', error);
+                    }
+                });
+
+                location.reload(0);
+            });
         });
   </script>
 </body>

@@ -40,15 +40,18 @@
 </div>
 <div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
     <div class="d-flex gap-2">
-        <select class="form-select" name="update-status" id="update-status" disabled>
-            <option value="1">Pending</option>
-            <option value="2">For Receiving</option>
-            <option value="3">For Evaluation</option>
-            <option value="4">Ready for Pickup</option>
-            <option value="5">Released</option>
-            <option value="6">Rejected</option>
-        </select>
-        <button id="update-status-button" class="btn btn-primary" disabled>Update</button>
+        <div class="input-group">
+            <div class="input-group-text">Update Status:</div>
+            <select class="form-select" name="update-status" id="update-status" disabled>
+                <option value="1">Pending</option>
+                <option value="2">For Receiving</option>
+                <option value="3">For Evaluation</option>
+                <option value="4">Ready for Pickup</option>
+                <option value="5">Released</option>
+                <option value="6">Rejected</option>
+            </select>
+        </div>
+        <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
     </div>    
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">

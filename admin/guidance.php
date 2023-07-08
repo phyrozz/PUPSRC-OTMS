@@ -76,8 +76,8 @@
                                         <option value="goodMoral">Good Moral Document</option>
                                         <option value="clearance">Clearance</option>
                                     </select>
-                                    <button type="button" id="filterButton" name="filterButton" class="btn btn-primary">Filter</button>
                                 </div>
+                                <button type="button" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i class="fa-solid fa-filter"></i> Filter</button>
                             </div>
                         </div>
                         <div class="mt-2">
