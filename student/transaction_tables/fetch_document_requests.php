@@ -23,7 +23,7 @@ $documentRequestsQuery = "SELECT request_id, office_name, request_description, s
                         FROM doc_requests
                         INNER JOIN offices ON doc_requests.office_id = offices.office_id
                         INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL";
+                        WHERE user_id = " . $_SESSION['user_id'] . " AND request_description != 'Guidance Counseling'";
 
 if (!empty($searchTerm)) {
     $documentRequestsQuery .= " AND (request_id LIKE '%$searchTerm%'
@@ -50,7 +50,7 @@ if ($result) {
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
                           FROM doc_requests
-                          WHERE user_id = " . $_SESSION['user_id'] . " AND request_description IS NOT NULL";
+                          WHERE user_id = " . $_SESSION['user_id'] . " AND request_description != 'Guidance Counseling'";
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
     $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
     $totalRecords = $totalRecordsRow['total_records'];
