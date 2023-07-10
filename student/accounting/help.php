@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting - Help</title>
+    <title>Accounting Office - Help</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@
         $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['accountingFeedbackText']);
         if ($stmt->execute()) {
             $_SESSION['success'] = true;
-            // header("Location: http://localhost/student/guidance/success.php");
+            // header("Location: http://localhost/student/accounting/success.php");
         }
         else {
             var_dump($stmt->error);
@@ -107,98 +107,100 @@
             </div>
         </div>
         <div class="container py-5">
-    <div class="container-fluid text-center p-4">
-        <h3>Submit Feedback</h3>
-    </div>
-    <form id="accountingFeedbackForm" method="POST">
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" value="<?php echo $userData[0]['first_name'] . " " . $userData[0]['last_name'] . " ". $userData[0]['extension_name'] ?>" class="form-control" id="name" required disabled>
+            <div class="container-fluid text-center p-4">
+                <h3>Submit Feedback</h3>
+            </div>
+            <form id="accountingFeedbackForm" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" value="<?php echo $userData[0]['first_name'] . " " . $userData[0]['last_name'] . " ". $userData[0]['extension_name'] ?>" class="form-control" id="name" required disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" value="<?php echo $userData[0]['email'] ?>" class="form-control" id="email" required disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" pattern="[A-Za-z0-9]+" name="accountingFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" style="resize: none;" required></textarea>
+                    <div class="invalid-feedback">Invalid feedback.</div>
+                </div>
+                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
+                <!-- Modal -->
+                <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to submit this form?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="submit" id="submit" class="btn btn-primary" name="accountingFeedbackSubmit">Yes</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" value="<?php echo $userData[0]['email'] ?>" class="form-control" id="email" required disabled>
-        </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" pattern="^[a-zA-Z\s]{5,}$" name="accountingFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" required></textarea>
-            <div class="invalid-feedback">Invalid feedback.</div>
-        </div>
-        <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
-        <!-- Modal -->
-        <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+        <!-- Success alert modal -->
+        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to submit this form?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <button type="submit" id="submit" class="btn btn-primary" name="accountingFeedbackSubmit">Yes</button>
-                </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Thank you. Your feedback has been submitted successfully!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </form>
-</div>
-
-<!-- Success alert modal -->
-<div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="successModalLabel">Success</h5>
-            </div>
-            <div class="modal-body">
-                <p>Thank you. Your feedback has been submitted successfully!</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-            </div>
-        </div>
+        <!-- End of success alert modal -->
+        <div class="push"></div>
     </div>
-</div>
+    <?php include '../../footer.php'; ?>
+    <script src="../../jquery.js"></script>
+    <script>
+        const messageTextarea = document.getElementById('message');
 
-<script>
-    const messageTextarea = document.getElementById('message');
+        messageTextarea.addEventListener('input', function() {
+            const inputValue = messageTextarea.value;
 
-    messageTextarea.addEventListener('input', function() {
-        const inputValue = messageTextarea.value;
+            const pattern = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9\s]*$/;
+            const isValid = pattern.test(inputValue);
 
-        const pattern = /^[a-zA-Z0-9]{3,}\s[a-zA-Z0-9\s]*$/;
-        const isValid = pattern.test(inputValue);
+            if (isValid) {
+                messageTextarea.setCustomValidity('');
+                messageTextarea.classList.remove('is-invalid');
+            } else {
+                messageTextarea.setCustomValidity('Only letters and numbers are allowed.');
+                messageTextarea.classList.add('is-invalid');
+            }
+        });
 
-        if (isValid) {
-            messageTextarea.setCustomValidity('');
-            messageTextarea.classList.remove('is-invalid');
-        } else {
-            messageTextarea.setCustomValidity('Please provide a valid feedbacks.');
-            messageTextarea.classList.add('is-invalid');
+        // Function to handle form submission
+        function handleSubmit() {
+            validateForm();
+            if (document.getElementById('accountingFeedbackForm').checkValidity()) {
+                $('#confirmSubmitModal').modal('show');
+            }
         }
-    });
-
-    // Function to handle form submission
-    function handleSubmit() {
-        validateForm();
-        if (document.getElementById('accountingFeedbackForm').checkValidity()) {
-            $('#confirmSubmitModal').modal('show');
-        }
-    }
-
-    // Add event listener to the submit button
-    document.getElementById('submitBtn').addEventListener('click', handleSubmit);
-</script>
-
-    
+        
+        // Add event listener to the submit button
+        document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+    </script>
+    <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
         ?>
         <script>
-            // window.location.href="http://localhost/student/guidance/clearance.php";
+            // window.location.href="http://localhost/student/accounting/clearance.php";
             $(document).ready(function() {
                 $("#successModal").modal("show");
             })

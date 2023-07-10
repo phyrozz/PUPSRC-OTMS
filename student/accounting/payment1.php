@@ -161,10 +161,18 @@ if (isset($_POST['submit'])) {
           <div class="form-group">
             <label for="course" class="form-label">Course <code>*</code></label>
             <select class="form-select" id="" name="course" required>
-              <option value="">Select Course</option>
-              <option value="Course 1">Course 1</option>
-              <option value="Course 2">Course 2</option>
-              <option value="Course 3">Course 3</option>
+              <option value="" disabled selected hidden>Select Course</option>
+              <option value="Bachelor of Science in Electronics Engineering">Bachelor of Science in Electronics Engineering</option>
+              <option value="Bachelor of Science in Business Administration Major in Human Resource Management">Bachelor of Science in Business Administration Major in Human Resource Management</option>
+              <option value="Bachelor of Science in Business Administration Major in Marketing Management">Bachelor of Science in Business Administration Major in Marketing Management</option>
+              <option value="Bachelor in Secondary Education Major in English">Bachelor in Secondary Education Major in English</option>
+              <option value="Bachelor in Secondary Education Major in Filipino">Bachelor in Secondary Education Major in Filipino</option>
+              <option value="Bachelor in Secondary Education Major in Mathematics">Bachelor in Secondary Education Major in Mathematics</option>
+              <option value="Bachelor of Science in Industrial Engineering">Bachelor of Science in Industrial Engineering</option>
+              <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+              <option value="Bachelor of Science in Psychology">Bachelor of Science in Psychology</option>
+              <option value="Bachelor in Technology And Livelihood Education Major in Home Economics">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
+              <option value="Bachelor of Science in Management Accounting">Bachelor of Science in Management Accounting</option>
               <!-- Add more options as needed -->
             </select>
             <div class="invalid-feedback">
@@ -177,10 +185,26 @@ if (isset($_POST['submit'])) {
           <div class="form-group">
             <label for="documentType" class="form-label">Document Type <code>*</code></label>
             <select class="form-select" id="" name="documentType" required>
-              <option value="">Select Document Type</option>
-              <option value="Document 1">Document 1</option>
-              <option value="Document 2">Document 2</option>
-              <option value="Document 3">Document 3</option>
+              <option value="" disabled selected hidden>Select Document Type</option>
+              <option value="Application for Graduation SIS and Non-SIS">Application for Graduation SIS and Non-SIS</option>
+              <option value="Correction of Entry of Grade">Correction of Entry of Grade</option>
+              <option value="Completion of Incomplete Grade">Completion of Incomplete Grade</option>
+              <option value="Late Reporting of Grade">Late Reporting of Grade</option>
+              <option value="Processing of Request for Correction of Name: PSA/School Records">Processing of Request for Correction of Name: PSA/School Records</option>
+              <option value="Certification, Verification, Authentication (CAV/Apostile)">Certification, Verification, Authentication (CAV/Apostile)</option>
+              <option value="Certificate of Attendance">Certificate of Attendance</option>
+              <option value="Certificate of Graduation">Certificate of Graduation</option>
+              <option value="Certificate of Medium of Instruction">Certificate of Medium of Instruction</option>
+              <option value="Certificate of General Weighted Average (GWA)">Certificate of General Weighted Average (GWA)</option>
+              <option value="Non Issuance of Special Order">Non Issuance of Special Order </option>
+              <option value="Course/Subject Description">Course/Subject Description</option>
+              <option value="Certificate of Transfer Credential/Honorable Dismissal">Certificate of Transfer Credential/Honorable Dismissal</option>
+              <option value="Transcript of Records (Second and succeeding copies)">Transcript of Records (Second and succeeding copies)</option>
+              <option value="Transcript of Records (Copy for Another School)">Transcript of Records (Copy for Another School)</option>
+              <option value="Course Accreditation Service (for Transferees)">Course Accreditation Service (for Transferees)</option>
+              <option value="Informative Copy of Grades">Informative Copy of Grades</option>
+              <option value="Certified True Copy">Certified True Copy</option>
+              <option value="Academic Verification Service">Academic Verification Service</option>
               <!-- Add more options as needed -->
             </select>
             <div class="invalid-feedback">
@@ -194,7 +218,7 @@ if (isset($_POST['submit'])) {
     <div class="col-12 col-md-6">
       <div class="form-groups">
         <label for="firstName" class="form-label">First Name <code>*</code></label>
-        <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo isset($fetch['first_name']) ? $fetch['first_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="validateFirstName(this, 100)" required readonly>
+        <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo isset($fetch['first_name']) ? $fetch['first_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="validateFirstName(this, 100)" required readonly style="background-color: #e9ecef">
         <div class="invalid-feedback">
           Please provide a valid first name.
         </div>
@@ -204,7 +228,7 @@ if (isset($_POST['submit'])) {
     <div class="col-12 col-md-6">
       <div class="form-groups">
         <label for="middleName" class="form-label">Middle Name</label>
-        <input type="text" class="form-control" id="middleName" name="middleName" value="<?php echo isset($fetch['middle_name']) ? $fetch['middle_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateMiddleName(this)" readonly>
+        <input type="text" class="form-control" id="middleName" name="middleName" value="<?php echo isset($fetch['middle_name']) ? $fetch['middle_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateMiddleName(this)" readonly style="background-color: #e9ecef">
         <div class="invalid-feedback">
           Please provide a valid middle name.
         </div>
@@ -214,7 +238,7 @@ if (isset($_POST['submit'])) {
     <div class="col-12 col-md-6">
       <div class="form-groups">
         <label for="lastName" class="form-label">Last Name <code>*</code></label>
-        <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo isset($fetch['last_name']) ? $fetch['last_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateSurname(this)" required readonly>
+        <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo isset($fetch['last_name']) ? $fetch['last_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateSurname(this)" required readonly style="background-color: #e9ecef">
         <div class="invalid-feedback">
           Please provide a valid last name.
         </div>
@@ -224,7 +248,7 @@ if (isset($_POST['submit'])) {
     <div class="col-12 col-md-6">
       <div class="form-groups">
         <label for="studentNumber" class="form-label">Student Number <code>*</code></label>
-        <input type="text" class="form-control" id="studentNumber" name="studentNumber" value="<?php echo isset($fetch['student_no']) ? $fetch['student_no'] : ''; ?>" required oninput="validateStudentNumber(this)" maxlength="15" readonly>
+        <input type="text" class="form-control" id="studentNumber" name="studentNumber" value="<?php echo isset($fetch['student_no']) ? $fetch['student_no'] : ''; ?>" required oninput="validateStudentNumber(this)" maxlength="15" readonly style="background-color: #e9ecef">
         <div class="invalid-feedback">
           Please provide a valid student number.
         </div>
@@ -457,6 +481,43 @@ function validateForm(event) {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
+
+
+
+
+  //dropdown course
+  const selectElement = document.querySelector('select[name="course"]');
+  const options = Array.from(selectElement.options);
+
+  // Remove the "Select Course" option from the array
+  const selectCourseOption = options.shift();
+
+  options.sort((a, b) => a.text.localeCompare(b.text));
+
+  // Add back the "Select Course" option at the top
+  selectElement.appendChild(selectCourseOption);
+
+  for (const option of options) {
+    selectElement.appendChild(option);
+  }
+
+
+
+  const documentTypeSelectElement = document.querySelector('select[name="documentType"]');
+  const documentTypeOptions = Array.from(documentTypeSelectElement.options);
+
+  // Remove the "Select Document Type" option from the array
+  const selectDocumentTypeOption = documentTypeOptions.shift();
+
+  documentTypeOptions.sort((a, b) => a.text.localeCompare(b.text));
+
+  // Add back the "Select Document Type" option at the top
+  documentTypeSelectElement.appendChild(selectDocumentTypeOption);
+
+  for (const option of documentTypeOptions) {
+    documentTypeSelectElement.appendChild(option);
+  }
+
 
 </script>
 

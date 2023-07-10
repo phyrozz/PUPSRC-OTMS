@@ -127,8 +127,6 @@ $dbname = "otms_db";
                     ?>
                 </div>
 
-
-
                 <div class="col-12">
                     <a class="btn btn-primary next-button" href="../accounting.php" type="submit">Accounting Office</a>
                 </div>

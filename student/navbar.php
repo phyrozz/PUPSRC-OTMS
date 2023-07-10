@@ -71,7 +71,7 @@ $isLoggedIn = true;
                                 echo '
                                 <li><a class="dropdown-item" href="/student/accounting/payment1.php">Payment</a></li>
                                 <li><a class="dropdown-item" href="/student/accounting/offsetting1.php">Offsetting</a></li>
-                                <li><a class="dropdown-item" href="../transactions.php">Registrar Transaction History</a></li>
+                                <li><a class="dropdown-item" href="/student/transactions.php">Registrar Transaction History</a></li>
                                 ';
                                 break;
                             // Add more cases for other office services
@@ -103,7 +103,7 @@ $isLoggedIn = true;
                                 <li><a class="dropdown-item" href="#">Registrar Office</a></li>
                                 <li><a class="dropdown-item" href="http://localhost/student/guidance/help.php">Guidance Office</a></li>
                                 <li><a class="dropdown-item" href="#">Academic Office</a></li>
-                                <li><a class="dropdown-item" href="#">Accounting Office</a></li>
+                                <li><a class="dropdown-item" href="http://localhost/student/accounting/help.php">Accounting Office</a></li>
                                 <li><a class="dropdown-item" href="http://localhost/student/administrative/help.php">Administrative Office</a></li>
                             </ul>
                         </li>
