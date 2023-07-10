@@ -86,7 +86,7 @@
                             // scheduleButton +
                             // '</td>' +
                             '<td>₱' + payments.amount + '</td>' +
-                            '<td class="text-center"><a href="accounting/' + payments.image_url + '" class="btn btn-sm btn-primary">See Image</a></td></tr>';
+                            '<td class="text-center"><a href="accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
