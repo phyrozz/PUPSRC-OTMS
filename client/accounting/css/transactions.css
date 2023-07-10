@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+
+.login-card {
+    width: 50%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+/* Color scheme styling on buttons */
+.btn-student {
+    background-color: rgb(255, 63, 63);
+    color: #fff;
+}
+
+.btn-student:hover {
+    background-color: rgb(197, 50, 50);
+    color: #fff;
+}
+
+.btn-client {
+    background-color: rgb(49, 97, 255);
+    color: #fff;
+}
+
+.btn-client:hover {
+    background-color: rgb(40, 79, 207);
+    color: #fff;
+}
+
+.btn-admin {
+    background-color: rgb(29, 189, 29);
+    color: #fff;
+}
+
+.btn-admin:hover {
+    background-color: rgb(23, 143, 23);
+    color: #fff;
+}
+
+.bg-maroon {
+    background-color: #800000;
+}
+
+.btn-primary {
+    background-color: #800000;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #520000;
+}
+
+.btn-outline-primary {
+    color: #800000;
+    border-color: #800000;
+}
+
+.btn-outline-primary:hover {
+    border-color: #520000;
+    background-color: #520000;
+}
+
+.btn-primary:disabled {
+    background-color: #bbbbbb;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #520000;
+}  
+
+.container-fluid {
+    position: relative;
+}
+
+.header {
+    background-image: url("assets/bg2.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.header-text {
+    z-index: 1;
+}
+
+.header-btn {
+    z-index: 1;
+}
+
+/* Start of custom breadcrumb styling
+Breadcrumb is a bootstrap component that shows the location of the user on the website. */
+.breadcrumb-nav {
+    z-index: 1;
+    position: absolute;
+    left: 8px;
+    top: 16px;
+}
+
+.breadcrumb-container .breadcrumb-item + .breadcrumb-item::before {
+    font-weight: 100;
+    color: #fff;
+    content: "/";
+}
+
+.breadcrumb-container .breadcrumb-item a {
+    color: #fff;
+}
+
+.breadcrumb-item a {
+    color: #000;
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
+    padding: 5px 8px;
+    border-radius: 5px;
+}
+
+.breadcrumb-item a:hover {
+    background-color: #520000;
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.breadcrumb-container .breadcrumb .active {
+    color: #fff;
+}
+
+.breadcrumb .active {
+    font-weight: 800;
+}
+/* End of custom breadcrumb styling */
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.form-group.required .form-label:after {
+    content:" *";
+    color:red;
+  }
+
+.footer, .push {
+    height: 50px; /* .push must be the same height as .footer */
+}
+
+.footer a {
+    font-size: 12px;
+}
+
+@media only screen and (max-width: 768px) {
+    .login-card {
+        width: 100%;
+    }
+
+    table {
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+}

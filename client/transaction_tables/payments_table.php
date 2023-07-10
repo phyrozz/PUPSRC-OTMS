@@ -1,6 +1,6 @@
 <table id="transactions-table" class="table table-hover table-bordered hidden">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
                 Payment Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
