@@ -41,18 +41,20 @@
 
             if(isset($_POST['formSubmit'])) {
                 $counselingDescription = $_POST['counseling_description'];
+                $comments = $_POST['reasonText'];
                 $date = $_POST['date'];
                 $time = $_POST['time'];
                 $officeId = 5;
                 $statusId = 1;
                 $amountToPay = 0.00;
+                $requestDesc = "Guidance Counseling";
                 $dateTime = $date . ' ' . $time;
 
-                $query = "INSERT INTO doc_requests (scheduled_datetime, office_id, user_id, status_id, amount_to_pay)
-                VALUES (?, ?, ?, ?, ?)";
+                $query = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, amount_to_pay)
+                VALUES (?, ?, ?, ?, ?, ?)";
 
                 $stmt = $connection->prepare($query);
-                $stmt->bind_param("siiid", $dateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
+                $stmt->bind_param("ssiiid", $requestDesc, $dateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
                 $stmt->execute();
                 // Uncomment if primary key id of doc_requests table is AUTO_INCREMENT int
 
@@ -64,12 +66,12 @@
                 // }
                 $stmt->close();
 
-                $query = "INSERT INTO counseling_schedules (appointment_description, doc_requests_id)
-                VALUES (?, ?)";
+                $query = "INSERT INTO counseling_schedules (appointment_description, comments, doc_requests_id)
+                VALUES (?, ?, ?)";
                 $docRequestsId = 'DR-' . time();
 
                 $stmt = $connection->prepare($query);
-                $stmt->bind_param("ss", $counselingDescription, $docRequestsId);
+                $stmt->bind_param("sss", $counselingDescription, $comments, $docRequestsId);
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
                 }
@@ -212,7 +214,7 @@
                             </div>
                             <div class="form-group col-12 required" id="reasonTextField" style="display: none;">
                                 <label for="reasonText" class="form-label">Reason</label>
-                                <textarea class="form-control" name="reasonText" id="reasonText" style="resize: none;" rows="3" required></textarea>
+                                <textarea class="form-control" name="reasonText" id="reasonText" style="resize: none;" rows="3" maxlength="2048" required></textarea>
                                 <div id="reasonValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
