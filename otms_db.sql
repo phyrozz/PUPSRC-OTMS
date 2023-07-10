@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2023 at 09:00 AM
+-- Generation Time: Jul 10, 2023 at 03:32 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -123,7 +123,8 @@ CREATE TABLE `counseling_schedules` (
 --
 
 INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `doc_requests_id`) VALUES
-('GC-1688797180', 'Academic Performance', 'DR-1688797180');
+('GC-1688797180', 'Academic Performance', 'DR-1688797180'),
+('GC-1688799694', 'Other', 'DR-1688799694');
 
 -- --------------------------------------------------------
 
@@ -174,7 +175,15 @@ CREATE TABLE `doc_requests` (
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
 ('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, ''),
 ('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, ''),
-('DR-1688797180', NULL, '2023-07-14 12:30:00', 5, 39, 1, 0.00, '');
+('DR-1688797180', NULL, '2023-07-14 12:30:00', 5, 39, 1, 0.00, ''),
+('DR-1688799647', 'Request Good Moral Document', NULL, 5, 41, 1, 0.00, ''),
+('DR-1688799655', 'Request Clearance', NULL, 5, 41, 1, 0.00, ''),
+('DR-1688799662', 'Request Good Moral Document', NULL, 5, 41, 1, 0.00, ''),
+('DR-1688799671', 'Request Good Moral Document', NULL, 5, 41, 1, 0.00, ''),
+('DR-1688799694', NULL, '2023-07-19 11:30:00', 5, 39, 1, 0.00, ''),
+('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, ''),
+('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, 0.00, ''),
+('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, 0.00, '');
 
 -- --------------------------------------------------------
 
@@ -413,6 +422,13 @@ CREATE TABLE `offsettingtb` (
   `offsetType` varchar(45) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `offsettingtb`
+--
+
+INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`) VALUES
+(0, 39, 100.00, 'tuitionFee', '2023-07-08 14:48:01');
 
 -- --------------------------------------------------------
 

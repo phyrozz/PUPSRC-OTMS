@@ -50,7 +50,7 @@ if ($result) {
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
                           FROM doc_requests
-                          WHERE request_description IS NULL";
+                          WHERE request_description = 'Guidance Counseling'";
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
     $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
     $totalRecords = $totalRecordsRow['total_records'];

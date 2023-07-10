@@ -6,7 +6,7 @@
 
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: http://pup.otms.local/index.php');
+    header('Location: http://localhost/index.php');
     exit;
 }
 
