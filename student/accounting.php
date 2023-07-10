@@ -12,12 +12,6 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
-    <!-- Loading page -->
-    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
-    <div id="loader" class="center">
-        <div class="loading-spinner"></div>
-        <p class="loading-text display-3 pt-3">Getting things ready...</p>
-    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -30,7 +24,10 @@
             include "../breadcrumb.php";
         ?>
         <div class="container-fluid accountingbanner header">
-            <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
+            <a href="accounting/help.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">
+                <i class="fa-regular fa-circle-question"></i>
+                Help
+            </a>
             <?php
             $breadcrumbItems = [
                 ['text' => 'Accounting Office', 'active' => true],
@@ -58,7 +55,6 @@
         <div class="push"></div>
     </div>
     <?php include '../footer.php'; ?>
-    <script src="../loading.js"></script>
     <script>
         $(document).ready(function(){
             $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
@@ -68,7 +64,6 @@
             });
         });
     </script>
-    <script src="../saved_settings.js"></script>
     <!--End of content-->
 </body>
 </html>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2023 at 09:00 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jul 09, 2023 at 04:57 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `otms_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounting_feedbacks`
+--
+
+CREATE TABLE `accounting_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accounting_feedbacks`
+--
+
+INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
+(1, 39, 'sample@gmail.com', 'try lang hehe'),
+(2, 42, 'sample@gmail.com', 'hehehe ');
 
 -- --------------------------------------------------------
 
@@ -172,9 +193,9 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, ''),
-('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, ''),
-('DR-1688797180', NULL, '2023-07-14 12:30:00', 5, 39, 1, 0.00, '');
+('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, '0.00', ''),
+('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, '0.00', ''),
+('DR-1688797180', NULL, '2023-07-14 12:30:00', 5, 39, 1, '0.00', '');
 
 -- --------------------------------------------------------
 
@@ -679,15 +700,22 @@ CREATE TABLE `student_info` (
   `course` varchar(50) NOT NULL,
   `documentType` varchar(50) NOT NULL,
   `payment_id` int(11) NOT NULL,
-  `firstname` varchar(50) NOT NULL,
-  `middlename` varchar(50) NOT NULL,
-  `surname` varchar(50) NOT NULL,
+  `firstName` varchar(50) NOT NULL,
+  `middleName` varchar(50) NOT NULL,
+  `lastName` varchar(50) NOT NULL,
   `studentNumber` varchar(15) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `referenceNumber` varchar(20) NOT NULL,
   `image_url` text NOT NULL,
   `date&time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `student_info`
+--
+
+INSERT INTO `student_info` (`course`, `documentType`, `payment_id`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `date&time`) VALUES
+('Course 1', 'Document 1', 5, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '10.00', '12121212121212121212', 'uploads/payment_5_John Mark_Garapan.jpg', '2023-07-09 21:59:31');
 
 -- --------------------------------------------------------
 
@@ -731,7 +759,8 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
 (35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
 (39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$WuFz92Ko1kz0TTve.Vig5.KjjP.vkZg6AZph18up9c8xyzlyvGA7C', 1),
-(41, '', 'Dela Cruz', 'Pedro', 'Penduko', '', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$8VUfrpqEcVxjtaPTII0KqeV6mAty/ngEj.PKEwExrjmsaQ2LRN/xq', 2);
+(41, '', 'Dela Cruz', 'Pedro', 'Penduko', '', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$8VUfrpqEcVxjtaPTII0KqeV6mAty/ngEj.PKEwExrjmsaQ2LRN/xq', 2),
+(42, '2020-00585-SR-0', 'Garapan', 'John Mark', 'Dauan', '', '0901-234-5678', 'sample@gmail.com', '2000-05-31', '$2y$10$udzd4Z4rz89pc3b1nIGdDuDSipdgj7w0oSZUHBaWFiGb2U55Z0Pwi', 1);
 
 -- --------------------------------------------------------
 
@@ -756,7 +785,8 @@ CREATE TABLE `user_details` (
 
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `user_id`) VALUES
 (1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 39),
-(2, 1, 'Biringan', 'TAWI-TAWI', 'SAPA-SAPA', '1', '1234', 40);
+(2, 1, 'Biringan', 'TAWI-TAWI', 'SAPA-SAPA', '1', '1234', 40),
+(3, 1, 'sample', 'LAGUNA', 'SAN PEDRO CITY', 'Landayan', '4023', 42);
 
 -- --------------------------------------------------------
 
@@ -781,6 +811,12 @@ INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `accounting_feedbacks`
+--
+ALTER TABLE `accounting_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`);
 
 --
 -- Indexes for table `administrative_feedbacks`
@@ -963,6 +999,12 @@ ALTER TABLE `user_roles`
 --
 
 --
+-- AUTO_INCREMENT for table `accounting_feedbacks`
+--
+ALTER TABLE `accounting_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `administrative_feedbacks`
 --
 ALTER TABLE `administrative_feedbacks`
@@ -1062,7 +1104,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `student_record`
@@ -1074,13 +1116,13 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
