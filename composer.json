@@ -2,7 +2,8 @@
     "require": {
         "tecnickcom/tc-lib-pdf": "dev-main",
         "tecnickcom/tcpdf": "^6.6",
-        "dompdf/dompdf": "^2.0"
+        "dompdf/dompdf": "^2.0",
+        "phpmailer/phpmailer": "^6.8"
     },
     "repositories": [
         {
