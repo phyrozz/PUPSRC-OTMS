@@ -1,5 +1,5 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `otms_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounting_feedbacks`
+--
+
+CREATE TABLE `accounting_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accounting_feedbacks`
+--
+
+INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
+(1, 39, 'sample@gmail.com', 'try lang hehe'),
+(2, 42, 'sample@gmail.com', 'hehehe ');
 
 -- --------------------------------------------------------
 
@@ -700,15 +721,22 @@ CREATE TABLE `student_info` (
   `course` varchar(50) NOT NULL,
   `documentType` varchar(50) NOT NULL,
   `payment_id` int(11) NOT NULL,
-  `firstname` varchar(50) NOT NULL,
-  `middlename` varchar(50) NOT NULL,
-  `surname` varchar(50) NOT NULL,
+  `firstName` varchar(50) NOT NULL,
+  `middleName` varchar(50) NOT NULL,
+  `lastName` varchar(50) NOT NULL,
   `studentNumber` varchar(15) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `referenceNumber` varchar(20) NOT NULL,
   `image_url` text NOT NULL,
   `date&time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `student_info`
+--
+
+INSERT INTO `student_info` (`course`, `documentType`, `payment_id`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `date&time`) VALUES
+('Course 1', 'Document 1', 5, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '10.00', '12121212121212121212', 'uploads/payment_5_John Mark_Garapan.jpg', '2023-07-09 21:59:31');
 
 -- --------------------------------------------------------
 
@@ -804,6 +832,12 @@ INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `accounting_feedbacks`
+--
+ALTER TABLE `accounting_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`);
 
 --
 -- Indexes for table `administrative_feedbacks`
@@ -986,6 +1020,12 @@ ALTER TABLE `user_roles`
 --
 
 --
+-- AUTO_INCREMENT for table `accounting_feedbacks`
+--
+ALTER TABLE `accounting_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `administrative_feedbacks`
 --
 ALTER TABLE `administrative_feedbacks`
@@ -1085,7 +1125,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `student_record`

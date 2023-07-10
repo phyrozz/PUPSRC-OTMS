@@ -20,12 +20,6 @@ $dbname = "otms_db";
     <link rel="stylesheet" href="css/payment2.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/style.css">
-    <!-- Loading page -->
-    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
-    <div id="loader" class="center">
-        <div class="loading-spinner"></div>
-        <p class="loading-text display-3 pt-3">Getting things ready...</p>
-    </div>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -69,7 +63,7 @@ $dbname = "otms_db";
                      date_default_timezone_set('Asia/Manila');
 
                     // Retrieve the latest payment data from the database
-                    $paymentQuery = "SELECT payment_id, firstname, middlename, surname, studentNumber, course, documentType, amount, referenceNumber
+                    $paymentQuery = "SELECT payment_id, firstName, middleName, lastName, studentNumber, course, documentType, amount, referenceNumber
                                     FROM student_info
                                     WHERE studentNumber = '" . $_SESSION['student_no'] . "'
                                     ORDER BY payment_id DESC
@@ -89,15 +83,15 @@ $dbname = "otms_db";
                             </tr>
                             <tr>
                                 <th>First Name</th>
-                                <td><?php echo $paymentData['firstname']; ?></td>
+                                <td><?php echo $paymentData['firstName']; ?></td>
                             </tr>
                             <tr>
                                 <th>Middle Name</th>
-                                <td><?php echo $paymentData['middlename']; ?></td>
+                                <td><?php echo $paymentData['middleName']; ?></td>
                             </tr>
                             <tr>
                                 <th>Last Name</th>
-                                <td><?php echo $paymentData['surname']; ?></td>
+                                <td><?php echo $paymentData['lastName']; ?></td>
                             </tr>
                             <tr>
                                 <th>Student Number</th>
@@ -144,7 +138,5 @@ $dbname = "otms_db";
 
         <script src="#"></script>
     </div>
-    <script src="../../saved_settings.js"></script>
-    <script src="../../loading.js"></script>
 </body>
 </html>

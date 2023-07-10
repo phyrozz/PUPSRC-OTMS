@@ -15,9 +15,9 @@ if (isset($_POST['submit'])) {
     // Retrieve form data
     $course = $_POST['course'];
     $documentType = $_POST['documentType'];
-    $firstname = $_POST['firstname'];
-    $middlename = $_POST['middlename'];
-    $surname = $_POST['surname'];
+    $firstName = $_POST['firstName'];
+    $middleName = $_POST['middleName'];
+    $lastName = $_POST['lastName'];
     $studentNumber = $_POST['studentNumber'];
     $amount = $_POST['amount'];
     $referenceNumber = $_POST['referenceNumber'];
@@ -34,15 +34,15 @@ if (isset($_POST['submit'])) {
         // Check if the file is uploaded successfully
         if ($fileError === UPLOAD_ERR_OK) {
             // Insert the data into the database
-            $sql = "INSERT INTO student_info (course, documentType, firstname, middlename, surname, studentNumber, amount, referenceNumber) 
-                    VALUES ('$course', '$documentType', '$firstname', '$middlename', '$surname', '$studentNumber', '$amount', '$referenceNumber')";
+            $sql = "INSERT INTO student_info (course, documentType, firstName, middleName, lastName, studentNumber, amount, referenceNumber) 
+                    VALUES ('$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber', '$amount', '$referenceNumber')";
 
             if ($conn->query($sql) === TRUE) {
                 // Get the last inserted ID
                 $lastInsertedId = $conn->insert_id;
 
-                // Generate a new filename using the last inserted ID, firstname, and surname
-                $imageFileName = "payment_" . $lastInsertedId . "_" . $firstname . '_' . $surname . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
+                // Generate a new filename using the last inserted ID, firstName, and lastName
+                $imageFileName = "payment_" . $lastInsertedId . "_" . $firstName . '_' . $lastName . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
 
                 // Move the uploaded image to the desired directory with the new filename
                 $targetPath = 'uploads/' . $imageFileName;
@@ -90,12 +90,6 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="css/payment1.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/style.css">
-    <!-- Loading page -->
-    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
-    <div id="loader" class="center">
-        <div class="loading-spinner"></div>
-        <p class="loading-text display-3 pt-3">Getting things ready...</p>
-    </div>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
@@ -115,7 +109,16 @@ if (isset($_POST['submit'])) {
         echo generateBreadcrumb($breadcrumbItems, true);
         ?>
     </div>
-
+    
+    <div class="fetch-data">
+        <?php
+        $user_id = $_SESSION["user_id"];
+                    $select = mysqli_query($conn, "SELECT * FROM users WHERE user_id = '$user_id'") or die ('query failed');
+                    if(mysqli_num_rows($select) > 0){
+                        $fetch = mysqli_fetch_assoc($select);
+                    }
+        ?>
+    </div>
 
 
 <!--Start of content-->
@@ -190,8 +193,8 @@ if (isset($_POST['submit'])) {
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="firstname" class="form-label">First Name <code>*</code></label>
-        <input type="text" class="form-control" id="firstname" name="firstname" value="" pattern="^[A-Za-z\s]+$" oninput="validateFirstName(this, 100)" required>
+        <label for="firstName" class="form-label">First Name <code>*</code></label>
+        <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo isset($fetch['first_name']) ? $fetch['first_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="validateFirstName(this, 100)" required readonly>
         <div class="invalid-feedback">
           Please provide a valid first name.
         </div>
@@ -200,8 +203,8 @@ if (isset($_POST['submit'])) {
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="middlename" class="form-label">Middle Name</label>
-        <input type="text" class="form-control" id="middlename" name="middlename" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateMiddleName(this)">
+        <label for="middleName" class="form-label">Middle Name</label>
+        <input type="text" class="form-control" id="middleName" name="middleName" value="<?php echo isset($fetch['middle_name']) ? $fetch['middle_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateMiddleName(this)" readonly>
         <div class="invalid-feedback">
           Please provide a valid middle name.
         </div>
@@ -210,8 +213,8 @@ if (isset($_POST['submit'])) {
 
     <div class="col-12 col-md-6">
       <div class="form-groups">
-        <label for="surname" class="form-label">Last Name <code>*</code></label>
-        <input type="text" class="form-control" id="surname" name="surname" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateSurname(this)" required>
+        <label for="lastName" class="form-label">Last Name <code>*</code></label>
+        <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo isset($fetch['last_name']) ? $fetch['last_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateSurname(this)" required readonly>
         <div class="invalid-feedback">
           Please provide a valid last name.
         </div>
@@ -221,7 +224,7 @@ if (isset($_POST['submit'])) {
     <div class="col-12 col-md-6">
       <div class="form-groups">
         <label for="studentNumber" class="form-label">Student Number <code>*</code></label>
-        <input type="text" class="form-control" id="studentNumber" name="studentNumber" value="" required oninput="validateStudentNumber(this)" maxlength="15">
+        <input type="text" class="form-control" id="studentNumber" name="studentNumber" value="<?php echo isset($fetch['student_no']) ? $fetch['student_no'] : ''; ?>" required oninput="validateStudentNumber(this)" maxlength="15" readonly>
         <div class="invalid-feedback">
           Please provide a valid student number.
         </div>
@@ -274,7 +277,7 @@ $(document).ready(function() {
 
 });
 
-function validateFirstName(input, maxLength) {
+function validatefirstName(input, maxLength) {
   var value = input.value.replace(/[^A-Za-z\s]/g, '');
 
   if (value.length > maxLength) {
@@ -309,7 +312,7 @@ function hasMoreThanThreeRepeatingChars(value) {
   return false;
 }
 
-function validateMiddleName(input) {
+function validatemiddleName(input) {
   var value = input.value.replace(/[^A-Za-z\s]/g, '');
   input.value = value.trim();
 
@@ -341,7 +344,7 @@ function validateMiddleName(input) {
 
 
 
-function validateSurname(input) {
+function validatelastName(input) {
   var value = input.value.replace(/[^A-Za-z\s]/g, '');
   input.value = value.trim();
 
@@ -459,7 +462,7 @@ function validateForm(event) {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="#"></script>
-<script src="../../saved_settings.js"></script>
-<script src="../../loading.js"></script>
+
+
 </body>
 </html>
