@@ -278,8 +278,8 @@
             });
         });
 
-        // Checkbox change listener
-        $('input[name="request-checkbox"]').on('change', function() {
+        // Checkbox change listener using event delegation
+        $(document).on('change', 'input[name="request-checkbox"]', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
             var updateButton = $('#update-status-button');
             var statusDropdown = $('#update-status');

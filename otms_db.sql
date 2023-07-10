@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2023 at 09:00 AM
+-- Generation Time: Jul 10, 2023 at 05:11 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -114,7 +114,8 @@ CREATE TABLE `clients` (
 
 CREATE TABLE `counseling_schedules` (
   `counseling_id` varchar(50) NOT NULL DEFAULT concat('GC-',unix_timestamp()),
-  `appointment_description` varchar(255) DEFAULT NULL,
+  `appointment_description` varchar(255) NOT NULL,
+  `comments` varchar(2048) DEFAULT NULL,
   `doc_requests_id` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -122,8 +123,11 @@ CREATE TABLE `counseling_schedules` (
 -- Dumping data for table `counseling_schedules`
 --
 
-INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `doc_requests_id`) VALUES
-('GC-1688797180', 'Academic Performance', 'DR-1688797180');
+INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `comments`, `doc_requests_id`) VALUES
+('GC-1688953523', 'Personal Development', NULL, 'DR-1688953523'),
+('GC-1688953548', 'Report Issue', NULL, 'DR-1688953548'),
+('GC-1688953998', 'Other', 'may nagbubugbugan sa second floor hallway', 'DR-1688953998'),
+('GC-1688957709', 'Other', 'basta', 'DR-1688957709');
 
 -- --------------------------------------------------------
 
@@ -158,13 +162,13 @@ CREATE TABLE `cross_enrollments` (
 
 CREATE TABLE `doc_requests` (
   `request_id` varchar(50) NOT NULL DEFAULT concat('DR-',unix_timestamp()),
-  `request_description` varchar(255) DEFAULT NULL,
+  `request_description` varchar(255) NOT NULL,
   `scheduled_datetime` datetime DEFAULT NULL,
   `office_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `amount_to_pay` decimal(10,2) NOT NULL,
-  `attached_files` mediumblob NOT NULL
+  `attached_files` mediumblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -172,9 +176,19 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, ''),
-('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, ''),
-('DR-1688797180', NULL, '2023-07-14 12:30:00', 5, 39, 1, 0.00, '');
+('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688953523', 'Guidance Counseling', '2023-07-12 11:00:00', 5, 39, 1, 0.00, NULL),
+('DR-1688953548', 'Guidance Counseling', '2023-07-12 10:30:00', 5, 39, 1, 0.00, NULL),
+('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688953718', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688953998', 'Guidance Counseling', '2023-07-12 13:30:00', 5, 39, 1, 0.00, NULL),
+('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 1, 0.00, NULL),
+('DR-1688957722', 'Request Good Moral Document', NULL, 5, 43, 1, 0.00, NULL),
+('DR-1688957729', 'Request Clearance', NULL, 5, 43, 1, 0.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -413,6 +427,13 @@ CREATE TABLE `offsettingtb` (
   `offsetType` varchar(45) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `offsettingtb`
+--
+
+INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`) VALUES
+(0, 39, 100.00, 'tuitionFee', '2023-07-08 14:48:01');
 
 -- --------------------------------------------------------
 
@@ -731,7 +752,8 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
 (35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
 (39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$WuFz92Ko1kz0TTve.Vig5.KjjP.vkZg6AZph18up9c8xyzlyvGA7C', 1),
-(41, '', 'Dela Cruz', 'Pedro', 'Penduko', '', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$8VUfrpqEcVxjtaPTII0KqeV6mAty/ngEj.PKEwExrjmsaQ2LRN/xq', 2);
+(42, '', 'Dela Cruz', 'Pedro', 'Penduko', 'Jr.', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
+(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', '', '0901-234-5678', 'juandelacruz123@gmail.com', '2001-09-11', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1);
 
 -- --------------------------------------------------------
 
@@ -756,7 +778,8 @@ CREATE TABLE `user_details` (
 
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `user_id`) VALUES
 (1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 39),
-(2, 1, 'Biringan', 'TAWI-TAWI', 'SAPA-SAPA', '1', '1234', 40);
+(3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', 42),
+(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 43);
 
 -- --------------------------------------------------------
 
@@ -1074,13 +1097,13 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
