@@ -52,12 +52,15 @@
         <div class="container-fluid p-4">
             <?php
             $breadcrumbItems = [
-                ['text' => 'Administrative Office', 'url' => '/student/administrative.php', 'active' => false],
+                ['text' => 'Administrative Office', 'url' => '/client/administrative.php', 'active' => false],
                 ['text' => 'Help', 'active' => true],
             ];
 
             echo generateBreadcrumb($breadcrumbItems, true);
             ?>
+        </div>
+        <div class="container-fluid text-center p-4">
+            <h1>How may I help you?</h1>
         </div>
         <div class="container-fluid text-center p-4">
             <h3>Frequently Asked Questions</h3>
@@ -71,160 +74,38 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                     <div class="accordion-body">
-                        <p>The Administrative Office provides students with the ability to request appointments for specific school facilities or borrow equipment for various purposes such as school events, cleaning, and more. 
-                        Whether you need to schedule a facility for a meeting or borrow equipment for a specific task, the Administrative Office is here to assist you in making these arrangements. Simply use our online system to request the appointment or equipment you need.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
+                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
                     </div>
                 </div>
             </div>
-
-            <br><br><br>
-
-            <div class="container-fluid p-4">
-                <h3>Request of Equipment</h3>
-            </div>
-
-            <br>
-
             <div class="accordion-item">
-                
                 <h2 class="accordion-header" id="headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    How can I request school equipment?
+                    Where can I find the office?
                 </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                     <div class="accordion-body">
-                        <p>To request school equipment, please select an available equipment on our website. Fill out the request form and provide all the necessary details, such as your email address, date and time of your request and the purpose of your request.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
+                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
                     </div>
                 </div>
             </div>
-
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Is there a limit to the number of equipment items I can request?
+                    How do I inquire with the office?
                 </button>
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                     <div class="accordion-body">
-                        <p>There is a limit on the number of equipment items you can request due to the limited quantity of available equipment. This is in place to ensure fair distribution and availability for all users.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
+                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
                     </div>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFour">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                    How do I check the availability of school equipment before making a request?
-                </button>
-                </h2>
-                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
-                    <div class="accordion-body">
-                        <p>To check the availability of school equipment, our system shows if an equipment is available or not.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFive">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                    Can I request equipment for a specific date or time period?
-                </button>
-                </h2>
-                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
-                    <div class="accordion-body">
-                        <p>Yes, you can request equipment for a specific date or time period. In your equipment request, provide the desired dates and times for equipment usage. Equipments are subject to availability </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSix">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                    Are there any costs associated with equipment requests?
-                </button>
-                </h2>
-                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix">
-                    <div class="accordion-body">
-                        <p>There are no costs associated with equipment requests. Equipment requests are free of charge.</p>
-                    </div>
-                </div>
-            </div>
-
-            
-            <br><br><br>
-
-            <div class="container-fluid p-4">
-                <h3>Facility Appointment</h3>
-            </div>
-
-            <br>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSeven">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                    How can I request a school facility appointment?
-                </button>
-                </h2>
-                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven">
-                    <div class="accordion-body">
-                        <p>To request a school facility appointment, please visit our website and select the desired facility. Fill out the appointment request form, providing your email address, course and section, start and end date of your appointment and its purpose.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingEight">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
-                    Is there a limit to the number of school facilities I can request for an appointment?
-                </button>
-                </h2>
-                <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight">
-                    <div class="accordion-body">
-                        <p>Facilities are limited to 1 request at a time only.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTen">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
-                    How do I check the availability of school facilities before making an appointment request?
-                </button>
-                </h2>
-                <div id="collapseTen" class="accordion-collapse collapse" aria-labelledby="headingTen">
-                    <div class="accordion-body">
-                        <p>Our system allows you to check the availability of school facilities before making an appointment request. You can view the availability of facilities directly on our system.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingEleven">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
-                    Can I request a school facility appointment for a specific date or time period?
-                </button>
-                </h2>
-                <div id="collapseEleven" class="accordion-collapse collapse" aria-labelledby="headingEleven">
-                    <div class="accordion-body">
-                        <p>Yes, you can request a school facility appointment for a specific date or time period. Simply provide the desired dates and times for your appointment when filling out the appointment form. Facilities are subject to availability.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwelve">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
-                    Are there any costs associated with school facility appointments?
-                </button>
-                </h2>
-                <div id="collapseTwelve" class="accordion-collapse collapse" aria-labelledby="headingTwelve">
-                    <div class="accordion-body">
-                        <p>There are no costs associated with school facility appointments. Requesting a school facility appointment is free of charge.</p>
-                    </div>
-                </div>
-            </div>
-            
-
         </div>
-
-
-
         <div class="container py-5">
     <div class="container-fluid text-center p-4">
         <h3>Submit Feedback</h3>
@@ -240,7 +121,7 @@
         </div>
         <div class="mb-3">
             <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" name="administrativeFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" required></textarea>
+            <textarea class="form-control" pattern="^[a-zA-Z\s]{5,}$" name="administrativeFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" required></textarea>
             <div class="invalid-feedback">Invalid feedback.</div>
         </div>
         <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
@@ -288,7 +169,7 @@
     messageTextarea.addEventListener('input', function() {
         const inputValue = messageTextarea.value;
 
-        const pattern = /^[a-zA-Z0-9'!@#$%^&*() ]{1,}\s[a-zA-Z0-9'!@#$%^&*()\s]*$/;
+        const pattern = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9\s]*$/;
         const isValid = pattern.test(inputValue);
 
         if (isValid) {

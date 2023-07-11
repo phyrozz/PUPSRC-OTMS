@@ -66,10 +66,12 @@
                     </div>
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
-                            <form class="d-flex input-group" action="transactions.php" method="post">
-                                <select class="form-select" name="table-select">
+                            <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
+                                <select id="transactionTableSelect" class="form-select" name="table-select">
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
+                                    <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
+                                    <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                 </select>
                                 <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
                             </form>
@@ -91,6 +93,10 @@
                                 include 'transaction_tables/document_request_table.php';
                             } elseif ($table === 'payments') {
                                 include 'transaction_tables/payments_table.php';
+                            } elseif ($table === 'request_equipment') {
+                                include 'transaction_tables/request_equipment_table.php';
+                            } elseif ($table === 'appointment_facility') {
+                                include 'transaction_tables/appointment_facility_table.php';
                             }
                         ?>
                     </div>
@@ -103,8 +109,9 @@
         include "../footer.php";
         mysqli_close($connection);
     ?>
+    <script src="../loading.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('.sortable-header').on('click', function() {
                 var column = $(this).data('column');
                 var order = $(this).data('order');
@@ -133,8 +140,19 @@
             //     e.preventDefault();
             // });
         });
+
+        function checkViewport() {
+            if (window.innerWidth < 768) {
+                document.getElementById('transactions-table').classList.add('text-nowrap', 'w-auto');
+            } else {
+                document.getElementById('transactions-table').classList.remove('text-nowrap', 'w-auto');
+            }
+        }
+
+        // Check viewport initially and on window resize
+        window.addEventListener('DOMContentLoaded', checkViewport);
+        window.addEventListener('resize', checkViewport);
     </script>
-    <script src="../loading.js"></script>
     <script src="../saved_settings.js"></script>
 </body>
 </html>

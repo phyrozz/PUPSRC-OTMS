@@ -28,14 +28,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `appointment_facility` (
-  `appointment_id` int(11) NOT NULL,
+  `appointment_id` varchar(50) NOT NULL DEFAULT concat('FA-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `course` varchar(50) NOT NULL,
   `section` varchar(50) NOT NULL,
   `start_date_time_sched` datetime DEFAULT NULL,
   `end_date_time_sched` datetime DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -58,10 +57,6 @@ ALTER TABLE `appointment_facility`
 --
 
 --
--- AUTO_INCREMENT for table `appointment_facility`
---
-ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

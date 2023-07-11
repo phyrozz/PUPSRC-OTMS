@@ -1,27 +1,31 @@
 <table id="transactions-table" class="table table-hover hidden">
     <thead>
         <tr class="table-active">
-            <th class="text-center request-equipment-id-header sortable-header" data-column="1" scope="col" data-order="asc">
+            <th class="text-center appointment-facility-id-header sortable-header" data-column="1" scope="col" data-order="asc">
                 Request Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center request-equipment-name-header sortable-header" data-column="2" scope="col" data-order="asc">
-                Equipment Name
+            <th class="text-center appointment-facility-name-header sortable-header" data-column="2" scope="col" data-order="asc">
+                Facility Name
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center request-equipment-quantity-header sortable-header" data-column="3" scope="col" data-order="asc">
-                Quantity
+            <th class="text-center appointment-facility-number-header sortable-header" data-column="3" scope="col" data-order="asc">
+                Facility Number
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
             <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
                 Schedule
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th> -->
-            <th class="text-center request-equipment-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                Schedule
+            <th class="text-center appointment-facility-start-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
+                Start Time Schedule
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center request-equipment-status-header sortable-header" data-column="5" scope="col" data-order="asc">
+            <th class="text-center appointment-facility-end-schedule-header sortable-header" data-column="5" scope="col" data-order="asc">
+                End Time Schedule
+                <i class="sort-icon fa-solid fa-caret-down"></i>
+            </th>
+            <th class="text-center appointment-facility-status-header sortable-header" data-column="6" scope="col" data-order="asc">
                 Status
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
@@ -44,7 +48,7 @@
     </nav>
 </div>
 <script>
-   function getStatusBadgeClass(status) {
+    function getStatusBadgeClass(status) {
         switch (status) {
             case 'Released':
                 return 'bg-success';
@@ -61,7 +65,7 @@
         }
     }
 
-    function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+    function handlePagination(page, searchTerm = '', column = 'appointment_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
         loadingIndicator.style.display = 'block';
@@ -72,7 +76,7 @@
         
         // Make an AJAX request to fetch the equipment requests
         $.ajax({
-            url: 'transaction_tables/fetch_equipment_table.php',
+            url: 'transaction_tables/fetch_facility_table.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
@@ -90,15 +94,24 @@
                 tableBody.innerHTML = '';
 
                 if (data.total_records > 0) {
-                    for (var i = 0; i < data.request_equip.length; i++) {
-                        var requestEquipment = data.request_equip[i];
+                    for (var i = 0; i < data.appointment_facility.length; i++) {
+                        var appointmentFacility = data.appointment_facility[i];
 
                         var row = '<tr>' +
-                            '<td class="text-center">' + requestEquipment.request_id + '</td>' +
-                            '<td class="text-center">' +  requestEquipment.equipment_name + '</td>' +
-                            '<td class="text-center">' +  requestEquipment.quantity_equip + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-                            '<td class="text-center">' + new Date(requestEquipment.datetime_schedule).toLocaleString('en-US', { 
+                            '<td class="text-center">' + appointmentFacility.appointment_id + '</td>' +
+                            '<td class="text-center">' +  appointmentFacility.facility_name + '</td>' +
+                            '<td class="text-center">' +  appointmentFacility.facility_number + '</td>' +
+                            '<td class="text-center">' + new Date(appointmentFacility.start_date_time_sched).toLocaleString('en-US', { 
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                hour12: true
+                                }) + '</td>' +
+                           
+            
+                            '<td class="text-center">' + new Date(appointmentFacility.end_date_time_sched).toLocaleString('en-US', { 
                                 month: 'long',
                                 day: 'numeric',
                                 year: 'numeric',
@@ -110,7 +123,7 @@
                             // scheduleButton +
                             // '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill ' + getStatusBadgeClass(requestEquipment.status_name) + '">' + requestEquipment.status_name + '</span>' +
+                            '<span class="badge rounded-pill ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
                             '</td>' +
 
                             '</tr>';
@@ -120,6 +133,7 @@
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
+
                 // Update the pagination links
                 var paginationLinks = document.getElementById('pagination-links');
                 paginationLinks.innerHTML = '';
@@ -162,12 +176,12 @@
     });
 
     // Initial pagination request (page 1)
-    handlePagination(1, '', 'request_id', 'desc');
+    handlePagination(1, '', 'appointment_id', 'desc');
 
     $(document).ready(function() {
         $('#button-addon2').click(function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm, 'request_id', 'desc');
+            handlePagination(1, searchTerm, 'appointment_id', 'desc');
         });
     });
 </script>

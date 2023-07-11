@@ -46,7 +46,10 @@
                                 echo '';
                                 break;
                             case 'Administrative Office':
-                                echo '';
+                                echo '
+								<li><a class="dropdown-item" href="/student/administrative/view-equipment.php">View Available Equipment</a></li>
+                                <li><a class="dropdown-item" href="/student/administrative/view-facility.php">View Available Facilities</a></li>
+								';
                                 break;
 							case 'Registrar Office':
 								echo '

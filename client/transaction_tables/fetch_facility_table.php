@@ -1,6 +1,5 @@
 <?php
 include '../../conn.php';
-include '../functions.php';
 
 session_start();
 
@@ -15,39 +14,42 @@ $startingRecord = ($page - 1) * $recordsPerPage;
 $searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
 // Retrieve the sorting parameters from the AJAX request
-$column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
+$column = isset($_POST['column']) ? $_POST['column'] : 'appointment_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 
-// Retrieve the request_equipment requests
-$requestQuery = "SELECT request_id, datetime_schedule, quantity_equip, status_name, equipment_name
-                        FROM request_equipment
-                        INNER JOIN statuses ON request_equipment.status_id = statuses.status_id
-                        INNER JOIN equipment ON request_equipment.equipment_id = equipment.equipment_id
+// Retrieve the facility appointment data
+$appointmentQuery = "SELECT appointment_id, status_name, start_date_time_sched, end_date_time_sched, facility_name, facility_number
+                        FROM appointment_facility
+                        INNER JOIN statuses ON appointment_facility.status_id = statuses.status_id
+                        INNER JOIN facility ON appointment_facility.facility_id = facility.facility_id
                         WHERE user_id = '" .  $_SESSION['user_id'] . "'";
 
 if (!empty($searchTerm)) {
-    $requestQuery .= " AND (request_id LIKE '%$searchTerm%'
-                           OR quantity_equip LIKE '%$searchTerm%'
-                           OR datetime_schedule LIKE '%$searchTerm%'
-                           OR equipment_name LIKE '%$searchTerm%')";
+    $appointmentQuery .= " AND (appointment_id LIKE '%$searchTerm%'
+
+                           OR start_date_time_sched LIKE '%$searchTerm%'
+                           OR end_date_time_sched LIKE '%$searchTerm%'
+                           OR status_name LIKE '%$searchTerm%'
+                           OR facility_name LIKE '%$searchTerm%'
+                           OR facility_number LIKE '%$searchTerm%')";
 }
 
 // Add the sorting parameters to the query
-$requestQuery .= " ORDER BY $column $order
+$appointmentQuery .= " ORDER BY $column $order
 LIMIT $startingRecord, $recordsPerPage";
 
 
-$result = mysqli_query($connection, $requestQuery);
+$result = mysqli_query($connection, $appointmentQuery);
 
 if ($result) {
-    $requestEquipment = array();
+    $appointmentFacility = array();
     while ($row = mysqli_fetch_assoc($result)) {
-        $requestEquipment[] = $row;
+        $appointmentFacility[] = $row;
     }
 
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
-                          FROM request_equipment
+                          FROM appointment_facility
                           WHERE user_id = '" .  $_SESSION['user_id'] . "'";
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
     $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
@@ -58,7 +60,7 @@ if ($result) {
 
     // Prepare the JSON response
     $response = array(
-        'request_equip' => $requestEquipment,
+        'appointment_facility' => $appointmentFacility,
         'total_records' => $totalRecords,
         'total_pages' => $totalPages,
         'current_page' => $page

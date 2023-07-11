@@ -32,7 +32,7 @@
         include "conn.php";
 
         // Query to retrieve user data
-        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, email FROM users WHERE user_id = ?";
+        $query = "SELECT last_name, first_name, middle_name, extension_name, email FROM users WHERE user_id = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("i", $_SESSION['user_id']);
         $stmt->execute();
@@ -87,13 +87,12 @@
                 // Insert the request into the request_equipment table
                 $insertQuery = "INSERT INTO request_equipment (datetime_schedule, quantity_equip, user_id, status_id, purpose, equipment_id) 
                                 VALUES (?, ?, ?, ?, ?, ?)";
-                
-                
                 $insertStmt = $connection->prepare($insertQuery);
                 $insertStmt->bind_param("siiisi", $dateTimeSched, $quantityEquip, $_SESSION['user_id'], $statusId, $purpose, $equipID);
-                
+
                 if ($insertStmt->execute()) {
                     $_SESSION['success'] = true;
+
 
                     $_SESSION['request_details'] = [
                         'time' => $time,
@@ -162,11 +161,8 @@
                         <form action="request-equip.php" id="request-form" class="needs-validated row g-3" method="POST" novalidate>
                             <input type="hidden" name="form_type" value="request_form">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
-                            <h6>Student Information</h6>
-                            <div class="form-group required col-12">
-                                <label for="studentNumber" class="form-label">Student Number</label>
-                                <input type="text" class="form-control" id="studentNumber"  value="<?php echo $userData[0]['student_no'] ?>" maxlength="15" disabled required>
-                            </div>
+                            <h6>Client Information</h6>
+
                             <div class="form-group required col-12">
                                 <label for="lastName" class="form-label">Last Name</label>
                                
@@ -211,10 +207,13 @@
                                 <div class="invalid-feedback">Please input a valid quantity (Max. <?php echo isset($_GET['quantity']) ? $_GET['quantity'] : ''; ?>).</div>
                             </div>
 
+
+                                                
+
                             <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
                                 <input type="date" class="form-control" name="date" id="date" required>
-                                <div class="invalid-feedback">Please choose a valid date. (Sundays are not allowed).</div>
+                                <div class="invalid-feedback">Please choose a valid date.</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="time" class="form-label">Time</label>
@@ -251,7 +250,7 @@
                             <div class="form-group required col-md-12">
                                 <label for="request_description" class="form-label">Purpose of Request</label>
                                 <textarea type="purposeReq" class="form-control form-control-lg" name="purposeReq" style="resize: none;" id="purposeReq" rows="4" minlength="5"maxlength="200" required></textarea>
-                                <div class="invalid-feedback">Please provide a reason for request</div>
+                                <div class="invalid-feedback">Please provide a reason.</div>
                             </div>
                             
                             <div class="alert alert-info" role="alert">
@@ -317,7 +316,7 @@
         </div>
         <div class="push"></div>
     </div>
-    <?php include '../footer.php'; ?>
+    <?php include '../../footer.php'; ?>
     <script src="../../loading.js"></script>
     <script src="jquery.js"></script>
         <script>
@@ -383,6 +382,20 @@
                 }
                 
                 });
+
+                // emailInput.addEventListener('input', function() {
+                // var email = emailInput.value;
+                // var domainExtension = email.substring(email.lastIndexOf('.') + 1);
+
+                // if (domainExtension !== 'com') {
+                //     emailInput.setCustomValidity('Please input a valid email address ');
+                // } else {
+                //     emailInput.setCustomValidity('');
+                // }
+
+                
+                // });
+
                 if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -416,7 +429,7 @@
                 window.location.href = "view-equipment.php";
             }
             function redirectToAnotherPage() {
-                var url = "http://localhost/student/administrative/generate-slip.php";
+                var url = "http://localhost/client/administrative/generate-slip.php";
                 window.open(url, "_blank"); 
             }
             
