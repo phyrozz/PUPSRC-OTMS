@@ -718,8 +718,8 @@ INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
 --
 
 CREATE TABLE `student_info` (
-  `course` varchar(50) NOT NULL,
-  `documentType` varchar(50) NOT NULL,
+  `course` varchar(200) NOT NULL,
+  `documentType` varchar(200) NOT NULL,
   `payment_id` int(11) NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `middleName` varchar(50) NOT NULL,
@@ -736,7 +736,8 @@ CREATE TABLE `student_info` (
 --
 
 INSERT INTO `student_info` (`course`, `documentType`, `payment_id`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `date&time`) VALUES
-('Course 1', 'Document 1', 5, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '10.00', '12121212121212121212', 'uploads/payment_5_John Mark_Garapan.jpg', '2023-07-09 21:59:31');
+('Bachelor of Science in Information Technology', 'Academic Verification Service', 24, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '10.00', '12313213213213213213', 'uploads/payment_24_John Mark_Garapan.png', '2023-07-11 01:48:42'),
+('Bachelor of Science in Business Administration Major in Human Resource Management', 'Processing of Request for Correction of Name: PSA/School Records', 25, 'Dorothy', 'Dauan', 'Garapan', '', '200.00', '54654645646546465465', 'uploads/payment_25_Dorothy_Garapan.png', '2023-07-11 02:00:05');
 
 -- --------------------------------------------------------
 
@@ -781,7 +782,9 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
 (39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$WuFz92Ko1kz0TTve.Vig5.KjjP.vkZg6AZph18up9c8xyzlyvGA7C', 1),
 (42, '', 'Dela Cruz', 'Pedro', 'Penduko', 'Jr.', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
-(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', '', '0901-234-5678', 'juandelacruz123@gmail.com', '2001-09-11', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1);
+(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', '', '0901-234-5678', 'juandelacruz123@gmail.com', '2001-09-11', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1),
+(44, '2020-00585-SR-0', 'Garapan', 'John Mark', 'Dauan', '', '0901-234-5678', 'johnmarkgarapan2@gmail.com', '2000-05-31', '$2y$10$lWjsUSRbLTkh9UzRg95YIOlLUaKwIvLm5DHQCgwONa6HT1cLX.WBy', 1),
+(45, '', 'Garapan', 'Dorothy', 'Dauan', '', '0901-234-5678', 'dorothy@sample.com', '2005-01-01', '$2y$10$0gD5JCNGutAN.vp1HOv1XeNZYKJO15cW4jrtUlt.ATiBo5sBEIH4m', 2);
 
 -- --------------------------------------------------------
 
@@ -807,7 +810,9 @@ CREATE TABLE `user_details` (
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `user_id`) VALUES
 (1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 39),
 (3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', 42),
-(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 43);
+(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 43),
+(5, 1, 'Blk 2 Lot 2', 'LAGUNA', 'SAN PEDRO CITY', 'Landayan', '4023', 44),
+(6, 1, 'Sample', 'PANGASINAN', 'SAN CARLOS CITY', 'Sample', '2311', 45);
 
 -- --------------------------------------------------------
 
@@ -1125,7 +1130,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `student_record`
@@ -1137,13 +1142,13 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user_roles`

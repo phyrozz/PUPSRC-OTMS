@@ -55,7 +55,11 @@
 								';
 								break;
                             case 'Accounting Office':
-                                echo '';
+                                echo '
+								<li><a class="dropdown-item"href="/client/accounting/payment1.php">Payment</a></li>
+								<li><a class="dropdown-item"href="/client/accounting/offsetting1.php">Offsetting</a></li>
+								<li><a class="dropdown-item"href="http://localhost/client/transactions.php">Registrar Transaction History</a></li>
+								';
                                 break;
                             // Add more cases for other office services
                             }
@@ -79,7 +83,7 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
 						<li><a class="dropdown-item" href="http://localhost/client/transactions.php">My Transactions</a></li>
-						<li><a class="dropdown-item" href="my_account.php">Account Settings</a></li>
+						<li><a class="dropdown-item" href="http://localhost/client/my_account.php">Account Settings</a></li>
 						<li><a class="dropdown-item" href="http://localhost/sign_out.php"><i
 									class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
 					</ul>

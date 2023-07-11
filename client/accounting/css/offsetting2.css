@@ -142,65 +142,28 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 .footer {
     height: 100px;
 }
-
-
-
 /*content*/
-  .container-fluid-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    text-align: center;
-  }
-  
-  .container-fluid-form h1,
-  .container-fluid-form h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  
-  .next-button {
-    display: block;
-    width: 220px;
-    padding: 10px 20px;
-    background-color: #800000;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    float: center;
-  }
-  
-  .payment-summary {
-    margin-top: 125px;
-    text-align: left;
-    background-color: #f5f5f5;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 1300px; /* Adjust the maximum width as per your preference */
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: -10px;
+.container-fluid-form{
+    margin: 5%;
 }
-
-.payment-summary h1 {
-    text-align: center;
+.col-md-7 .form-control{
+    width: 400px;
 }
-
-
-
+.alert{
+    bottom: 300px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
   /*end of content*/
 @media only screen and (max-width: 768px) {
     .login-card {
         width: 100%;
+    }
+    .alert{
+        top: 1px;
+        width: 80%;
     }
 }

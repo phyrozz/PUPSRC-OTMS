@@ -1,6 +1,6 @@
 <table id="transactions-table" class="table table-hover table-bordered hidden">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
                 Payment Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -86,7 +86,7 @@
                             // scheduleButton +
                             // '</td>' +
                             '<td>₱' + payments.amount + '</td>' +
-                            '<td class="text-center"><a href="accounting/' + payments.image_url + '" class="btn btn-sm btn-primary">See Image</a></td></tr>';
+                            '<td class="text-center"><a href="accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
