@@ -82,9 +82,6 @@
             method: 'POST',
             data: { request_id: requestIds },
             success: function(response) {
-                console.log('Requests deleted successfully');
-                console.log(requestIds);
-
                 // Refresh the table after deletion
                 handlePagination(1, '');
             }
@@ -140,15 +137,15 @@
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
             case 'Guidance Office':
-                return 'http://localhost/student/guidance.php';
+                return 'http://pup.otms.local/student/guidance.php';
             case 'Registrar Office':
-                return 'http://localhost/student/registrar.php';
+                return 'http://pup.otms.local/student/registrar.php';
             case 'Academic Office':
-                return 'http://localhost/student/academic.php';
+                return 'http://pup.otms.local/student/academic.php';
             case 'Accounting Office':
-                return 'http://localhost/student/accounting.php';
+                return 'http://pup.otms.local/student/accounting.php';
             case 'Administrative Office':
-                return 'http://localhost/student/administrative.php';
+                return 'http://pup.otms.local/student/administrative.php';
         }
     }
 

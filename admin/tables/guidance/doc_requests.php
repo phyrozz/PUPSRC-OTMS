@@ -142,7 +142,8 @@
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
-                }  else {
+                }
+                else {
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
@@ -154,8 +155,8 @@
                 if (data.total_pages > 1) {
                     for (var i = 1; i <= data.total_pages; i++) {
                         var pageLink = '<li class="page-item">' +
-                            '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ')">' + i + '</a>' +
-                            '</li>';
+                        '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ', \'' + searchTerm + '\', \'request_id\', \'desc\')">' + i + '</a>' +
+                        '</li>';
                         paginationLinks.innerHTML += pageLink;
                     }
                 }
@@ -201,56 +202,13 @@
     $(document).ready(function() {
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm, 'request_id', 'desc');
+            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
         });
 
         $('#filterButton').on('click', function() {
             var searchTerm = $('#search-input').val();
             handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
         });
-
-        // Perform search functionality when either the Filter or Search button is pressed
-        function filterDocType() {
-            var filterByDocTypeVal = $('#filterByDocType').val();
-            
-            switch (filterByDocTypeVal) {
-                case 'goodMoral':
-                    return ' request good moral document';
-                    break;
-                case 'clearance':
-                    return ' request clearance';
-                    break;
-                default:
-                    return '';
-            }
-        }
-
-        function filterStatus() {
-            var filterByStatusVal = $('#filterByStatus').val();
-            
-            switch (filterByStatusVal) {
-                case '1':
-                    return ' pending';
-                    break;
-                case '2':
-                    return ' for receiving';
-                    break;
-                case '3':
-                    return ' for evaluation';
-                    break;
-                case '4':
-                    return ' ready for pickup';
-                    break;
-                case '5':
-                    return ' released';
-                    break;
-                case '6':
-                    return ' rejected';
-                    break;
-                default:
-                    return '';
-            }
-        }
 
         // Update status button listener
         $('#update-status-button').on('click', function() {
@@ -278,8 +236,8 @@
             });
         });
 
-        // Checkbox change listener
-        $('input[name="request-checkbox"]').on('change', function() {
+        // Checkbox change listener using event delegation
+        $(document).on('change', 'input[name="request-checkbox"]', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
             var updateButton = $('#update-status-button');
             var statusDropdown = $('#update-status');
@@ -287,10 +245,54 @@
             if (checkedCheckboxes.length > 0) {
                 updateButton.prop('disabled', false);
                 statusDropdown.prop('disabled', false);
-            } else {
+            }
+            else {
                 updateButton.prop('disabled', true);
                 statusDropdown.prop('disabled', true);
             }
         });
     });
+
+    // Perform search functionality when either the Filter or Search button is pressed
+    function filterDocType() {
+        var filterByDocTypeVal = $('#filterByDocType').val();
+        
+        switch (filterByDocTypeVal) {
+            case 'goodMoral':
+                return ' request good moral document';
+                break;
+            case 'clearance':
+                return ' request clearance';
+                break;
+            default:
+                return '';
+        }
+    }
+
+    function filterStatus() {
+        var filterByStatusVal = $('#filterByStatus').val();
+        
+        switch (filterByStatusVal) {
+            case '1':
+                return ' pending';
+                break;
+            case '2':
+                return ' for receiving';
+                break;
+            case '3':
+                return ' for evaluation';
+                break;
+            case '4':
+                return ' ready for pickup';
+                break;
+            case '5':
+                return ' released';
+                break;
+            case '6':
+                return ' rejected';
+                break;
+            default:
+                return '';
+        }
+    }
 </script>

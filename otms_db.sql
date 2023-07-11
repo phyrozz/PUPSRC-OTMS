@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2023 at 08:34 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- Generation Time: Jul 10, 2023 at 05:11 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -197,19 +197,19 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, '0.00', NULL),
-('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
-('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, '0.00', NULL),
-('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
-('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
-('DR-1688953523', 'Guidance Counseling', '2023-07-12 11:00:00', 5, 39, 1, '0.00', NULL),
-('DR-1688953548', 'Guidance Counseling', '2023-07-12 10:30:00', 5, 39, 1, '0.00', NULL),
-('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 1, '0.00', NULL),
-('DR-1688953718', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
-('DR-1688953998', 'Guidance Counseling', '2023-07-12 13:30:00', 5, 39, 1, '0.00', NULL),
-('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 1, '0.00', NULL),
-('DR-1688957722', 'Request Good Moral Document', NULL, 5, 43, 1, '0.00', NULL),
-('DR-1688957729', 'Request Clearance', NULL, 5, 43, 1, '0.00', NULL);
+('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688953523', 'Guidance Counseling', '2023-07-12 11:00:00', 5, 39, 1, 0.00, NULL),
+('DR-1688953548', 'Guidance Counseling', '2023-07-12 10:30:00', 5, 39, 1, 0.00, NULL),
+('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688953718', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688953998', 'Guidance Counseling', '2023-07-12 13:30:00', 5, 39, 1, 0.00, NULL),
+('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 1, 0.00, NULL),
+('DR-1688957722', 'Request Good Moral Document', NULL, 5, 43, 1, 0.00, NULL),
+('DR-1688957729', 'Request Clearance', NULL, 5, 43, 1, 0.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -454,7 +454,7 @@ CREATE TABLE `offsettingtb` (
 --
 
 INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`) VALUES
-(0, 39, '100.00', 'tuitionFee', '2023-07-08 14:48:01');
+(0, 39, 100.00, 'tuitionFee', '2023-07-08 14:48:01');
 
 -- --------------------------------------------------------
 

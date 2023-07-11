@@ -71,7 +71,7 @@
                             Don't have an account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#Register">Sign up</a>
                         </div>
                         <div class="col-12">
-                            <a href="#">I forgot my password</a>
+                            <a href="forgot_password.php">I forgot my password</a>
                         </div>
                         <div class="alert alert-info" role="alert">
                             <p class="mb-0"><small>By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></small></p>
