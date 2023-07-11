@@ -323,7 +323,7 @@ $fileName = 'appointment_letter'. '_'.  $facilityNameModified . '_' . uniqid(). 
 
 
 // Save the PDF to a directory in your file system
-$directoryPath = 'C:/xampp/htdocs/student/administrative/appointment-letter/';
+$directoryPath = 'C:/xampp/htdocs/client/administrative/appointment-letter/';
 $filePath = $directoryPath . $fileName;
 file_put_contents($filePath, $dompdf->output());
 

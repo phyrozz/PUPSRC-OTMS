@@ -48,26 +48,24 @@
     </nav>
 </div>
 <script>
-    function getStatusBadgeClass(status) {
+   function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Approved':
-                return 'bg-success';
-            case 'Disapproved':
-                return 'bg-danger';
-            case 'For receiving':
-                return 'bg-warning text-dark';
-            case 'For evaluation':
-                return 'bg-primary';
-            case 'Ready for pickup':
-                return 'bg-info';
             case 'Released':
                 return 'bg-success';
+            case 'Rejected':
+                return 'bg-danger';
+            case 'For Receiving':
+                return 'bg-warning text-dark';
+            case 'For Evaluation':
+                return 'bg-primary';
+            case 'Ready for Pickup':
+                return 'bg-info';
             default:
                 return 'bg-dark';
         }
     }
 
-    function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+    function handlePagination(page, searchTerm = '', column = 'appointment_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
         loadingIndicator.style.display = 'block';
@@ -100,8 +98,8 @@
                         var appointmentFacility = data.appointment_facility[i];
 
                         var row = '<tr>' +
-                            '<td>' + 'ASO-' + appointmentFacility.appointment_id.toString().padStart(2, '0') + '</td>' +
-                            '<td>' +  appointmentFacility.facility_name + '</td>' +
+                            '<td class="text-center">' + appointmentFacility.appointment_id + '</td>' +
+                            '<td class="text-center">' +  appointmentFacility.facility_name + '</td>' +
                             '<td class="text-center">' +  appointmentFacility.facility_number + '</td>' +
                             '<td class="text-center">' + new Date(appointmentFacility.start_date_time_sched).toLocaleString('en-US', { 
                                 month: 'long',

@@ -28,12 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `request_equipment` (
-  `request_id` int(11) NOT NULL,
+  `request_id` varchar(50) NOT NULL DEFAULT concat('ROE-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
   `datetime_schedule` datetime DEFAULT NULL,
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL,
   `slip_content` LONGBLOB
@@ -63,8 +62,6 @@ ALTER TABLE `request_equipment`
 --
 -- AUTO_INCREMENT for table `request_equipment`
 --
-ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Constraints for dumped tables

@@ -76,14 +76,13 @@ INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `ext
 --
 
 CREATE TABLE `appointment_facility` (
-  `appointment_id` int(11) NOT NULL,
+  `appointment_id` varchar(50) NOT NULL DEFAULT concat('FA-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `course` varchar(50) NOT NULL,
   `section` varchar(50) NOT NULL,
   `start_date_time_sched` datetime DEFAULT NULL,
   `end_date_time_sched` datetime DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -595,12 +594,11 @@ INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`,
 --
 
 CREATE TABLE `request_equipment` (
-  `request_id` int(11) NOT NULL,
+  `request_id` varchar(50) NOT NULL DEFAULT concat('ROE-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
   `datetime_schedule` datetime DEFAULT NULL,
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -977,8 +975,6 @@ ALTER TABLE `admins`
 --
 -- AUTO_INCREMENT for table `appointment_facility`
 --
-ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -1043,8 +1039,6 @@ ALTER TABLE `reg_transaction`
 --
 -- AUTO_INCREMENT for table `request_equipment`
 --
-ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `services`

@@ -30,7 +30,7 @@
         include "../../breadcrumb.php";
         include "conn.php";
 
-        $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, email FROM users WHERE user_id = ?";
+        $query = "SELECT last_name, first_name, middle_name, extension_name, email FROM users WHERE user_id = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("i", $_SESSION['user_id']);
         $stmt->execute();
@@ -131,11 +131,7 @@
                         <form action="request-facility.php" id="appointment-form" class="needs-validated row g-3" method="POST" novalidate>
                             <input type="hidden" name="form_type" value="appointment_form">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
-                            <h6>Student Information</h6>
-                            <div class="form-group required col-12">
-                                <label for="studentNumber" class="form-label">Student Number</label>
-                                <input type="text" class="form-control" id="studentNumber" value=" <?php echo $userData[0]['student_no'] ?>" maxlength="15" disabled required>
-                            </div>
+                            <h6>Client Information</h6>
                             <div class="form-group required col-12">
                                 <label for="lastName" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="lastName" value=" <?php echo $userData[0]['last_name'] ?>" maxlength="100" disabled required>
@@ -223,12 +219,12 @@
                             <div class="form-group required col-md-6">
                                 <label for="startDate" class="form-label">Date Requested</label>
                                 <input type="date" class="form-control" name="startDate" id="startDate" required>
-                                <div class="invalid-feedback">Please choose a different request date. (Sundays are not allowed)</div>
+                                <div class="invalid-feedback">Please choose a different request date</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="endDate" class="form-label">Date Ended</label>
                                 <input type="date" class="form-control" name="endDate" id="endDate" required>
-                                <div class="invalid-feedback">Please choose a different end date. (Sundays are not allowed)</div>
+                                <div class="invalid-feedback">Please choose a different end date.</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="startTime" class="form-label">Time Requested</label>
@@ -299,7 +295,7 @@
                             <div class="form-group required col-md-12">
                                 <label for="appointment_description" class="form-label">Purpose of Appointment</label>
                                 <textarea type="purposeReq" class="form-control form-control-lg" id="purposeReq"  name="purposeReq" style="resize: none;"  rows="4" minlength="5"maxlength="100" required></textarea>
-                                <div class="invalid-feedback">Please provide a reason for appointment</div>
+                                <div class="invalid-feedback">Please provide a reason.</div>
                             </div>
                             <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
@@ -598,9 +594,23 @@
                 window.location.href = "view-facility.php";
             }
             function redirectToAnotherPage() {
-                var url = "http://localhost/student/administrative/generate-letter.php";
+                var url = "http://localhost/client/administrative/generate-letter.php";
                 window.open(url, "_blank"); 
             }
+
+            //  //code that validates email with .com
+            // var emailInput = document.getElementById('email');
+
+            // emailInput.addEventListener('input', function() {
+            //     var email = emailInput.value;
+            //     var domainExtension = email.substring(email.lastIndexOf('.') + 1);
+
+            //     if (domainExtension !== 'com') {
+            //         emailInput.setCustomValidity('Please input a valid email address ');
+            //     } else {
+            //         emailInput.setCustomValidity('');
+            //     }
+            // });
 
     </script>
 
