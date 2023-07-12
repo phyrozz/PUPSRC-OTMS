@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2023 at 05:11 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jul 11, 2023 at 08:28 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,7 +40,8 @@ CREATE TABLE `accounting_feedbacks` (
 
 INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
 (1, 39, 'sample@gmail.com', 'try lang hehe'),
-(2, 42, 'sample@gmail.com', 'hehehe ');
+(2, 42, 'sample@gmail.com', 'hehehe '),
+(3, 44, 'johnmarkgarapan2@gmail.com', 'sample try');
 
 -- --------------------------------------------------------
 
@@ -97,13 +98,14 @@ INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `ext
 --
 
 CREATE TABLE `appointment_facility` (
-  `appointment_id` varchar(50) NOT NULL DEFAULT concat('FA-',unix_timestamp()),
+  `appointment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `course` varchar(50) NOT NULL,
   `section` varchar(50) NOT NULL,
   `start_date_time_sched` datetime DEFAULT NULL,
   `end_date_time_sched` datetime DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -196,19 +198,19 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688953523', 'Guidance Counseling', '2023-07-12 11:00:00', 5, 39, 1, 0.00, NULL),
-('DR-1688953548', 'Guidance Counseling', '2023-07-12 10:30:00', 5, 39, 1, 0.00, NULL),
-('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688953718', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688953998', 'Guidance Counseling', '2023-07-12 13:30:00', 5, 39, 1, 0.00, NULL),
-('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 1, 0.00, NULL),
-('DR-1688957722', 'Request Good Moral Document', NULL, 5, 43, 1, 0.00, NULL),
-('DR-1688957729', 'Request Clearance', NULL, 5, 43, 1, 0.00, NULL);
+('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, '0.00', NULL),
+('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
+('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, '0.00', NULL),
+('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
+('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
+('DR-1688953523', 'Guidance Counseling', '2023-07-12 11:00:00', 5, 39, 1, '0.00', NULL),
+('DR-1688953548', 'Guidance Counseling', '2023-07-12 10:30:00', 5, 39, 1, '0.00', NULL),
+('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 1, '0.00', NULL),
+('DR-1688953718', 'Request Clearance', NULL, 5, 39, 1, '0.00', NULL),
+('DR-1688953998', 'Guidance Counseling', '2023-07-12 13:30:00', 5, 39, 1, '0.00', NULL),
+('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 1, '0.00', NULL),
+('DR-1688957722', 'Request Good Moral Document', NULL, 5, 43, 1, '0.00', NULL),
+('DR-1688957729', 'Request Clearance', NULL, 5, 43, 1, '0.00', NULL);
 
 -- --------------------------------------------------------
 
@@ -453,7 +455,7 @@ CREATE TABLE `offsettingtb` (
 --
 
 INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`) VALUES
-(0, 39, 100.00, 'tuitionFee', '2023-07-08 14:48:01');
+(0, 39, '100.00', 'tuitionFee', '2023-07-08 14:48:01');
 
 -- --------------------------------------------------------
 
@@ -636,11 +638,12 @@ INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`,
 --
 
 CREATE TABLE `request_equipment` (
-  `request_id` varchar(50) NOT NULL DEFAULT concat('ROE-',unix_timestamp()),
+  `request_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `datetime_schedule` datetime DEFAULT NULL,
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -735,7 +738,10 @@ CREATE TABLE `student_info` (
 
 INSERT INTO `student_info` (`course`, `documentType`, `payment_id`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `date&time`) VALUES
 ('Bachelor of Science in Information Technology', 'Academic Verification Service', 24, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '10.00', '12313213213213213213', 'uploads/payment_24_John Mark_Garapan.png', '2023-07-11 01:48:42'),
-('Bachelor of Science in Business Administration Major in Human Resource Management', 'Processing of Request for Correction of Name: PSA/School Records', 25, 'Dorothy', 'Dauan', 'Garapan', '', '200.00', '54654645646546465465', 'uploads/payment_25_Dorothy_Garapan.png', '2023-07-11 02:00:05');
+('Bachelor of Science in Business Administration Major in Human Resource Management', 'Processing of Request for Correction of Name: PSA/School Records', 25, 'Dorothy', 'Dauan', 'Garapan', '', '200.00', '54654645646546465465', 'uploads/payment_25_Dorothy_Garapan.png', '2023-07-11 02:00:05'),
+('Bachelor in Secondary Education Major in English', 'Late Reporting of Grade', 26, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '20.00', '78978979879879798987', 'uploads/payment_26_John Mark_Garapan.jpg', '2023-07-11 18:10:11'),
+('Bachelor of Science in Psychology', 'Informative Copy of Grades', 27, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '900.00', '79879879879879879879', 'uploads/payment_27_John Mark_Garapan.png', '2023-07-11 19:38:50'),
+('Bachelor in Secondary Education Major in Mathematics', 'Processing of Request for Correction of Name: PSA/School Records', 28, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '30.00', '30303030303030303030', 'uploads/payment_28_John Mark_Garapan.jpg', '2023-07-12 02:27:17');
 
 -- --------------------------------------------------------
 
@@ -1026,7 +1032,7 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT for table `accounting_feedbacks`
 --
 ALTER TABLE `accounting_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `administrative_feedbacks`
@@ -1043,6 +1049,8 @@ ALTER TABLE `admins`
 --
 -- AUTO_INCREMENT for table `appointment_facility`
 --
+ALTER TABLE `appointment_facility`
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -1107,6 +1115,8 @@ ALTER TABLE `reg_transaction`
 --
 -- AUTO_INCREMENT for table `request_equipment`
 --
+ALTER TABLE `request_equipment`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -1118,13 +1128,13 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `statuses`
 --
 ALTER TABLE `statuses`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `student_record`
