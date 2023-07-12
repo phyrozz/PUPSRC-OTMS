@@ -17,10 +17,16 @@ $result = mysqli_stmt_execute($stmt);
 
 if ($result) {
     // Query executed successfully
-    echo "<script>alert(Record inserted successfully.);</script>";
+    echo "<script>
+        alert('Record inserted successfully.');
+        window.location.href = 'your_transaction.php';
+    </script>";
 } else {
     // Error executing the query
-    echo "<script>alert('Error: " . mysqli_error($connection) . "')</script>";
+    echo "<script>
+        alert('Error: " . mysqli_error($connection) . "');
+        window.location.href = 'your_transaction.php';
+    </script>";
 }
 
 // echo "<script>window.location.href = 'create_request.php';</script>";
