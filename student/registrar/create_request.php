@@ -58,11 +58,11 @@
         $reg_code = $newText;
         $req_student_service = $_POST["req_student_service"];
         $user_id = $id;
-        $office_id = "3"; //1-Registrar Office
+        $office_id = 3; //1-Registrar Office
         $date = $_POST["date"];
-        $status_id = "1"; //1-Pending
+        $status_id = 1; //1-Pending
 
-        $query = "INSERT INTO reg_transaction VALUES('$reg_id','$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
+        $query = "INSERT INTO reg_transaction (request_code, user_id, office_id, services_id, schedule, status_id) VALUES('$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
         $result2 = mysqli_query($connection, $query);
         if ($result2) {
             // Data inserted successfully
@@ -221,6 +221,7 @@
             <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
         </div>
     </div>
+    <script src="../../loading.js"></script>
     <script src="../../jquery.js"></script>
     <script src="../../saved_settings.js"></script>
 </body>
@@ -231,4 +232,3 @@
         document.getElementById("appointment-form").reset();
     }
 </script>
-<script src="../../loading.js"></script>
