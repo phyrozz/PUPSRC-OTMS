@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2023 at 05:11 AM
+-- Generation Time: Jul 13, 2023 at 05:48 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,54 @@ SET time_zone = "+00:00";
 --
 -- Database: `otms_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `academic_statuses`
+--
+
+CREATE TABLE `academic_statuses` (
+  `academic_status_id` int(11) NOT NULL,
+  `status_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `academic_statuses`
+--
+
+INSERT INTO `academic_statuses` (`academic_status_id`, `status_name`) VALUES
+(1, 'Pending'),
+(2, 'Missing'),
+(3, 'Under Verification'),
+(4, 'Verified'),
+(5, 'None');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `academic_transactions`
+--
+
+CREATE TABLE `academic_transactions` (
+  `transaction_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `subject_overload` int(11) NOT NULL DEFAULT 5,
+  `grade_accreditation` int(11) NOT NULL DEFAULT 5,
+  `cross_enrollment` int(11) NOT NULL DEFAULT 5,
+  `shifting` int(11) NOT NULL DEFAULT 5,
+  `manual_enrollment` int(11) NOT NULL DEFAULT 5
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `academic_transactions`
+--
+
+INSERT INTO `academic_transactions` (`transaction_id`, `user_id`, `subject_overload`, `grade_accreditation`, `cross_enrollment`, `shifting`, `manual_enrollment`) VALUES
+(1, 35, 5, 5, 5, 5, 5),
+(2, 39, 5, 5, 5, 5, 5),
+(3, 42, 5, 5, 5, 5, 5),
+(4, 43, 5, 5, 5, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -97,13 +145,14 @@ INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `ext
 --
 
 CREATE TABLE `appointment_facility` (
-  `appointment_id` varchar(50) NOT NULL DEFAULT concat('FA-',unix_timestamp()),
+  `appointment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `course` varchar(50) NOT NULL,
   `section` varchar(50) NOT NULL,
   `start_date_time_sched` datetime DEFAULT NULL,
   `end_date_time_sched` datetime DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -147,32 +196,8 @@ INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, 
 ('GC-1688953523', 'Personal Development', NULL, 'DR-1688953523'),
 ('GC-1688953548', 'Report Issue', NULL, 'DR-1688953548'),
 ('GC-1688953998', 'Other', 'may nagbubugbugan sa second floor hallway', 'DR-1688953998'),
-('GC-1688957709', 'Other', 'basta', 'DR-1688957709');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `courses`
---
-
-CREATE TABLE `courses` (
-  `id` int(11) NOT NULL,
-  `course_code` int(20) DEFAULT NULL,
-  `course_description` varchar(100) DEFAULT NULL,
-  `units` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cross_enrollments`
---
-
-CREATE TABLE `cross_enrollments` (
-  `student_id` int(15) DEFAULT NULL,
-  `course_id` int(11) DEFAULT NULL,
-  `enrollment_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+('GC-1688957709', 'Other', 'basta', 'DR-1688957709'),
+('GC-1689061553', 'Other', 'Nagkaroon ng bugbugan sa hallway na naman po.', 'DR-1689061553');
 
 -- --------------------------------------------------------
 
@@ -197,7 +222,6 @@ CREATE TABLE `doc_requests` (
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
 ('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688797166', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
 ('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
 ('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
 ('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
@@ -207,8 +231,11 @@ INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_date
 ('DR-1688953718', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
 ('DR-1688953998', 'Guidance Counseling', '2023-07-12 13:30:00', 5, 39, 1, 0.00, NULL),
 ('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 1, 0.00, NULL),
-('DR-1688957722', 'Request Good Moral Document', NULL, 5, 43, 1, 0.00, NULL),
-('DR-1688957729', 'Request Clearance', NULL, 5, 43, 1, 0.00, NULL);
+('DR-1688967322', 'Request Clearance', NULL, 5, 42, 1, 0.00, NULL),
+('DR-1688967329', 'Request Good Moral Document', NULL, 5, 42, 1, 0.00, NULL),
+('DR-1688970013', 'Request Good Moral Document', NULL, 5, 43, 1, 0.00, NULL),
+('DR-1688970028', 'Request Clearance', NULL, 5, 43, 1, 0.00, NULL),
+('DR-1689061553', 'Guidance Counseling', '2023-07-12 16:00:00', 5, 39, 1, 0.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -356,21 +383,6 @@ INSERT INTO `facility_type` (`facility_type_id`, `facility_type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grades`
---
-
-CREATE TABLE `grades` (
-  `id` int(11) NOT NULL,
-  `student_id` int(11) DEFAULT NULL,
-  `subject_id` int(11) DEFAULT NULL,
-  `grade` decimal(4,2) DEFAULT NULL,
-  `semester` enum('First Semester','Second Semester','Summer') DEFAULT NULL,
-  `acad_year` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `guidance_feedbacks`
 --
 
@@ -379,19 +391,6 @@ CREATE TABLE `guidance_feedbacks` (
   `user_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `feedback_text` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `instructors`
---
-
-CREATE TABLE `instructors` (
-  `id` int(11) NOT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -445,15 +444,29 @@ CREATE TABLE `offsettingtb` (
   `user_id` int(11) NOT NULL,
   `amountToOffset` decimal(6,2) NOT NULL,
   `offsetType` varchar(45) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status_id` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `token_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `token` varchar(100) DEFAULT NULL,
+  `expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `offsettingtb`
+-- Dumping data for table `password_reset_tokens`
 --
 
-INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`) VALUES
-(0, 39, 100.00, 'tuitionFee', '2023-07-08 14:48:01');
+INSERT INTO `password_reset_tokens` (`token_id`, `user_id`, `token`, `expiry`) VALUES
+(1, 39, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -624,10 +637,11 @@ CREATE TABLE `reg_transaction` (
 --
 
 INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`, `services_id`, `schedule`, `status_id`) VALUES
-(1, '', 39, 3, 28, '2023-06-28', 1),
-(2, '', 41, 3, 25, '2023-07-12', 1),
-(3, '', 41, 3, 23, '2023-07-05', 1),
-(4, '', 41, 3, 29, '2023-07-05', 1);
+(5, 'REG-2', 39, 3, 12, '2023-07-13', 1),
+(6, '', 42, 3, 29, '2023-07-13', 1),
+(7, '', 42, 3, 31, '2023-07-13', 1),
+(8, '', 42, 3, 27, '2023-07-14', 1),
+(9, '', 42, 3, 30, '2023-07-12', 1);
 
 -- --------------------------------------------------------
 
@@ -636,11 +650,12 @@ INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`,
 --
 
 CREATE TABLE `request_equipment` (
-  `request_id` varchar(50) NOT NULL DEFAULT concat('ROE-',unix_timestamp()),
+  `request_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `datetime_schedule` datetime DEFAULT NULL,
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -716,9 +731,9 @@ INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
 --
 
 CREATE TABLE `student_info` (
+  `payment_id` int(11) NOT NULL,
   `course` varchar(200) NOT NULL,
   `documentType` varchar(200) NOT NULL,
-  `payment_id` int(11) NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `middleName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
@@ -726,16 +741,21 @@ CREATE TABLE `student_info` (
   `amount` decimal(10,2) NOT NULL,
   `referenceNumber` varchar(20) NOT NULL,
   `image_url` text NOT NULL,
-  `date&time` datetime NOT NULL DEFAULT current_timestamp()
+  `transaction_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `student_info`
 --
 
-INSERT INTO `student_info` (`course`, `documentType`, `payment_id`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `date&time`) VALUES
-('Bachelor of Science in Information Technology', 'Academic Verification Service', 24, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '10.00', '12313213213213213213', 'uploads/payment_24_John Mark_Garapan.png', '2023-07-11 01:48:42'),
-('Bachelor of Science in Business Administration Major in Human Resource Management', 'Processing of Request for Correction of Name: PSA/School Records', 25, 'Dorothy', 'Dauan', 'Garapan', '', '200.00', '54654645646546465465', 'uploads/payment_25_Dorothy_Garapan.png', '2023-07-11 02:00:05');
+INSERT INTO `student_info` (`payment_id`, `course`, `documentType`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `transaction_date`) VALUES
+(24, 'Bachelor of Science in Information Technology', 'Certified True Copy', 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 250.00, '23123565674564564458', 'uploads/payment_24_Juan_Dela Cruz.jpg', '2023-07-12 23:31:16'),
+(25, 'Bachelor of Science in Information Technology', 'Certified True Copy', 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 150.00, '21327694959680580962', 'uploads/payment_25_Joshua_Malabanan.jpg', '2023-07-13 11:09:19'),
+(26, 'Bachelor of Science in Information Technology', 'Late Reporting of Grade', 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 50.00, '21342547095384634024', 'uploads/payment_26_Joshua_Malabanan.jpg', '2023-07-13 11:14:29'),
+(27, 'Bachelor of Science in Information Technology', 'Late Reporting of Grade', 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 125.00, '43568906234523534645', 'uploads/payment_27_Joshua_Malabanan.jpg', '2023-07-13 11:14:58'),
+(28, 'Bachelor of Science in Information Technology', 'Academic Verification Service', 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 50.00, '34445767463454525342', 'uploads/payment_28_Juan_Dela Cruz.jpg', '2023-07-13 11:34:20'),
+(29, 'Bachelor of Science in Information Technology', 'Application for Graduation SIS and Non-SIS', 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 100.00, '45365732452342353453', 'uploads/payment_29_Juan_Dela Cruz.jpeg', '2023-07-13 11:34:38'),
+(30, 'Bachelor of Science in Information Technology', 'Certificate of Attendance', 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 125.00, '43654674767456363636', 'uploads/payment_30_Juan_Dela Cruz.jpg', '2023-07-13 11:35:02');
 
 -- --------------------------------------------------------
 
@@ -748,6 +768,23 @@ CREATE TABLE `student_record` (
   `student_id` int(11) NOT NULL,
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject_overload`
+--
+
+CREATE TABLE `subject_overload` (
+  `subject_overload_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `overload_letter` mediumblob DEFAULT NULL,
+  `ace_form` mediumblob DEFAULT NULL,
+  `cert_of_registration` mediumblob DEFAULT NULL,
+  `overload_letter_status` int(11) NOT NULL,
+  `ace_form_status` int(11) NOT NULL,
+  `cert_of_registration_status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -778,11 +815,9 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (32, '2021-0220-SR-0', 'Shanks', 'Akagami', 'B', NULL, '09464032005', 'bussinbaldes@gmail.com', '2023-06-24', '$2y$10$TlnTlMSObrJ7NG4WtG3KJu/ZpcIZwieyJfcCnlt4Ap5LQROZG4Z5a', 1),
 (34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
 (35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
-(39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$WuFz92Ko1kz0TTve.Vig5.KjjP.vkZg6AZph18up9c8xyzlyvGA7C', 1),
+(39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$a4rycTCNbnsZ6.auPYz.kuodEWiw7lq82K/3QBP.V5IYZu3ukC5Ta', 1),
 (42, '', 'Dela Cruz', 'Pedro', 'Penduko', 'Jr.', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
-(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', '', '0901-234-5678', 'juandelacruz123@gmail.com', '2001-09-11', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1),
-(44, '2020-00585-SR-0', 'Garapan', 'John Mark', 'Dauan', '', '0901-234-5678', 'johnmarkgarapan2@gmail.com', '2000-05-31', '$2y$10$lWjsUSRbLTkh9UzRg95YIOlLUaKwIvLm5DHQCgwONa6HT1cLX.WBy', 1),
-(45, '', 'Garapan', 'Dorothy', 'Dauan', '', '0901-234-5678', 'dorothy@sample.com', '2005-01-01', '$2y$10$0gD5JCNGutAN.vp1HOv1XeNZYKJO15cW4jrtUlt.ATiBo5sBEIH4m', 2);
+(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', '', '0901-234-5678', 'juandelacruz123@gmail.com', '2001-09-11', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1);
 
 -- --------------------------------------------------------
 
@@ -808,9 +843,7 @@ CREATE TABLE `user_details` (
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `user_id`) VALUES
 (1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 39),
 (3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', 42),
-(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 43),
-(5, 1, 'Blk 2 Lot 2', 'LAGUNA', 'SAN PEDRO CITY', 'Landayan', '4023', 44),
-(6, 1, 'Sample', 'PANGASINAN', 'SAN CARLOS CITY', 'Sample', '2311', 45);
+(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 43);
 
 -- --------------------------------------------------------
 
@@ -837,10 +870,29 @@ INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
 --
 
 --
+-- Indexes for table `academic_statuses`
+--
+ALTER TABLE `academic_statuses`
+  ADD PRIMARY KEY (`academic_status_id`);
+
+--
+-- Indexes for table `academic_transactions`
+--
+ALTER TABLE `academic_transactions`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `cross_enrollment` (`cross_enrollment`),
+  ADD KEY `grade_accreditation` (`grade_accreditation`),
+  ADD KEY `manual_enrollment` (`manual_enrollment`),
+  ADD KEY `shifting` (`shifting`),
+  ADD KEY `subject_overload` (`subject_overload`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `accounting_feedbacks`
 --
 ALTER TABLE `accounting_feedbacks`
-  ADD PRIMARY KEY (`feedback_id`);
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `administrative_feedbacks`
@@ -915,6 +967,13 @@ ALTER TABLE `facility_type`
   ADD PRIMARY KEY (`facility_type_id`);
 
 --
+-- Indexes for table `guidance_feedbacks`
+--
+ALTER TABLE `guidance_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `office`
 --
 ALTER TABLE `office`
@@ -925,6 +984,21 @@ ALTER TABLE `office`
 --
 ALTER TABLE `offices`
   ADD PRIMARY KEY (`office_id`);
+
+--
+-- Indexes for table `offsettingtb`
+--
+ALTER TABLE `offsettingtb`
+  ADD PRIMARY KEY (`offsetting_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `status_id` (`status_id`);
+
+--
+-- Indexes for table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`token_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `personal_details`
@@ -961,7 +1035,11 @@ ALTER TABLE `reg_status`
 -- Indexes for table `reg_transaction`
 --
 ALTER TABLE `reg_transaction`
-  ADD PRIMARY KEY (`reg_id`);
+  ADD PRIMARY KEY (`reg_id`),
+  ADD KEY `office_id` (`office_id`),
+  ADD KEY `services_id` (`services_id`),
+  ADD KEY `status_id` (`status_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `request_equipment`
@@ -999,6 +1077,16 @@ ALTER TABLE `student_record`
   ADD KEY `fk_student_record_students1_idx` (`student_id`);
 
 --
+-- Indexes for table `subject_overload`
+--
+ALTER TABLE `subject_overload`
+  ADD PRIMARY KEY (`subject_overload_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `ace_form_status` (`ace_form_status`),
+  ADD KEY `cert_of_registration_status` (`cert_of_registration_status`),
+  ADD KEY `overload_letter_status` (`overload_letter_status`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1023,10 +1111,16 @@ ALTER TABLE `user_roles`
 --
 
 --
--- AUTO_INCREMENT for table `accounting_feedbacks`
+-- AUTO_INCREMENT for table `academic_statuses`
 --
-ALTER TABLE `accounting_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `academic_statuses`
+  MODIFY `academic_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `academic_transactions`
+--
+ALTER TABLE `academic_transactions`
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `administrative_feedbacks`
@@ -1043,6 +1137,8 @@ ALTER TABLE `admins`
 --
 -- AUTO_INCREMENT for table `appointment_facility`
 --
+ALTER TABLE `appointment_facility`
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -1075,10 +1171,28 @@ ALTER TABLE `facility_type`
   MODIFY `facility_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `guidance_feedbacks`
+--
+ALTER TABLE `guidance_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `office`
 --
 ALTER TABLE `office`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `offsettingtb`
+--
+ALTER TABLE `offsettingtb`
+  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `personal_details`
@@ -1102,11 +1216,13 @@ ALTER TABLE `reg_status`
 -- AUTO_INCREMENT for table `reg_transaction`
 --
 ALTER TABLE `reg_transaction`
-  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `request_equipment`
 --
+ALTER TABLE `request_equipment`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -1124,7 +1240,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `student_record`
@@ -1133,16 +1249,22 @@ ALTER TABLE `student_record`
   MODIFY `student_record_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `subject_overload`
+--
+ALTER TABLE `subject_overload`
+  MODIFY `subject_overload_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -1155,10 +1277,136 @@ ALTER TABLE `user_roles`
 --
 
 --
+-- Constraints for table `academic_transactions`
+--
+ALTER TABLE `academic_transactions`
+  ADD CONSTRAINT `academic_transactions_ibfk_1` FOREIGN KEY (`cross_enrollment`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `academic_transactions_ibfk_2` FOREIGN KEY (`grade_accreditation`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `academic_transactions_ibfk_3` FOREIGN KEY (`manual_enrollment`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `academic_transactions_ibfk_4` FOREIGN KEY (`shifting`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `academic_transactions_ibfk_5` FOREIGN KEY (`subject_overload`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `academic_transactions_ibfk_6` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `accounting_feedbacks`
+--
+ALTER TABLE `accounting_feedbacks`
+  ADD CONSTRAINT `accounting_feedbacks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `admins`
 --
 ALTER TABLE `admins`
   ADD CONSTRAINT `fk_admins_offices1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `appointment_facility`
+--
+ALTER TABLE `appointment_facility`
+  ADD CONSTRAINT `appointment_facility_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `appointment_facility_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `appointment_facility_ibfk_3` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `clients`
+--
+ALTER TABLE `clients`
+  ADD CONSTRAINT `clients_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `counseling_schedules`
+--
+ALTER TABLE `counseling_schedules`
+  ADD CONSTRAINT `counseling_schedules_ibfk_1` FOREIGN KEY (`doc_requests_id`) REFERENCES `doc_requests` (`request_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `doc_requests`
+--
+ALTER TABLE `doc_requests`
+  ADD CONSTRAINT `doc_requests_ibfk_1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `doc_requests_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `doc_requests_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `equipment`
+--
+ALTER TABLE `equipment`
+  ADD CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`equipment_type_id`) REFERENCES `equipment_type` (`equipment_type_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `facility`
+--
+ALTER TABLE `facility`
+  ADD CONSTRAINT `facility_ibfk_1` FOREIGN KEY (`facility_type_id`) REFERENCES `facility_type` (`facility_type_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `guidance_feedbacks`
+--
+ALTER TABLE `guidance_feedbacks`
+  ADD CONSTRAINT `guidance_feedbacks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `offsettingtb`
+--
+ALTER TABLE `offsettingtb`
+  ADD CONSTRAINT `offsettingtb_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `offsettingtb_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD CONSTRAINT `password_reset_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `personal_details`
+--
+ALTER TABLE `personal_details`
+  ADD CONSTRAINT `personal_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `reg_transaction`
+--
+ALTER TABLE `reg_transaction`
+  ADD CONSTRAINT `reg_transaction_ibfk_1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reg_transaction_ibfk_2` FOREIGN KEY (`services_id`) REFERENCES `reg_services` (`services_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reg_transaction_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `reg_status` (`status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reg_transaction_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `request_equipment`
+--
+ALTER TABLE `request_equipment`
+  ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `services`
+--
+ALTER TABLE `services`
+  ADD CONSTRAINT `services_ibfk_1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `subject_overload`
+--
+ALTER TABLE `subject_overload`
+  ADD CONSTRAINT `subject_overload_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `subject_overload_ibfk_2` FOREIGN KEY (`ace_form_status`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `subject_overload_ibfk_3` FOREIGN KEY (`cert_of_registration_status`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `subject_overload_ibfk_4` FOREIGN KEY (`overload_letter_status`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_role`) REFERENCES `user_roles` (`user_role_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_details`
+--
+ALTER TABLE `user_details`
+  ADD CONSTRAINT `user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
