@@ -15,10 +15,10 @@
                     Request
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                    Schedule
+                <th class="text-center doc-request-schedule-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
+                    Scheduled Date
                     <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th> -->
+                </th>
                 <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
                     Amount to pay
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -137,15 +137,15 @@
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
             case 'Guidance Office':
-                return 'http://pup.otms.local/student/guidance.php';
+                return 'http://localhost/student/guidance.php';
             case 'Registrar Office':
-                return 'http://pup.otms.local/student/registrar.php';
+                return 'http://localhost/student/registrar.php';
             case 'Academic Office':
-                return 'http://pup.otms.local/student/academic.php';
+                return 'http://localhost/student/academic.php';
             case 'Accounting Office':
-                return 'http://pup.otms.local/student/accounting.php';
+                return 'http://localhost/student/accounting.php';
             case 'Administrative Office':
-                return 'http://pup.otms.local/student/administrative.php';
+                return 'http://localhost/student/administrative.php';
         }
     }
 
@@ -193,7 +193,7 @@
                             '<td>' + request.request_id + '</td>' +
                             '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
                             '<td>' + request.request_description + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+                            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +

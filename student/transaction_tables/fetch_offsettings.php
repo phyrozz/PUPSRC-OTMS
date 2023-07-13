@@ -15,41 +15,41 @@ $startingRecord = ($page - 1) * $recordsPerPage;
 $searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
 // Retrieve the sorting parameters from the AJAX request
-$column = isset($_POST['column']) ? $_POST['column'] : 'counseling_id';
-$order = isset($_POST['order']) ? $_POST['order'] : 'desc';
+$column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
+$order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the document requests
-$counselingQuery = "SELECT counseling_schedules.counseling_id, counseling_schedules.appointment_description, counseling_schedules.comments, doc_requests.scheduled_datetime, statuses.status_name
-FROM counseling_schedules
-INNER JOIN doc_requests ON counseling_schedules.doc_requests_id = doc_requests.request_id
-INNER JOIN offices ON doc_requests.office_id = offices.office_id
-INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-WHERE user_id = " . $_SESSION['user_id'];
+$offsettingsQuery = "SELECT offsetting_id, amountToOffset, offsetType, timestamp, statuses.status_name
+                        FROM offsettingtb
+                        INNER JOIN statuses ON offsettingtb.status_id = statuses.status_id
+                        WHERE user_id = " . $_SESSION['user_id'];
 
 if (!empty($searchTerm)) {
-    $counselingQuery .= " AND (counseling_id LIKE '%$searchTerm%'
-                           OR appointment_description LIKE '%$searchTerm%'
-                           OR scheduled_datetime LIKE '%$searchTerm%'
-                           OR status_name LIKE '%$searchTerm%')";
+    $offsettingsQuery .= " AND (offsetting_id LIKE '%$searchTerm%'
+                           OR amountToOffset LIKE '%$searchTerm%'
+                           OR offsetType LIKE '%$searchTerm%'
+                           OR status_id LIKE '%$searchTerm%'
+                           OR offsettingtb.timestamp LIKE '%$searchTerm%')";
 }
 
 // Add the sorting parameters to the query
-$counselingQuery .= " ORDER BY $column $order
+$offsettingsQuery .= " ORDER BY $column $order
 LIMIT $startingRecord, $recordsPerPage";
 
 
-$result = mysqli_query($connection, $counselingQuery);
+$result = mysqli_query($connection, $offsettingsQuery);
 
 if ($result) {
-    $counseling_schedules = array();
+    $offsettings = array();
     while ($row = mysqli_fetch_assoc($result)) {
-        $counseling_schedules[] = $row;
+        $offsettings[] = $row;
     }
 
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
-                          FROM doc_requests
-                          WHERE user_id = " . $_SESSION['user_id'] . " AND request_description = 'Guidance Counseling'";
+                          FROM offsettingtb
+                          INNER JOIN statuses ON offsettingtb.status_id = statuses.status_id
+                          WHERE user_id = " . $_SESSION['user_id'];
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
     $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
     $totalRecords = $totalRecordsRow['total_records'];
@@ -59,7 +59,7 @@ if ($result) {
 
     // Prepare the JSON response
     $response = array(
-        'counseling_schedules' => $counseling_schedules,
+        'offsettings' => $offsettings,
         'total_records' => $totalRecords,
         'total_pages' => $totalPages,
         'current_page' => $page

@@ -53,8 +53,8 @@ include 'request_offset.php';
                 <label for="offsetType" class="form-label">Offset Type<code>*</code></label>
                 <select class="form-select" id="offsetType"name="offsetType" required>
                     <option value="" selected disabled>Select an option</option>
-                    <option value="tuitionFee" >Tuition Fee</option>
-                    <option value="miscellaneous">Miscellaneous Fee</option>
+                    <option value="Tuition Fee" >Tuition Fee</option>
+                    <option value="Miscellaneous Fee">Miscellaneous Fee</option>
                 </select>
                 <div class="invalid-feedback">
                     Please select an offset type.

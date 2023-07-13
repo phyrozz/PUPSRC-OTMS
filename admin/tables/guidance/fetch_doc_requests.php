@@ -18,7 +18,7 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the document requests
-$documentRequestsQuery = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, status_name, amount_to_pay,
+$documentRequestsQuery = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, scheduled_datetime, status_name, amount_to_pay,
                         users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role
                         FROM doc_requests
                         INNER JOIN users ON doc_requests.user_id = users.user_id
@@ -35,6 +35,7 @@ if (!empty($searchTerm)) {
                            OR users.extension_name LIKE '%$searchTerm%'
                            OR request_description LIKE '%$searchTerm%'
                            OR user_roles.role LIKE '%$searchTerm%'
+                           OR scheduled_datetime LIKE '%$searchTerm%'
                            -- CONCAT name and request_description combinations
                            OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
                            OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
@@ -90,6 +91,7 @@ if ($result) {
                                OR users.extension_name LIKE '%$searchTerm%'
                                OR request_description LIKE '%$searchTerm%'
                                OR user_roles.role LIKE '%$searchTerm%'
+                               OR scheduled_datetime LIKE '%$searchTerm%'
                                -- CONCAT name and request_description combinations
                                OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'

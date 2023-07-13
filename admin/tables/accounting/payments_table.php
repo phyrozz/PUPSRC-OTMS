@@ -1,52 +1,36 @@
-<?php
-// Generate a list of statuses for this table to be rendered on <select> in guidance.php
-$statuses = array(
-    'all' => 'All',
-    '1' => 'Pending',
-    '2' => 'For Receiving',
-    '3' => 'For Evaluation',
-    '4' => 'Ready for Pickup',
-    '5' => 'Released',
-    '6' => 'Rejected'
-);
-?>
 <div class="table-responsive">
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-                <th class="text-center"></th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
-                    Request Code
+                <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
+                    Payment Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
+                <th class="text-center doc-request-id-header sortable-header" data-column="date&time" scope="col" data-order="desc">
                     Date requested
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
-                    Scheduled Date
+                <th class="text-center doc-request-requestor-header sortable-header" data-column="lastName" scope="col" data-order="desc">
+                    Name
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-requestor-header sortable-header" data-column="last_name" scope="col" data-order="desc">
-                    Requestor
+                <th class="text-center doc-request-student-or-client-header sortable-header" data-column="documentType" scope="col" data-order="desc">
+                    Document Type
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-student-or-client-header sortable-header" data-column="role" scope="col" data-order="desc">
-                    Student/Client
+                <th class="text-center doc-request-description-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
+                    Reference Number
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
-                    Request
+                <th class="text-center doc-request-amount-header sortable-header" data-column="amount" scope="col" data-order="desc">
+                    Amount
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
-                    Amount to pay
+                <th class="text-center doc-request-status-header sortable-header" data-column="image_url" scope="col" data-order="desc">
+                    Receipt
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
-                    Status
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -95,7 +79,7 @@ $statuses = array(
         }
     }
 
-    function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+    function handlePagination(page, searchTerm = '', column = 'payment_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
         loadingIndicator.style.display = 'block';
@@ -106,7 +90,7 @@ $statuses = array(
         
         // Make an AJAX request to fetch the document requests
         $.ajax({
-            url: 'tables/guidance/fetch_doc_requests.php',
+            url: 'tables/accounting/fetch_payments.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
@@ -124,39 +108,25 @@ $statuses = array(
                 tableBody.innerHTML = '';
 
                 if (data.total_records > 0) {
-                    for (var i = 0; i < data.document_requests.length; i++) {
-                        var request = data.document_requests[i];
-                        var scheduleButton = '';
-
-                        // // Add schedule button if the status is "Pending"
-                        // if (request.status_name === 'Pending') {
-                        //     var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
-                        //     scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
-                        // }
-
-                        // Convert the timestamp int value of request_id into a formatted datetime for the Date Requested column
-                        var timestamp = request.request_id;
-                        parsedTimestamp = parseInt(timestamp.substring(3));
-                        var date = new Date(parsedTimestamp * 1000);
-                        var formattedDate = date.toLocaleString();
+                    for (var i = 0; i < data.payments.length; i++) {
+                        var payments = data.payments[i];
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" name="request-checkbox" value="' + request.request_id + '"></td>' +
-                            '<td>' + request.request_id + '</td>' +
-                            '<td>' + formattedDate + '</td>' +
-                            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
-                            '<td>' + request.last_name + ", " + request.first_name + " " + request.middle_name + " " + request.extension_name + '</td>' +
-                            '<td>' + request.role + '</td>' +
-                            '<td>' + request.request_description + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-                            '<td>' + '₱' + request.amount_to_pay + '</td>' +
-                            '<td class="text-center">' +
-                            '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
-                            '</td>' +
-                            // '<td class="text-center">' +
-                            // scheduleButton +
-                            // '</td>' +
-                            '</tr>';
+                            '<td>' + 'A0-' + payments.payment_id + '</td>' +
+                            '<td>' + (new Date(payments.transaction_date).toLocaleString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                            }))
+                            + '</td>' +
+                            '<td>' + payments.lastName + ", " + payments.firstName + " " + payments.middleName + '</td>' +
+                            '<td>' + payments.documentType + '</td>' +
+                            '<td>' + payments.referenceNumber + '</td>' +
+                            '<td>' + '₱' + payments.amount + '</td>' +
+                            '<td class="text-center"><a href="../../../student/accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }
@@ -172,7 +142,7 @@ $statuses = array(
                 if (data.total_pages > 1) {
                     for (var i = 1; i <= data.total_pages; i++) {
                         var pageLink = '<li class="page-item">' +
-                        '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ', \'' + searchTerm + '\', \'request_id\', \'desc\')">' + i + '</a>' +
+                        '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ', \'' + searchTerm + '\', \'payment_id\', \'desc\')">' + i + '</a>' +
                         '</li>';
                         paginationLinks.innerHTML += pageLink;
                     }
@@ -214,17 +184,17 @@ $statuses = array(
     });
 
     // Initial pagination request (page 1)
-    handlePagination(1, '', 'request_id', 'desc');
+    handlePagination(1, '', 'payment_id', 'desc');
 
     $(document).ready(function() {
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+            handlePagination(1, searchTerm, 'payment_id', 'desc');
         });
 
         $('#filterButton').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+            handlePagination(1, searchTerm + filterDocType(), 'payment_id', 'desc');
         });
 
         // Update status button listener
@@ -274,42 +244,11 @@ $statuses = array(
     function filterDocType() {
         var filterByDocTypeVal = $('#filterByDocType').val();
         
-        switch (filterByDocTypeVal) {
-            case 'goodMoral':
-                return ' request good moral document';
-                break;
-            case 'clearance':
-                return ' request clearance';
-                break;
-            default:
-                return '';
+        if (filterByDocTypeVal == 'all') {
+            return '';
         }
-    }
-
-    function filterStatus() {
-        var filterByStatusVal = $('#filterByStatus').val();
-        
-        switch (filterByStatusVal) {
-            case '1':
-                return ' pending';
-                break;
-            case '2':
-                return ' for receiving';
-                break;
-            case '3':
-                return ' for evaluation';
-                break;
-            case '4':
-                return ' ready for pickup';
-                break;
-            case '5':
-                return ' released';
-                break;
-            case '6':
-                return ' rejected';
-                break;
-            default:
-                return '';
+        else {
+            return " " + filterByDocTypeVal;
         }
     }
 </script>
