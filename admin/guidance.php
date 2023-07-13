@@ -56,15 +56,15 @@
                             </div>
                             <div>
                                 <div id="filterByStatusSection" class="input-group">
-                                    <label class="input-group-text" for="filterByStatus">Filter by Request Status:</label>
+                                    <label class="input-group-text" for="filterByStatus">Filter by Status:</label>
                                     <select name="filterByStatus" id="filterByStatus" class="form-select">
-                                        <option value="all">All</option>    
+                                        <!-- <option value="all">All</option>    
                                         <option value="1">Pending</option>
                                         <option value="2">For Receiving</option>
                                         <option value="3">For Evaluation</option>
                                         <option value="4">Ready for Pickup</option>
                                         <option value="5">Released</option>
-                                        <option value="6">Rejected</option>
+                                        <option value="6">Rejected</option> -->
                                     </select>
                                 </div>
                             </div>
@@ -185,6 +185,27 @@
         // Check viewport initially and on window resize
         window.addEventListener('DOMContentLoaded', checkViewport);
         window.addEventListener('resize', checkViewport);
+
+        // Get the select element on "Filter by Status" dropdown
+        var filterByStatusSelect = document.getElementById('filterByStatus');
+
+        // Define the statuses array
+        var statuses = <?php echo json_encode($statuses); ?>;
+
+        // Generate the options
+        var allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'All';
+        filterByStatusSelect.appendChild(allOption);
+
+        for (var key in statuses) {
+            if (statuses.hasOwnProperty(key) && key !== 'all') {
+                var option = document.createElement('option');
+                option.value = key;
+                option.textContent = statuses[key];
+                filterByStatusSelect.appendChild(option);
+            }
+        }
     </script>
     <script src="../loading.js"></script>
 </body>
