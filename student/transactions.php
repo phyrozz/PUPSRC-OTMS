@@ -71,8 +71,10 @@
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
+                                    <option value="offsettings" <?php if ($table === 'offsettings') echo 'selected'; ?>>Offsettings</option>
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                     <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
+                                    <option value="academic_transactions" <?php if ($table === 'academic_transactions') echo 'selected'; ?>>Academic Transactions</option>
                                 </select>
                                 <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
                             </form>
@@ -96,11 +98,16 @@
                                 include 'transaction_tables/scheduled_appointments_table.php';
                             } elseif ($table === 'payments') {
                                 include 'transaction_tables/payments_table.php';
+                            } elseif ($table === 'offsettings') {
+                                include 'transaction_tables/offsetting_table.php';
                             } elseif ($table === 'request_equipment') {
                                 include 'transaction_tables/request_equipment_table.php';
                             } elseif ($table === 'appointment_facility') {
                                 include 'transaction_tables/appointment_facility_table.php';
+                            } elseif ($table === 'academic_transactions') {
+                                include 'transaction_tables/academic_table.php';
                             }
+                            
                         ?>
                     </div>
                 </div>
