@@ -54,16 +54,7 @@
                                     <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary">Load Table</button>
                                 </form>
                             </div>
-                            <div>
-                                <div id="filterByStatusSection" class="input-group">
-                                    <label class="input-group-text" for="filterByStatus">Filter by Request Status:</label>
-                                    <select name="filterByStatus" id="filterByStatus" class="form-select">
-                                    <option value="1">Pending</option>
-                                    <option value="2">Approved</option>
-                                    <option value="3">Rejected</option>
-                                    </select>
-                                </div>
-                            </div>
+
                             <div>
                                 <div id="filterByDocTypeSection" class="input-group">
                                     <label class="input-group-text" for="filterByDocType">Filter by Document Type:</label>
@@ -119,17 +110,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <button class="btn btn-primary" disabled>Previous</button>
-                    <button class="btn btn-primary" disabled>Next</button>
-                </div>
-            </div>
-             -->
         </div>
         <div class="push"></div>
     </div>

@@ -2,12 +2,11 @@
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-                <th class="text-center"></th>
                 <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
                     Payment Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
+                <th class="text-center doc-request-id-header sortable-header" data-column="date&time" scope="col" data-order="desc">
                     Date requested
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
@@ -15,12 +14,12 @@
                     Name
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-student-or-client-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
-                    Reference Number
+                <th class="text-center doc-request-student-or-client-header sortable-header" data-column="documentType" scope="col" data-order="desc">
+                    Document Type
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-description-header sortable-header" data-column="documentType" scope="col" data-order="desc">
-                    Document Type
+                <th class="text-center doc-request-description-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
+                    Reference Number
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-amount-header sortable-header" data-column="amount" scope="col" data-order="desc">
@@ -31,6 +30,7 @@
                     Receipt
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -38,7 +38,21 @@
         </tbody>
     </table>
 </div>
-<div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">  
+<div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
+    <div class="d-flex gap-2">
+        <div class="input-group">
+            <div class="input-group-text">Update Status:</div>
+            <select class="form-select" name="update-status" id="update-status" disabled>
+                <option value="1">Pending</option>
+                <option value="2">For Receiving</option>
+                <option value="3">For Evaluation</option>
+                <option value="4">Ready for Pickup</option>
+                <option value="5">Released</option>
+                <option value="6">Rejected</option>
+            </select>
+        </div>
+        <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
+    </div>    
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
             <ul class="pagination" id="pagination-links">
@@ -48,6 +62,23 @@
     </nav>
 </div>
 <script>
+    function getStatusBadgeClass(status) {
+        switch (status) {
+            case 'Released':
+                return 'bg-success';
+            case 'Rejected':
+                return 'bg-danger';
+            case 'For Receiving':
+                return 'bg-warning text-dark';
+            case 'For Evaluation':
+                return 'bg-primary';
+            case 'Ready for Pickup':
+                return 'bg-info';
+            default:
+                return 'bg-dark';
+        }
+    }
+
     function handlePagination(page, searchTerm = '', column = 'payment_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
@@ -78,29 +109,24 @@
 
                 if (data.total_records > 0) {
                     for (var i = 0; i < data.payments.length; i++) {
-                        var payment = data.payments[i];
-                        var scheduleButton = '';
-
-                        // // Add schedule button if the status is "Pending"
-                        // if (request.status_name === 'Pending') {
-                        //     var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
-                        //     scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
-                        // }
-
-                        // Convert the timestamp int value of request_id into a formatted datetime for the Date Requested column
-                        var timestamp = payment.payment_id;
-                        parsedTimestamp = parseInt(timestamp.substring(3));
-                        var date = new Date(parsedTimestamp * 1000);
-                        var formattedDate = date.toLocaleString();
+                        var payments = data.payments[i];
 
                         var row = '<tr>' +
-                            '<td>' + 'AO-' + payment.payment_id + '</td>' +
-                            '<td>' + formattedDate + '</td>' +
-                            '<td>' + payment.lastName + ", " + payment.firstName + " " + payment.middleName + '</td>' +
-                            '<td>' + payment.referenceNumber + '</td>' +
-                            '<td>' + payment.documentType + '</td>' +
-                            '<td>' + '₱' + payment.amount + '</td>' +
-                            '<td class="text-center"><a href="accounting/' + payment.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
+                            '<td>' + 'A0-' + payments.payment_id + '</td>' +
+                            '<td>' + (new Date(payments.transaction_date).toLocaleString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                            }))
+                            + '</td>' +
+                            '<td>' + payments.lastName + ", " + payments.firstName + " " + payments.middleName + '</td>' +
+                            '<td>' + payments.documentType + '</td>' +
+                            '<td>' + payments.referenceNumber + '</td>' +
+                            '<td>' + '₱' + payments.amount + '</td>' +
+                            '<td class="text-center"><a href="../../../student/accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }
@@ -163,12 +189,12 @@
     $(document).ready(function() {
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'payment_id', 'desc');
+            handlePagination(1, searchTerm, 'payment_id', 'desc');
         });
 
         $('#filterButton').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'payment_id', 'desc');
+            handlePagination(1, searchTerm + filterDocType(), 'payment_id', 'desc');
         });
 
         // Update status button listener
@@ -218,17 +244,11 @@
     function filterDocType() {
         var filterByDocTypeVal = $('#filterByDocType').val();
         
-        switch (filterByDocTypeVal) {
-            case 'goodMoral':
-                return ' request good moral document';
-                break;
-            case 'clearance':
-                return ' request clearance';
-                break;
-            default:
-                return '';
+        if (filterByDocTypeVal == 'all') {
+            return '';
+        }
+        else {
+            return " " + filterByDocTypeVal;
         }
     }
-
-
 </script>

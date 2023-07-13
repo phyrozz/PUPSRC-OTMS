@@ -20,7 +20,7 @@ $order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 // Retrieve the document requests
 $paymentsQuery = "SELECT payment_id, course, documentType, referenceNumber, amount, image_url
                         FROM student_info
-                        WHERE firstname = '" . $_SESSION['first_name'] . "'" . " AND surname = '" . $_SESSION['last_name'] . "'";
+                        WHERE firstName = '" . $_SESSION['first_name'] . "'" . " AND lastName = '" . $_SESSION['last_name'] . "'";
 
 if (!empty($searchTerm)) {
     $paymentsQuery .= " AND (payment_id LIKE '%$searchTerm%'
@@ -46,7 +46,7 @@ if ($result) {
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
                           FROM student_info
-                          WHERE firstname = '" . $_SESSION['first_name'] . "'" . " AND surname = '" . $_SESSION['last_name'] . "'";
+                          WHERE firstName = '" . $_SESSION['first_name'] . "'" . " AND lastName = '" . $_SESSION['last_name'] . "'";
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
     $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
     $totalRecords = $totalRecordsRow['total_records'];
