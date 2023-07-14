@@ -219,32 +219,6 @@
 
         
 
-        function filterStatus() {
-            var filterByStatusVal = $('#filterByStatus').val();
-            switch (filterByStatusVal) {
-                case '1':
-                    return ' pending';
-                    break;
-                case '2':
-                    return ' for receiving';
-                    break;
-                case '3':
-                    return ' for evaluation';
-                    break;
-                case '4':
-                    return ' ready for pickup';
-                    break;
-                case '5':
-                    return ' released';
-                    break;
-                case '6':
-                    return ' rejected';
-                    break;
-                default:
-                    return '';
-            }
-        }
-
         // Update status button listener
         $('#update-status-button').on('click', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
@@ -271,8 +245,8 @@
             });
         });
 
-        // Checkbox change listener
-        $('input[name="request-checkbox"]').on('change', function() {
+                // Checkbox change listener using event delegation
+                $(document).on('change', 'input[name="request-checkbox"]', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
             var updateButton = $('#update-status-button');
             var statusDropdown = $('#update-status');
@@ -280,10 +254,37 @@
             if (checkedCheckboxes.length > 0) {
                 updateButton.prop('disabled', false);
                 statusDropdown.prop('disabled', false);
-            } else {
+            }
+            else {
                 updateButton.prop('disabled', true);
                 statusDropdown.prop('disabled', true);
             }
         });
     });
+
+    function filterStatus() {
+            var filterByStatusVal = $('#filterByStatus').val();
+            switch (filterByStatusVal) {
+                case '1':
+                    return ' pending';
+                    break;
+                case '2':
+                    return ' for receiving';
+                    break;
+                case '3':
+                    return ' for evaluation';
+                    break;
+                case '4':
+                    return ' ready for pickup';
+                    break;
+                case '5':
+                    return ' released';
+                    break;
+                case '6':
+                    return ' rejected';
+                    break;
+                default:
+                    return '';
+            }
+        }
 </script>

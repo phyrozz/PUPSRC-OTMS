@@ -167,15 +167,17 @@
                                 <label for="course" class="form-label">Course</label>
                                 <select class="form-control form-select" name="course" id="course" required>
                                     <option value="">--Select--</option>
-                                    <option value="BSA">BSA</option>
-                                    <option value="BSBAMM">BSBAMM</option>
-                                    <option value="BSBAHRM">BSBAHRM</option>
-                                    <option value="BSECE">BSECE</option>
-                                    <option value="BSEdEng">BSEd Eng</option>
-                                    <option value="BSEdMath">BSEd Math</option>
-                                    <option value="BSIE">BSIE</option>
-                                    <option value="BSIT">BSIT</option>
-                                    <option value="BSPSY">BSPSY</option>
+                                    <option value="BSEE">Bachelor of Science in Electronics Engineering</option>
+                                    <option value="BSBA-HRM">Bachelor of Science in Business Administration Major in Human Resource Management</option>
+                                    <option value="BSBA-MM">Bachelor of Science in Business Administration Major in Marketing Management</option>
+                                    <option value="BSED-Eng">Bachelor in Secondary Education Major in English</option>
+                                    <option value="BSED-Fil">Bachelor in Secondary Education Major in Filipino</option>
+                                    <option value="BSED-Math">Bachelor in Secondary Education Major in Mathematics</option>
+                                    <option value="BSIE">Bachelor of Science in Industrial Engineering</option>
+                                    <option value="BSIT">Bachelor of Science in Information Technology</option>
+                                    <option value="BSP">Bachelor of Science in Psychology</option>
+                                    <option value="BTL-HE">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
+
                                 </select>
 
                                 <div class="invalid-feedback">Please choose a course.</div>
@@ -486,7 +488,7 @@
             sectionSelect.innerHTML = "";
 
             // Check if the selected course is BSBAMM
-            if (selectedCourse === "BSBAMM") {
+            if (selectedCourse === "BSBA-MM") {
                 // Add all sections as options
                 var sections = ["1-1", "1-2", "1-3", "1-4", "2-1", "2-2", "2-3", "2-4", "3-1", "3-2", "3-3", "3-4", "4-1", "4-2", "4-3", "4-4"];
                 for (var i = 0; i < sections.length; i++) {

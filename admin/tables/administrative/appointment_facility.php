@@ -141,7 +141,7 @@
                             
 
                             '<td class="text-center">' + appointment.last_name + ", " + appointment.first_name + " " + appointment.middle_name + " " + appointment.extension_name + '</td>' +
-                            '<td class="text-center">' + appointment.course + appointment.section + '</td>' +
+                            '<td class="text-center">' + appointment.course + " | " +  appointment.section + '</td>' +
                             '<td class="text-center">' + appointment.role + '</td>' +
                             '<td class="text-center">' + new Date(appointment.start_date_time_sched).toLocaleString('en-US', { 
                                 month: 'long',
@@ -151,7 +151,7 @@
                                 minute: 'numeric',
                                 hour12: true
                                 }) + '</td>' +
-                           
+                            
             
                             '<td class="text-center">' + new Date(appointment.end_date_time_sched).toLocaleString('en-US', { 
                                 month: 'long',
@@ -242,33 +242,7 @@
 
         
 
-        function filterStatus() {
-            var filterByStatusVal = $('#filterByStatus').val();
-            
-            switch (filterByStatusVal) {
-                case '1':
-                    return ' pending';
-                    break;
-                case '2':
-                    return ' for receiving';
-                    break;
-                case '3':
-                    return ' for evaluation';
-                    break;
-                case '4':
-                    return ' ready for pickup';
-                    break;
-                case '5':
-                    return ' released';
-                    break;
-                case '6':
-                    return ' rejected';
-                    break;
-                default:
-                    return '';
-            }
-        }
-
+       
         // Update status button listener
         $('#update-status-button').on('click', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
@@ -309,5 +283,49 @@
                 statusDropdown.prop('disabled', true);
             }
         });
+
+              // Checkbox change listener using event delegation
+              $(document).on('change', 'input[name="request-checkbox"]', function() {
+            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
+            var updateButton = $('#update-status-button');
+            var statusDropdown = $('#update-status');
+
+            if (checkedCheckboxes.length > 0) {
+                updateButton.prop('disabled', false);
+                statusDropdown.prop('disabled', false);
+            }
+            else {
+                updateButton.prop('disabled', true);
+                statusDropdown.prop('disabled', true);
+            }
+        });
     });
+
+    function filterStatus() {
+            var filterByStatusVal = $('#filterByStatus').val();
+            
+            switch (filterByStatusVal) {
+                case '1':
+                    return ' pending';
+                    break;
+                case '2':
+                    return ' for receiving';
+                    break;
+                case '3':
+                    return ' for evaluation';
+                    break;
+                case '4':
+                    return ' ready for pickup';
+                    break;
+                case '5':
+                    return ' released';
+                    break;
+                case '6':
+                    return ' rejected';
+                    break;
+                default:
+                    return '';
+            }
+        }
+
 </script>
