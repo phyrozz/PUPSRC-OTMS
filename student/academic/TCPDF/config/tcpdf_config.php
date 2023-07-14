@@ -111,6 +111,8 @@ define ('PDF_AUTHOR', 'TCPDF');
  */
 define ('PDF_HEADER_TITLE', 'Academic Office – Subject Overload');
 
+define ('PDF_HEADER_TITLE2', 'Academic Office – Cross Enrollment');
+
 /**
  * Header description string.
  */
@@ -118,6 +120,12 @@ define ('PDF_HEADER_STRING',
 "Republic of the Philippines                                                       Application for Change of Enrollment
 Polytechnic University of the Philippines                                  Ace Form
 Office of the Branch/Campus Registrar                                    Adding of Subject
+");
+
+define ('PDF_HEADER_STRING2', 
+"Republic of the Philippines                                                       Application for Change of Enrollment
+Polytechnic University of the Philippines                                  Ace Form
+Office of the Branch/Campus Registrar                                    Cross Enrollment
 ");
 
 /**
