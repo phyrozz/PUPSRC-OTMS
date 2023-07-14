@@ -19,8 +19,7 @@ if(isset($_SESSION['appointment_details'])) {
     $endTime = date("h:i A", strtotime($appointmentDetails['endTime']));
     $facilityId = $appointmentDetails['facility_id'];
     $purpose = $appointmentDetails['purposeReq'];
-    $course =  $appointmentDetails['course'];
-    $section = $appointmentDetails['section'];
+    $client =  $appointmentDetails['client'];
 
 
         $currentDate = new DateTime("now", new DateTimeZone("Asia/Manila"));
@@ -144,7 +143,7 @@ $html = <<<EOD
         }
 
         #year-level,
-        #course,
+        #client,
         #facility,
         #reason,
         #start-date,
@@ -249,7 +248,7 @@ $html = <<<EOD
         <p>Greetings in pursuit of wisdom!</p>
 
         <p class="indent">
-            We, the students from <span id="course">$course</span> <span id="year-level">$section</span>, will be conducting a Seminar entitled "<span id="reason">$purpose</span>" to be held on <span id="start-date">$startDate</span>, from <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> at PUP-Santa Rosa <span id="facility">$facilityName</span>, as a requirement for our subject HRMA 30103 Seminar-Workshop in Human Resource Management Trends and Issues.
+            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name )</span>, will be conducting a Seminar entitled "<span id="reason">$purpose</span>" to be held on <span id="start-date">$startDate</span>, from <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> at PUP-Santa Rosa <span id="facility">$facilityName</span>.
         </p>
 
         <p class="indent">

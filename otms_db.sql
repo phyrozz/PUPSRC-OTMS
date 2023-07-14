@@ -145,24 +145,24 @@ INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `ext
 --
 
 CREATE TABLE `appointment_facility` (
-  `appointment_id` int(11) NOT NULL,
+  `appointment_id` varchar(50) NOT NULL DEFAULT concat('FA-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
-  `course` varchar(50) NOT NULL,
-  `section` varchar(50) NOT NULL,
+  `course` varchar(50) DEFAULT NULL,
+  `section` varchar(50) DEFAULT NULL,
   `start_date_time_sched` datetime DEFAULT NULL,
   `end_date_time_sched` datetime DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
-  `facility_id` int(11) NOT NULL
+  `facility_id` int(11) NOT NULL,
+  `client` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `appointment_facility`
 --
 
-INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `email`, `purpose`, `facility_id`) VALUES
-(3, 39, 3, 'BSIT', '3-1', '2023-07-12 15:30:00', '2023-07-13 16:00:00', 'joshuamalabanan70@gmail.com', 'basta', 1);
+INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`) VALUES
+(3, 39, 3, 'BSIT', '3-1', '2023-07-12 15:30:00', '2023-07-13 16:00:00', 'basta', 1);
 
 -- --------------------------------------------------------
 
@@ -650,12 +650,11 @@ INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`,
 --
 
 CREATE TABLE `request_equipment` (
-  `request_id` int(11) NOT NULL,
+  `request_id` varchar(50) NOT NULL DEFAULT concat('ROE-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
   `datetime_schedule` datetime DEFAULT NULL,
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -664,8 +663,8 @@ CREATE TABLE `request_equipment` (
 -- Dumping data for table `request_equipment`
 --
 
-INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `email`, `purpose`, `equipment_id`) VALUES
-(6, 39, '2023-07-19 11:30:00', 2, 3, 'joshuamalabanan70@gmail.com', 'basta', 10);
+INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `purpose`, `equipment_id`) VALUES
+(6, 39, '2023-07-19 11:30:00', 2, 3, 'basta', 10);
 
 -- --------------------------------------------------------
 
