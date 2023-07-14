@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 13, 2023 at 05:48 AM
+-- Generation Time: Jul 14, 2023 at 03:41 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -195,9 +195,36 @@ CREATE TABLE `counseling_schedules` (
 INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `comments`, `doc_requests_id`) VALUES
 ('GC-1688953523', 'Personal Development', NULL, 'DR-1688953523'),
 ('GC-1688953548', 'Report Issue', NULL, 'DR-1688953548'),
-('GC-1688953998', 'Other', 'may nagbubugbugan sa second floor hallway', 'DR-1688953998'),
 ('GC-1688957709', 'Other', 'basta', 'DR-1688957709'),
 ('GC-1689061553', 'Other', 'Nagkaroon ng bugbugan sa hallway na naman po.', 'DR-1689061553');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `courses`
+--
+
+CREATE TABLE `courses` (
+  `course_id` int(11) NOT NULL,
+  `course` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `courses`
+--
+
+INSERT INTO `courses` (`course_id`, `course`) VALUES
+(1, 'Bachelor of Science in Electronics Engineering'),
+(2, 'Bachelor of Science in Business Administration Major in Human Resource Management'),
+(3, 'Bachelor of Science in Business Administration Major in Marketing Management'),
+(4, 'Bachelor in Secondary Education Major in English'),
+(5, 'Bachelor in Secondary Education Major in Filipino'),
+(6, 'Bachelor in Secondary Education Major in Mathematics'),
+(7, 'Bachelor of Science in Industrial Engineering'),
+(8, 'Bachelor of Science in Information Technology'),
+(9, 'Bachelor of Science in Psychology'),
+(10, 'Bachelor in Technology And Livelihood Education Major in Home Economics'),
+(11, 'Bachelor of Science in Management Accounting');
 
 -- --------------------------------------------------------
 
@@ -208,7 +235,7 @@ INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, 
 CREATE TABLE `doc_requests` (
   `request_id` varchar(50) NOT NULL DEFAULT concat('DR-',unix_timestamp()),
   `request_description` varchar(255) NOT NULL,
-  `scheduled_datetime` datetime DEFAULT NULL,
+  `scheduled_datetime` datetime DEFAULT current_timestamp(),
   `office_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
@@ -221,21 +248,21 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688799730', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688799736', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
+('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 6, 0.00, NULL),
+('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 4, 0.00, NULL),
+('DR-1688799730', 'Request Clearance', NULL, 5, 39, 4, 0.00, NULL),
+('DR-1688799736', 'Request Clearance', NULL, 5, 39, 5, 0.00, NULL),
 ('DR-1688953523', 'Guidance Counseling', '2023-07-12 11:00:00', 5, 39, 1, 0.00, NULL),
 ('DR-1688953548', 'Guidance Counseling', '2023-07-12 10:30:00', 5, 39, 1, 0.00, NULL),
-('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688953718', 'Request Clearance', NULL, 5, 39, 1, 0.00, NULL),
-('DR-1688953998', 'Guidance Counseling', '2023-07-12 13:30:00', 5, 39, 1, 0.00, NULL),
-('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 1, 0.00, NULL),
+('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 2, 0.00, NULL),
+('DR-1688953718', 'Request Clearance', NULL, 5, 39, 3, 0.00, NULL),
+('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 7, 0.00, NULL),
 ('DR-1688967322', 'Request Clearance', NULL, 5, 42, 1, 0.00, NULL),
-('DR-1688967329', 'Request Good Moral Document', NULL, 5, 42, 1, 0.00, NULL),
-('DR-1688970013', 'Request Good Moral Document', NULL, 5, 43, 1, 0.00, NULL),
+('DR-1688967329', 'Request Good Moral Document', NULL, 5, 42, 2, 0.00, NULL),
+('DR-1688970013', 'Request Good Moral Document', NULL, 5, 43, 2, 0.00, NULL),
 ('DR-1688970028', 'Request Clearance', NULL, 5, 43, 1, 0.00, NULL),
-('DR-1689061553', 'Guidance Counseling', '2023-07-12 16:00:00', 5, 39, 1, 0.00, NULL);
+('DR-1689061553', 'Guidance Counseling', '2023-07-12 16:00:00', 5, 39, 6, 0.00, NULL),
+('DR-1689273484', 'Request Good Moral Document', '2023-07-26 00:00:00', 5, 39, 1, 0.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -722,7 +749,8 @@ INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
 (3, 'For Evaluation'),
 (4, 'Ready for Pickup'),
 (5, 'Released'),
-(6, 'Rejected');
+(6, 'Rejected'),
+(7, 'Approved');
 
 -- --------------------------------------------------------
 
@@ -833,6 +861,8 @@ CREATE TABLE `user_details` (
   `city` varchar(100) NOT NULL,
   `barangay` varchar(100) NOT NULL,
   `zip_code` varchar(6) DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `year_and_section` varchar(3) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -840,10 +870,10 @@ CREATE TABLE `user_details` (
 -- Dumping data for table `user_details`
 --
 
-INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `user_id`) VALUES
-(1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 39),
-(3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', 42),
-(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 43);
+INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `course_id`, `year_and_section`, `user_id`) VALUES
+(1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, NULL, 39),
+(3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', NULL, NULL, 42),
+(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 8, '3-1', 43);
 
 -- --------------------------------------------------------
 
@@ -930,6 +960,12 @@ ALTER TABLE `clients`
 ALTER TABLE `counseling_schedules`
   ADD PRIMARY KEY (`counseling_id`),
   ADD KEY `fk_schedules_doc_requests1_idx` (`doc_requests_id`);
+
+--
+-- Indexes for table `courses`
+--
+ALTER TABLE `courses`
+  ADD PRIMARY KEY (`course_id`);
 
 --
 -- Indexes for table `doc_requests`
@@ -1098,7 +1134,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_details`
   ADD PRIMARY KEY (`user_detail_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `course_id` (`course_id`);
 
 --
 -- Indexes for table `user_roles`
@@ -1145,6 +1182,12 @@ ALTER TABLE `appointment_facility`
 --
 ALTER TABLE `clients`
   MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `courses`
+--
+ALTER TABLE `courses`
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `equipment`
@@ -1234,7 +1277,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `statuses`
 --
 ALTER TABLE `statuses`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `student_info`
@@ -1258,13 +1301,13 @@ ALTER TABLE `subject_overload`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -1406,7 +1449,8 @@ ALTER TABLE `users`
 -- Constraints for table `user_details`
 --
 ALTER TABLE `user_details`
-  ADD CONSTRAINT `user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_details_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
