@@ -139,9 +139,28 @@
                                 </div>
                                 <div class="row">
                                 <div class="form-group col-12">
+                                    <label class="mb-0 pb-1">Course <code>*</code></label>
+                                    <div class="input-group mb-0">
+                                        <select name="Course" id="Course" class="form-control form-select" required>
+                                            <option value="" disabled selected hidden>Select Course</option>
+                                            <option value="1">Bachelor of Science in Electronics Engineering</option>
+                                            <option value="2">Bachelor of Science in Business Administration Major in Human Resource Management</option>
+                                            <option value="3">Bachelor of Science in Business Administration Major in Marketing Management</option>
+                                            <option value="4">Bachelor in Secondary Education Major in English</option>
+                                            <option value="5">Bachelor in Secondary Education Major in Filipino</option>
+                                            <option value="6">Bachelor in Secondary Education Major in Mathematics</option>
+                                            <option value="7">Bachelor of Science in Industrial Engineering</option>
+                                            <option value="8">Bachelor of Science in Information Technology</option>
+                                            <option value="9">Bachelor of Science in Psychology</option>
+                                            <option value="10">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
+                                            <option value="11">Bachelor of Science in Management Accounting</option>
+                                        </select>                                    
+                                    </div>
+                                </div>
+                                <div class="form-group col-12">
                                     <label>Contact Number <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Eg. 0901-234-5678" pattern="^090\d{1}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Eg. 0901-234-5678" pattern="^0\d{3}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control" required>
                                     </div>
                                     <div id="contactNoValidationMessage" class="text-danger"></div>
                                 </div>

@@ -19,7 +19,7 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'counseling_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 
 // Retrieve the document requests
-$counselingQuery = "SELECT counseling_schedules.counseling_id, counseling_schedules.appointment_description, doc_requests.scheduled_datetime, statuses.status_name
+$counselingQuery = "SELECT counseling_schedules.counseling_id, counseling_schedules.appointment_description, counseling_schedules.comments, doc_requests.scheduled_datetime, statuses.status_name
 FROM counseling_schedules
 INNER JOIN doc_requests ON counseling_schedules.doc_requests_id = doc_requests.request_id
 INNER JOIN offices ON doc_requests.office_id = offices.office_id

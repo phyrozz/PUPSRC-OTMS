@@ -1,3 +1,13 @@
+<?php
+// Generate a list of statuses for this table to be rendered on <select> in guidance.php
+$statuses = array(
+    'all' => 'All',
+    '1' => 'Pending',
+    '3' => 'For Evaluation',
+    '7' => 'Approved',
+    '6' => 'Rejected'
+);
+?>
 <table id="transactions-table" class="table table-hover hidden">
     <thead>
         <tr class="table-active">
@@ -36,7 +46,19 @@
         <!-- Table rows will be generated dynamically using JavaScript -->
     </tbody>
 </table>
-<div id="pagination" class="container-fluid p-0">
+<div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
+    <div class="d-flex gap-2">
+        <div class="input-group">
+            <div class="input-group-text">Update Status:</div>
+            <select class="form-select" name="update-status" id="update-status" disabled>
+                <option value="1">Pending</option>
+                <option value="3">For Evaluation</option>
+                <option value="7">Approved</option>
+                <option value="6">Rejected</option>
+            </select>
+        </div>
+        <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
+    </div> 
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
             <ul class="pagination" id="pagination-links">
@@ -45,19 +67,32 @@
         </div>
     </nav>
 </div>
+<!-- View comment modal -->
+<div id="viewCommentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewCommentModalLabel">Reason/Comment</h5>
+            </div>
+            <div class="modal-body">
+                <p><?php  ?></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view comment modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Released':
+            case 'Approved':
                 return 'bg-success';
             case 'Rejected':
                 return 'bg-danger';
-            case 'For Receiving':
-                return 'bg-warning text-dark';
             case 'For Evaluation':
                 return 'bg-primary';
-            case 'Ready for Pickup':
-                return 'bg-info';
             default:
                 return 'bg-dark';
         }
@@ -102,12 +137,18 @@
                         var formattedDate = date.toLocaleString();
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + schedules.counseling_id + '" name="' + schedules.counseling_id + '" value="' + schedules.counseling_id + '"></td>' +
+                            '<td><input type="checkbox" name="counseling-checkbox" value="' + schedules.counseling_id + '"></td>' +
                             '<td>' + schedules.counseling_id + '</td>' +
                             '<td>' + formattedDate + '</td>' +
                             '<td>' + schedules.last_name + ", " + schedules.first_name + " " + schedules.middle_name + " " + schedules.extension_name + '</td>' +
                             '<td>' + schedules.role + '</td>' +
-                            '<td>' + schedules.appointment_description + '</td>' +
+                            '<td>' +
+                            (schedules.appointment_description === 'Other' ?
+                                '<a href="#" class="other-appointment" data-comment="' + schedules.comments + '">' +
+                                schedules.appointment_description +
+                                '</a>' :
+                                schedules.appointment_description) +
+                            '</td>' + 
                             '<td>' + (schedules.scheduled_datetime !== null ? (new Date(schedules.scheduled_datetime)).toLocaleString('en-US', {
                             month: 'long',
                             day: 'numeric',
@@ -170,12 +211,100 @@
     });
 
     // Initial pagination request (page 1)
-    handlePagination(1, '', 'request_id', 'desc');
+    handlePagination(1, '', 'counseling_id', 'desc');
 
     $(document).ready(function() {
-        $('#button-addon2').click(function() {
+        $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm, 'request_id', 'desc');
+            handlePagination(1, searchTerm + filterStatus(), 'counseling_id', 'desc');
+        });
+
+        $('#filterButton').on('click', function() {
+            var searchTerm = $('#search-input').val();
+            handlePagination(1, searchTerm + filterStatus(), 'counseling_id', 'desc');
+        });
+
+        // Update status button listener
+        $('#update-status-button').on('click', function() {
+            var checkedCheckboxes = $('input[name="counseling-checkbox"]:checked');
+            var counselingIds = checkedCheckboxes.map(function() {
+                return $(this).val();
+            }).get();
+            var statusId = $('#update-status').val(); // Get the selected status ID
+
+            $.ajax({
+                url: 'tables/guidance/update_counseling.php',
+                method: 'POST',
+                data: { counselingIds: counselingIds, statusId: statusId }, // Include the selected status ID in the data
+                success: function(response) {
+                    // Handle the success response
+                    console.log('Status updated successfully');
+
+                    // Refresh the table after status update
+                    handlePagination(1, '', 'counseling_id', 'desc');
+                },
+                error: function() {
+                    // Handle the error response
+                    console.log('Error occurred while updating status');
+                }
+            });
+        });
+
+        // Checkbox change listener using event delegation
+        $(document).on('change', 'input[name="counseling-checkbox"]', function() {
+            var checkedCheckboxes = $('input[name="counseling-checkbox"]:checked');
+            var updateButton = $('#update-status-button');
+            var statusDropdown = $('#update-status');
+
+            if (checkedCheckboxes.length > 0) {
+                updateButton.prop('disabled', false);
+                statusDropdown.prop('disabled', false);
+            }
+            else {
+                updateButton.prop('disabled', true);
+                statusDropdown.prop('disabled', true);
+            }
+        });
+
+        // Add event listener to the table body
+        var tableBody = document.getElementById('table-body');
+        tableBody.addEventListener('click', function(event) {
+            var target = event.target;
+
+            // Check if the clicked element is an "Other" appointment hyperlink
+            if (target.tagName === 'A' && target.classList.contains('other-appointment')) {
+                event.preventDefault();
+                var comment = target.getAttribute('data-comment');
+
+                // Set the comment in the modal body
+                var commentModalBody = document.getElementById('viewCommentModal').querySelector('.modal-body');
+                commentModalBody.textContent = comment;
+
+                // Show the comment modal
+                $('#viewCommentModal').modal('show');
+            }
         });
     });
+
+    // Perform search functionality when either the Filter or Search button is pressed
+    function filterStatus() {
+        var filterByStatusVal = $('#filterByStatus').val();
+        
+        switch (filterByStatusVal) {
+            case '1':
+                return ' pending';
+                break;
+            case '3':
+                return ' for evaluation';
+                break;
+            case '6':
+                return ' rejected';
+                break;
+            case '7':
+                return ' approved';
+                break;
+            default:
+                return '';
+        }
+    }
 </script>

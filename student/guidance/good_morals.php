@@ -20,6 +20,7 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -40,15 +41,16 @@
 
             if(isset($_POST['goodMoralsFormSubmit'])) {
                 $requestDescription = "Request Good Moral Document";
+                $scheduledDateTime = $_POST['date'];
                 $officeId = 5;
                 $statusId = 1;
                 $amountToPay = 0.00;
 
-                $query = "INSERT INTO doc_requests (request_description, office_id, user_id, status_id, amount_to_pay)
-                VALUES (?, ?, ?, ?, ?)";
+                $query = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, amount_to_pay)
+                VALUES (?, ?, ?, ?, ?, ?)";
 
                 $stmt = $connection->prepare($query);
-                $stmt->bind_param("siiid", $requestDescription, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
+                $stmt->bind_param("ssiiid", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
                     // header("Location: http://localhost/student/guidance/success.php");
@@ -99,7 +101,7 @@
                         <h6>Request Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="row g-3" method="POST">
+                        <form id="appointment-form" class="row g-3" method="POST" autocomplete="off">
                         <input type="hidden" name="form_type" value="good_morals">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
@@ -133,6 +135,11 @@
                                 <input type="email" class="form-control" id="email" value="<?php echo $userData[0]['email'] ?>" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Request Information</h6>
+                            <div class="form-group required col-md-12">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="text" class="form-control" name="date" id="datepicker" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
+                                <div id="dateValidationMessage" class="text-danger"></div>
+                            </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
                                     <p>Supporting Documents (Referral Slip, etc.)</p>
@@ -206,6 +213,8 @@
     <script>
         const contactNoInput = document.getElementById('contactNumber');
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+        const dateInput = document.getElementById('datepicker');
+        const dateValidationMessage = document.getElementById('dateValidationMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
@@ -235,17 +244,49 @@
             }
         });
 
+        dateInput.addEventListener('input', () => {
+            const dateValue = dateInput.value.trim();
+
+            if (dateValue == '') {
+                dateValidationMessage.textContent = 'Please enter a schedule date for your request.';
+                dateInput.classList.add('is-invalid');
+            } else {
+                dateValidationMessage.textContent = '';
+                dateInput.classList.remove('is-invalid');
+            }
+        });
+
         // Function to handle form submission
         function handleSubmit() {
-            validateContactNumber();
-            var form = document.getElementById('appointment-form');
-            if (form.checkValidity()) {
+            if (document.getElementById('appointment-form').checkValidity()) {
                 $('#confirmSubmitModal').modal('show');
             }
         }
 
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#datepicker", {
+            readonly: false,
+            allowInput: true,
+            defaultDate: "today",
+            dateFormat: "Y-m-d",
+            theme: "custom-datepicker",
+            minDate: "today",
+            maxDate: "31.12.2033",
+            disable: [
+                function(date) {
+                    // Disable date on Sundays
+                    return (date.getDay() === 0);
+
+                }
+            ],
+            locale: {
+                "firstDayOfWeek": 1 // start week on Monday
+            },
+        });
     </script>
     <script src="../../saved_settings.js"></script>
     <?php

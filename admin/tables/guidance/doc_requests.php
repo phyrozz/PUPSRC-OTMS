@@ -1,3 +1,15 @@
+<?php
+// Generate a list of statuses for this table to be rendered on <select> in guidance.php
+$statuses = array(
+    'all' => 'All',
+    '1' => 'Pending',
+    '2' => 'For Receiving',
+    '3' => 'For Evaluation',
+    '4' => 'Ready for Pickup',
+    '5' => 'Released',
+    '6' => 'Rejected'
+);
+?>
 <div class="table-responsive">
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
@@ -9,6 +21,10 @@
                 </th>
                 <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
                     Date requested
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-id-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
+                    Scheduled Date
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-requestor-header sortable-header" data-column="last_name" scope="col" data-order="desc">
@@ -128,6 +144,7 @@
                             '<td><input type="checkbox" name="request-checkbox" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
                             '<td>' + formattedDate + '</td>' +
+                            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
                             '<td>' + request.last_name + ", " + request.first_name + " " + request.middle_name + " " + request.extension_name + '</td>' +
                             '<td>' + request.role + '</td>' +
                             '<td>' + request.request_description + '</td>' +
