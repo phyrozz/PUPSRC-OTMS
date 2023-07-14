@@ -35,13 +35,14 @@ if (isset($_POST['studentSignup'])) {
         $barangay = $_POST['Barangay'];
         $zipCode = $_POST['ZipCode'];
         $password = $_POST['Password'];
+        $course = $_POST['Course'];
         $userRole = 1;
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $query = "INSERT INTO users (student_no, last_name, first_name, middle_name, extension_name, contact_no, email, birth_date, password, user_role)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $userDetailsQuery = "INSERT INTO user_details (sex, home_address, province, city, barangay, zip_code, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $userDetailsQuery = "INSERT INTO user_details (sex, home_address, province, city, barangay, zip_code, course_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     
         $stmt = $connection->prepare($query);
         $stmt->bind_param("sssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
@@ -50,7 +51,7 @@ if (isset($_POST['studentSignup'])) {
             $stmt->close();
             $lastId = $connection->insert_id;
             $stmt = $connection->prepare($userDetailsQuery);
-            $stmt->bind_param("isssssi", $gender, $address, $province, $city, $barangay, $zipCode, $lastId);
+            $stmt->bind_param("isssssii", $gender, $address, $province, $city, $barangay, $zipCode, $course, $lastId);
             $stmt->execute();
             $stmt->close();
             header("Location: http://localhost/login/student.php");
