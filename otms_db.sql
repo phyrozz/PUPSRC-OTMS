@@ -161,8 +161,6 @@ CREATE TABLE `appointment_facility` (
 -- Dumping data for table `appointment_facility`
 --
 
-INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`) VALUES
-(3, 39, 3, 'BSIT', '3-1', '2023-07-12 15:30:00', '2023-07-13 16:00:00', 'basta', 1);
 
 -- --------------------------------------------------------
 
@@ -683,15 +681,15 @@ CREATE TABLE `request_equipment` (
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
   `purpose` text NOT NULL,
-  `equipment_id` int(11) NOT NULL
+  `equipment_id` int(11) NOT NULL,
+  `slip_content` LONGBLOB
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `request_equipment`
 --
 
-INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `purpose`, `equipment_id`) VALUES
-(6, 39, '2023-07-19 11:30:00', 2, 3, 'basta', 10);
+
 
 -- --------------------------------------------------------
 
@@ -1173,8 +1171,6 @@ ALTER TABLE `admins`
 --
 -- AUTO_INCREMENT for table `appointment_facility`
 --
-ALTER TABLE `appointment_facility`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -1261,10 +1257,6 @@ ALTER TABLE `reg_transaction`
   MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `request_equipment`
---
-ALTER TABLE `request_equipment`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `services`

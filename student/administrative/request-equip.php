@@ -317,7 +317,7 @@
         </div>
         <div class="push"></div>
     </div>
-    <?php include '../footer.php'; ?>
+    <?php include '../../footer.php'; ?>
     <script src="../../loading.js"></script>
     <script src="jquery.js"></script>
         <script>
