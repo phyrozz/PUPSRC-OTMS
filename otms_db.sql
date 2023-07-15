@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2023 at 03:41 PM
+-- Generation Time: Jul 15, 2023 at 07:18 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -161,17 +161,8 @@ CREATE TABLE `appointment_facility` (
 -- Dumping data for table `appointment_facility`
 --
 
-
--- --------------------------------------------------------
-
---
--- Table structure for table `clients`
---
-
-CREATE TABLE `clients` (
-  `client_id` int(11) NOT NULL,
-  `users_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`, `client`) VALUES
+('FA-1689393976', 42, 1, NULL, NULL, '2023-07-19 10:00:00', '2023-07-25 11:30:00', 'basta', 2, 'Visitor');
 
 -- --------------------------------------------------------
 
@@ -191,10 +182,9 @@ CREATE TABLE `counseling_schedules` (
 --
 
 INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `comments`, `doc_requests_id`) VALUES
-('GC-1688953523', 'Personal Development', NULL, 'DR-1688953523'),
-('GC-1688953548', 'Report Issue', NULL, 'DR-1688953548'),
-('GC-1688957709', 'Other', 'basta', 'DR-1688957709'),
-('GC-1689061553', 'Other', 'Nagkaroon ng bugbugan sa hallway na naman po.', 'DR-1689061553');
+('GC-1689385362', 'Academic Performance', '', 'DR-1689385362'),
+('GC-1689385407', 'Other', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula faucibus accumsan. Vestibulum aliquet, nisl a dapibus sagittis, lectus diam condimentum nulla, at rutrum elit elit quis nibh. Maecenas dictum lectus sit amet fermentum molestie. Vestibulum ac enim ex. Nam pellentesque convallis odio, tempus ultricies nulla sodales a. In luctus porta turpis vitae congue. Quisque sollicitudin pulvinar tortor, eu viverra dolor tincidunt nec. Donec accumsan eros ex, ut imperdiet metus egestas at.', 'DR-1689385407'),
+('GC-1689385434', 'Report Issue', '', 'DR-1689385434');
 
 -- --------------------------------------------------------
 
@@ -227,6 +217,19 @@ INSERT INTO `courses` (`course_id`, `course`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cross_enrollment`
+--
+
+CREATE TABLE `cross_enrollment` (
+  `cross_enrollment_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `application_letter` varchar(255) DEFAULT NULL,
+  `application_letter_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `doc_requests`
 --
 
@@ -238,29 +241,32 @@ CREATE TABLE `doc_requests` (
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `amount_to_pay` decimal(10,2) NOT NULL,
-  `attached_files` mediumblob DEFAULT NULL
+  `attached_files` varchar(255) DEFAULT NULL,
+  `request_letter` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `doc_requests`
 --
 
-INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`) VALUES
-('DR-1688797156', 'Request Good Moral Document', NULL, 5, 39, 6, 0.00, NULL),
-('DR-1688799724', 'Request Good Moral Document', NULL, 5, 39, 4, 0.00, NULL),
-('DR-1688799730', 'Request Clearance', NULL, 5, 39, 4, 0.00, NULL),
-('DR-1688799736', 'Request Clearance', NULL, 5, 39, 5, 0.00, NULL),
-('DR-1688953523', 'Guidance Counseling', '2023-07-12 11:00:00', 5, 39, 1, 0.00, NULL),
-('DR-1688953548', 'Guidance Counseling', '2023-07-12 10:30:00', 5, 39, 1, 0.00, NULL),
-('DR-1688953704', 'Request Good Moral Document', NULL, 5, 39, 2, 0.00, NULL),
-('DR-1688953718', 'Request Clearance', NULL, 5, 39, 3, 0.00, NULL),
-('DR-1688957709', 'Guidance Counseling', '2023-07-12 15:00:00', 5, 43, 7, 0.00, NULL),
-('DR-1688967322', 'Request Clearance', NULL, 5, 42, 1, 0.00, NULL),
-('DR-1688967329', 'Request Good Moral Document', NULL, 5, 42, 2, 0.00, NULL),
-('DR-1688970013', 'Request Good Moral Document', NULL, 5, 43, 2, 0.00, NULL),
-('DR-1688970028', 'Request Clearance', NULL, 5, 43, 1, 0.00, NULL),
-('DR-1689061553', 'Guidance Counseling', '2023-07-12 16:00:00', 5, 39, 6, 0.00, NULL),
-('DR-1689273484', 'Request Good Moral Document', '2023-07-26 00:00:00', 5, 39, 1, 0.00, NULL);
+INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`, `request_letter`) VALUES
+('DR-1689378797', 'Request Clearance', '2023-07-15 00:00:00', 5, 39, 6, 0.00, NULL, NULL),
+('DR-1689378809', 'Request Good Moral Document', '2023-07-25 00:00:00', 5, 39, 3, 0.00, NULL, NULL),
+('DR-1689380077', 'Request Good Moral Document', '2023-07-25 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689380101', 'Request Clearance', '2023-07-18 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381003', 'Request Clearance', '2023-07-25 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381392', 'Request Clearance', '2023-07-27 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381463', 'Request Clearance', '2023-07-15 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381726', 'Request Clearance', '2023-07-15 00:00:00', 5, 43, 1, 0.00, '../../assets/uploads/supporting_docs/64b1eb5e6c505-345570657_1179516796047278_5195706963186077071_n.jpg', NULL),
+('DR-1689381876', 'Request Good Moral Document', '2023-07-20 00:00:00', 5, 43, 1, 0.00, '../../assets/uploads/supporting_docs/64b1ebf441ff4-123.jpg', NULL),
+('DR-1689381920', 'Request Good Moral Document', '2023-07-15 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381927', 'Request Clearance', '2023-07-29 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689385362', 'Guidance Counseling', '2023-07-15 14:30:00', 5, 43, 7, 0.00, NULL, NULL),
+('DR-1689385407', 'Guidance Counseling', '2023-07-20 12:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689385434', 'Guidance Counseling', '2023-07-18 09:30:00', 5, 43, 3, 0.00, NULL, NULL),
+('DR-1689385886', 'Request Good Moral Document', '2023-07-15 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689397741', 'Request Good Moral Document', '2023-07-19 00:00:00', 5, 42, 1, 0.00, NULL, NULL),
+('DR-1689398010', 'Request Good Moral Document', '2023-07-31 00:00:00', 5, 42, 1, 0.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -344,7 +350,7 @@ CREATE TABLE `facility` (
 
 INSERT INTO `facility` (`facility_id`, `facility_name`, `availability`, `facility_number`, `facility_type_id`, `request`) VALUES
 (1, 'Campus Court', 'Unavailable', '101', 1, 1),
-(2, 'Room 102', 'Available', '102', 1, 1),
+(2, 'Room 102', 'Unavailable', '102', 1, 1),
 (3, 'Room 103', 'Available', '103', 1, 1),
 (4, 'Room 104', 'Available', '104', 1, 1),
 (5, 'Room 105', 'Available', '105', 1, 1),
@@ -408,6 +414,21 @@ INSERT INTO `facility_type` (`facility_type_id`, `facility_type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `grade_accreditation`
+--
+
+CREATE TABLE `grade_accreditation` (
+  `grade_accreditation_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `completion_form` varchar(255) DEFAULT NULL,
+  `assessed_fee` varchar(255) DEFAULT NULL,
+  `completion_form_status` int(11) NOT NULL DEFAULT 1,
+  `assessed_fee_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `guidance_feedbacks`
 --
 
@@ -416,6 +437,19 @@ CREATE TABLE `guidance_feedbacks` (
   `user_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manual_enrollment`
+--
+
+CREATE TABLE `manual_enrollment` (
+  `manual_enrollment_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `r_zero_form` varchar(255) DEFAULT NULL,
+  `r_zero_form_status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -472,6 +506,14 @@ CREATE TABLE `offsettingtb` (
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `status_id` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `offsettingtb`
+--
+
+INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`, `status_id`) VALUES
+(3, 43, 250.00, 'Tuition Fee', '2023-07-15 03:44:38', 1),
+(4, 43, 100.00, 'Miscellaneous Fee', '2023-07-15 03:45:09', 1);
 
 -- --------------------------------------------------------
 
@@ -662,9 +704,9 @@ CREATE TABLE `reg_transaction` (
 --
 
 INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`, `services_id`, `schedule`, `status_id`) VALUES
-(5, 'REG-2', 39, 3, 12, '2023-07-13', 1),
-(6, '', 42, 3, 29, '2023-07-13', 1),
-(7, '', 42, 3, 31, '2023-07-13', 1),
+(5, 'REG-2', 39, 3, 12, '2023-07-13', 2),
+(6, '', 42, 3, 29, '2023-07-13', 2),
+(7, '', 42, 3, 31, '2023-07-13', 6),
 (8, '', 42, 3, 27, '2023-07-14', 1),
 (9, '', 42, 3, 30, '2023-07-12', 1);
 
@@ -682,14 +724,8 @@ CREATE TABLE `request_equipment` (
   `status_id` int(11) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL,
-  `slip_content` LONGBLOB
+  `slip_content` longblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `request_equipment`
---
-
-
 
 -- --------------------------------------------------------
 
@@ -724,6 +760,23 @@ INSERT INTO `services` (`services_id`, `service_name`, `service_description`, `o
 (12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://localhost/student/accounting/offsetting1.php'),
 (13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://localhost/student/administrative/view-equipment.php'),
 (14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://localhost/student/administrative/view-facility.php');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shifting`
+--
+
+CREATE TABLE `shifting` (
+  `shifting_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `request_letter` mediumblob NOT NULL,
+  `first_ctc` mediumblob NOT NULL,
+  `second_ctc` mediumblob NOT NULL,
+  `request_letter_status` int(11) NOT NULL DEFAULT 1,
+  `first_ctc_status` int(11) NOT NULL DEFAULT 1,
+  `second_ctc_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -803,12 +856,12 @@ CREATE TABLE `student_record` (
 CREATE TABLE `subject_overload` (
   `subject_overload_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `overload_letter` mediumblob DEFAULT NULL,
-  `ace_form` mediumblob DEFAULT NULL,
-  `cert_of_registration` mediumblob DEFAULT NULL,
-  `overload_letter_status` int(11) NOT NULL,
-  `ace_form_status` int(11) NOT NULL,
-  `cert_of_registration_status` int(11) NOT NULL
+  `overload_letter` varchar(255) DEFAULT NULL,
+  `ace_form` varchar(255) DEFAULT NULL,
+  `cert_of_registration` varchar(255) DEFAULT NULL,
+  `overload_letter_status` int(11) NOT NULL DEFAULT 1,
+  `ace_form_status` int(11) NOT NULL DEFAULT 1,
+  `cert_of_registration_status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -868,7 +921,7 @@ CREATE TABLE `user_details` (
 --
 
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `course_id`, `year_and_section`, `user_id`) VALUES
-(1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, NULL, 39),
+(1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, '3-1', 39),
 (3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', NULL, NULL, 42),
 (4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 8, '3-1', 43);
 
@@ -945,13 +998,6 @@ ALTER TABLE `appointment_facility`
   ADD KEY `facility` (`facility_id`);
 
 --
--- Indexes for table `clients`
---
-ALTER TABLE `clients`
-  ADD PRIMARY KEY (`client_id`),
-  ADD KEY `fk_clients_users1_idx` (`users_id`);
-
---
 -- Indexes for table `counseling_schedules`
 --
 ALTER TABLE `counseling_schedules`
@@ -963,6 +1009,14 @@ ALTER TABLE `counseling_schedules`
 --
 ALTER TABLE `courses`
   ADD PRIMARY KEY (`course_id`);
+
+--
+-- Indexes for table `cross_enrollment`
+--
+ALTER TABLE `cross_enrollment`
+  ADD PRIMARY KEY (`cross_enrollment_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `application_letter_status` (`application_letter_status`);
 
 --
 -- Indexes for table `doc_requests`
@@ -1000,11 +1054,26 @@ ALTER TABLE `facility_type`
   ADD PRIMARY KEY (`facility_type_id`);
 
 --
+-- Indexes for table `grade_accreditation`
+--
+ALTER TABLE `grade_accreditation`
+  ADD PRIMARY KEY (`grade_accreditation_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `guidance_feedbacks`
 --
 ALTER TABLE `guidance_feedbacks`
   ADD PRIMARY KEY (`feedback_id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `manual_enrollment`
+--
+ALTER TABLE `manual_enrollment`
+  ADD PRIMARY KEY (`manual_enrollment_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `r_zero_form_status` (`r_zero_form_status`);
 
 --
 -- Indexes for table `office`
@@ -1091,6 +1160,16 @@ ALTER TABLE `services`
   ADD KEY `office_id` (`office_id`);
 
 --
+-- Indexes for table `shifting`
+--
+ALTER TABLE `shifting`
+  ADD PRIMARY KEY (`shifting_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `request_letter_status` (`request_letter_status`),
+  ADD KEY `first_ctc_status` (`first_ctc_status`),
+  ADD KEY `second_ctc_status` (`second_ctc_status`);
+
+--
 -- Indexes for table `statuses`
 --
 ALTER TABLE `statuses`
@@ -1169,20 +1248,16 @@ ALTER TABLE `admins`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `appointment_facility`
---
-
---
--- AUTO_INCREMENT for table `clients`
---
-ALTER TABLE `clients`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
   MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `cross_enrollment`
+--
+ALTER TABLE `cross_enrollment`
+  MODIFY `cross_enrollment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `equipment`
@@ -1209,10 +1284,22 @@ ALTER TABLE `facility_type`
   MODIFY `facility_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `grade_accreditation`
+--
+ALTER TABLE `grade_accreditation`
+  MODIFY `grade_accreditation_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `guidance_feedbacks`
 --
 ALTER TABLE `guidance_feedbacks`
   MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `manual_enrollment`
+--
+ALTER TABLE `manual_enrollment`
+  MODIFY `manual_enrollment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `office`
@@ -1224,7 +1311,7 @@ ALTER TABLE `office`
 -- AUTO_INCREMENT for table `offsettingtb`
 --
 ALTER TABLE `offsettingtb`
-  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `password_reset_tokens`
@@ -1257,12 +1344,16 @@ ALTER TABLE `reg_transaction`
   MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
-
---
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
   MODIFY `services_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `shifting`
+--
+ALTER TABLE `shifting`
+  MODIFY `shifting_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `statuses`
@@ -1337,21 +1428,22 @@ ALTER TABLE `admins`
 -- Constraints for table `appointment_facility`
 --
 ALTER TABLE `appointment_facility`
-  ADD CONSTRAINT `appointment_facility_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `appointment_facility_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `appointment_facility_ibfk_3` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Constraints for table `clients`
---
-ALTER TABLE `clients`
-  ADD CONSTRAINT `clients_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `appointment_facility_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `appointment_facility_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
+  ADD CONSTRAINT `appointment_facility_ibfk_3` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`);
 
 --
 -- Constraints for table `counseling_schedules`
 --
 ALTER TABLE `counseling_schedules`
   ADD CONSTRAINT `counseling_schedules_ibfk_1` FOREIGN KEY (`doc_requests_id`) REFERENCES `doc_requests` (`request_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `cross_enrollment`
+--
+ALTER TABLE `cross_enrollment`
+  ADD CONSTRAINT `cross_enrollment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cross_enrollment_ibfk_2` FOREIGN KEY (`application_letter_status`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `doc_requests`
@@ -1374,10 +1466,23 @@ ALTER TABLE `facility`
   ADD CONSTRAINT `facility_ibfk_1` FOREIGN KEY (`facility_type_id`) REFERENCES `facility_type` (`facility_type_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `grade_accreditation`
+--
+ALTER TABLE `grade_accreditation`
+  ADD CONSTRAINT `grade_accreditation_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
 -- Constraints for table `guidance_feedbacks`
 --
 ALTER TABLE `guidance_feedbacks`
   ADD CONSTRAINT `guidance_feedbacks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `manual_enrollment`
+--
+ALTER TABLE `manual_enrollment`
+  ADD CONSTRAINT `manual_enrollment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `manual_enrollment_ibfk_2` FOREIGN KEY (`r_zero_form_status`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `offsettingtb`
@@ -1411,15 +1516,24 @@ ALTER TABLE `reg_transaction`
 -- Constraints for table `request_equipment`
 --
 ALTER TABLE `request_equipment`
-  ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `request_equipment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `request_equipment_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`status_id`),
+  ADD CONSTRAINT `request_equipment_ibfk_3` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`);
 
 --
 -- Constraints for table `services`
 --
 ALTER TABLE `services`
   ADD CONSTRAINT `services_ibfk_1` FOREIGN KEY (`office_id`) REFERENCES `offices` (`office_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `shifting`
+--
+ALTER TABLE `shifting`
+  ADD CONSTRAINT `shifting_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `shifting_ibfk_2` FOREIGN KEY (`request_letter_status`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `shifting_ibfk_3` FOREIGN KEY (`first_ctc_status`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `shifting_ibfk_4` FOREIGN KEY (`second_ctc_status`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `subject_overload`

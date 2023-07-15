@@ -1,37 +1,40 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
-    <thead>
-        <tr>
-            <th class="text-center"></th>
-            <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="asc">
-                Request Code
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="asc">
-                Office
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="asc">
-                Request
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                Schedule
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th> -->
-            <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="asc">
-                Amount to pay
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-status-header sortable-header" data-column="status" scope="col" data-order="asc">
-                Status
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-        </tr>
-    </thead>
-    <tbody id="table-body">
-        <!-- Table rows will be generated dynamically using JavaScript -->
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table id="transactions-table" class="table table-hover hidden">
+        <thead>
+            <tr class="table-active">
+                <th class="text-center"></th>
+                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
+                    Request Code
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="desc">
+                    Office
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
+                    Request
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-schedule-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
+                    Scheduled Date
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
+                    Amount to pay
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
+                    Status
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Table rows will be generated dynamically using JavaScript -->
+        </tbody>
+    </table>
+</div>
 <div id="pagination" class="container-fluid p-0">
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
@@ -42,6 +45,24 @@
         </div>
     </nav>
 </div>
+<!-- View edit modal -->
+<div id="viewEditModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewEditModalLabel">Edit request</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Please add edit fields here for the Request description (either Request Clearance or Request Good Moral Document) and Scheduled Date using Flatpickr. -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view edit modal -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -79,9 +100,6 @@
             method: 'POST',
             data: { request_id: requestIds },
             success: function(response) {
-                console.log('Requests deleted successfully');
-                console.log(requestIds);
-
                 // Refresh the table after deletion
                 handlePagination(1, '');
             }
@@ -89,16 +107,25 @@
     }
 
     function addDeleteButtonListeners() {
-        // Get the delete button element
         var deleteButton = document.getElementById('delete-button');
 
         // Get all the checkboxes
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-        // Function to update the delete button state based on checkbox selection
+        // Function to update the delete button state based on checkbox selection and status_id value
         function updateDeleteButtonState() {
             var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            deleteButton.disabled = checkedCheckboxes.length === 0;
+
+            // Check the status_id value of the selected rows
+            var canDelete = Array.from(checkedCheckboxes).every(function (checkbox) {
+                var row = checkbox.closest('tr');
+                var statusCell = row.querySelector('.doc-request-status-cell');
+                var status = statusCell.textContent.trim();
+                
+                return status === 'Pending' || status === 'Rejected';
+            });
+
+            deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
         }
 
         // Add event listeners to checkboxes
@@ -124,19 +151,116 @@
         updateDeleteButtonState();
     }
 
+    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
             case 'Guidance Office':
-                return 'http://localhost/client/guidance.php';
+                return 'http://localhost/student/guidance.php';
             case 'Registrar Office':
-                return 'http://localhost/client/registrar.php';
+                return 'http://localhost/student/registrar.php';
             case 'Academic Office':
-                return 'http://localhost/client/academic.php';
+                return 'http://localhost/student/academic.php';
             case 'Accounting Office':
-                return 'http://localhost/client/accounting.php';
+                return 'http://localhost/student/accounting.php';
             case 'Administrative Office':
-                return 'http://localhost/client/administrative.php';
+                return 'http://localhost/student/administrative.php';
         }
+    }
+
+    // Event listener for edit buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('edit-request')) {
+            var editId = event.target.getAttribute('data-request-id');
+            populateEditModal(editId);
+        }
+    });
+
+    // Function to populate the edit modal with the request details
+    function populateEditModal(editId) {
+        $.ajax({
+            url: 'transaction_tables/get_document_request.php',
+            method: 'POST',
+            data: { edit_id: editId },
+            success: function(response) {
+                var request = JSON.parse(response);
+                var modalTitle = document.getElementById('viewEditModalLabel');
+                var modalBody = document.querySelector('#viewEditModal .modal-body');
+
+                modalTitle.innerText = 'Edit Request';
+
+                modalBody.innerHTML = `
+                    <form id="editForm" action="" method="POST">
+                        <div class="mb-3">
+                            <label for="requestDescription" class="form-label">Request Description</label>
+                            <select id="requestDescription" class="form-select" name="requestDescription" value="${request.request_description}" required>
+                                <option value="Request Good Moral Document">Request Good Moral Document</option>
+                                <option value="Request Clearance">Request Clearance</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="scheduledDate" class="form-label">Scheduled Date</label>
+                            <input type="text" class="form-control" id="scheduledDate" name="scheduledDate" value="${request.scheduled_datetime}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                `;
+
+                flatpickr('#scheduledDate', {
+                    readonly: false,
+                    allowInput: true,
+                    defaultDate: "today",
+                    dateFormat: "Y-m-d",
+                    theme: "custom-datepicker",
+                    minDate: "today",
+                    maxDate: "31.12.2033",
+                    disable: [
+                        function(date) {
+                            // Disable date on Sundays
+                            return (date.getDay() === 0);
+
+                        }
+                    ],
+                    locale: {
+                        "firstDayOfWeek": 1 // start week on Monday
+                    },
+                });
+
+                var editForm = document.getElementById('editForm');
+                editForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    updateRequest(editId);
+                });
+
+                $("#viewEditModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching request details.');
+            }
+        });
+    }
+
+    // Function to update the request using AJAX
+    function updateRequest(editId) {
+        var form = document.getElementById('editForm');
+        var formData = new FormData(form);
+
+        formData.append('edit_id', editId);
+
+        $.ajax({
+            url: 'transaction_tables/update_document_request.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $("#viewEditModal").modal("hide");
+                handlePagination(1, '');
+                form.reset();
+            },
+            error: function() {
+                console.log('Error occurred while updating request.');
+            }
+        });
     }
 
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
@@ -183,19 +307,17 @@
                             '<td>' + request.request_id + '</td>' +
                             '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
                             '<td>' + request.request_description + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+                            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
+                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
                             '</td>' +
-                            // '<td class="text-center">' +
-                            // scheduleButton +
-                            // '</td>' +
+                            '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + request.request_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 

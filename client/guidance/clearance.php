@@ -20,50 +20,88 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
         <?php
-            $office_name = "Guidance Office";
-            include "../navbar.php"; 
-            include "../../breadcrumb.php";
-            include "../../conn.php";
+        $office_name = "Guidance Office";
+        include "../navbar.php";
+        include "../../breadcrumb.php";
+        include "../../conn.php";
+        
+        $query = "SELECT last_name, first_name, middle_name, extension_name, contact_no, email FROM users WHERE user_id = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userData = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        
+        if (isset($_POST['clearanceFormSubmit'])) {
+            $requestDescription = "Request Clearance";
+            $scheduledDateTime = $_POST['date'];
+            $officeId = 5;
+            $statusId = 1;
+            $amountToPay = 0.00;
+        
+            // Check if a file was uploaded
+            if (isset($_FILES['supportingDocuments']) && $_FILES['supportingDocuments']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['supportingDocuments'];
 
-            $query = "SELECT last_name, first_name, middle_name, extension_name, contact_no, email FROM users
-            WHERE user_id = ?";
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("i", $_SESSION['user_id']);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $userData = $result->fetch_all(MYSQLI_ASSOC);
-            $stmt->close();
+                // Validate the file size
+                $maxFileSize = 10 * 1024 * 1024; // 10MB in bytes
+                if ($file['size'] <= $maxFileSize) {
 
-            if(isset($_POST['clearanceFormSubmit'])) {
-                $requestDescription = "Request Clearance";
-                $officeId = 5;
-                $statusId = 1;
-                $amountToPay = 0.00;
+                    // Validate the file type
+                    $allowedFileTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                    if (in_array($file['type'], $allowedFileTypes)) {
 
-                $query = "INSERT INTO doc_requests (request_description, office_id, user_id, status_id, amount_to_pay)
-                VALUES (?, ?, ?, ?, ?)";
+                        // Generate a unique filename to avoid conflicts
+                        $filename = uniqid() . '-' . $file['name'];
 
-                $stmt = $connection->prepare($query);
-                $stmt->bind_param("siiid", $requestDescription, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
-                if ($stmt->execute()) {
-                    $_SESSION['success'] = true;
-                    // header("Location: http://localhost/student/guidance/success.php");
+                        // Move the uploaded file to a desired location
+                        $uploadDirectory = '../../assets/uploads/supporting_docs/';
+                        $destination = $uploadDirectory . $filename;
+                        if (move_uploaded_file($file['tmp_name'], $destination)) {
+                            // File uploaded successfully
+                            $fileContents = $destination; // Store the file path in the database
+                        } else {
+                            // Failed to move the uploaded file
+                            $_SESSION['failedToUploadAttachment'] = true;
+                            exit();
+                        }
+                    } else {
+                        // Invalid file type
+                        $_SESSION['failedToUploadAttachment'] = true;
+                        exit();
+                    }
+                } else {
+                    // File size exceeds the limit
+                    $_SESSION['failedToUploadAttachment'] = true;
+                    exit();
                 }
-                else {
-                    var_dump($stmt->error);
-                }
-                $stmt->close();
-                $connection->close();
             }
+
+            // Insert the form data into the database
+            $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, amount_to_pay, attached_files)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $connection->prepare($insertQuery);
+            $stmt->bind_param("ssiiids", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay, $fileContents);
+            if ($stmt->execute()) {
+                $_SESSION['success'] = true;
+            } else {
+                var_dump($stmt->error);
+            }
+        
+            $stmt->close();
+            $connection->close();
+        }
         ?>
         <div class="container-fluid p-4">
             <?php
             $breadcrumbItems = [
-                ['text' => 'Guidance Office', 'url' => '/client/guidance.php', 'active' => false],
+                ['text' => 'Guidance Office', 'url' => '/student/guidance.php', 'active' => false],
                 ['text' => 'Request Clearance', 'active' => true],
             ];
 
@@ -82,7 +120,7 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <a class="btn btn-outline-primary mb-2" href="/client/transactions.php">
+                            <a class="btn btn-outline-primary mb-2" href="/student/transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
@@ -99,10 +137,10 @@
                         <h6>Request Form</h6>
                     </div>
                     <div class="card-body">
-                        <form action="clearance.php" id="appointment-form" class="row g-3" method="POST">
+                        <form action="clearance.php" id="appointment-form" class="row g-3" method="POST" autocomplete="off" enctype="multipart/form-data">
                         <input type="hidden" name="form_type" value="clearance">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
-                            <h6>Alumni Information</h6>
+                            <h6>Client Information</h6>
                             <div class="form-group required col-12">
                                 <label for="lastName" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="lastName" value="<?php echo $userData[0]['last_name'] ?>" maxlength="100" disabled required>
@@ -129,21 +167,26 @@
                                 <input type="email" class="form-control" id="email" value="<?php echo $userData[0]['email'] ?>" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Request Information</h6>
+                            <div class="form-group required col-md-12">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="text" class="form-control" name="date" id="datepicker" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
+                                <div id="dateValidationMessage" class="text-danger"></div>
+                            </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
-                                    <p>Supporting Documents (Referral Slip, etc.)</p>
-                                    <small>You can attach multiple files</small>
+                                    <p>Supporting Documents (Referral Slip, etc.) <small>This is optional.</small></p>
+                                    <small><b>Maximum file size:</b> 10MB.</small>
+                                    <small><b>Allowed file types:</b> .jpg, .png, .pdf.</small>
                                 </label>
-                                <input class="form-control" type="file" id="supportingDocuments" multiple>
+                                <input class="form-control" type="file" name="supportingDocuments" id="supportingDocuments">
                             </div>
                             <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
                                 <i class="fa-solid fa-circle-info"></i> Reminder
                                 </h4>
-                                <p>Your document request will be forwarded to the concerned office after you click the "Submit" button.</p>
-                                <p>Confirmation (approved/disapproved) of the request will be sent to your registered email.</p>
-                                <p>You need to appoint a schedule before you can retrieve your requested document.</p>
-                                <p class="mb-0">You may appoint a schedule and also constantly monitor the status of your request by going to <b>My Transactions</b>.</p>
+                                <p>Your document request will be forwarded to the concerned office after submitting.</p>
+                                <p>An email and/or text message will be sent to you once the admin has approved your document request.</p>
+                                <p class="mb-0">You may constantly monitor the status of your request by going to <b>My Transactions</b> then choosing <b>Document Requests</b>.</p>
                             </div>
                             <div class="d-flex w-100 justify-content-between p-1">
                                 <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
@@ -180,7 +223,7 @@
                                     <div class="modal-body">
                                         <p>Your request has been submitted successfully!</p>
                                         <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
-                                        <p>You must print this approval letter and submit it to the Director's Office before scheduling your request.</p>
+                                        <p>You must print this request letter and submit it to the Director's Office before proceeding to the respective office.</p>
                                         <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
                                     </div>
                                     <div class="modal-footer">
@@ -190,6 +233,24 @@
                             </div>
                         </div>
                         <!-- End of success alert modal -->
+                        <!-- File upload failed modal -->
+                        <div id="failedToUploadModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="failedToUploadModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="failedToUploadModalLabel">File Upload Failed</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Failed to upload attached file. Please make sure the file type is an image or .PDF and the file size is less than 10 MB then try again.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of file upload failed modal -->
                     </div>
                 </div>
             </div>
@@ -197,17 +258,35 @@
         <div class="push"></div>
     </div>
     <?php include '../../footer.php'; ?>
+    <script src="../../loading.js"></script>
     <script src="../../jquery.js"></script>
     <script>
-        const contactNoInput = document.getElementById('contactNumber'); // Corrected typo
+        const contactNoInput = document.getElementById('contactNumber');
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+        const dateInput = document.getElementById('datepicker');
+        const dateValidationMessage = document.getElementById('dateValidationMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
-            const contactNoValidPattern = /^09\d{2}-\d{3}-\d{4}$/;
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
 
-            if (!contactNoValidPattern.test(contactNo)) {
-                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 090x-xxx-xxxx';
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
                 contactNoInput.classList.add('is-invalid');
             } else {
                 contactNoValidationMessage.textContent = '';
@@ -215,19 +294,50 @@
             }
         });
 
+        dateInput.addEventListener('input', () => {
+            const dateValue = dateInput.value.trim();
+
+            if (dateValue == '') {
+                dateValidationMessage.textContent = 'Please enter a schedule date for your request.';
+                dateInput.classList.add('is-invalid');
+            } else {
+                dateValidationMessage.textContent = '';
+                dateInput.classList.remove('is-invalid');
+            }
+        });
+
         // Function to handle form submission
         function handleSubmit() {
-            validateContactNumber();
-            var form = document.getElementById('appointment-form');
-            if (form.checkValidity()) {
+            if (document.getElementById('appointment-form').checkValidity()) {
                 $('#confirmSubmitModal').modal('show');
             }
         }
-        
+
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
     </script>
-    <script src="../../loading.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#datepicker", {
+            readonly: false,
+            allowInput: true,
+            defaultDate: "today",
+            dateFormat: "Y-m-d",
+            theme: "custom-datepicker",
+            minDate: "today",
+            maxDate: "31.12.2033",
+            disable: [
+                function(date) {
+                    // Disable date on Sundays
+                    return (date.getDay() === 0);
+
+                }
+            ],
+            locale: {
+                "firstDayOfWeek": 1 // start week on Monday
+            },
+        });
+    </script>
     <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {
@@ -240,8 +350,18 @@
         </script>
         <?php
         unset($_SESSION['success']);
-        exit();
     }
+    if (isset($_SESSION['failedToUploadAttachment'])) {
+        ?>
+        <script>
+            $(document).ready(function() {
+                $("#failedToUploadModal").modal("show");
+            })
+        </script>
+        <?php
+        unset($_SESSION['failedToUploadAttachment']);
+    }
+    exit();
     ?>
 </body>
 </html>

@@ -219,9 +219,11 @@
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
-                                    Supporting Documents (Referral Slip, etc.)
+                                    <p>Supporting Documents (Referral Slip, etc.) <small>This is optional.</small></p>
+                                    <small><b>Maximum file size:</b> 10MB.</small>
+                                    <small><b>Allowed file types:</b> .jpg, .png, .pdf.</small>
                                 </label>
-                                <input class="form-control" name="supportingDocuments" type="file" id="supportingDocuments">
+                                <input class="form-control" type="file" name="supportingDocuments" id="supportingDocuments">
                             </div>
                             <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">

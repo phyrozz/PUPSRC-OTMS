@@ -46,7 +46,7 @@ include 'request_offset.php';
         <h1>Offsetting</h1>
     </div>
     <form action="" id="student-offset"method="post">
-    <div class="container-fluid-form">
+    <div class="container-fluid-form col-md-6">
         <h2>Select type of offset</h2>
         <div class="row g-3">
             <div class="col-md-6">
@@ -60,9 +60,9 @@ include 'request_offset.php';
                     Please select an offset type.
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="">
                 <label for="amountToOffset" class="form-label2">Amount to be offset:<code>*</code></label>
-                <input type="number" class="form-control" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required min="1" oninput="validateInput(this)">
+                <input type="number" class="form-control w-50" id="amountToOffset"name="amountToOffset" pattern="^\d{0,6}(\.\d{0,2})?$" step="any"required min="1" oninput="validateInput(this)">
                 <div class="invalid-feedback">
                     Please provide the amount to be offset.
                 </div>
@@ -83,7 +83,7 @@ include 'request_offset.php';
         </div>
     </div>
     </form>
-    <div class="alert alert-info" role="alert">
+    <div class="alert alert-info col-md-6" role="alert">
                                 <h4 class="alert-heading">
                                 <i class="fa-solid fa-circle-info"></i> Reminder
                                 </h4>

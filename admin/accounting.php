@@ -104,7 +104,7 @@
                                 include 'tables/accounting/payments_table.php';
                             }
                             elseif ($table === 'offsetting') {
-                                include 'tables/guidance/counseling_appointments.php';
+                                include 'tables/accounting/offsetting_table.php';
                             }
                         ?>
                     </div>

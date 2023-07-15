@@ -81,14 +81,6 @@
                                         <p class="fs-5 m-0"><strong>Name</strong></p>
                                         <p class="mx-2"><?php echo $userData[0]['last_name'] . ', ' . $userData[0]['first_name'] . ' ' . $userData[0]['middle_name'] . ' ' . $userData[0]['extension_name']; ?></p>
                                     </div>
-                                    <div class="m-0">
-                                        <p class="fs-5 m-0"><strong>Course</strong></p>
-                                        <p class="mx-2">Bachelor of Science in Information Technology</p>
-                                    </div>
-                                    <div class="m-0">
-                                        <p class="fs-5 m-0"><strong>Level & Section</strong></p>
-                                        <p class="mx-2">3-1</p>
-                                    </div>
                                     <div class="m-0" id="birthDateDetails">
                                         <p class="fs-5 m-0"><strong>Birth Date</strong></p>
                                         <p class="mx-2">
@@ -225,7 +217,6 @@
             // Hide additional details initially
             $('#birthDateDetails').hide();
             $('#contactDetails').hide();
-            $('#emailDetails').hide();
             $('#sexDetails').hide();
             $('#addressDetails').hide();
 
@@ -234,7 +225,6 @@
                 e.preventDefault();
                 $('#birthDateDetails').slideToggle();
                 $('#contactDetails').slideToggle();
-                $('#emailDetails').slideToggle();
                 $('#sexDetails').slideToggle();
                 $('#addressDetails').slideToggle();
             });
