@@ -41,7 +41,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="input5">Student Number</label>
-                  <input type="text" pattern="20[2-9][0-9]-[1-9]-SR-[0-9]" maxlength="50" class="form-control" id="input5" name="studentNumber">
+                  <input type="text" maxlength="50" class="form-control" id="input5" name="studentNumber">
                 </div>
               </div>
               <div class="col-md-3">
