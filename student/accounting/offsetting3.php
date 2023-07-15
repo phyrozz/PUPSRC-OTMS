@@ -1,10 +1,23 @@
+<?php
+session_start();
+if (!isset($_SESSION['page1_visited']) || !isset($_SESSION['page2_visited'])) {
+    if (!isset($_SESSION['page1_visited'])) {
+        header("Location: offsetting1.php");
+    } else {
+        header("Location: offsetting2.php");
+    }
+    exit;
+}
+unset($_SESSION['page1_visited']);
+unset($_SESSION['page2_visited']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting Office - Landing Page</title>
+    <title>Accounting Office - successfully Submitted</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/offsetting2.css">
     <link rel="stylesheet" href="css/offsetting3.css">
@@ -27,7 +40,7 @@
 <body>
     <?php
     $office_name = "Accounting Office";
-    include '../navbar.php';
+    @include '../navbar.php';
     include '../../breadcrumb.php';
     ?>
     <div class="container-fluid p-4">
@@ -45,7 +58,7 @@
     <h1>The request has been successfully submitted</h1>
     <h3>Your request has been received and will be processed by the administrative office. Kindly check your transaction history for updates.</h3>
     <br> <br>
-    <a class="btn btn-warning" href="../accounting.php"><strong>BACK TO HOME</strong></a>
+    <a class="btn btn-warning" href="../accounting.php" name="back"><strong>BACK TO HOME</strong></a>
 
     </div>
 </center>
