@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table id="transactions-table" class="table table-hover table-bordered hidden">
+    <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
                 <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
@@ -7,7 +7,7 @@
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-id-header sortable-header" data-column="date&time" scope="col" data-order="desc">
-                    Date
+                    Date requested
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-requestor-header sortable-header" data-column="lastName" scope="col" data-order="desc">
@@ -39,7 +39,7 @@
     </table>
 </div>
 <div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
-   <!--  <div class="d-flex gap-2">
+    <div class="d-flex gap-2">
         <div class="input-group">
             <div class="input-group-text">Update Status:</div>
             <select class="form-select" name="update-status" id="update-status" disabled>
@@ -52,7 +52,7 @@
             </select>
         </div>
         <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
-    </div> -->   
+    </div>    
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
             <ul class="pagination" id="pagination-links">
@@ -109,10 +109,10 @@
 
                 if (data.total_records > 0) {
                     for (var i = 0; i < data.payments.length; i++) {
-                    var payments = data.payments[i];
-                    var imageUrl = '';
+                        var payments = data.payments[i];
+                        var imageUrl = '';
 
-                    // Check if the studentNumber is present
+                        // Check if the studentNumber is present
                     if (payments.studentNumber) {
                         // It is a student
                         imageUrl = '../../../student/accounting/' + payments.image_url;
@@ -121,7 +121,7 @@
                         imageUrl = '../../../client/accounting/' + payments.image_url;
                     }
 
-                    var row = '<tr>' +
+                        var row = '<tr>' +
                         '<td>' + 'A0-' + payments.payment_id + '</td>' +
                         '<td>' + (new Date(payments.transaction_date).toLocaleString('en-US', {
                             month: 'long',
@@ -137,8 +137,7 @@
                         '<td>' + '₱' + payments.amount + '</td>' +
                         '<td class="text-center"><a href="' + imageUrl + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                     tableBody.innerHTML += row;
-                }
-
+                    }
                 }
                 else {
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';

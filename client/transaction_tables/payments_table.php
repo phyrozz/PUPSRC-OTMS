@@ -5,6 +5,10 @@
                 Payment Code
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
+            <th class="text-center doc-request-office-header sortable-header" data-column="date&time" scope="col" data-order="desc">
+                Date
+                <i class="sort-icon fa-solid fa-caret-down"></i>
+            </th>
             <th class="text-center doc-request-office-header sortable-header" data-column="course" scope="col" data-order="desc">
                 Course
                 <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -78,6 +82,14 @@
 
                         var row = '<tr>' +
                             '<td>' + 'AO-' + payments.payment_id + '</td>' +
+                            '<td>' + (new Date(payments.transaction_date).toLocaleString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        })) + '</td>' +
                             '<td>' + payments.course + '</td>' +
                             '<td>' + payments.documentType + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
