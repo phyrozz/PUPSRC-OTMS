@@ -97,16 +97,6 @@ $isLoggedIn = true;
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="http://localhost/student/transactions.php">My Transactions</a></li>
                         <li><a class="dropdown-item" href="http://localhost/student/my_account.php">Account Settings</a></li>
-                        <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Help</a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpDropdown">
-                                <li><a class="dropdown-item" href="#">Registrar Office</a></li>
-                                <li><a class="dropdown-item" href="http://localhost/student/guidance/help.php">Guidance Office</a></li>
-                                <li><a class="dropdown-item" href="#">Academic Office</a></li>
-                                <li><a class="dropdown-item" href="http://localhost/student/accounting/help.php">Accounting Office</a></li>
-                                <li><a class="dropdown-item" href="http://localhost/student/administrative/help.php">Administrative Office</a></li>
-                            </ul>
-                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="http://localhost/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
                     </ul>

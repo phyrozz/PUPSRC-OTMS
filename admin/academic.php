@@ -11,6 +11,12 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -64,15 +70,7 @@
         </div>
         <div class="push"></div>
     </div>
-    <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </footer>
+    <?php include '../footer.php'; ?>
     <script>
         $(document).ready(function(){
             $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
@@ -166,5 +164,6 @@
             table.innerHTML = defaultTable;
         })
     </script>
+    <script src="../loading.js"></script>
 </body>
 </html>

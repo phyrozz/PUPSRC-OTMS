@@ -47,6 +47,9 @@ $statuses = array(
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center">
+                    Attached files
+                </th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -153,9 +156,7 @@ $statuses = array(
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
                             '</td>' +
-                            // '<td class="text-center">' +
-                            // scheduleButton +
-                            // '</td>' +
+                            '<td>' + (request.attached_files ? '<a href="' + request.attached_files + '" target="_blank">View Attachment</a>' : "No attachment") + '</td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
