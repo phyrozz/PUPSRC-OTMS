@@ -2,7 +2,7 @@
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-            <th class="text-center"></th>
+                <th class="text-center"></th>
                 <th class="text-center appointment-facility-id-header sortable-header" data-column="appointment_id" scope="col" data-order="asc">
                     Request Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -27,10 +27,6 @@
                     Student/Client
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                    Schedule
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th> -->
                 <th class="text-center appointment-facility-start-schedule-header sortable-header" data-column="start_date_time_sched" scope="col" data-order="asc">
                     Start Time Schedule
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -39,14 +35,10 @@
                     End Time Schedule
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                
                 <th class="text-center appointment-facility-status-header sortable-header" data-column="6" scope="col" data-order="asc">
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <!-- <th class="text-center doc-request-status-header" scope="col">
-                    Generate Slip
-                </th> -->
             </tr>
         </thead>
         <tbody id="table-body">
@@ -95,7 +87,6 @@
         }
     }
 
-
     function handlePagination(page, searchTerm = '', column = 'appointment_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
@@ -133,51 +124,44 @@
                     for (var i = 0; i < data.appointment_facility.length; i++) {
                         var appointment = data.appointment_facility[i];
 
+                        var courseSection = appointment.course && appointment.section ? appointment.course + " | " + appointment.section : "Not Applicable";
+
                         var row = '<tr>' +
                             '<td><input type="checkbox" name="request-checkbox" value="' + appointment.appointment_id + '"></td>' +
                             '<td class="text-center">' + appointment.appointment_id + '</td>' +
                             '<td class="text-center">' + appointment.facility_name + '</td>' +
                             '<td class="text-center">' + appointment.facility_number + '</td>' +
-                            
-
                             '<td class="text-center">' + appointment.last_name + ", " + appointment.first_name + " " + appointment.middle_name + " " + appointment.extension_name + '</td>' +
-                            '<td class="text-center">' + appointment.course + appointment.section + '</td>' +
+                            '<td class="text-center">' + courseSection + '</td>' +
                             '<td class="text-center">' + appointment.role + '</td>' +
-                            '<td class="text-center">' + new Date(appointment.start_date_time_sched).toLocaleString('en-US', { 
+                            '<td class="text-center">' + new Date(appointment.start_date_time_sched).toLocaleString('en-US', {
                                 month: 'long',
                                 day: 'numeric',
                                 year: 'numeric',
                                 hour: 'numeric',
                                 minute: 'numeric',
                                 hour12: true
-                                }) + '</td>' +
-                           
-            
-                            '<td class="text-center">' + new Date(appointment.end_date_time_sched).toLocaleString('en-US', { 
+                            }) + '</td>' +
+                            '<td class="text-center">' + new Date(appointment.end_date_time_sched).toLocaleString('en-US', {
                                 month: 'long',
                                 day: 'numeric',
                                 year: 'numeric',
                                 hour: 'numeric',
                                 minute: 'numeric',
                                 hour12: true
-                                }) + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-                            
-
-                            // '<td class="text-center">' +
-                            // scheduleButton +
-                            // '</td>' +
+                            }) + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(appointment.status_name) + '">' + appointment.status_name + '</span>' +
                             '</td>' +
-
                             '</tr>';
+
                         tableBody.innerHTML += row;
                     }
                 } else {
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
+
                 // Update the pagination links
                 var paginationLinks = document.getElementById('pagination-links');
                 paginationLinks.innerHTML = '';
@@ -240,35 +224,6 @@
             handlePagination(1, searchTerm + filterStatus(), 'appointment_id', 'desc');
         });
 
-        
-
-        function filterStatus() {
-            var filterByStatusVal = $('#filterByStatus').val();
-            
-            switch (filterByStatusVal) {
-                case '1':
-                    return ' pending';
-                    break;
-                case '2':
-                    return ' for receiving';
-                    break;
-                case '3':
-                    return ' for evaluation';
-                    break;
-                case '4':
-                    return ' ready for pickup';
-                    break;
-                case '5':
-                    return ' released';
-                    break;
-                case '6':
-                    return ' rejected';
-                    break;
-                default:
-                    return '';
-            }
-        }
-
         // Update status button listener
         $('#update-status-button').on('click', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
@@ -309,5 +264,41 @@
                 statusDropdown.prop('disabled', true);
             }
         });
+
+        // Checkbox change listener using event delegation
+        $(document).on('change', 'input[name="request-checkbox"]', function() {
+            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
+            var updateButton = $('#update-status-button');
+            var statusDropdown = $('#update-status');
+
+            if (checkedCheckboxes.length > 0) {
+                updateButton.prop('disabled', false);
+                statusDropdown.prop('disabled', false);
+            } else {
+                updateButton.prop('disabled', true);
+                statusDropdown.prop('disabled', true);
+            }
+        });
     });
+
+    function filterStatus() {
+        var filterByStatusVal = $('#filterByStatus').val();
+
+        switch (filterByStatusVal) {
+            case '1':
+                return ' pending';
+            case '2':
+                return ' for receiving';
+            case '3':
+                return ' for evaluation';
+            case '4':
+                return ' ready for pickup';
+            case '5':
+                return ' released';
+            case '6':
+                return ' rejected';
+            default:
+                return '';
+        }
+    }
 </script>

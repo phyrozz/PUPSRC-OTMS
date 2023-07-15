@@ -27,7 +27,6 @@ $isLoggedIn = true;
                         <?php echo $_SESSION['first_name'] . " " . $_SESSION['last_name']; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-                        <li><a class="dropdown-item" href="#">Account Settings</a></li>
                         <li><a class="dropdown-item" href="../sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
                     </ul>
                 </li>

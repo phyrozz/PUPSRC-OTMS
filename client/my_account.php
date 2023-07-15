@@ -65,36 +65,32 @@
 
             echo generateBreadcrumb($breadcrumbItems, true);
             ?>
-    </div>
-    <div class="container-fluid text-center p-4">
-      <h1>My Account</h1>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card pt-5 px-5 py-3 mb-3 shadow-lg">
-            <div class="container">
-              <div class="row d-flex flex-row justify-content-between">
-                <button id="editButton" data-bs-toggle="modal" data-bs-target="#editModal"
-                  class="btn btn-primary position-absolute end-0 mx-5 w-auto"><i
-                    class="fa-solid fa-pen-to-square"></i></button>
-                <h4 class="pb-3 text-md-start text-center">Account Details</h4>
-                <div class="col-md-3">
-                  <div class="d-flex align-items-center justify-content-center user-avatar-container pb-4">
-                    <img src="../assets/avatar.png" alt="User Avatar" class="img-fluid rounded-4 user-avatar">
-                  </div>
-                </div>
-                <div class="col-md-9 px-3">
-                  <div class="m-0">
-                    <p class="fs-5 m-0"><strong>Name</strong></p>
-                    <p class="mx-2">
-                      <?php echo $userData[0]['last_name'] . ', ' . $userData[0]['first_name'] . ' ' . $userData[0]['middle_name'] . ' ' . $userData[0]['extension_name']; ?>
-                    </p>
-                  </div>
-                  <div class="m-0" id="birthDateDetails">
-                    <p class="fs-5 m-0"><strong>Birth Date</strong></p>
-                    <p class="mx-2">
-                      <?php
+        </div>
+        <div class="container-fluid text-center p-4">
+            <h1>My Account</h1>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card pt-5 px-5 py-3 mb-3 shadow-lg">
+                        <div class="container">
+                            <div class="row d-flex flex-row justify-content-between">
+                                <button id="editButton" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary position-absolute end-0 mx-5 w-auto"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <h4 class="pb-3 text-md-start text-center">Account Details</h4>
+                                <div class="col-md-3">
+                                    <div class="d-flex align-items-center justify-content-center user-avatar-container pb-4">
+                                        <img src="../assets/avatar.png" alt="User Avatar" class="img-fluid rounded-4 user-avatar">
+                                    </div>
+                                </div>
+                                <div class="col-md-9 px-3">
+                                    <div class="m-0">
+                                        <p class="fs-5 m-0"><strong>Name</strong></p>
+                                        <p class="mx-2"><?php echo $userData[0]['last_name'] . ', ' . $userData[0]['first_name'] . ' ' . $userData[0]['middle_name'] . ' ' . $userData[0]['extension_name']; ?></p>
+                                    </div>
+                                    <div class="m-0" id="birthDateDetails">
+                                        <p class="fs-5 m-0"><strong>Birth Date</strong></p>
+                                        <p class="mx-2">
+                                            <?php
                                             $birthDate = $userData[0]['birth_date'];
                                             $formattedDate = date('F j, Y', strtotime($birthDate));
                                             echo $formattedDate;
@@ -235,22 +231,20 @@
     document.getElementById('darkModeSwitch').switchButton();
     document.getElementById('disabledFieldsOrNot').switchButton();
 
-    // Hide additional details initially
-    $('#birthDateDetails').hide();
-    $('#contactDetails').hide();
-    $('#emailDetails').hide();
-    $('#sexDetails').hide();
-    $('#addressDetails').hide();
+            // Hide additional details initially
+            $('#birthDateDetails').hide();
+            $('#contactDetails').hide();
+            $('#sexDetails').hide();
+            $('#addressDetails').hide();
 
-    // Toggle visibility of additional details
-    $('#showMoreLink').click(function(e) {
-      e.preventDefault();
-      $('#birthDateDetails').slideToggle();
-      $('#contactDetails').slideToggle();
-      $('#emailDetails').slideToggle();
-      $('#sexDetails').slideToggle();
-      $('#addressDetails').slideToggle();
-    });
+            // Toggle visibility of additional details
+            $('#showMoreLink').click(function(e) {
+                e.preventDefault();
+                $('#birthDateDetails').slideToggle();
+                $('#contactDetails').slideToggle();
+                $('#sexDetails').slideToggle();
+                $('#addressDetails').slideToggle();
+            });
 
     function validateContactNumber(contactNumber) {
       var pattern = /^0\d{3}-\d{3}-\d{4}$/;

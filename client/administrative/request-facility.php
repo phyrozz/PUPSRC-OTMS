@@ -44,16 +44,15 @@
             $startTime = $_POST['startTime'];
             $endTime = $_POST['endTime'];
             $statusId = 1;
-            $course = $_POST['course'];
-            $section = $_POST['section'];
+            $client = $_POST['client'];
             $purpose = $_POST['purposeReq'];
             $startDateTimeSched = $startDate . ' ' . $startTime;
             $endDateTimeSched = $endDate . ' ' . $endTime;
             $facilityID = $_POST['id'];
             
-            $insertQuery = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, course, section, purpose, facility_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, client, purpose, facility_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $insertStmt = $connection->prepare($insertQuery);
-            $insertStmt->bind_param("ssiisssi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $course, $section, $purpose, $facilityID);
+            $insertStmt->bind_param("ssiissi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $client, $purpose, $facilityID);
 
             if ($insertStmt->execute()) {
                 $_SESSION['success'] = true;
@@ -77,8 +76,8 @@
                     'status_id' => $statusId,
                     'purposeReq' => $purpose,
                     'facility_id' => $facilityID,
-                    'course' => $course,
-                    'section' => $section,
+                    'client' => $client
+
                 ];
             } else {
                 var_dump($insertStmt->error);
@@ -160,46 +159,17 @@
                             </div>
 
                             <div class="form-group required col-md-6">
-                                <label for="course" class="form-label">Course</label>
-                                <select class="form-control form-select" name="course" id="course" required>
+                                <label for="client" class="form-label">Client Type</label>
+                                <select class="form-control form-select" name="client" id="client" required>
                                     <option value="">--Select--</option>
-                                    <option value="BSA">BSA</option>
-                                    <option value="BSBAMM">BSBAMM</option>
-                                    <option value="BSBAHRM">BSBAHRM</option>
-                                    <option value="BSECE">BSECE</option>
-                                    <option value="BSEdEng">BSEd Eng</option>
-                                    <option value="BSEdMath">BSEd Math</option>
-                                    <option value="BSIE">BSIE</option>
-                                    <option value="BSIT">BSIT</option>
-                                    <option value="BSPSY">BSPSY</option>
+                                    <option value="Alumni">Alumni</option>
+                                    <option value="Organization">Organization</option>
+                                    <option value="Visitor">Visitor</option>
+                                    <option value="Guest">Guest</option>
                                 </select>
-
-                                <div class="invalid-feedback">Please choose a course.</div>
+                                <div class="invalid-feedback">Please choose a type of client.</div>
                             </div>
 
-                            <div class="form-group required col-md-6">
-                                <label for="section" class="form-label">Section</label>
-                                <select class="form-control form-select" name="section" id="section" required>
-                                    <option value="">--Select--</option>
-                                    <option value="1-1">1-1</option>
-                                    <option value="1-2">1-2</option>
-                                    <option value="1-3">1-3</option>
-                                    <option value="1-4">1-4</option>
-                                    <option value="2-1">2-1</option>
-                                    <option value="2-2">2-2</option>
-                                    <option value="2-3">2-3</option>
-                                    <option value="2-4">2-4</option>
-                                    <option value="3-1">3-1</option>
-                                    <option value="3-2">3-2</option>
-                                    <option value="3-3">3-3</option>
-                                    <option value="3-4">3-4</option>
-                                    <option value="4-1">4-1</option>
-                                    <option value="4-2">4-2</option>
-                                    <option value="4-3">4-3</option>
-                                    <option value="4-4">4-4</option>
-                                </select>
-                                <div class="invalid-feedback">Please choose a section.</div>
-                            </div>
 
                             <h6 class="mt-5">Appointment Information</h6>
 
@@ -469,42 +439,6 @@
         updateEndTimeOptions();
 
 
-    </script>
-
-    <script>
-        // Function to update the available sections based on the selected course
-        function updateSections() {
-            var courseSelect = document.getElementById("course");
-            var sectionSelect = document.getElementById("section");
-            var selectedCourse = courseSelect.value;
-
-            // Clear the section dropdown options
-            sectionSelect.innerHTML = "";
-
-            // Check if the selected course is BSBAMM
-            if (selectedCourse === "BSBAMM") {
-                // Add all sections as options
-                var sections = ["1-1", "1-2", "1-3", "1-4", "2-1", "2-2", "2-3", "2-4", "3-1", "3-2", "3-3", "3-4", "4-1", "4-2", "4-3", "4-4"];
-                for (var i = 0; i < sections.length; i++) {
-                    var option = document.createElement("option");
-                    option.value = sections[i];
-                    option.text = sections[i];
-                    sectionSelect.appendChild(option);
-                }
-            } else {
-                // Add limited sections as options
-                var sections = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2", "4-1", "4-2"];
-                for (var i = 0; i < sections.length; i++) {
-                    var option = document.createElement("option");
-                    option.value = sections[i];
-                    option.text = sections[i];
-                    sectionSelect.appendChild(option);
-                }
-            }
-        }
-
-        // Add event listener to the course select dropdown
-        document.getElementById("course").addEventListener("change", updateSections);
     </script>
 
 

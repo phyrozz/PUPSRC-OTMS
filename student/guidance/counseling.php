@@ -219,19 +219,20 @@
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
-                                    <p>Supporting Documents (Referral Slip, etc.)</p>
-                                    <small>You can attach multiple files</small>
+                                    <p>Supporting Documents (Referral Slip, etc.) <small>This is optional.</small></p>
+                                    <small><b>Maximum file size:</b> 10MB.</small>
+                                    <small><b>Allowed file types:</b> .jpg, .png, .pdf.</small>
                                 </label>
-                                <input class="form-control" name="supportingDocuments" type="file" id="supportingDocuments" multiple>
+                                <input class="form-control" type="file" name="supportingDocuments" id="supportingDocuments">
                             </div>
                             <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
                                 <i class="fa-solid fa-circle-info"></i> Reminder
                                 </h4>
                                 <p>Your appointment request will be forwarded to the concerned office after you click the "Submit" button.</p>
-                                <p>A .PDF file of your approval letter will be generated after successfully submitting this form and must be submitted to the Director's Office before your scheduled appointment.</p>
-                                <p>Confirmation (approved/disapproved) of the request will be sent to your registered email.</p>
-                                <p class="mb-0">You may also constantly monitor the status of the request by going to <b>My Transactions</b>.</p>
+                                <p>A .PDF file of your request letter will be generated after successfully submitting this form and must be submitted to the Director's Office before your scheduled appointment.</p>
+                                <p>An email and/or text message will be sent to you once the admin has approved your document request.</p>
+                                <p class="mb-0">You may constantly monitor the status of the request by going to <b>My Transactions</b>.</p>
                             </div>
                             <div class="d-flex w-100 justify-content-between p-1">
                                 <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
@@ -268,7 +269,7 @@
                                     <div class="modal-body">
                                         <p>Your counseling appointment has been submitted successfully!</p>
                                         <p>You can check the status of your appointment on the <b>My Transactions</b> page.</p>
-                                        <p>You must print this approval letter and submit it to the Director's Office before your scheduled appointment.</p>
+                                        <p>You must print this request letter and submit it to the Director's Office before your scheduled appointment.</p>
                                         <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
                                     </div>
                                     <div class="modal-footer">

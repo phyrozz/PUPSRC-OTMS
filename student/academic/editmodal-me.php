@@ -13,25 +13,25 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input1">First Name</label>
-                <input type="text" class="form-control" id="input1" value="Juan" disabled>
+                <input type="text" maxlength="50" class="form-control" id="input1" name="firstName">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input2">Middle</label>
-                <input type="text" class="form-control" id="input2" value="Dela" disabled>
+                <input type="text" maxlength="50" class="form-control" id="input2" name="middleName">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input3">Last Name</label>
-                <input type="text" class="form-control" id="input3" value="Cruz" disabled>
+                <input type="text" maxlength="100" class="form-control" id="input3" name="lastName">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input4">Suffix</label>
-                <input type="text" class="form-control" id="input4" value="" disabled>
+                <input type="text" maxlength="5" class="form-control" id="input4" name="nameSuffix">
               </div>
             </div>
           </div>
@@ -40,19 +40,19 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input5">Student Number</label>
-                <input type="text" class="form-control" id="input5" value="2020-00000-SR-0" disabled>
+                <input type="text" maxlength="50" class="form-control" id="input5" name="studentNumber">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="input6">Yr&Sec</label>
-                <input type="text" class="form-control" id="input6" value="BSIT 3-1" disabled>
+                <input type="text" maxlength="10" class="form-control" id="input6" name="courseYrSec">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input7">Academic Year</label>
-                <input type="text" class="form-control" id="input7" placeholder="2020-2021">
+                <input type="text" pattern="20[2-9][0-9]-20[2-9][0-9]" maxlength="9" class="form-control" id="input7" name="acadYear">
               </div>
             </div>
           </div>
@@ -88,8 +88,8 @@
 
   <div class="col-md-12">
               <div class="form-group">
-                <label for="input8">Reason for Subject Overload</label>
-                <input type="text" class="form-control" id="input8">
+                <label for="input8">Reason for Manual Enrollment</label>
+                <input type="text" maxlength="100"  class="form-control" id="input8">
               </div>
             </div>
 
@@ -99,25 +99,25 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input9">Code</label>
-                <input type="text" class="form-control" id="input9">
+                <input type="text" maxlength="10"  class="form-control" id="input9">
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="input10">Description</label>
-                <input type="text" class="form-control" id="input10">
+                <input type="text" maxlength="20"  class="form-control" id="input10">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="input11">Course/Yr/Sec</label>
-                <input type="text" class="form-control" id="input11">
+                <input type="text" maxlength="10"  class="form-control" id="input11">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="text" class="form-control" id="input12">
+                <input type="text" maxlength="10"  class="form-control" id="input12">
               </div>
             </div>
         </div>
@@ -126,25 +126,25 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input9">Code</label>
-                <input type="text" class="form-control" id="input9">
+                <input type="text" maxlength="10"  class="form-control" id="input9">
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="input10">Description</label>
-                <input type="text" class="form-control" id="input10">
+                <input type="text" maxlength="10"  class="form-control" id="input10">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="input11">Course/Yr/Sec</label>
-                <input type="text" class="form-control" id="input11">
+                <input type="text" maxlength="10"  class="form-control" id="input11">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="text" class="form-control" id="input12">
+                <input type="text" maxlength="10"  class="form-control" id="input12">
               </div>
             </div>
         </div>
@@ -153,25 +153,25 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input9">Code</label>
-                <input type="text" class="form-control" id="input9">
+                <input type="text" maxlength="10"  class="form-control" id="input9">
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="input10">Description</label>
-                <input type="text" class="form-control" id="input10">
+                <input type="text" maxlength="10"  class="form-control" id="input10">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="input11">Course/Yr/Sec</label>
-                <input type="text" class="form-control" id="input11">
+                <input type="text" maxlength="10"  class="form-control" id="input11">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="text" class="form-control" id="input12">
+                <input type="text" maxlength="10"  class="form-control" id="input12">
               </div>
             </div>
         </div>
@@ -180,7 +180,7 @@
     </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary submit" data-dismiss="modal">Submit</button>
+        <button type="submit" class="btn btn-primary submit" data-dismiss="modal">Submit</button>
       </div>
     </div>
   </div>

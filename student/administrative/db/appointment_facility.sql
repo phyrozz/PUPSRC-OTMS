@@ -31,12 +31,13 @@ CREATE TABLE `appointment_facility` (
   `appointment_id` varchar(50) NOT NULL DEFAULT concat('FA-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
-  `course` varchar(50) NOT NULL,
-  `section` varchar(50) NOT NULL,
+  `course` varchar(50) DEFAULT NULL,
+  `section` varchar(50) DEFAULT NULL,
   `start_date_time_sched` datetime DEFAULT NULL,
   `end_date_time_sched` datetime DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
-  `facility_id` int(11) NOT NULL
+  `facility_id` int(11) NOT NULL,
+  `client` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

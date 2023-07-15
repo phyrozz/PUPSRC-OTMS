@@ -54,30 +54,26 @@
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Released':
+            case 'Approved':
                 return 'bg-success';
             case 'Rejected':
                 return 'bg-danger';
-            case 'For Receiving':
-                return 'bg-warning text-dark';
             case 'For Evaluation':
                 return 'bg-primary';
-            case 'Ready for Pickup':
-                return 'bg-info';
             default:
                 return 'bg-dark';
         }
     }
 
-    function handleDeleteRequest(requestIds) {
+    function handleDeleteRequest(appointmentIds) {
         // Make an AJAX request to delete the document requests
         $.ajax({
             url: 'transaction_tables/delete_counseling.php',
             method: 'POST',
-            data: { request_id: requestIds },
+            data: { appointment_id: appointmentIds },
             success: function(response) {
                 console.log('Requests deleted successfully');
-                console.log(requestIds);
+                console.log(appointmentIds);
 
                 // Refresh the table after deletion
                 handlePagination(1, '');
@@ -86,16 +82,25 @@
     }
 
     function addDeleteButtonListeners() {
-        // Get the delete button element
         var deleteButton = document.getElementById('delete-button');
 
         // Get all the checkboxes
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-        // Function to update the delete button state based on checkbox selection
+        // Function to update the delete button state based on checkbox selection and status_id value
         function updateDeleteButtonState() {
             var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            deleteButton.disabled = checkedCheckboxes.length === 0;
+
+            // Check the status_id value of the selected rows
+            var canDelete = Array.from(checkedCheckboxes).every(function (checkbox) {
+                var row = checkbox.closest('tr');
+                var statusCell = row.querySelector('.counseling-status-cell');
+                var status = statusCell.textContent.trim();
+                
+                return status === 'Pending' || status === 'Rejected';
+            });
+
+            deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
         }
 
         // Add event listeners to checkboxes
@@ -108,12 +113,12 @@
             var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
             // Get the request ids of the checked rows
-            var requestIds = Array.from(checkedCheckboxes).map(function (checkbox) {
+            var appointmentIds = Array.from(checkedCheckboxes).map(function (checkbox) {
                 return checkbox.value;
             });
 
             if (confirm('Are you sure you want to delete the selected appointment(s)?')) {
-                handleDeleteRequest(requestIds);
+                handleDeleteRequest(appointmentIds);
             }
         });
 
@@ -172,7 +177,7 @@
                             }) : 'Not yet scheduled')
                             + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill ' + getStatusBadgeClass(schedules.status_name) + '">' + schedules.status_name + '</span>' +
+                            '<span class="badge rounded-pill counseling-status-cell ' + getStatusBadgeClass(schedules.status_name) + '">' + schedules.status_name + '</span>' +
                             '</td>' +
                             '</tr>';
                         tableBody.innerHTML += row;

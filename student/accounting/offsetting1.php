@@ -1,7 +1,89 @@
 <?php
+session_start();
 $office_name = "Accounting Office";
-include 'verification.php';
+include "conn.php";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $first_name = $_POST["first_name"];
+    $last_name = $_POST["last_name"];
+    $student_no = $_POST["student_no"];
+    $birth_date = $_POST["birth_date"];
+    $sql = "SELECT * FROM users WHERE first_name = '$first_name' && last_name = '$last_name' && student_no = '$student_no' &&  birth_date = '$birth_date'";
+    
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+       $row = mysqli_fetch_array($result);
+        $_SESSION['user_id'] = $row['user_id'];
+        $_SESSION['page1_visited'] = true;
+        echo "<div class='custom-alert' id='custom-alert'>
+        <div class='custom-alert-message'>Account successfully validated!</div>
+        <button class='custom-alert-close' onclick='redirectToOffsetting2()'>Next</button>
+        </div>";
+        echo "<script>
+        document.getElementById('custom-alert').style.display = 'block';
+        function redirectToOffsetting2() {
+            window.location.href = 'offsetting2.php';
+        }
+        </script>";
+    } elseif ($result->num_rows == 0) {
+        echo "<div class='custom-alert' id='custom-alert'>
+        <div class='custom-alert-message'>Account did not match!</div>
+        <button class='custom-alert-close' onclick='closeAlert()'>Close</button>
+        </div>";
+        echo "<script>
+        document.getElementById('custom-alert').style.display = 'block';
+        setTimeout(closeAlert, );
+        </script>";
+    } else {
+        die("Database error");
+    }
+}
 ?>
+<style>
+      /*alert*/
+.success-alert {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+    display: none; 
+}
+.custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 9999;
+    text-align: center;
+}
+
+.custom-alert-message {
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.custom-alert-close {
+padding: 5px 10px;
+background-color: #ffc107;
+border: solid 1px black;
+border-radius: 10%;
+color: #212529;
+cursor: pointer;
+}
+
+.custom-alert-close:hover {
+background-color: #e9ecef;
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +112,7 @@ include 'verification.php';
 </head>
 <body>
     <?php
-    include '../navbar.php';
+    @include '../navbar.php';
     include '../../breadcrumb.php';
     ?>
     <div class="container-fluid p-4">
@@ -89,7 +171,7 @@ include 'verification.php';
             </div>
             <div class="col-12">
             <a class ="btn btn-primary back-button" href="../accounting.php">Back</a>
-                <button class="btn btn-primary next-button" type="submit"onclick="validateForm(event)">Next</button>
+                <button class="btn btn-primary next-button" type="submit" name="next"onclick="validateForm(event)">Next</button>
             </div>
         </form>
     </div>
@@ -100,7 +182,7 @@ include 'verification.php';
 </body>
 </html>
 <style>
-    input[readonly] {
+    input[readonly],input[type="date"] {
         background-color: #e9ecef; 
         cursor: not-allowed; 
     }

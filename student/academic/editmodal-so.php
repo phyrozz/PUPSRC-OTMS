@@ -1,21 +1,4 @@
 <!-- Modal -->
-<?php
-// $office_name = "Guidance Office";
-// include "../../conn.php";
-
-// $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
-// WHERE user_id = ?";
-// $stmt = $connection->prepare($query);
-// $stmt->bind_param("i", $_SESSION['user_id']);
-// $stmt->execute();
-// $result = $stmt->get_result();
-// $userData = $result->fetch_all(MYSQLI_ASSOC);
-// $stmt->close();
-
-// $stmt->close();
-// $connection->close();
-?>
-<form method="POST">
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog editmod" role="document">
     <div class="modal-content">
@@ -26,31 +9,31 @@
 
       <div class="modal-body">
       
-      <form action="generatepdf_so.php" method="POST" target="_blank">
+      <form action="generatepdf_so.php" method="POST" target="_blank" id="SOform">
       <div class="container-fluid">
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input1">First Name</label>
-                <input type="text" class="form-control" id="input1" value="Juan" disabled>
+                <input type="text" class="form-control" id="input1" name="first_name">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input2">Middle</label>
-                <input type="text" class="form-control" id="input2" value="Dela" disabled>
+                <input type="text" class="form-control" id="input2" name="middle_name">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input3">Last Name</label>
-                <input type="text" class="form-control" id="input3" value="Cruz" disabled>
+                <input type="text" class="form-control" id="input3" name="last_name">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input4">Suffix</label>
-                <input type="text" class="form-control" id="input4" value="" disabled>
+                <input type="text" class="form-control" id="input4" name="suffix">
               </div>
             </div>
           </div>
@@ -59,7 +42,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input5">Student Number</label>
-                <input type="text" class="form-control" id="input5" value="2020-00000-SR-0" disabled>
+                <input type="text" class="form-control" id="input5" name="studentNumber">
               </div>
             </div>
             <div class="col-md-3">
@@ -75,11 +58,10 @@
               </div>
             </div>
           </div>
-
           <div class="row">
     <div class="col-md-3">
       <div class="form-check">
-      <input class="form-check-input" type="radio" name="semester" id="radio1" value="1st Sem" checked>
+        <input class="form-check-input" type="radio" name="semester" id="radio1" value="1st Sem" checked>
         <label class="form-check-label" for="radio1">
           1st Sem
         </label>
@@ -114,7 +96,7 @@
 
 <br/><h6>Add Subject/s</h6>
 
-<div class="row">
+            <div class="row">
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input9">Code</label>
@@ -198,6 +180,7 @@
         </div>
     </div>
 
+
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary submit">Submit</button>
       </div>
@@ -206,4 +189,50 @@
     </div>
   </div>
 </div>
-  </form>
+
+<script>
+  const form = document.getElementById('SOform');
+
+  form.addEventListener('submit', function(event) {
+    // Check if the form submission is restricted for this specific form
+    if (isFormSubmissionRestricted('SOform')) {
+      event.preventDefault(); // Prevent form submission
+      const nextSubmissionTime = getNextSubmissionTime('SOform'); // Get the next submission time for this specific form
+      showAlert(`You can only submit a form again after 24 hours. The next time submission is: ${nextSubmissionTime}`); // Show alert message
+    } else {
+      // Store the current timestamp in sessionStorage for this specific form
+      sessionStorage.setItem(`formSubmissionTimestamp_SOform`, new Date().getTime());
+    }
+  });
+
+  function isFormSubmissionRestricted(formId) {
+    // Get the stored timestamp from sessionStorage for this specific form
+    const lastSubmissionTimestamp = sessionStorage.getItem(`formSubmissionTimestamp_${formId}`);
+
+    // Calculate the time difference in milliseconds
+    const currentTime = new Date().getTime();
+    const timeDifference = currentTime - lastSubmissionTimestamp;
+
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Check if the time difference exceeds the time limit
+    return lastSubmissionTimestamp && timeDifference < twentyFourHours;
+  }
+
+  function getNextSubmissionTime(formId) {
+    // Get the stored timestamp from sessionStorage for this specific form
+    const lastSubmissionTimestamp = sessionStorage.getItem(`formSubmissionTimestamp_${formId}`);
+
+    // Calculate the next submission time by adding two hours to the last submission timestamp
+    const nextSubmissionTimestamp = parseInt(lastSubmissionTimestamp, 10) + ( 24 * 60 * 60 * 1000);
+
+    // Format the next submission time as a readable date and time
+    const nextSubmissionTime = new Date(nextSubmissionTimestamp).toLocaleString();
+
+    return nextSubmissionTime;
+  }
+
+  function showAlert(message) {
+    alert(message);
+  }
+</script>

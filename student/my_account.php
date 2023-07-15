@@ -32,7 +32,7 @@
         include "../breadcrumb.php";
 
         $query = "SELECT student_no, last_name, first_name, middle_name, extension_name, contact_no, email, birth_date FROM users WHERE user_id = ?";
-        $userDetailsQuery = "SELECT sex, home_address, province, city, barangay, zip_code FROM user_details WHERE user_id = ?";
+        $userDetailsQuery = "SELECT sex, home_address, province, city, barangay, zip_code, year_and_section, user_details.course_id, courses.course FROM user_details INNER JOIN courses ON user_details.course_id = courses.course_id WHERE user_id = ?";
 
         // Fetch user table
         $stmt = $connection->prepare($query);
@@ -83,11 +83,11 @@
                                     </div>
                                     <div class="m-0">
                                         <p class="fs-5 m-0"><strong>Course</strong></p>
-                                        <p class="mx-2">Bachelor of Science in Information Technology</p>
+                                        <p class="mx-2"><?php echo is_null($userDetailsData[0]['course']) ? "None" : $userDetailsData[0]['course']; ?></p>
                                     </div>
                                     <div class="m-0">
-                                        <p class="fs-5 m-0"><strong>Level & Section</strong></p>
-                                        <p class="mx-2">3-1</p>
+                                        <p class="fs-5 m-0"><strong>Year & Section</strong></p>
+                                        <p class="mx-2"><?php echo is_null($userDetailsData[0]['year_and_section']) ? "None" : $userDetailsData[0]['year_and_section']; ?></p>
                                     </div>
                                     <div class="m-0" id="birthDateDetails">
                                         <p class="fs-5 m-0"><strong>Birth Date</strong></p>
@@ -198,9 +198,27 @@
                                 <div class="invalid-feedback">Please enter a valid contact number.</div>
                             </div>
                             <div class="mb-3 form-group">
-                                <label for="editEmail" class="form-label">Email Address</label>
-                                <input type="text" name="editEmail" value="<?php echo $userData[0]['email']; ?>" id="editEmail" placeholder="Complete Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="11" maxlength="50" size="50" autocomplete="on" class="form-control" required>
-                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                                <label for="editCourse" class="form-label">Course</label>
+                                <div class="input-group mb-0">
+                                    <select name="editCourse" id="editCourse" class="form-control form-select" required>
+                                        <option value="1" <?php if ($userDetailsData[0]['course_id'] === 1) echo 'selected'; ?>>Bachelor of Science in Electronics Engineering</option>
+                                        <option value="2" <?php if ($userDetailsData[0]['course_id'] === 2) echo 'selected'; ?>>Bachelor of Science in Business Administration Major in Human Resource Management</option>
+                                        <option value="3" <?php if ($userDetailsData[0]['course_id'] === 3) echo 'selected'; ?>>Bachelor of Science in Business Administration Major in Marketing Management</option>
+                                        <option value="4" <?php if ($userDetailsData[0]['course_id'] === 4) echo 'selected'; ?>>Bachelor in Secondary Education Major in English</option>
+                                        <option value="5" <?php if ($userDetailsData[0]['course_id'] === 5) echo 'selected'; ?>>Bachelor in Secondary Education Major in Filipino</option>
+                                        <option value="6" <?php if ($userDetailsData[0]['course_id'] === 6) echo 'selected'; ?>>Bachelor in Secondary Education Major in Mathematics</option>
+                                        <option value="7" <?php if ($userDetailsData[0]['course_id'] === 7) echo 'selected'; ?>>Bachelor of Science in Industrial Engineering</option>
+                                        <option value="8" <?php if ($userDetailsData[0]['course_id'] === 8) echo 'selected'; ?>>Bachelor of Science in Information Technology</option>
+                                        <option value="9" <?php if ($userDetailsData[0]['course_id'] === 9) echo 'selected'; ?>>Bachelor of Science in Psychology</option>
+                                        <option value="10" <?php if ($userDetailsData[0]['course_id'] === 10) echo 'selected'; ?>>Bachelor in Technology And Livelihood Education Major in Home Economics</option>
+                                        <option value="11" <?php if ($userDetailsData[0]['course_id'] === 11) echo 'selected'; ?>>Bachelor of Science in Management Accounting</option>
+                                    </select>                                    
+                                </div>
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label for="editLevelAndSection" class="form-label">Year and Section</label>
+                                <input type="text" name="editLevelAndSection" value="<?php echo is_null($userDetailsData[0]['year_and_section']) ? "" : $userDetailsData[0]['year_and_section']; ?>" id="editLevelAndSection" placeholder="Year and Section" maxlength="3" size="3" autocomplete="off" class="form-control" required>
+                                <div class="invalid-feedback">Please enter a year and section (Eg. 2-1).</div>
                             </div>
                             <!-- Add more fields for other details to edit -->
                         </form>
@@ -244,6 +262,11 @@
                 return pattern.test(contactNumber);
             }
 
+            function validateYearAndSection(yearAndSection) {
+                var pattern = /^[1-5]-[1-4]$/;
+                return pattern.test(yearAndSection);
+            }
+
             function formatContactNumber(input) {
                 // Remove dashes and non-numeric characters
                 var number = input.replace(/[^0-9]/g, '');
@@ -258,11 +281,6 @@
                 }
 
                 return formattedNumber;
-            }
-
-            function validateEmail(email) {
-                var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                return pattern.test(email);
             }
 
             // Add event listeners for input validation
@@ -289,9 +307,9 @@
                 $(this).toggleClass('is-invalid', !isValid);
             });
 
-            $('#editEmail').on('input', function() {
-                var email = $(this).val();
-                var isValid = validateEmail(email);
+            $('#editLevelAndSection').on('input', function() {
+                var input = $(this).val();
+                var isValid = validateYearAndSection(input);
                 $(this).toggleClass('is-invalid', !isValid);
             });
 
@@ -302,16 +320,15 @@
                 // Validate the form inputs before submitting
                 var isValidFirstName = $('#editFirstName').val();
                 var isValidLastName = $('#editLastName').val();
-
                 var contactNumber = $('#editContactNumber').val();
+                var yearAndSection = $('#editLevelAndSection').val();
+
                 var isValidContactNumber = validateContactNumber(contactNumber);
                 $('#editContactNumber').toggleClass('is-invalid', !isValidContactNumber);
+                var isValidYearAndSection = validateYearAndSection(yearAndSection);
+                $('#editLevelAndSection').toggleClass('is-invalid', !isValidYearAndSection);
 
-                var email = $('#editEmail').val();
-                var isValidEmail = validateEmail(email);
-                $('#editEmail').toggleClass('is-invalid', !isValidEmail);
-
-                if (!isValidContactNumber || !isValidEmail || isValidFirstName.trim() == '' || isValidLastName.trim() == '') {
+                if (!isValidContactNumber || !isValidYearAndSection || isValidFirstName.trim() == '' || isValidLastName.trim() == '') {
                     return;
                 }
 

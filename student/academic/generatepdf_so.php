@@ -1,6 +1,7 @@
 <?php
 // Include the main TCPDF library (search for installation path).
 require_once('TCPDF/tcpdf.php');
+require_once('TCPDF/config/tcpdf_config.php');
 
 
 // create new PDF document
@@ -78,7 +79,6 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
 $pdf->SetY(20,true,true);
 
 
-
 // Data Retrieval
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve form data
@@ -121,7 +121,23 @@ $pdf->SetY(20,true,true);
         $yrSec ='';
         $acadYear ='';
         $reason ='';
+        $semester ='';
 
+        $code1 ='';
+        $code2 ='';
+        $code3 ='';
+
+        $des1 ='';
+        $des2 ='';
+        $des3 ='';
+
+        $courseYrSec1 ='';
+        $courseYrSec2 ='';
+        $courseYrSec3 ='';
+
+        $units1 ='';
+        $units2 ='';
+        $units3 ='';
       }
 
 // Set some content to print
@@ -264,7 +280,7 @@ EOD;
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html2, 0, 1, 0, true, '', true);
 
-$pdf->SetY(135, true, true);
+$pdf->SetY(131, true, true);
 
 $html3 = <<<EOD
 
