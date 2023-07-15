@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2023 at 11:42 AM
+-- Generation Time: Jul 13, 2023 at 08:25 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -35,6 +35,20 @@ CREATE TABLE `accounting_feedbacks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `accounting_feedbacks`
+--
+
+INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
+(1, 39, 'sample@gmail.com', 'try lang hehe'),
+(2, 42, 'sample@gmail.com', 'hehehe '),
+(3, 44, 'johnmarkgarapan2@gmail.com', 'sample try'),
+(4, 45, 'johnmarkgarapan2@gmail.com', 'try lang naman ito'),
+(5, 45, 'johnmarkgarapan2@gmail.com', 'try lang ulit hehe'),
+(6, 45, 'johnmarkgarapan2@gmail.com', 'try nga lang ulit eh anoba'),
+(7, 44, 'dorothy@gmail.com', 'eme lang ito'),
+(8, 44, 'dorothy@gmail.com', 'eme parin talaga ito');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -52,7 +66,7 @@ ALTER TABLE `accounting_feedbacks`
 -- AUTO_INCREMENT for table `accounting_feedbacks`
 --
 ALTER TABLE `accounting_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
