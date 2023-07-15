@@ -91,7 +91,7 @@
 
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + offsetting.offsetting_id + '" name="' + offsetting.offsetting_id + '" value="' + offsetting.offsetting_id + '"></td>' +
-                            '<td>' + offsetting.offsetting_id + '</td>' +
+                            '<td>AO-' + offsetting.offsetting_id + '</td>' +
                             '<td>' + (offsetting.timestamp !== null ? (new Date(offsetting.timestamp)).toLocaleString('en-US', {
                             month: 'long',
                             day: 'numeric',
