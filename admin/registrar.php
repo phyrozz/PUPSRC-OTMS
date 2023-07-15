@@ -13,7 +13,7 @@
     rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./tables/registrar/style.css">
   <!-- Loading page -->
   <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
   <div id="loader" class="center">
@@ -25,6 +25,9 @@
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <link href="./tables/registrar/datatables.min.css" rel="stylesheet" />
   <script type='text/javascript' src="./tables/registrar/datatables.min.js"></script>
+  <script type='text/javascript' src="./tables/registrar/moment.min.js"></script>
+  <script type='text/javascript' src="./tables/registrar/datetime-moment.js"></script>
+  <script type='text/javascript' src="./tables/registrar/natural.js"></script>
 </head>
 
 <body>
@@ -47,13 +50,6 @@
                 <!--    <option value="completed">Completed Document Requests</option> for history transaction option-->
                 <option value="records">Student Records</option>
               </select>
-            </div>
-            <div class="d-flex justify-content-end gap-2">
-              <div class="input-group mb-3 d-flex justify-content-end">
-                <input type="text" class="form-control" placeholder="Search...">
-                <button class="btn btn-outline-primary" type="button" id="button-addon2"><i
-                    class="fas fa-search"></i></button>
-              </div>
             </div>
           </div>
           <table id="transactions-table" class="table table-hover table-bordered"></table>
@@ -111,14 +107,14 @@
       for await (const data of transactionData) {
         string +=
           `<tr>
-          <td>REG-${data["code"]}</td>
+          <td>REG-${data["reg_id"]}</td>
           <td>${data["name"]}</td>
           <td>${data["scholar_status"]}</td>
           <td>${data["services"]}</td>
           <td>${data["schedule"]}</td>
           <td class="text-center">
             <select data-user-id="${data["user_id"]}" data-id="${data["reg_id"]}" class="form-select" id="status">
-                <option data-status="${data["status_name"]}" selected disabled hidden>${data["status_name"]}</option>
+                <option data-status="${data["status_id"]}" selected disabled hidden>${data["status_name"]}</option>
                 <option value="1" style="background-color: lime; color: rgb(0, 0, 0);">Pending</option>
                 <option value="2" style="background-color: greenyellow; color: rgb(0, 0, 0)">For Receiving</option>
                 <option value="3" style="background-color: orange; color: rgb(0, 0, 0);">For Evaluation</option>
@@ -136,42 +132,38 @@
     }
   }
 
+  let hasEventListener = false;
+
   async function initializeRequests() {
     const dropdown = document.getElementById('transaction-type');
     const table = document.getElementById('transactions-table');
-    const defaultTable = await showTransactionTableData();
-
-    table.innerHTML = defaultTable;
-    let dataTable = new DataTable('#transactions-table');
-
     const statusSelect = document.querySelectorAll('.form-select');
 
-    function initiateStatusColor(element) {
+    function initiateStatusColor(element, text) {
       let bgColor = '';
       let color = '';
-      text = element.options[element.selectedIndex].getAttribute('data-status');
-      switch (text) {
-        case "Pending":
+      switch (parseInt(text)) {
+        case 1:
           bgColor = 'lime';
           color = 'rgb(0, 0, 0)';
           break;
-        case "For Receiving":
+        case 2:
           bgColor = 'greenyellow';
           color = 'rgb(0, 0, 0)';
           break;
-        case "For Evaluation":
+        case 3:
           bgColor = 'orange';
           color = 'rgb(0, 0, 0)';
           break;
-        case "Ready for Pickup":
+        case 4:
           bgColor = 'teal';
           color = 'rgb(255, 255, 255)';
           break;
-        case "Released":
+        case 55:
           bgColor = 'green';
           color = 'rgb(255, 255, 255)';
           break;
-        case "Rejected":
+        case 6:
           bgColor = 'red';;
           color = 'rgb(255, 255, 255)';
           break;
@@ -181,11 +173,13 @@
     }
 
     function changeStatusColor(selectedElement) {
-      const selectedOption = selectedElement.options[selectedElement.selectedIndex];
-      const backgroundColor = selectedOption.style.backgroundColor;
-      const color = selectedOption.style.color;
-      selectedElement.style.backgroundColor = backgroundColor;
-      selectedElement.style.color = color;
+      text = selectedElement.value;
+      initiateStatusColor(selectedElement, text);
+      // const selectedOption = selectedElement.options[selectedElement.selectedIndex];
+      // const backgroundColor = selectedOption.style.backgroundColor;
+      // const color = selectedOption.style.color;
+      // selectedElement.style.backgroundColor = backgroundColor;
+      // selectedElement.style.color = color;
     }
 
     async function updateStatus(selectedElement) {
@@ -197,20 +191,45 @@
       });
     }
 
-    for (const status of statusSelect) {
-      initiateStatusColor(status);
-      status.addEventListener('change', async function() {
-        changeStatusColor(this); // Pass the element triggering the event to the function
-        await updateStatus(this); // Change status of current request
-      });
+    async function handleStatusChange() {
+      changeStatusColor(this); // Pass the element triggering the event to the function
+      await updateStatus(this); // Change status of current request
+      hasEventListener = true;
     }
+
+    for (const status of statusSelect) {
+      hasEventListener && status.removeEventListener('change', handleStatusChange);
+      text = status.options[status.selectedIndex].getAttribute('data-status')
+      initiateStatusColor(status, text);
+      status.addEventListener('change', handleStatusChange);
+    }
+
+  }
+
+  function createDataTable() {
+    let dataTable = new DataTable('#transactions-table', {
+      columnDefs: [{
+          target: 0,
+          type: 'natural',
+        },
+        {
+          target: 4,
+          type: 'datetime-moment',
+        },
+      ]
+    });
   }
 
 
   window.addEventListener('DOMContentLoaded', async function() {
     const dropdown = document.getElementById('transaction-type');
     const table = document.getElementById('transactions-table');
+    const defaultTable = await showTransactionTableData();
+
+    table.innerHTML = defaultTable;
+
     await initializeRequests();
+    createDataTable();
 
     dropdown.addEventListener('change', async function() {
       // Get the selected value
@@ -221,23 +240,23 @@
         // Show the document requests and schedules table
         await initializeRequests();
       } else if (selectedValue === 'records') {
-        table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th class="text-center" scope="col">Student Number</th>
-                            <th class="text-center" scope="col">Name</th>
-                            <th class="text-center" scope="col">Program</th>
-                            <th class="text-center" scope="col">Shelf Location</th>
-                            <th class="text-center" scope="col">Scholar Status</th>
-                            <th class="text-center" scope="col">Requirements Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            
-                        </tr>
-                    </tbody>
-                `;
+        //   table.innerHTML = `
+        //               <thead>
+        //                   <tr>
+        //                       <th class="text-center" scope="col">Student Number</th>
+        //                       <th class="text-center" scope="col">Name</th>
+        //                       <th class="text-center" scope="col">Program</th>
+        //                       <th class="text-center" scope="col">Shelf Location</th>
+        //                       <th class="text-center" scope="col">Scholar Status</th>
+        //                       <th class="text-center" scope="col">Requirements Status</th>
+        //                   </tr>
+        //               </thead>
+        //               <tbody>
+        //                   <tr>
+
+        //                   </tr>
+        //               </tbody>
+        //           `;
       }
     })
   })
