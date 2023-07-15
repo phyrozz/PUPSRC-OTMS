@@ -52,7 +52,7 @@
         <div class="container-fluid p-4">
             <?php
             $breadcrumbItems = [
-                ['text' => 'Accounting Office', 'url' => '/student/accounting.php', 'active' => false],
+                ['text' => 'Accounting Office', 'url' => '/client/accounting.php', 'active' => false],
                 ['text' => 'Help', 'active' => true],
             ];
 
