@@ -7,7 +7,7 @@
         <button type="button" class="btn-close upload" data-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <form method="POST" action="generatepdf_ce.php" target="_blank">
+      <form method="POST" action="generatepdf_ce.php" target="_blank" id="CEform">
         <div class="modal-body">
           <div class="container-fluid">
             <div class="row">
@@ -41,7 +41,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="input5">Student Number</label>
-                  <input type="text" pattern="20[2-9][0-9]-[1-9]-SR-[0-9]" maxlength="50" class="form-control" id="input5" name="studentNumber">
+                  <input type="text" maxlength="50" class="form-control" id="input5" name="studentNumber">
                 </div>
               </div>
               <div class="col-md-3">
@@ -149,3 +149,50 @@
     </div>
   </div>
 </div>
+
+<script>
+  const form = document.getElementById('CEform');
+
+  form.addEventListener('submit', function(event) {
+    // Check if the form submission is restricted for this specific form
+    if (isFormSubmissionRestricted('CEform')) {
+      event.preventDefault(); // Prevent form submission
+      const nextSubmissionTime = getNextSubmissionTime('CEform'); // Get the next submission time for this specific form
+      showAlert(`You can only submit a form again after 24 hours. The next time submission is: ${nextSubmissionTime}`); // Show alert message
+    } else {
+      // Store the current timestamp in sessionStorage for this specific form
+      sessionStorage.setItem(`formSubmissionTimestamp_CEform`, new Date().getTime());
+    }
+  });
+
+  function isFormSubmissionRestricted(formId) {
+    // Get the stored timestamp from sessionStorage for this specific form
+    const lastSubmissionTimestamp = sessionStorage.getItem(`formSubmissionTimestamp_${formId}`);
+
+    // Calculate the time difference in milliseconds
+    const currentTime = new Date().getTime();
+    const timeDifference = currentTime - lastSubmissionTimestamp;
+
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Check if the time difference exceeds the time limit
+    return lastSubmissionTimestamp && timeDifference < twentyFourHours;
+  }
+
+  function getNextSubmissionTime(formId) {
+    // Get the stored timestamp from sessionStorage for this specific form
+    const lastSubmissionTimestamp = sessionStorage.getItem(`formSubmissionTimestamp_${formId}`);
+
+    // Calculate the next submission time by adding two hours to the last submission timestamp
+    const nextSubmissionTimestamp = parseInt(lastSubmissionTimestamp, 10) + ( 24 * 60 * 60 * 1000);
+
+    // Format the next submission time as a readable date and time
+    const nextSubmissionTime = new Date(nextSubmissionTimestamp).toLocaleString();
+
+    return nextSubmissionTime;
+  }
+
+  function showAlert(message) {
+    alert(message);
+  }
+</script>
