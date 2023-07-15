@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: Jul 15, 2023 at 06:22 PM
+=======
+-- Generation Time: Jul 13, 2023 at 08:25 PM
+>>>>>>> d9c49f15e57e6e76c9561c59fc5d5898989cb57a
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -46,11 +50,15 @@ INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback
 (5, 45, 'johnmarkgarapan2@gmail.com', 'try lang ulit hehe'),
 (6, 45, 'johnmarkgarapan2@gmail.com', 'try nga lang ulit eh anoba'),
 (7, 44, 'dorothy@gmail.com', 'eme lang ito'),
+<<<<<<< HEAD
 (8, 44, 'dorothy@gmail.com', 'eme parin talaga ito'),
 (9, 46, 'johnmarkgarapan2@gmail.com', 'hi hehehehe'),
 (10, 47, 'dorothy@gmail.com', 'hello hehehehe'),
 (11, 47, 'dorothy@gmail.com', 'hello hello'),
 (12, 46, 'johnmarkgarapan2@gmail.com', 'hi hi hi');
+=======
+(8, 44, 'dorothy@gmail.com', 'eme parin talaga ito');
+>>>>>>> d9c49f15e57e6e76c9561c59fc5d5898989cb57a
 
 --
 -- Indexes for dumped tables
@@ -70,7 +78,11 @@ ALTER TABLE `accounting_feedbacks`
 -- AUTO_INCREMENT for table `accounting_feedbacks`
 --
 ALTER TABLE `accounting_feedbacks`
+<<<<<<< HEAD
   MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+=======
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+>>>>>>> d9c49f15e57e6e76c9561c59fc5d5898989cb57a
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
