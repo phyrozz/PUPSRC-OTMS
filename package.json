@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.2.3",
+    "datatables.net-dt": "^1.13.5",
     "jquery": "^3.6.4",
     "requirejs": "^2.3.6"
   }
