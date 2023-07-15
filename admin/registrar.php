@@ -159,7 +159,7 @@
           bgColor = 'teal';
           color = 'rgb(255, 255, 255)';
           break;
-        case 55:
+        case 5:
           bgColor = 'green';
           color = 'rgb(255, 255, 255)';
           break;
