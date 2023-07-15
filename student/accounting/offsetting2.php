@@ -1,14 +1,110 @@
 <?php
+session_start();
+if (!isset($_SESSION['page1_visited'])) {
+    header("Location: offsetting1.php");
+    exit();
+}
 $office_name = "Accounting Office";
-include 'request_offset.php';
+include 'conn.php';
+if (isset($_POST['submit'])) {
+    $_SESSION['page2_visited'] = true;
+    $user_id = $_SESSION['user_id'];
+    $checkFormQuery = "SELECT COUNT(*) as submission_count FROM offsettingtb WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $checkFormQuery)) {
+        echo "Error";
+    } else {
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        $submissionCount = $row['submission_count'];
+
+        if ($submissionCount >= 3) {
+            $_SESSION['page1_visited'] = false;
+            echo "<div class='custom-alert' id='custom-alert'>
+            <div class='custom-alert-message'>You have reached the maximum number of submissions (3) within the last 24 hours. Please wait for 24 hours before submitting another request. Thank you for your understanding.</div>
+            <button class='custom-alert-close' onclick='redirectToIndex()'>Go Back</button>
+          </div>";
+            echo "<script>
+            document.getElementById('custom-alert').style.display = 'block';
+            function redirectToIndex() {
+                window.location.href = '../accounting.php';
+            }
+          </script>";
+        } else {
+            $amountToOffset = $_POST['amountToOffset'];
+            $offsetType = $_POST['offsetType'];
+
+            $insert = "INSERT INTO offsettingtb (user_id, amountToOffset, offsetType) VALUES (?,?,?)";
+            $stmt = mysqli_stmt_init($conn);
+            if (!mysqli_stmt_prepare($stmt, $insert)) {
+                echo "Error";
+            } else {
+                mysqli_stmt_bind_param($stmt, 'sds', $user_id, $amountToOffset, $offsetType);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);     
+        echo "<script>
+            window.location.href = 'offsetting3.php';
+        </script>";
+        exit();
+            }
+        }
+    }
+}
+
+mysqli_close($conn);
 ?>
+
+<style>
+    .alert-info{
+    margin-right: 50px;
+    width: 600px;
+    float: right;
+    bottom: 180px;
+}
+.custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 9999;
+    text-align: center;
+    }
+
+.custom-alert-message {
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.custom-alert-close {
+padding: 5px 10px;
+background-color: #ffc107;
+border: solid 1px black;
+border-radius: 10%;
+color: #212529;
+cursor: pointer;
+}
+
+.custom-alert-close:hover {
+background-color: #e9ecef;
+}
+</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting Office - Landing Page</title>
+    <title>Accounting Office - Offsetting Verification</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/offsetting2.css">
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
@@ -42,9 +138,11 @@ include 'request_offset.php';
         echo generateBreadcrumb($breadcrumbItems, true);
         ?>
     </div>
+    <div class="row_main">
     <div class="container-fluid text-center p-4">
         <h1>Offsetting</h1>
     </div>
+    <div class="column_left">
     <form action="" id="student-offset"method="post">
     <div class="container-fluid-form">
         <h2>Select type of offset</h2>
@@ -53,8 +151,8 @@ include 'request_offset.php';
                 <label for="offsetType" class="form-label">Offset Type<code>*</code></label>
                 <select class="form-select" id="offsetType"name="offsetType" required>
                     <option value="" selected disabled>Select an option</option>
-                    <option value="Tuition Fee" >Tuition Fee</option>
-                    <option value="Miscellaneous Fee">Miscellaneous Fee</option>
+                    <option value="tuitionFee" >Tuition Fee</option>
+                    <option value="miscellaneous">Miscellaneous Fee</option>
                 </select>
                 <div class="invalid-feedback">
                     Please select an offset type.
@@ -81,9 +179,9 @@ include 'request_offset.php';
                 <button class="btn btn-primary" type="submit" name="submit">Submit</button>
             </div>
         </div>
-    </div>
-    </form>
-    <div class="alert alert-info" role="alert">
+        </div>
+        <div class="column_right">
+        <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
                                 <i class="fa-solid fa-circle-info"></i> Reminder
                                 </h4>
@@ -91,8 +189,23 @@ include 'request_offset.php';
                             <p>The confirmation of your request (whether approved or disapproved) will be provided, ensuring that you receive timely updates regarding the status of your tuition offsetting request.</p>
                             <p>We prioritize the confidentiality of your money-related information and remain committed to providing a secure and reliable experience for all our users.</p>
                             </div>
+    </div>
+    </div>
+    </form>
+    </div>
     <script src="js/offsetting_script.js"></script>
     <script src="../../saved_settings.js"></script>
     <script src="../../loading.js"></script>
 </body>
 </html>
+<script>
+    fromEvent(window, 'beforeunload')
+  .pipe(
+    filter(() => this.warn)
+  )
+  .subscribe((event: BeforeUnloadEvent) => {
+    const message = 'You may lose your data if you refresh now';
+    (event || window.event).returnValue = message;
+    return message;
+  });
+</script>

@@ -147,9 +147,13 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     margin: 5%;
 }
 .col-md-7 .form-control{
-    width: 400px;
+    width: 40%;
+}
+.col-md-6 .form-select{
+    width: 100%;
 }
 .alert{
+    width: 40%;
     bottom: 300px;
 }
 input::-webkit-outer-spin-button,
@@ -163,7 +167,9 @@ input::-webkit-inner-spin-button {
         width: 100%;
     }
     .alert{
+        overflow: hidden;
+        float: left;
         top: 1px;
-        width: 80%;
+        width: 100%;
     }
 }
