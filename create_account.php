@@ -118,7 +118,6 @@ else if (isset($_POST['clientSignup'])) {
         else {
             header("Location: http://localhost/login/client.php");
             $_SESSION['account_failed'] = true;
-            // $loginMessage = "Sign up failed. Please try again.";
         }
     }
 }

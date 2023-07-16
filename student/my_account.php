@@ -78,6 +78,10 @@
                                 </div>
                                 <div class="col-md-9 px-3">
                                     <div class="m-0">
+                                        <p class="fs-5 m-0"><strong>Student Number</strong></p>
+                                        <p class="mx-2"><?php echo $userData[0]['student_no']; ?></p>
+                                    </div>
+                                    <div class="m-0">
                                         <p class="fs-5 m-0"><strong>Name</strong></p>
                                         <p class="mx-2"><?php echo $userData[0]['last_name'] . ', ' . $userData[0]['first_name'] . ' ' . $userData[0]['middle_name'] . ' ' . $userData[0]['extension_name']; ?></p>
                                     </div>

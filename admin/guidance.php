@@ -58,13 +58,7 @@
                                 <div id="filterByStatusSection" class="input-group">
                                     <label class="input-group-text" for="filterByStatus">Filter by Status:</label>
                                     <select name="filterByStatus" id="filterByStatus" class="form-select">
-                                        <!-- <option value="all">All</option>    
-                                        <option value="1">Pending</option>
-                                        <option value="2">For Receiving</option>
-                                        <option value="3">For Evaluation</option>
-                                        <option value="4">Ready for Pickup</option>
-                                        <option value="5">Released</option>
-                                        <option value="6">Rejected</option> -->
+                                        <!-- Select options are dynamically displayed depending on the table -->
                                     </select>
                                 </div>
                             </div>
@@ -105,17 +99,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <button class="btn btn-primary" disabled>Previous</button>
-                    <button class="btn btn-primary" disabled>Next</button>
-                </div>
-            </div>
-             -->
         </div>
         <div class="push"></div>
     </div>
