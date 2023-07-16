@@ -222,6 +222,10 @@
                 $('#contactDetails').slideToggle();
                 $('#sexDetails').slideToggle();
                 $('#addressDetails').slideToggle();
+
+                // Toggle the text of the link
+                var linkText = $(this).text();
+                $(this).text(linkText === 'Show More' ? 'Show Less' : 'Show More');
             });
 
             function validateContactNumber(contactNumber) {

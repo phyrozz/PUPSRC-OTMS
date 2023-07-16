@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2023 at 07:18 AM
+-- Generation Time: Jul 16, 2023 at 11:08 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -184,7 +184,8 @@ CREATE TABLE `counseling_schedules` (
 INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, `comments`, `doc_requests_id`) VALUES
 ('GC-1689385362', 'Academic Performance', '', 'DR-1689385362'),
 ('GC-1689385407', 'Other', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula faucibus accumsan. Vestibulum aliquet, nisl a dapibus sagittis, lectus diam condimentum nulla, at rutrum elit elit quis nibh. Maecenas dictum lectus sit amet fermentum molestie. Vestibulum ac enim ex. Nam pellentesque convallis odio, tempus ultricies nulla sodales a. In luctus porta turpis vitae congue. Quisque sollicitudin pulvinar tortor, eu viverra dolor tincidunt nec. Donec accumsan eros ex, ut imperdiet metus egestas at.', 'DR-1689385407'),
-('GC-1689385434', 'Report Issue', '', 'DR-1689385434');
+('GC-1689385434', 'Report Issue', '', 'DR-1689385434'),
+('GC-1689399812', 'Other', 'test testing', 'DR-1689399812');
 
 -- --------------------------------------------------------
 
@@ -212,7 +213,8 @@ INSERT INTO `courses` (`course_id`, `course`) VALUES
 (8, 'Bachelor of Science in Information Technology'),
 (9, 'Bachelor of Science in Psychology'),
 (10, 'Bachelor in Technology And Livelihood Education Major in Home Economics'),
-(11, 'Bachelor of Science in Management Accounting');
+(11, 'Bachelor of Science in Management Accounting'),
+(12, 'N/A');
 
 -- --------------------------------------------------------
 
@@ -236,7 +238,7 @@ CREATE TABLE `cross_enrollment` (
 CREATE TABLE `doc_requests` (
   `request_id` varchar(50) NOT NULL DEFAULT concat('DR-',unix_timestamp()),
   `request_description` varchar(255) NOT NULL,
-  `scheduled_datetime` datetime DEFAULT current_timestamp(),
+  `scheduled_datetime` timestamp NULL DEFAULT current_timestamp(),
   `office_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
@@ -250,23 +252,24 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `amount_to_pay`, `attached_files`, `request_letter`) VALUES
-('DR-1689378797', 'Request Clearance', '2023-07-15 00:00:00', 5, 39, 6, 0.00, NULL, NULL),
-('DR-1689378809', 'Request Good Moral Document', '2023-07-25 00:00:00', 5, 39, 3, 0.00, NULL, NULL),
-('DR-1689380077', 'Request Good Moral Document', '2023-07-25 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689380101', 'Request Clearance', '2023-07-18 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689381003', 'Request Clearance', '2023-07-25 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689381392', 'Request Clearance', '2023-07-27 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689381463', 'Request Clearance', '2023-07-15 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689381726', 'Request Clearance', '2023-07-15 00:00:00', 5, 43, 1, 0.00, '../../assets/uploads/supporting_docs/64b1eb5e6c505-345570657_1179516796047278_5195706963186077071_n.jpg', NULL),
-('DR-1689381876', 'Request Good Moral Document', '2023-07-20 00:00:00', 5, 43, 1, 0.00, '../../assets/uploads/supporting_docs/64b1ebf441ff4-123.jpg', NULL),
-('DR-1689381920', 'Request Good Moral Document', '2023-07-15 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689381927', 'Request Clearance', '2023-07-29 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689385362', 'Guidance Counseling', '2023-07-15 14:30:00', 5, 43, 7, 0.00, NULL, NULL),
-('DR-1689385407', 'Guidance Counseling', '2023-07-20 12:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689385434', 'Guidance Counseling', '2023-07-18 09:30:00', 5, 43, 3, 0.00, NULL, NULL),
-('DR-1689385886', 'Request Good Moral Document', '2023-07-15 00:00:00', 5, 43, 1, 0.00, NULL, NULL),
-('DR-1689397741', 'Request Good Moral Document', '2023-07-19 00:00:00', 5, 42, 1, 0.00, NULL, NULL),
-('DR-1689398010', 'Request Good Moral Document', '2023-07-31 00:00:00', 5, 42, 1, 0.00, NULL, NULL);
+('DR-1689378797', 'Request Clearance', '2023-07-14 16:00:00', 5, 39, 1, 0.00, NULL, NULL),
+('DR-1689378809', 'Request Good Moral Document', '2023-07-24 16:00:00', 5, 39, 1, 0.00, NULL, NULL),
+('DR-1689380077', 'Request Good Moral Document', '2023-07-24 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689380101', 'Request Clearance', '2023-07-17 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381003', 'Request Clearance', '2023-07-24 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381392', 'Request Clearance', '2023-07-26 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381463', 'Request Clearance', '2023-07-14 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381726', 'Request Clearance', '2023-07-14 16:00:00', 5, 43, 1, 0.00, '../../assets/uploads/supporting_docs/64b1eb5e6c505-345570657_1179516796047278_5195706963186077071_n.jpg', NULL),
+('DR-1689381876', 'Request Good Moral Document', '2023-07-19 16:00:00', 5, 43, 1, 0.00, '../../assets/uploads/supporting_docs/64b1ebf441ff4-123.jpg', NULL),
+('DR-1689381920', 'Request Good Moral Document', '2023-07-14 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689381927', 'Request Clearance', '2023-07-28 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689385362', 'Guidance Counseling', '2023-07-15 06:30:00', 5, 43, 7, 0.00, NULL, NULL),
+('DR-1689385407', 'Guidance Counseling', '2023-07-20 04:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689385434', 'Guidance Counseling', '2023-07-18 01:30:00', 5, 43, 3, 0.00, NULL, NULL),
+('DR-1689385886', 'Request Good Moral Document', '2023-07-14 16:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689399812', 'Guidance Counseling', '2023-07-19 02:00:00', 5, 43, 1, 0.00, NULL, NULL),
+('DR-1689401168', 'Request Good Moral Document', '2023-07-17 16:00:00', 5, 42, 1, 0.00, NULL, NULL),
+('DR-1689401368', 'Request Clearance', '2023-07-19 16:00:00', 5, 42, 1, 0.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -436,8 +439,18 @@ CREATE TABLE `guidance_feedbacks` (
   `feedback_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `feedback_text` text NOT NULL
+  `feedback_text` text NOT NULL,
+  `submitted_on` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `guidance_feedbacks`
+--
+
+INSERT INTO `guidance_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`, `submitted_on`) VALUES
+(1, 42, 'pendropenduko@yahoo.com', 'testing po :)', '2023-06-21 04:22:21'),
+(2, 43, 'juandelacruz123@gmail.com', 'testing po ulet :D', '2023-07-04 02:39:24'),
+(5, 39, 'joshuamalabanan70@gmail.com', 'hello po testing lang po wahahahahahahahahahahahahahhahahahaha testing 123 123 hello po testing lang po wahahahahahahahahahahahahahhahahahaha testing 123 123 hello po testing lang po wahahahahahahahahahahahahahhahahahaha testing 123 123', '2023-07-16 09:02:00');
 
 -- --------------------------------------------------------
 
@@ -513,7 +526,8 @@ CREATE TABLE `offsettingtb` (
 
 INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`, `status_id`) VALUES
 (3, 43, 250.00, 'Tuition Fee', '2023-07-15 03:44:38', 1),
-(4, 43, 100.00, 'Miscellaneous Fee', '2023-07-15 03:45:09', 1);
+(4, 43, 100.00, 'Miscellaneous Fee', '2023-07-15 03:45:09', 1),
+(5, 43, 100.50, 'miscellaneous', '2023-07-15 05:33:13', 1);
 
 -- --------------------------------------------------------
 
@@ -704,11 +718,19 @@ CREATE TABLE `reg_transaction` (
 --
 
 INSERT INTO `reg_transaction` (`reg_id`, `request_code`, `user_id`, `office_id`, `services_id`, `schedule`, `status_id`) VALUES
-(5, 'REG-2', 39, 3, 12, '2023-07-13', 2),
-(6, '', 42, 3, 29, '2023-07-13', 2),
+(5, 'REG-2', 39, 3, 12, '2023-07-13', 5),
+(6, '', 42, 3, 29, '2023-07-13', 1),
 (7, '', 42, 3, 31, '2023-07-13', 6),
-(8, '', 42, 3, 27, '2023-07-14', 1),
-(9, '', 42, 3, 30, '2023-07-12', 1);
+(8, '', 42, 3, 27, '2023-07-14', 2),
+(9, '', 42, 3, 30, '2023-07-12', 3),
+(10, '', 42, 3, 25, '2023-07-17', 3),
+(12, '', 42, 3, 27, '2023-07-18', 3),
+(13, '', 42, 3, 33, '2023-07-24', 1),
+(14, '', 42, 3, 24, '2023-07-24', 1),
+(15, '', 42, 3, 34, '2023-07-15', 1),
+(16, '', 42, 3, 24, '2023-07-18', 1),
+(17, '', 42, 3, 28, '2023-07-15', 1),
+(18, '', 42, 3, 28, '2023-07-18', 1);
 
 -- --------------------------------------------------------
 
@@ -894,8 +916,8 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
 (35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
 (39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$a4rycTCNbnsZ6.auPYz.kuodEWiw7lq82K/3QBP.V5IYZu3ukC5Ta', 1),
-(42, '', 'Dela Cruz', 'Pedro', 'Penduko', 'Jr.', '0901-234-5678', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
-(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', '', '0901-234-5678', 'juandelacruz123@gmail.com', '2001-09-11', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1);
+(42, '', 'Dela Cruz', 'Pedro', '', '', '0900-000-0000', 'pendropenduko@yahoo.com', '1990-01-01', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
+(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', '', '0900-000-0010', 'juandelacruz123@gmail.com', '2001-09-11', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1);
 
 -- --------------------------------------------------------
 
@@ -911,7 +933,7 @@ CREATE TABLE `user_details` (
   `city` varchar(100) NOT NULL,
   `barangay` varchar(100) NOT NULL,
   `zip_code` varchar(6) DEFAULT NULL,
-  `course_id` int(11) DEFAULT NULL,
+  `course_id` int(11) NOT NULL DEFAULT 12,
   `year_and_section` varchar(3) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -922,7 +944,7 @@ CREATE TABLE `user_details` (
 
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `course_id`, `year_and_section`, `user_id`) VALUES
 (1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, '3-1', 39),
-(3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', NULL, NULL, 42),
+(3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', 12, NULL, 42),
 (4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 8, '3-1', 43);
 
 -- --------------------------------------------------------
@@ -1251,7 +1273,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `cross_enrollment`
@@ -1293,7 +1315,7 @@ ALTER TABLE `grade_accreditation`
 -- AUTO_INCREMENT for table `guidance_feedbacks`
 --
 ALTER TABLE `guidance_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `manual_enrollment`
@@ -1311,7 +1333,7 @@ ALTER TABLE `office`
 -- AUTO_INCREMENT for table `offsettingtb`
 --
 ALTER TABLE `offsettingtb`
-  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `password_reset_tokens`
@@ -1341,7 +1363,7 @@ ALTER TABLE `reg_status`
 -- AUTO_INCREMENT for table `reg_transaction`
 --
 ALTER TABLE `reg_transaction`
-  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `services`

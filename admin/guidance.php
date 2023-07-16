@@ -20,7 +20,6 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -50,6 +49,7 @@
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
                                         <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                         <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
+                                        <option value="guidance_feedbacks" <?php if ($table === 'guidance_feedbacks') echo 'selected'; ?>>Feedbacks</option>
                                     </select>
                                     <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary">Load Table</button>
                                 </form>
@@ -94,6 +94,9 @@
                             }
                             elseif ($table === 'scheduled_appointments') {
                                 include 'tables/guidance/counseling_appointments.php';
+                            }
+                            elseif ($table === 'guidance_feedbacks') {
+                                include 'tables/guidance/feedbacks_table.php';
                             }
                         ?>
                     </div>
