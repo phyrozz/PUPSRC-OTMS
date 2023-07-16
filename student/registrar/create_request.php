@@ -23,6 +23,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
+<body>
 <?php
     include '../../conn.php';
     $office_name = "Registrar Office";
@@ -54,29 +55,27 @@
 
     //for submit
     if(isset($_POST["submit"])){
-        $reg_id = $code_row['count'];
         $reg_code = $newText;
         $req_student_service = $_POST["req_student_service"];
         $user_id = $id;
-        $office_id = 3; //1-Registrar Office
+        $office_id = "3"; //1-Registrar Office
         $date = $_POST["date"];
-        $status_id = 1; //1-Pending
+        $status_id = "1"; //1-Pending
 
-        $query = "INSERT INTO reg_transaction (request_code, user_id, office_id, services_id, schedule, status_id) VALUES('$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
-        $result2 = mysqli_query($connection, $query);
-        if ($result2) {
-            // Data inserted successfully
-            echo
-            "<script> alert('Registration Successful'); </script>";
+        $query_check =  mysqli_query($connection, "SELECT * FROM reg_transaction WHERE services_id = '$req_student_service' AND status_id = '$status_id'");
+        if(mysqli_num_rows($query_check) > 0) {
+            // Data is redundant
+            $_SESSION['redundant'] = true;
         } else {
-            // Error occurred while inserting data
-            echo
-            "<script> alert('Password Does Not Match'); </script>";
+            // Data is not redundant, proceed with insertion
+            // Insert the new data into the database
+            $query = "INSERT INTO reg_transaction VALUES('','$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
+            $result2 = mysqli_query($connection, $query);
+            $_SESSION['success'] = true;
         }
     }
-
+    unset($_POST);
 ?>
-<body>
     <div class="wrapper">
         <?php
         include "../../breadcrumb.php";
@@ -105,7 +104,7 @@
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
                             <a class="btn btn-outline-primary mb-2" href="your_transaction.php">
-                            <i class="fa-regular fa-clipboard"></i> My Registrar Transactions
+                            <i class="fa-regular fa-clipboard"></i> Registrar Transactions
                             </a>
                             <!-- <a class="btn btn-outline-primary mb-2">
                             <i class="fa-regular fa-flag"></i> Generate Inquiry
@@ -114,7 +113,7 @@
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
                             <a class="btn btn-outline-primary mb-2" href="FAQ.php">
-                                <i class="fa-solid fa-circle-question"></i> FAQs
+                                <i class="fa-solid fa-circle-question"></i> Help
                             </a>
                         </div>
                     </div>
@@ -124,7 +123,7 @@
                         <h6>Request Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" method="post" enctype="multipart/form-data" class="row g-3">
+                        <form id="appointment-form" method="post" enctype="multipart/form-data" class="row g-3 was-validated">
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
                             <div class="form-group required col-12">
@@ -149,29 +148,30 @@
                             </div>
                             <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" value="<?php echo $row["contact_no"]; ?>" disabled required>
+                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" value="<?php echo $row["contact_no"]; ?>" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13" disabled required>
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" value="<?php echo $row["email"]; ?>" disabled required>
+                                <input type="email" class="form-control" id="email" name="email" value="<?php echo $row["email"]; ?>" placeholder="example@yahoo.com" maxlength="100" disabled required>
                             </div>
                             <h6 class="mt-5">Request Information</h6>
-                            <div class="form-group required col-md-12">
-                                <label for="typeOfServices" class="form-label">Type of Services</label>
-                                <select name="req_student_service" class="form-control" id="req_student_service" required>
-                                    <option hidden value="">Select options here</option>
+                            <div class="form-group required col-md-12 dropdown">
+                                <label for="req_student_service" class="form-label">Type of Services</label>
+                                <select name="req_student_service" class="form-control is-invalid" id="req_student_service" required>
+                                <div class="col-md-6">
+                                <option hidden value="" >Select options here</option>
                                     <!-- connect to db -->
                                     <?php
                                     while ($dropdown = mysqli_fetch_assoc($result1)){
-                                        echo '<option value="' . $dropdown['services_id'] . '">' . $dropdown['services'] . '</option>';
+                                        echo '<option value="' . $dropdown['services_id'] . '" >' . $dropdown['services'] . '</option>';
                                     }
                                     ?>
-                                    
+                                </div>
                                 </select>
                             </div>
                             <div class="form-group required col-md-12">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" name="date" id="date" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" required>
+                                <input type="date" class="form-control is-invalid" name="date" id="dateInput" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" required>
                             </div>
                             <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
@@ -199,13 +199,50 @@
                                         Are you sure you want to submit this form?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                        <button type="submit" id="submit" class="btn btn-primary" name="submit">Yes</button>
                                     </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <!-- Success alert modal -->
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your request has been submitted successfully!</p>
+                                        <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
+                                        <p>You can also check the status on the <b>Registrar Transactions History</b> page.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="your_transaction.php" class="btn btn-primary">Registrar Transactions History</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of success alert modal -->
+                        <!-- Redundant alert modal -->
+                        <div id="redundantModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="redundantModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="redundantModalLabel">Unsuccess</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your request has not been submitted successfully!</p>
+                                        <p>You Already Requested Same Pending Service.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="create_request.php" class="btn btn-primary">Create Request Again</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of Redundant alert modal -->
                     </div>
                 </div>
             </div>
@@ -221,7 +258,6 @@
             <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
         </div>
     </div>
-    <script src="../../loading.js"></script>
     <script src="../../jquery.js"></script>
     <script src="../../saved_settings.js"></script>
 </body>
@@ -231,4 +267,93 @@
     function resetForm() {
         document.getElementById("appointment-form").reset();
     }
+
+    // Get the reference to the date input element
+    var dateInput = document.getElementById('dateInput');
+
+    // Add an event listener for the input event
+    dateInput.addEventListener('input', function() {
+    var selectedDate = new Date(this.value);
+    
+    // Check if the selected date is a Sunday (0 represents Sunday in JavaScript)
+    if (selectedDate.getDay() === 0) {
+        // Disable the input field
+        dateInput.value = ''; // Clear the input value if necessary
+        //dateInput.disabled = true;
+        alert('Selection of Sundays is not allowed.');
+    } else {
+        // Enable the input field if it was previously disabled
+        dateInput.disabled = false;
+    }
+    });
+
+    var selectElement = document.getElementById("req_student_service");
+    var options = selectElement.options;
+
+    // for minimizing dropdown width
+    for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+        var optionText = option.text;
+
+        if (optionText.length > 60) {
+            option.text = optionText.substring(0, 60) + '...';
+        }
+    }
+
+    const contactNoInput = document.getElementById('contactNumber');
+        const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+
+        contactNoInput.addEventListener('input', () => {
+            const contactNo = contactNoInput.value.trim();
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
+
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
+                contactNoInput.classList.add('is-invalid');
+            } else {
+                contactNoValidationMessage.textContent = '';
+                contactNoInput.classList.remove('is-invalid');
+            }
+        });
+
 </script>
+<script src="../../loading.js"></script>
+
+<?php
+    if (isset($_SESSION['success'])) {
+        ?>
+        <script>
+            $(document).ready(function() {
+                $("#successModal").modal("show");
+            })
+        </script>
+        <?php
+        unset($_SESSION['success']);
+        exit();
+    } else if (isset($_SESSION['redundant'])) {
+        ?>
+        <script>
+            $(document).ready(function() {
+                $("#redundantModal").modal("show");
+            })
+        </script>
+        <?php
+        unset($_SESSION['redundant']);
+        exit();
+    }
+?>

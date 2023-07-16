@@ -5,6 +5,11 @@
         if (isset($_POST['submit'])) {
             $table = $_POST['table-select'];
         }
+
+        if (isset($_GET['param'])) {
+            $table = $_GET['param'];
+            //echo "Value passed from the previous page: " . $value;
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +70,7 @@
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for pickup</span> - The requested document/s is/are already available for pickup at the releasing section of student records.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> - The requested document/s was/were claimed.</small></p>
+                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: red;">Rejected</span> - The requested document/s was/were rejected.</small></p>
                         <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p>
                     </div>
                     <div class="d-flex w-100 justify-content-between p-0">
@@ -87,7 +93,7 @@
                             INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
                             INNER JOIN offices ON reg_transaction.office_id = offices.office_id
                             INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-                            INNER JOIN reg_status ON reg_transaction.status_id = reg_status.status_id
+                            INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
                             WHERE users.user_id = $id");
                             // Load the requested table
                             if ($table === 'view_table') {
