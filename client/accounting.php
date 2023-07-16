@@ -49,10 +49,6 @@
                 <h2>PAYMENTS</h2>
                 <p>Simplify your payments for campus documents</p>
             </a>
-            <a href="accounting/offsetting1.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
-            <h2>OFFSETTING</h2>
-                <p>Balance your campus accounts</p>
-            </a>
             <a href="transactions.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>TRANSACTION HISTORY</h2>
                 <p>Access your past and current transactions</p>
