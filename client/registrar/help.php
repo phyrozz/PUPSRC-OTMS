@@ -1,3 +1,38 @@
+<?php
+  $office_name = "Registrar Office";
+  include "../navbar.php";
+  include "../../breadcrumb.php";
+  include "../../conn.php";
+
+  
+  $query = "SELECT last_name, first_name, extension_name, email FROM users
+  WHERE user_id = ?";
+  $stmt = $connection->prepare($query);
+  $stmt->bind_param("i", $_SESSION['user_id']);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $userData = $result->fetch_all(MYSQLI_ASSOC);
+  $stmt->close();
+
+  if(isset($_POST['feedbackSubmit'])) {
+    $query = "INSERT INTO registrar_feedbacks (user_id, feedback)
+    VALUES (?, ?)";
+
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("is", $_SESSION['user_id'],  $_POST['feedbackText']);
+    if ($stmt->execute()) {
+        $_SESSION['success'] = true;
+    }
+    else {
+        var_dump($stmt->error);
+    }
+    $stmt->close();
+    $connection->close();
+}
+?>
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,12 +61,6 @@
 </head>
 
 <body>
-  <?php
-    $office_name = "Registrar Office";
-    include "../navbar.php";
-    include "../../breadcrumb.php";
-    include "../../conn.php";
-    ?>
   <div class="wrapper">
     <div class="container-fluid p-4">
       <?php
@@ -431,9 +460,119 @@
         </div>
       </div>
 
+      <div class="container py-5">
+        <div class="container-fluid text-center p-4">
+          <h3>Submit Feedback</h3>
+        </div>
+        <form id="guidanceFeedbackForm" method="POST">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text"
+              value="<?php echo $userData[0]['first_name'] . " " . $userData[0]['last_name'] . " ". $userData[0]['extension_name'] ?>"
+              class="form-control" id="name" required disabled>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" value="<?php echo $userData[0]['email'] ?>" class="form-control" id="email" required
+              disabled>
+          </div>
+          <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea class="form-control" pattern="[A-Za-z0-9]+" name="feedbackText" id="message" rows="5"
+              minlength="5" maxlength="2048" style="resize: none;" required></textarea>
+            <div class="invalid-feedback">Invalid feedback.</div>
+          </div>
+          <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal"
+            data-bs-target="#confirmSubmitModal" />
+          <!-- Modal -->
+          <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to submit this form?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                  <button type="submit" id="submit" class="btn btn-primary" name="feedbackSubmit">Yes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- Success alert modal -->
+      <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="successModalLabel">Success</h5>
+            </div>
+            <div class="modal-body">
+              <p>Thank you. Your feedback has been submitted successfully!</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of success alert modal -->
+      <div class="push"></div>
     </div>
-    <script src="../../saved_settings.js"></script>
-    <script src="../../loading.js"></script>
+  </div>
+  <script src="../../saved_settings.js"></script>
+  <script src="../../loading.js"></script>
+  <?php include '../../footer.php'; ?>
+  <script src="../../jquery.js"></script>
+  <script>
+  const messageTextarea = document.getElementById('message');
+
+  messageTextarea.addEventListener('input', function() {
+    const inputValue = messageTextarea.value;
+
+    const pattern = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9\s]*$/;
+    const isValid = pattern.test(inputValue);
+
+    if (isValid) {
+      messageTextarea.setCustomValidity('');
+      messageTextarea.classList.remove('is-invalid');
+    } else {
+      messageTextarea.setCustomValidity('Only letters and numbers are allowed.');
+      messageTextarea.classList.add('is-invalid');
+    }
+  });
+
+  // Function to handle form submission
+  function handleSubmit() {
+    if (document.getElementById('guidanceFeedbackForm').checkValidity()) {
+      $('#confirmSubmitModal').modal('show');
+    }
+  }
+
+  // Add event listener to the submit button
+  document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+  </script>
+  <script src="../../saved_settings.js"></script>
+  <?php
+    if (isset($_SESSION['success'])) {
+        ?>
+  <script>
+  // window.location.href="http://localhost/student/guidance/clearance.php";
+  $(document).ready(function() {
+    $("#successModal").modal("show");
+  })
+  </script>
+  <?php
+        unset($_SESSION['success']);
+        exit();
+    }
+    ?>
 </body>
 
 </html>
