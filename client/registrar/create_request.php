@@ -118,7 +118,7 @@ if(isset($_POST["submit"])){
                 you may visit <a href="https://www.pup.edu.ph/privacy/"
                   target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
             <div class="d-flex flex-column">
-              <a class="btn btn-outline-primary mb-2" href="./your_transaction.php">
+              <a class="btn btn-outline-primary mb-2" href="../transactions.php">
                 <i class="fa-regular fa-clipboard"></i> My Transactions
               </a>
 

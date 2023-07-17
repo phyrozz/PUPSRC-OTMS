@@ -441,6 +441,15 @@
         </div>
       </div>
 
+      <div class="py-5">
+        <div class="container-fluid text-left">
+          <h5>When claiming documents:</h5>
+          <p>
+            Authorization letter and ID if claimant is immediate family member;<br>
+            Special Power of Attorney (SPA) if the claimant is other than the immediate family.</p>
+        </div>
+      </div>
+
       <div class="container py-5">
         <div class="container-fluid text-center p-4">
           <h3>Submit Feedback</h3>

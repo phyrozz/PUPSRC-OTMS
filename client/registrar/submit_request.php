@@ -13,10 +13,8 @@ unset($_SESSION['req_student_service']);
 $query = "INSERT INTO doc_requests (office_id, request_description, scheduled_datetime, status_id, user_id) VALUES (?, ?, ?, ?, ?)";
 $stmt = $connection->prepare($query);
 $stmt->bind_param("issii", $office_id, $service, $date, $status_id, $user_id);
-$stmt->execute();
-$fetch_result = $stmt->get_result();
 
-if ($fetch_result) {
+if ($stmt->execute()) {
     // Query executed successfully
     echo "<script>
         alert('Record inserted successfully.');
@@ -25,8 +23,8 @@ if ($fetch_result) {
 } else {
     // Error executing the query
     echo "<script>
-        alert('Error: " . mysqli_error($connection) . "');
-        window.location.href = '../transaction.php';
+        alert('Error: " . $stmt->error . "');
+        window.location.href = '../transactions.php';
     </script>";
 }
 
