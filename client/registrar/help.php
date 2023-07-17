@@ -4,7 +4,6 @@
   include "../../breadcrumb.php";
   include "../../conn.php";
 
-  
   $query = "SELECT last_name, first_name, extension_name, email FROM users
   WHERE user_id = ?";
   $stmt = $connection->prepare($query);
@@ -14,25 +13,7 @@
   $userData = $result->fetch_all(MYSQLI_ASSOC);
   $stmt->close();
 
-  if(isset($_POST['feedbackSubmit'])) {
-    $query = "INSERT INTO registrar_feedbacks (user_id, feedback)
-    VALUES (?, ?)";
-
-    $stmt = $connection->prepare($query);
-    $stmt->bind_param("is", $_SESSION['user_id'],  $_POST['feedbackText']);
-    if ($stmt->execute()) {
-        $_SESSION['success'] = true;
-    }
-    else {
-        var_dump($stmt->error);
-    }
-    $stmt->close();
-    $connection->close();
-}
 ?>
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -517,7 +498,7 @@
               <p>Thank you. Your feedback has been submitted successfully!</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+              <button type="button" class="btn btn-primary" id="dismiss-button" data-bs-dismiss="modal">OK</button>
             </div>
           </div>
         </div>
@@ -558,21 +539,36 @@
   // Add event listener to the submit button
   document.getElementById('submitBtn').addEventListener('click', handleSubmit);
   </script>
-  <script src="../../saved_settings.js"></script>
+
+
   <?php
-    if (isset($_SESSION['success'])) {
-        ?>
+
+  if(isset($_POST['feedbackSubmit'])) {
+    $query = "INSERT INTO registrar_feedbacks (user_id, feedback)
+    VALUES (?, ?)";
+
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("is", $_SESSION['user_id'],  $_POST['feedbackText']);
+
+    if ($stmt->execute()) {
+?>
   <script>
-  // window.location.href="http://localhost/student/guidance/clearance.php";
   $(document).ready(function() {
     $("#successModal").modal("show");
+    document.querySelector('#dismiss-button').addEventListener('click', (e) => {
+      window.location.replace('http://localhost/client/registrar/help.php');
+    })
   })
   </script>
   <?php
-        unset($_SESSION['success']);
-        exit();
+      die();
+    } else {
+        var_dump($stmt->error);
+        $stmt->close();
+        $connection->close();
     }
-    ?>
+  }
+?>
 </body>
 
 </html>
