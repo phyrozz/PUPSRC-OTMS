@@ -50,6 +50,7 @@
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
                                         <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                         <option value="offsetting" <?php if ($table === 'offsetting') echo 'selected'; ?>>Offsetting</option>
+                                        <option value="feedbacks" <?php if ($table === 'feedbacks') echo 'selected'; ?>>Feedbacks</option>
                                     </select>
                                     <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary">Load Table</button>
                                 </form>
@@ -105,6 +106,9 @@
                             }
                             elseif ($table === 'offsetting') {
                                 include 'tables/accounting/offsetting_table.php';
+                            }
+                            elseif ($table === 'feedbacks') {
+                                include 'tables/accounting/feedbacks_table.php';
                             }
                         ?>
                     </div>
