@@ -15,11 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Update the user details in the database
     $updateQuery = "UPDATE users
                     INNER JOIN user_details ON users.user_id = user_details.user_id
-                    SET users.last_name = ?, users.first_name = ?, users.middle_name = ?, users.extension_name = ?, users.contact_no = ?, user_details.course_id = ?, user_details.year_and_section = ?
+                    SET users.last_name = ?, users.first_name = ?, users.middle_name = ?, users.extension_name = ?, users.contact_no = ?
                     WHERE users.user_id = ?";
 
     $stmt = $connection->prepare($updateQuery);
-    $stmt->bind_param("sssssisi", $editLastName, $editFirstName, $editMiddleName, $editExtensionName, $editContactNo, $editCourse, $editYearAndSection, $_SESSION['user_id']);
+    $stmt->bind_param("sssssi", $editLastName, $editFirstName, $editMiddleName, $editExtensionName, $editContactNo, $_SESSION['user_id']);
     $stmt->execute();
     $stmt->close();
     $connection->close();

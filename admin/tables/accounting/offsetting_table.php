@@ -101,7 +101,7 @@
                         var offsettings = data.offsettings[i];
 
                         var row = '<tr>' +
-                            '<td>' + offsettings.offsetting_id + '</td>' +
+                            '<td>'+'A0-' + offsettings.offsetting_id + '</td>' +
                             '<td>' + (new Date(offsettings.formatted_timestamp).toLocaleString('en-US', {
                             month: 'long',
                             day: 'numeric',

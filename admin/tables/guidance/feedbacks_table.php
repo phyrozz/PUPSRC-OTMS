@@ -1,54 +1,21 @@
-<?php
-// Generate a list of statuses for this table to be rendered on <select> in guidance.php
-$statuses = array(
-    'all' => 'All',
-    '1' => 'Pending',
-    '2' => 'For Receiving',
-    '3' => 'For Evaluation',
-    '4' => 'Ready for Pickup',
-    '5' => 'Released',
-    '6' => 'Rejected'
-);
-?>
 <div class="table-responsive">
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-                <th class="text-center"></th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
-                    Request Code
+                <th class="text-center doc-request-id-header sortable-header" data-column="last_name" scope="col" data-order="desc">
+                    Submitted by
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
-                    Date requested
+                <th class="text-center doc-request-id-header sortable-header" data-column="submitted_on" scope="col" data-order="desc">
+                    Submitted on
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
-                    Scheduled Date
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-requestor-header sortable-header" data-column="last_name" scope="col" data-order="desc">
-                    Requestor
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-student-or-client-header sortable-header" data-column="role" scope="col" data-order="desc">
-                    Student/Guest
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
-                    Request
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
-                    Amount to pay
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
-                    Status
+                <th class="text-center doc-request-id-header sortable-header" data-column="email" scope="col" data-order="desc">
+                    Email Address
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center">
-                    Attached files
+                    Feedback
                 </th>
             </tr>
         </thead>
@@ -57,21 +24,7 @@ $statuses = array(
         </tbody>
     </table>
 </div>
-<div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
-    <div class="d-flex gap-2">
-        <div class="input-group">
-            <div class="input-group-text">Update Status:</div>
-            <select class="form-select" name="update-status" id="update-status" disabled>
-                <option value="1">Pending</option>
-                <option value="2">For Receiving</option>
-                <option value="3">For Evaluation</option>
-                <option value="4">Ready for Pickup</option>
-                <option value="5">Released</option>
-                <option value="6">Rejected</option>
-            </select>
-        </div>
-        <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
-    </div>    
+<div id="pagination" class="container-fluid p-0 d-flex justify-content-end w-100"> 
     <nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
             <ul class="pagination" id="pagination-links">
@@ -80,7 +33,22 @@ $statuses = array(
         </div>
     </nav>
 </div>
-<!-- View user details modal -->
+<!-- View feedback text modal -->
+<div id="viewFeedbackTextModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewFeedbackTextModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewFeedbackTextModalLabel">User Feedback</h5>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view feedback text modal -->
+<!-- View user details text modal -->
 <div id="viewUserDetailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewUserDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -97,24 +65,7 @@ $statuses = array(
 </div>
 <!-- End of view user details modal -->
 <script>
-    function getStatusBadgeClass(status) {
-        switch (status) {
-            case 'Released':
-                return 'bg-success';
-            case 'Rejected':
-                return 'bg-danger';
-            case 'For Receiving':
-                return 'bg-warning text-dark';
-            case 'For Evaluation':
-                return 'bg-primary';
-            case 'Ready for Pickup':
-                return 'bg-info';
-            default:
-                return 'bg-dark';
-        }
-    }
-
-    // Function to populate the edit modal with the request details
+    // Function to populate the user details modal
     function populateUserInfoModal(userId) {
         $.ajax({
             url: 'tables/guidance/get_user_details.php',
@@ -186,7 +137,18 @@ $statuses = array(
         });
     }
 
-    function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+    function populateFeedbackTextModal(feedbackText) {
+        var modalTitle = document.getElementById('viewFeedbackTextModalLabel');
+        var modalBody = document.querySelector('#viewFeedbackTextModal .modal-body');
+
+        modalTitle.innerText = 'Feedback Text';
+
+        modalBody.innerHTML = feedbackText;
+
+        $("#viewFeedbackTextModal").modal("show");
+    }
+
+    function handlePagination(page, searchTerm = '', column = 'feedback_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
         loadingIndicator.style.display = 'block';
@@ -197,7 +159,7 @@ $statuses = array(
         
         // Make an AJAX request to fetch the document requests
         $.ajax({
-            url: 'tables/guidance/fetch_doc_requests.php',
+            url: 'tables/guidance/fetch_feedbacks.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
@@ -215,22 +177,14 @@ $statuses = array(
                 tableBody.innerHTML = '';
 
                 if (data.total_records > 0) {
-                    for (var i = 0; i < data.document_requests.length; i++) {
-                        var request = data.document_requests[i];
+                    for (var i = 0; i < data.guidance_feedbacks.length; i++) {
+                        var feedback = data.guidance_feedbacks[i];
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" name="request-checkbox" value="' + request.request_id + '"></td>' +
-                            '<td>' + request.request_id + '</td>' +
-                            '<td>' + request.formatted_request_id + '</td>' +
-                            '<td>' + (request.formatted_scheduled_datetime !== null ? request.formatted_scheduled_datetime : 'Not yet scheduled') + '</td>' +
-                            '<td><a href="#" class="user-details-link" data-user-id="' + request.user_id + '">' + request.last_name + ", " + request.first_name + " " + request.middle_name + " " + request.extension_name + '</a></td>' +
-                            '<td>' + request.role + '</td>' +
-                            '<td>' + request.request_description + '</td>' +
-                            '<td>' + '₱' + request.amount_to_pay + '</td>' +
-                            '<td class="text-center">' +
-                            '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
-                            '</td>' +
-                            '<td>' + (request.attached_files ? '<a href="' + request.attached_files + '" target="_blank">View Attachment</a>' : "No attachment") + '</td>' +
+                            '<td><a href="#" class="user-details-link" data-user-id="' + feedback.user_id + '">' + feedback.last_name + ", " + feedback.first_name + " " + feedback.middle_name + " " + feedback.extension_name + '</a></td>' +
+                            '<td>' + feedback.formatted_datetime + '</td>' +
+                            '<td>' + feedback.email + '</td>' +
+                            '<td class="text-truncate" style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><a href="#" class="user-feedback-link">' + feedback.feedback_text + '</a></td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
@@ -247,7 +201,7 @@ $statuses = array(
                 if (data.total_pages > 1) {
                     for (var i = 1; i <= data.total_pages; i++) {
                         var pageLink = '<li class="page-item">' +
-                        '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ', \'' + searchTerm + '\', \'request_id\', \'desc\')">' + i + '</a>' +
+                        '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') + '" href="#" onclick="handlePagination(' + i + ', \'' + searchTerm + '\', \'feedback_id\', \'desc\')">' + i + '</a>' +
                         '</li>';
                         paginationLinks.innerHTML += pageLink;
                     }
@@ -256,6 +210,11 @@ $statuses = array(
                 $('.user-details-link').on('click', function(event) {
                     var userId = event.target.getAttribute('data-user-id');
                     populateUserInfoModal(userId);
+                });
+
+                $('.user-feedback-link').on('click', function(event) {
+                    var feedbackText = event.target.textContent;
+                    populateFeedbackTextModal(feedbackText);
                 });
             },
             error: function() {
@@ -294,107 +253,26 @@ $statuses = array(
     });
 
     // Initial pagination request (page 1)
-    handlePagination(1, '', 'request_id', 'desc');
+    handlePagination(1, '', 'feedback_id', 'desc');
 
     $(document).ready(function() {
+        $('#filterByStatusSection').hide();
+        $('#filterByDocTypeSection').hide();
+        $('#filterButton').hide();
+
         $('#search-input').on('input', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+            handlePagination(1, searchTerm, 'feedback_id', 'desc');
         });
 
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+            handlePagination(1, searchTerm, 'feedback_id', 'desc');
         });
 
         $('#filterButton').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+            handlePagination(1, searchTerm, 'feedback_id', 'desc');
         });
-
-        // Update status button listener
-        $('#update-status-button').on('click', function() {
-            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
-            var requestIds = checkedCheckboxes.map(function() {
-                return $(this).val();
-            }).get();
-            var statusId = $('#update-status').val(); // Get the selected status ID
-
-            $.ajax({
-                url: 'tables/guidance/update_doc_requests.php',
-                method: 'POST',
-                data: { requestIds: requestIds, statusId: statusId }, // Include the selected status ID in the data
-                success: function(response) {
-                    // Handle the success response
-
-                    // Refresh the table after status update
-                    handlePagination(1, '', 'request_id', 'desc');
-                },
-                error: function() {
-                    // Handle the error response
-                    console.log('Error occurred while updating status');
-                }
-            });
-        });
-
-        // Checkbox change listener using event delegation
-        $(document).on('change', 'input[name="request-checkbox"]', handleCheckboxChange);
     });
-
-    function handleCheckboxChange() {
-        var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
-        var updateButton = $('#update-status-button');
-        var statusDropdown = $('#update-status');
-
-        if (checkedCheckboxes.length > 0) {
-            updateButton.prop('disabled', false);
-            statusDropdown.prop('disabled', false);
-        } else {
-            updateButton.prop('disabled', true);
-            statusDropdown.prop('disabled', true);
-        }
-    }
-
-    // Perform search functionality when either the Filter or Search button is pressed
-    function filterDocType() {
-        var filterByDocTypeVal = $('#filterByDocType').val();
-        
-        switch (filterByDocTypeVal) {
-            case 'goodMoral':
-                return ' request good moral document';
-                break;
-            case 'clearance':
-                return ' request clearance';
-                break;
-            default:
-                return '';
-        }
-    }
-
-    function filterStatus() {
-        var filterByStatusVal = $('#filterByStatus').val();
-        
-        switch (filterByStatusVal) {
-            case '1':
-                return ' pending';
-                break;
-            case '2':
-                return ' for receiving';
-                break;
-            case '3':
-                return ' for evaluation';
-                break;
-            case '4':
-                return ' ready for pickup';
-                break;
-            case '5':
-                return ' released';
-                break;
-            case '6':
-                return ' rejected';
-                break;
-            default:
-                return '';
-        }
-    }
 </script>

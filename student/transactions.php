@@ -76,6 +76,7 @@
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                     <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                     <option value="academic_transactions" <?php if ($table === 'academic_transactions') echo 'selected'; ?>>Academic Transactions</option>
+                                    <option value="registrar_request" <?php if ($table === 'registrar_request') echo 'selected'; ?>>Registrar Requests</option>
                                 </select>
                                 <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
                             </form>
@@ -107,8 +108,9 @@
                                 include 'transaction_tables/appointment_facility_table.php';
                             } elseif ($table === 'academic_transactions') {
                                 include 'transaction_tables/academic_table.php';
+                            } elseif ($table === 'registrar_request') {
+                                include 'transaction_tables/registrar_request_table.php';
                             }
-                            
                         ?>
                     </div>
                 </div>

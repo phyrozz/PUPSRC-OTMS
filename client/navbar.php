@@ -43,12 +43,15 @@
           <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
             <?php switch ($office_name) { 
                             case 'Guidance Office':
-                                echo '';
+                                echo '
+								<li><a class="dropdown-item" href="/client/guidance/good_morals.php">Request Good Moral Document</a></li>
+                                <li><a class="dropdown-item" href="/client/guidance/clearance.php">Request Clearance</a></li>
+								';
                                 break;
                             case 'Administrative Office':
                                 echo '
-								<li><a class="dropdown-item" href="/student/administrative/view-equipment.php">View Available Equipment</a></li>
-                                <li><a class="dropdown-item" href="/student/administrative/view-facility.php">View Available Facilities</a></li>
+								<li><a class="dropdown-item" href="/client/administrative/view-equipment.php">View Available Equipment</a></li>
+                                <li><a class="dropdown-item" href="/client/administrative/view-facility.php">View Available Facilities</a></li>
 								';
                                 break;
 							case 'Registrar Office':
@@ -61,10 +64,9 @@
                                 echo '
 								<li><a class="dropdown-item"href="/client/accounting/payment1.php">Payment</a></li>
 								<li><a class="dropdown-item"href="/client/accounting/offsetting1.php">Offsetting</a></li>
-								<li><a class="dropdown-item"href="http://localhost/client/transactions.php">Registrar Transaction History</a></li>
+								<li><a class="dropdown-item"href="/client/transactions.php">Registrar Transaction History</a></li>
 								';
                                 break;
-                            // Add more cases for other office services
                             }
                         ?>
           </ul>

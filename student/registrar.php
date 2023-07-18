@@ -29,8 +29,11 @@
             include "../breadcrumb.php";
         ?>
         <div class="container-fluid registrarbanner header">
-            <!-- <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
-            <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a> -->
+            <a href="registrar/FAQ.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">
+                <i class="fa-regular fa-circle-question"></i>
+                Help
+            </a>
+            <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
             <?php
             $breadcrumbItems = [
                 ['text' => 'Registrar Office', 'active' => true],
@@ -50,10 +53,6 @@
             <h2>Registrar Transactions History</h2>
                 <p>Status of current request with the registrar office</p>
             </a>
-            <!-- <a href="registrar_history.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
-            <h2>Registrar Transaction History</h2>
-                <p>Check previous completed request from registrar office</p>
-            </a> -->
         </div>
         <div class="push"></div>
     </div>

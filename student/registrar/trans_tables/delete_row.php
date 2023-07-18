@@ -15,7 +15,7 @@
             <th></th>
             <th class="text-center" scope="col">Request Code</th>
             <th class="text-center" scope="col">Office</th>
-            <th class="text-center" scope="col">Request</th>
+            <th class="text-center w-50" scope="col">Request</th>
             <th class="text-center" scope="col"><i class="fa-solid fa-filter" onclick=""></i>Schedule </th>
             <th class="text-center" scope="col">Status</th>
         </tr>
@@ -28,13 +28,13 @@
           INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
           INNER JOIN offices ON reg_transaction.office_id = offices.office_id
           INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-          INNER JOIN reg_status ON reg_transaction.status_id = reg_status.status_id
+          INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
           WHERE users.user_id = $id";
           $query_run = mysqli_query($connection, $query);
 
           if(mysqli_num_rows($query_run) > 0){
               foreach($query_run as $row){
-                if ($row['status_id'] == "1"){
+                if ($row['status_id'] == "1" || $row['status_id'] == "6"){
                 ?>
                 <tr>
                   <td><input type="checkbox" name="stud_delete_id[]" value="<?= $row ['reg_id'];?>"></td>
@@ -42,7 +42,11 @@
                   <td><?=$row['office_name'];?></td>
                   <td><?=$row['services'];?></td>
                   <td><?=$row['schedule'];?></td>
-                  <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status'];?></td>
+                  <?php if ($row['status_id'] == "1") { ?>
+                    <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
+                  <?php } else {?>
+                    <td class="text-center"><span class="badge rounded-pill bg-danger"><?=$row['status_name'];?></td>
+                  <?php } ?>
                 </tr>
                 <?php
               }
