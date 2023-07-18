@@ -32,17 +32,33 @@
         include '../../breadcrumb.php';
     ?>
 
-    <!-- Pay Alert Modal -->
-    <div id="payModal" class="modal">
-        <div id="modalContent" class="modal-content">
-            <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/>
-            <h2>Pay 30 PHP at the cashier for the assessed fee.</h2>
-            <p>Take a picture of the issued receipt as it needs to be uploaded here later.</p>
-            <br/>
-            <button type="button" class="btn btn-primary" id="nextButton" onclick="close_payModal()">Okay</button>
-        </div>
-    </div>
+    <?php
+    // Start the session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Check if the modal has already been shown in this session
+    if (!isset($_SESSION['session_ga'])) {
+        // Set the session variable to indicate that the modal has been shown
+        $_SESSION['session_ga'] = true;
+        $_SESSION['isLoggedIn'] = true;
+    
+        // Display the modal
+        // ... Your modal HTML code goes here ...
+        echo '<!-- Pay Alert Modal -->
+        <div id="payModal" class="modal">
+            <div id="modalContent" class="modal-content">
+                <img src="/assets/exclamation.png" class="exclamationpic">
+                <br/>
+                <h2>Pay 30 PHP at the cashier for the assessed fee.</h2>
+                <p>Take a picture of the issued receipt as it needs to be uploaded here later.</p>
+                <br/>
+                <button type="button" class="btn btn-primary" id="nextButton" onclick="close_payModal()">Okay</button>
+            </div>
+        </div>';
+    }
+    ?>
 
     <div class="container-fluid academicbanner header" style="height:250px">
         <?php

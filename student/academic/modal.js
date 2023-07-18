@@ -60,11 +60,6 @@ function openModal2() {
   }
 }
 
-// Initial check when the page loads
-window.addEventListener("load", function() {
-  checkRadioSelection();
-});
-
 function checkRadioSelection() {
   var radioButtons = document.getElementsByName("option");
   var button = document.getElementById("nextButton");
@@ -82,8 +77,12 @@ function checkRadioSelection() {
   }
 }
 
+// Initial check when the page loads
+window.addEventListener("load", function() {
+  checkRadioSelection();
+});
+
     function open_successModal() {
         var successModal = new bootstrap.Modal(document.getElementById('successModal'));
         successModal.show();
     }
-

@@ -1,5 +1,5 @@
 <!-- ACTION - HELP MODAL -->
-<div class="modal fade" id="helpmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+<div class="modal fade" id="helpmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
