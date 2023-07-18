@@ -32,43 +32,59 @@
             include '../../breadcrumb.php';
         ?>
 
-        <!-- The Modal -->
-            <div id="myModal" class="modal">
-            <div id="modalContent" class="modal-content">
-            <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/><h2>Do you have at least 1 year of residency in your current program?</h2>
-            <div class="modal-radio-group">
-                    <input type="radio" name="option" value="option1" class="radio-option1">
-                    <label for="option1">Yes</label>
-                    <input type="radio" name="option" value="option2" class="radio-option2">
-                    <label for="option2">No</label>
-            </div>
-            <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="openModal2()" disabled>Next</button>
-            <!-- <span id="countdownText" class="countdown"></span> -->
-            </div>
-        </div>
+    <?php
+    // Start the session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
-        <!-- When answered No Modal-->
-            <div id="redirectModal" class="modal">
-            <div id="modalContent" class="modal-content">
-            <a href="../academic.php" class="btn-close" aria-label="Close"></a>
-            <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/><h1>Students must have at least 1 year residency from current program to qualify for shifting.</h1>
-            <a href="../academic.php" class="btn btn-primary" id="nextButton">Home</a>
-            </div>
+    // Check if the modal has already been shown in this session
+    if (!isset($_SESSION['session_s'])) {
+        // Set the session variable to indicate that the modal has been shown
+        $_SESSION['session_s'] = true;
+        $_SESSION['isLoggedIn'] = true;
+    
+        // Display the modal
+        // ... Your modal HTML code goes here ...
+        echo '<!-- The Modal -->
+        <div id="myModal" class="modal">
+        <div id="modalContent" class="modal-content">
+        <img src="/assets/exclamation.png" class="exclamationpic">
+        <br/><h2>Do you have at least 1 year of residency in your current program?</h2>
+        <div class="modal-radio-group">
+                <input type="radio" name="option" value="option1" class="radio-option1">
+                <label for="option1">Yes</label>
+                <input type="radio" name="option" value="option2" class="radio-option2">
+                <label for="option2">No</label>
         </div>
+        <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="openModal2()" disabled>Next</button>
+        <!-- <span id="countdownText" class="countdown"></span> -->
+        </div>
+    </div>
 
-        <!-- Pay Alert Modal -->
-        <div id="payModal" class="modal">
-            <div id="modalContent" class="modal-content">
-            <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/><h2>Pay 150 PHP at the cashier for the certified copy of grades.</h2>
-            <p>Take a picture of the issued copy as it needs to be uploaded here later.<br/>
-            Then submit the copy to the academic office, with your transaction ID.</p>
-            <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="close_payModal()">Next</button>
-            
-            </div>
+    <!-- When answered No Modal-->
+        <div id="redirectModal" class="modal">
+        <div id="modalContent" class="modal-content">
+        <a href="../academic.php" class="btn-close" aria-label="Close"></a>
+        <img src="/assets/exclamation.png" class="exclamationpic">
+        <br/><h1>Students must have at least 1 year residency from current program to qualify for shifting.</h1>
+        <a href="../academic.php" class="btn btn-primary" id="nextButton">Home</a>
         </div>
+    </div>
+
+    <!-- Pay Alert Modal -->
+    <div id="payModal" class="modal">
+        <div id="modalContent" class="modal-content">
+        <img src="/assets/exclamation.png" class="exclamationpic">
+        <br/><h2>Pay 150 PHP at the cashier for the certified copy of grades.</h2>
+        <p>Take a picture of the issued copy as it needs to be uploaded here later.<br/>
+        Then submit the copy to the academic office, with your transaction ID.</p>
+        <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="close_payModal()">Next</button>
+        
+        </div>
+    </div>';
+    }
+    ?>
 
         <div class="container-fluid academicbanner header" style="height:250px">
             <?php

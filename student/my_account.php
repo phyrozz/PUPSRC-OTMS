@@ -22,6 +22,7 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -77,6 +78,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-9 px-3">
+                                    <div class="m-0">
+                                        <p class="fs-5 m-0"><strong>Student Number</strong></p>
+                                        <p class="mx-2"><?php echo $userData[0]['student_no']; ?></p>
+                                    </div>
                                     <div class="m-0">
                                         <p class="fs-5 m-0"><strong>Name</strong></p>
                                         <p class="mx-2"><?php echo $userData[0]['last_name'] . ', ' . $userData[0]['first_name'] . ' ' . $userData[0]['middle_name'] . ' ' . $userData[0]['extension_name']; ?></p>
@@ -198,6 +203,17 @@
                                 <div class="invalid-feedback">Please enter a valid contact number.</div>
                             </div>
                             <div class="mb-3 form-group">
+                                <label for="editBirthDate" class="form-label">Birth Date</label>
+                                <input type="text" class="form-control" name="editBirthDate" id="editBirthDate" value="
+                                <?php
+                                $editBirthDate = $userData[0]['birth_date'];
+                                $formattedDate = date('Y-m-d', strtotime($editBirthDate));
+                                echo $formattedDate;
+                                ?>
+                                " style="cursor: pointer !important;" required data-input>
+                                <div id="birthDateValidationMessage" class="text-danger"></div>
+                            </div>
+                            <div class="mb-3 form-group">
                                 <label for="editCourse" class="form-label">Course</label>
                                 <div class="input-group mb-0">
                                     <select name="editCourse" id="editCourse" class="form-control form-select" required>
@@ -235,6 +251,7 @@
     <?php include '../footer.php'; ?>
     <script src="../loading.js"></script>
     <script src="../saved_settings.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         $(document).ready(function() {
             document.getElementById('darkModeSwitch').switchButton();
@@ -255,6 +272,10 @@
                 $('#emailDetails').slideToggle();
                 $('#sexDetails').slideToggle();
                 $('#addressDetails').slideToggle();
+
+                // Toggle the text of the link
+                var linkText = $(this).text();
+                $(this).text(linkText === 'Show More' ? 'Show Less' : 'Show More');
             });
 
             function validateContactNumber(contactNumber) {
@@ -322,13 +343,14 @@
                 var isValidLastName = $('#editLastName').val();
                 var contactNumber = $('#editContactNumber').val();
                 var yearAndSection = $('#editLevelAndSection').val();
+                var birthDate = $('#editBirthDate').val();
 
                 var isValidContactNumber = validateContactNumber(contactNumber);
                 $('#editContactNumber').toggleClass('is-invalid', !isValidContactNumber);
                 var isValidYearAndSection = validateYearAndSection(yearAndSection);
                 $('#editLevelAndSection').toggleClass('is-invalid', !isValidYearAndSection);
 
-                if (!isValidContactNumber || !isValidYearAndSection || isValidFirstName.trim() == '' || isValidLastName.trim() == '') {
+                if (!isValidContactNumber || !isValidYearAndSection || isValidFirstName.trim() == '' || isValidLastName.trim() == '' || birthDate.trim() == '') {
                     return;
                 }
 
@@ -346,6 +368,18 @@
 
                 location.reload(0);
             });
+        });
+
+        flatpickr("#editBirthDate", {
+            readonly: false,
+            allowInput: true,
+            dateFormat: "Y-m-d",
+            theme: "custom-datepicker",
+            minDate: "1.1.1901",
+            maxDate: "today",
+            locale: {
+                "firstDayOfWeek": 1 // start week on Monday
+            },
         });
   </script>
 </body>

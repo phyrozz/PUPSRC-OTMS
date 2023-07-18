@@ -17,7 +17,7 @@
     //get next page
     $next_page = $page_no + 1;
     //get the total count of records
-    $result_count = mysqli_query($connection, "SELECT COUNT(*) as total_records FROM reg_transaction");
+    $result_count = mysqli_query($connection, "SELECT COUNT(*) as total_records FROM reg_transaction WHERE user_id = '$id'");
     //total records
     $records = mysqli_fetch_array($result_count);
     //store total_records to a variable
@@ -29,7 +29,7 @@
     INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
     INNER JOIN offices ON reg_transaction.office_id = offices.office_id
     INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-    INNER JOIN reg_status ON reg_transaction.status_id = reg_status.status_id
+    INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
     WHERE users.user_id = $id LIMIT $offset, $total_records_per_page";
 ?>
 
@@ -69,7 +69,7 @@
             <th></th>
             <th class="text-center" scope="col">Request Code</th>
             <th class="text-center" scope="col">Office</th>
-            <th class="text-center" scope="col">Request</th>
+            <th class="text-center w-50" scope="col">Request</th>
             <th class="text-center" scope="col"><i class="fa-solid fa-filter" onclick=""></i>Schedule </th>
             <th class="text-center" scope="col">Status</th>
         </tr>
@@ -87,15 +87,17 @@
                   <td><?=$row['services'];?></td>
                   <td><?=$row['schedule'];?></td>
                   <?php if ($row['status_id'] == "1"){ ?>
-                  <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status'];?></td>
+                  <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
                   <?php } else if ($row['status_id'] == "2") { ?>
-                    <td class="text-center"><span class="badge rounded-pill" style="background-color: orange;"><?=$row['status'];?></td>
+                    <td class="text-center"><span class="badge rounded-pill" style="background-color: orange;"><?=$row['status_name'];?></td>
                     <?php } else if ($row['status_id'] == "3") { ?>
-                        <td class="text-center"><span class="badge rounded-pill" style="background-color: blue;"><?=$row['status'];?></td>
+                        <td class="text-center"><span class="badge rounded-pill" style="background-color: blue;"><?=$row['status_name'];?></td>
                     <?php } else if ($row['status_id'] == "4") { ?>
-                        <td class="text-center"><span class="badge rounded-pill" style="background-color: DodgerBlue;"><?=$row['status'];?></td>
+                        <td class="text-center"><span class="badge rounded-pill" style="background-color: DodgerBlue;"><?=$row['status_name'];?></td>
                     <?php } else if ($row['status_id'] == "5") { ?>
-                        <td class="text-center"><span class="badge rounded-pill" style="background-color: green;"><?=$row['status'];?></td>
+                        <td class="text-center"><span class="badge rounded-pill" style="background-color: green;"><?=$row['status_name'];?></td>
+                    <?php } else if ($row['status_id'] == "6") { ?>
+                        <td class="text-center"><span class="badge rounded-pill" style="background-color: red;"><?=$row['status_name'];?></td>
                     <?php } ?>
                 </tr>
                 <?php

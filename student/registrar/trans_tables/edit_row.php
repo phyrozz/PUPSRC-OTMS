@@ -1,4 +1,3 @@
-
 <form method="POST" enctype="multipart/form-data">
 <!-- Search -->
 <div class="d-flex w-100 justify-content-end p-0">
@@ -16,7 +15,7 @@
             <th></th>
             <th class="text-center" scope="col">Request Code</th>
             <th class="text-center" scope="col">Office</th>
-            <th class="text-center" scope="col">Request</th>
+            <th class="text-center w-50" scope="col">Request</th>
             <th class="text-center" scope="col"><i class="fa-solid fa-filter" onclick=""></i>Edit Schedule</th>
             <th class="text-center" scope="col">Status</th>
         </tr>
@@ -28,7 +27,7 @@
           INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
           INNER JOIN offices ON reg_transaction.office_id = offices.office_id
           INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-          INNER JOIN reg_status ON reg_transaction.status_id = reg_status.status_id
+          INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
           WHERE users.user_id = $id";
           $query_run = mysqli_query($connection, $query_set);
           if(mysqli_num_rows($query_run) > 0){
@@ -43,7 +42,7 @@
                   <td><?=$row['services'];?></td>
                   <td style="display: none"><?=$row['services_id'];?></td> <!--hidden-->
                   <td><?=$row['schedule'];?></td>
-                  <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status'];?></td>
+                  <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
                 </tr>
                 <?php
               }
@@ -70,7 +69,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form action="trans_tables/edit.php" method="POST">
+                <form action="trans_tables/edit.php" method="POST" class="was-validated">
 
                     <div class="modal-body">
 
@@ -82,7 +81,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label> Request </label>
+                            <label>Request </label>
                             <select name="request" id="request" class="form-control" required>
                                 <?php
                                 //fetching registrar service
@@ -96,7 +95,7 @@
 
                         <div class="form-group">
                             <label> Schedule </label>
-                            <input type="date" name="date" id="date" class="form-control" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>">
+                            <input type="date" name="date" id="date" class="form-control is-invalid" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>">
                         </div>
 
                     </div>
@@ -150,6 +149,32 @@
                 });  
            }  
       }); 
+
+    // Get the reference to the date input element
+    var dateInput = document.getElementById('date');
+
+    // Add an event listener for the input event
+    dateInput.addEventListener('input', function() {
+    var selectedDate = new Date(this.value);
+
+    // Check if the selected date is a Sunday (0 represents Sunday in JavaScript)
+    if (selectedDate.getDay() === 0) {
+        // Disable the input field
+        dateInput.value = ''; // Clear the input value if necessary
+        //dateInput.disabled = true;
+        alert('Selection of Sundays is not allowed.');
+    } else {
+        // Enable the input field if it was previously disabled
+        dateInput.disabled = false;
+    }
+    });
+
+    jQuery('#request option').each(function() {
+    var optionText = this.text;
+    console.log(optionText);
+    var newOption = optionText.substring(0,50);
+    console.log(newOption);
+    jQuery(this).text(newOption + '..');
+    });
+
     </script>
-
-

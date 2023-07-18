@@ -74,34 +74,69 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        <p>The Guidance Office is a faculty within PUP-SRC's Student Services that is responsible in maintaining the social, ethical, and moral integrity within the campus by offering services for the students and alumnus that performs and maintains those objectives.</p>
+                        <p>To learn more about the office, you may inquire or schedule a counseling within the office through this application.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    What services do the office offer?
+                </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                    <div class="accordion-body">
+                        <p>The Guidance Office provides the following services available in PUPSRC-OTMS:</p>
+                        <dl class="row">
+                            <dt class="col-sm-6 text-truncate">Request for Good Moral Document</dt>
+                            <dd class="col-sm-6">Request for the Good Moral Document without the need of queueing in long lines outside the office by getting the status of your request within PUPSRC-OTMS.</dd>
+                            <dt class="col-sm-6 text-truncate">Request for Clearance</dt>
+                            <dd class="col-sm-6">Request for the Academic Clearance Document without the need of queueing in long lines outside the office by getting the status of your request within PUPSRC-OTMS.</dd>
+                            <dt class="col-sm-6 text-truncate">Schedule Counseling</dt>
+                            <dd class="col-sm-6">Schedule for counseling without the need of queueing in long lines outside the office by getting the status of your request within PUPSRC-OTMS. You may specify the reason for counseling within the schedule form.</dd>
+                        </dl>
                     </div>
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     Where can I find the office?
                 </button>
                 </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        <p>You can find the office on the second floor by looking for the <b>Student Services</b> room.</p>
                     </div>
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                     How do I inquire with the office?
                 </button>
                 </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        You may submit a feedback by filling out the form below or by visiting the office.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    What are the requirements for the document requests?
+                </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                    <div class="accordion-body">
+                        <p>Here are the requirements for the two document requests provided by the office:</p>
+                        <ul>
+                            <li>Signed request letter (will be generated by the application for you to print as .PDF after submitting your request)</li>
+                            <li>Official receipt (pay at the cashier)</li>
+                            <li>1 pc. documentary stamp (for certification only)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -121,7 +156,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" pattern="[A-Za-z0-9]+" name="guidanceFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" style="resize: none;" required></textarea>
+                    <textarea class="form-control" name="guidanceFeedbackText" id="message" rows="5" maxlength="2048" style="resize: none;" required></textarea>
                     <div class="invalid-feedback">Invalid feedback.</div>
                 </div>
                 <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
@@ -180,22 +215,17 @@
         messageTextarea.addEventListener('input', function() {
             const inputValue = messageTextarea.value;
 
-            const pattern = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9\s]*$/;
-            const isValid = pattern.test(inputValue);
-
-            if (isValid) {
+            if (inputValue.trim() != '') {
                 messageTextarea.setCustomValidity('');
                 messageTextarea.classList.remove('is-invalid');
             } else {
-                messageTextarea.setCustomValidity('Only letters and numbers are allowed.');
                 messageTextarea.classList.add('is-invalid');
             }
         });
 
         // Function to handle form submission
         function handleSubmit() {
-            validateForm();
-            if (document.getElementById('guidanceFeedbackForm').checkValidity()) {
+            if (messageTextarea.value.trim() != '') {
                 $('#confirmSubmitModal').modal('show');
             }
         }

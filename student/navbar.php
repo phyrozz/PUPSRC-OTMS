@@ -92,7 +92,7 @@ $isLoggedIn = true;
                 <li class="nav-item dropdown order-1 order-lg-2">
                     <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-user-circle me-1"></i>
-                        <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?>
+                        <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"] . " " . $_SESSION["extension_name"]; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
                         <li><a class="dropdown-item" href="http://localhost/student/transactions.php">My Transactions</a></li>

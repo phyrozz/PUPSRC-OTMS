@@ -38,7 +38,7 @@
             $_SESSION['last_name'] = $dbLastName;
             $_SESSION['email'] = $dbEmail;
             $_SESSION['office_name'] = $dbOffice;
-            header("Location: http://localhost/admin/redirect.php");
+            header("Location: ../admin/redirect.php");
             exit();
         } else {
                 $loginMessage = "Invalid credentials. Please try again.";

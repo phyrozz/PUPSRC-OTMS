@@ -18,8 +18,8 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the document requests
-$documentRequestsQuery = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, scheduled_datetime, status_name, amount_to_pay, attached_files, 
-                        users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role
+$documentRequestsQuery = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%M %e, %Y %l:%i:%s %p')) AS formatted_request_id, DATE_FORMAT(scheduled_datetime, '%M %e, %Y') as formatted_scheduled_datetime, status_name, amount_to_pay, attached_files, 
+                        doc_requests.user_id, users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role
                         FROM doc_requests
                         INNER JOIN users ON doc_requests.user_id = users.user_id
                         INNER JOIN user_roles ON users.user_role = user_roles.user_role_id
@@ -29,37 +29,49 @@ $documentRequestsQuery = "SELECT request_id, request_description, CONCAT(DATE_FO
 
 if (!empty($searchTerm)) {
     $documentRequestsQuery .= " AND (request_id LIKE '%$searchTerm%'
-                           OR users.first_name LIKE '%$searchTerm%'
-                           OR users.last_name LIKE '%$searchTerm%'
-                           OR users.middle_name LIKE '%$searchTerm%'
-                           OR users.extension_name LIKE '%$searchTerm%'
-                           OR request_description LIKE '%$searchTerm%'
-                           OR user_roles.role LIKE '%$searchTerm%'
-                           OR scheduled_datetime LIKE '%$searchTerm%'
-                           -- CONCAT name and request_description combinations
-                           OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           -- CONCAT name and status_name combinations
-                           OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR users.first_name LIKE '%$searchTerm%'
+                                OR users.last_name LIKE '%$searchTerm%'
+                                OR users.middle_name LIKE '%$searchTerm%'
+                                OR users.extension_name LIKE '%$searchTerm%'
+                                OR request_description LIKE '%$searchTerm%'
+                                OR user_roles.role LIKE '%$searchTerm%'
+                                -- CONCAT name and request_description combinations
+                                OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                -- CONCAT name and status_name combinations
+                                OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                -- CONCAT name and user role combinations
+                                OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ' ', user_roles.role) LIKE '%$searchTerm%'
 
-                           OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                           OR CONCAT(users.first_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                           OR CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) LIKE '%$searchTerm%'
-                           OR DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%M') LIKE '%$searchTerm%' -- Search for worded months
-                           OR status_name LIKE '%$searchTerm%'
-                           OR amount_to_pay LIKE '%$searchTerm%')";
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
+                                OR DATE_FORMAT(scheduled_datetime, '%M %e, %Y') LIKE '%$searchTerm%'
+                                OR status_name LIKE '%$searchTerm%'
+                                OR amount_to_pay LIKE '%$searchTerm%')";
 }
 
 // Add the sorting parameters to the query
@@ -85,37 +97,49 @@ if ($result) {
 
     if (!empty($searchTerm)) {
         $totalRecordsQuery .= " AND (request_id LIKE '%$searchTerm%'
-                               OR users.first_name LIKE '%$searchTerm%'
-                               OR users.last_name LIKE '%$searchTerm%'
-                               OR users.middle_name LIKE '%$searchTerm%'
-                               OR users.extension_name LIKE '%$searchTerm%'
-                               OR request_description LIKE '%$searchTerm%'
-                               OR user_roles.role LIKE '%$searchTerm%'
-                               OR scheduled_datetime LIKE '%$searchTerm%'
-                               -- CONCAT name and request_description combinations
-                               OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               -- CONCAT name and status_name combinations
-                               OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
-    
-                               OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                               OR CONCAT(users.first_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                               OR CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) LIKE '%$searchTerm%'
-                               OR DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%M') LIKE '%$searchTerm%' -- Search for worded months
-                               OR status_name LIKE '%$searchTerm%'
-                               OR amount_to_pay LIKE '%$searchTerm%')";
+                                OR users.first_name LIKE '%$searchTerm%'
+                                OR users.last_name LIKE '%$searchTerm%'
+                                OR users.middle_name LIKE '%$searchTerm%'
+                                OR users.extension_name LIKE '%$searchTerm%'
+                                OR request_description LIKE '%$searchTerm%'
+                                OR user_roles.role LIKE '%$searchTerm%'
+                                -- CONCAT name and request_description combinations
+                                OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ' ', request_description, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                -- CONCAT name and status_name combinations
+                                OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ' ', statuses.status_name) LIKE '%$searchTerm%'
+                                -- CONCAT name and user role combinations
+                                OR CONCAT(users.last_name, ' ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+                                OR CONCAT(users.last_name, ' ', user_roles.role) LIKE '%$searchTerm%'
+
+                                OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
+                                OR CONCAT(users.first_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
+                                OR DATE_FORMAT(scheduled_datetime, '%M %e, %Y') LIKE '%$searchTerm%'
+                                OR status_name LIKE '%$searchTerm%'
+                                OR amount_to_pay LIKE '%$searchTerm%')";
     }
 
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
