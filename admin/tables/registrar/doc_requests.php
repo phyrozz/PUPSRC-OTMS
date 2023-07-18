@@ -115,7 +115,7 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
 
   // Make an AJAX request to fetch the document requests
   $.ajax({
-    url: 'tables/guidance/fetch_doc_requests.php',
+    url: 'tables/registrar/fetch_doc_requests.php',
     method: 'POST',
     data: {
       page: page,
@@ -126,7 +126,6 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
     success: function(response) {
       // Hide the loading indicator
       loadingIndicator.style.display = 'none';
-
       // Show the table
       table.classList.remove('hidden');
 
