@@ -171,12 +171,13 @@
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-request')) {
             var editId = event.target.getAttribute('data-request-id');
-            populateEditModal(editId);
+            var office = event.target.getAttribute('data-office');
+            populateEditModal(editId, office);
         }
     });
 
     // Function to populate the edit modal with the request details
-    function populateEditModal(editId) {
+    function populateEditModal(editId, office) {
         $.ajax({
             url: 'transaction_tables/get_document_request.php',
             method: 'POST',
@@ -187,14 +188,27 @@
                 var modalBody = document.querySelector('#viewEditModal .modal-body');
 
                 modalTitle.innerText = 'Edit Request';
-
-                modalBody.innerHTML = `
+                console.log(office);
+                console.log(request);
+                if (office == 'Registrar Office') {
+                  modalBody.innerHTML = `
                     <form id="editForm" action="" method="POST">
                         <div class="mb-3">
                             <label for="requestDescription" class="form-label">Request Description</label>
                             <select id="requestDescription" class="form-select" name="requestDescription" value="${request.request_description}" required>
-                                <option value="Request Good Moral Document">Request Good Moral Document</option>
-                                <option value="Request Clearance">Request Clearance</option>
+                                <option value="Certification, Verification, Authentication (CAV/Apostile)">Certification, Verification, Authentication (CAV/Apostile)</option>
+                                <option value="Certificates of Attendance">Certificates of Attendance</option>
+                                <option value="Certificate of Graduation">Certificate of Graduation</option>
+                                <option value="Certificate of Medium of Instruction">Certificate of Medium of Instruction</option>
+                                <option value="Certificate of General Weighted Average (GWA)">Certificate of General Weighted Average (GWA)</option>
+                                <option value="Non-Issuance of Special Order">Non-Issuance of Special Order</option>
+                                <option value="Certified True Copy">Certified True Copy</option>
+                                <option value="Course/Subject Description">Course/Subject Description</option>
+                                <option value="Certificate of Transfer Credential/Honorable Dismissal">Certificate of Transfer Credential/Honorable Dismissal</option>
+                                <option value="Transcript of Records (First Copy)">Transcript of Records (First Copy)</option>
+                                <option value="Transcript of Records (Second and succeeding copies)">Transcript of Records (Second and succeeding copies)</option>
+                                <option value="Transcript of Records (Copy for Another School)">Transcript of Records (Copy for Another School)</option>
+                                <option value="Academic Verification Service">Academic Verification Service</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -204,6 +218,25 @@
                         <button type="submit" class="btn btn-primary">Save Changes</button>
                     </form>
                 `;
+                } else {
+                  console.log('this runs');
+                  modalBody.innerHTML = `
+                      <form id="editForm" action="" method="POST">
+                          <div class="mb-3">
+                              <label for="requestDescription" class="form-label">Request Description</label>
+                              <select id="requestDescription" class="form-select" name="requestDescription" value="${request.request_description}" required>
+                                  <option value="Request Good Moral Document">Request Good Moral Document</option>
+                                  <option value="Request Clearance">Request Clearance</option>
+                              </select>
+                          </div>
+                          <div class="mb-3">
+                              <label for="scheduledDate" class="form-label">Scheduled Date</label>
+                              <input type="text" class="form-control" id="scheduledDate" name="scheduledDate" value="${request.scheduled_datetime}" required>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </form>
+                  `;
+                }
 
                 flatpickr('#scheduledDate', {
                     readonly: false,
@@ -312,7 +345,7 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
                             '</td>' +
-                            '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + request.request_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' +
+                            '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
