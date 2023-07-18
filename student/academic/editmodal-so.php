@@ -1,3 +1,24 @@
+<style>
+  .readonly-input {
+  background-color: #f0f0f0; /* Set a background color to mimic disabled appearance */
+  color: #999; /* Set a text color to make it visually less prominent */
+}
+</style>
+
+<?php
+
+include "../../conn.php";
+
+$query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users WHERE user_id = ?";
+$stmt = $connection->prepare($query);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$userData = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+?>
+
+
 <!-- Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog editmod" role="document">
@@ -9,55 +30,56 @@
 
       <div class="modal-body">
       
-      <form action="generatepdf_so.php" method="POST" target="_blank" id="SOform">
+      <form action="generatepdf_so.php" method="POST" id="SOform">
       <div class="container-fluid">
           <div class="row">
-            <div class="col-md-4">
+          <div class="col-md-4">
               <div class="form-group">
-                <label for="input1">First Name</label>
-                <input type="text" class="form-control" id="input1" name="first_name">
+                <label for="input1">First Name</label> 
+                <input type="text" class="form-control readonly-input" id="input1" name="first_name" value="<?php echo htmlspecialchars($userData[0]['first_name'], ENT_QUOTES); ?>" required readonly>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input2">Middle</label>
-                <input type="text" class="form-control" id="input2" name="middle_name">
+                <input type="text" class="form-control readonly-input" id="input2" name="middle_name" value="<?php echo htmlspecialchars($userData[0]['middle_name'], ENT_QUOTES); ?>" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="input3">Last Name</label>
-                <input type="text" class="form-control" id="input3" name="last_name">
+                <input type="text" class="form-control readonly-input" id="input3" name="last_name" value="<?php echo htmlspecialchars($userData[0]['last_name'], ENT_QUOTES); ?>" required readonly>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input4">Suffix</label>
-                <input type="text" class="form-control" id="input4" name="suffix">
+                <input type="text" class="form-control readonly-input" id="input4" name="extension_name"value="<?php echo htmlspecialchars($userData[0]['extension_name'], ENT_QUOTES); ?>" readonly>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="input5">Student Number</label>
-                <input type="text" class="form-control" id="input5" name="studentNumber">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="input5">Student Number</label>
+                  <input type="text" class="form-control readonly-input" id="input5" name="student_no" value="<?php echo htmlspecialchars($userData[0]['student_no'], ENT_QUOTES); ?>" required readonly>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="input6">Yr&Sec</label>
+                  <input type="text" name="yr&Sec" class="form-control" id="input6" placeholder="BSIT 3-1" required>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="input7">Academic Year</label>
+                  <input type="text" name="acadYear" pattern="20[1-9][0-9]-20[2-9][0-9]" maxlength="9" class="form-control" id="input7" placeholder="2020-2021" required>
+                </div>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="input6">Yr&Sec</label>
-                <input type="text" class="form-control" id="input6" name="yrSec">
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="input7">Academic Year</label>
-                <input type="text" pattern="20[2-9][0-9]-20[2-9][0-9]" maxlength="9" class="form-control" id="input7" name="acadYear">
-              </div>
-            </div>
-          </div>
+
           <div class="row">
     <div class="col-md-3">
       <div class="form-check">
@@ -90,7 +112,7 @@
   <div class="col-md-12">
               <div class="form-group">
                 <label for="input8">Reason for Subject Overload</label>
-                <input type="text" maxlength="50" class="form-control" id="input8" name="reason">
+                <input type="text" maxlength="100" class="form-control" id="input8" name="reason">
               </div>
             </div>
 
@@ -100,25 +122,26 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input9">Code</label>
-                <input type="text" maxlength="10" class="form-control" id="input9" name="code1">
+                <input type="text" maxlength="10" class="form-control" id="input9" name="code1" placeholder="COMP 20133" required>
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="input10">Description</label>
-                <input type="text" maxlength="30" class="form-control" id="input10" name="des1">
+                <input type="text" maxlength="30" class="form-control" id="input10" name="desc1" placeholder="Applications Development and Emerging Technologies" required>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="input11">Course/Yr/Sec</label>
-                <input type="text" maxlength="15" class="form-control" id="input11" name="courseYrSec1">
+                <input type="text" maxlength="15" class="form-control" id="input11" name="courseYrSec1" placeholder="BSIT 3-1" required>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="number" maxlength="2" class="form-control" id="input12" name="units1">
+                <input type="number" min="1" max="10" class="form-control" id="input12" name="units1" value="1" required>
+
               </div>
             </div>
         </div>
@@ -133,7 +156,7 @@
             <div class="col-md-5">
               <div class="form-group">
                 <label for="input10">Description</label>
-                <input type="text" class="form-control" id="input10" name="des2">
+                <input type="text" class="form-control" id="input10" name="desc2">
               </div>
             </div>
             <div class="col-md-3">
@@ -160,7 +183,7 @@
             <div class="col-md-5">
               <div class="form-group">
                 <label for="input10">Description</label>
-                <input type="text" class="form-control" id="input10" name="des3">
+                <input type="text" class="form-control" id="input10" name="desc3">
               </div>
             </div>
             <div class="col-md-3">
@@ -190,6 +213,7 @@
   </div>
 </div>
 
+<!--
 <script>
   const form = document.getElementById('SOform');
 
@@ -236,3 +260,4 @@
     alert(message);
   }
 </script>
+-->
