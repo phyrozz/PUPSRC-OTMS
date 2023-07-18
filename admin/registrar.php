@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Guidance Office</title>
+  <title>Admin - Registrar Office</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -40,7 +40,7 @@
             $table = 'document_request';
 
             if (isset($_POST['filter-button'])) {
-                $table = $_POST['table-select'];
+              $table = $_POST['table-select'];
             }
 
             $query = "SELECT services FROM reg_services WHERE services_id > 22";
@@ -56,7 +56,7 @@
           <div class="d-md-flex w-100 pb-2 justify-content-between align-items-end">
             <div class="d-flex flex-column gap-1">
               <div>
-                <form id="defaultTableValueSelect" class="d-flex input-group" action="guidance.php" method="post">
+                <form id="defaultTableValueSelect" class="d-flex input-group" action="registrar.php" method="post">
                   <label class="input-group-text" for="table-select">Service:</label>
                   <select id="transactionTableSelect" class="form-select" name="table-select">
                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>
@@ -100,7 +100,7 @@
               </div>
             </div>
             <div class="mt-2">
-              <div class="input-group">
+              <div class="input-group search-group">
                 <input type="text" class="form-control" placeholder="Search..." id="search-input">
                 <button class="btn btn-outline-primary" type="button" id="search-button"><i
                     class="fas fa-search"></i></button>
@@ -114,14 +114,14 @@
           </div>
           <div id="table-container">
             <?php
-                            // Load the requested table
-                            if ($table === 'document_request') {
-                                include 'tables/registrar/doc_requests.php';
-                            }
-                            elseif ($table === 'student_records') {
-                                include 'tables/registrar/student_records.php';
-                            }
-                        ?>
+                // Load the requested table
+                if ($table === 'document_request') {
+                  include 'tables/registrar/doc_requests.php';
+                }
+                elseif ($table === 'student_records') {
+                  include 'tables/registrar/student_records.php';
+                }
+            ?>
           </div>
         </div>
       </div>
@@ -176,8 +176,14 @@
 
       if (selectedTable === "document_request") {
         $("#filterByDocTypeSection").show();
+        $("#filterByStatusSection").show();
+        $("#filterButton").show();
+        $(".search-group").show();
       } else {
+        $("#filterByStatusSection").hide();
         $("#filterByDocTypeSection").hide();
+        $("#filterButton").hide();
+        $(".search-group").hide();
       }
     }
 
@@ -185,7 +191,7 @@
     toggleFilterByDocTypeSection();
 
     // Event listener for the table select dropdown change
-    $("#tableSubmitSelect").on('click', function() {
+    $("#tableSelectSubmit").on('click', function() {
       toggleFilterByDocTypeSection();
     });
 
