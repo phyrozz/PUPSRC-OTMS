@@ -113,19 +113,36 @@ define ('PDF_HEADER_TITLE', 'Academic Office – Subject Overload');
 
 define ('PDF_HEADER_TITLE2', 'Academic Office – Cross Enrollment');
 
+define ('PDF_HEADER_TITLE3', 'Academic Office – Manual Enrollment');
+
+define ('PDF_HEADER_TITLE4', 'Academic Office – Grade Accreditation                                          Application For:');
+
 /**
  * Header description string.
  */
 define ('PDF_HEADER_STRING', 
-"Republic of the Philippines                                                       Application for Change of Enrollment
-Polytechnic University of the Philippines                                  Ace Form
-Office of the Branch/Campus Registrar                                    Adding of Subject
+"Republic of the Philippines                                                                            Application for Change of Enrollment
+Polytechnic University of the Philippines                                                       Ace Form
+Office of the Branch/Campus Registrar                                                         Adding of Subject
 ");
 
 define ('PDF_HEADER_STRING2', 
-"Republic of the Philippines                                                       Application for Change of Enrollment
-Polytechnic University of the Philippines                                  Ace Form
-Office of the Branch/Campus Registrar                                    Cross Enrollment
+"Republic of the Philippines                                                       
+Polytechnic University of the Philippines                                                  Cross Enrollment Form
+Office of the Branch/Campus Registrar                                                    Cross Enrollment
+");
+
+define ('PDF_HEADER_STRING3', 
+"Republic of the Philippines                                                       
+Polytechnic University of the Philippines                                                                      R0 (R Zero) Form
+Office of the Branch/Campus Registrar                                                                        Manual Enrollment
+");
+
+define ('PDF_HEADER_STRING4', 
+"Republic of the Philippines                                                                             Late Reporting of Grade
+Polytechnic University of the Philippines                                                        Completion of Incomplete Grades
+Office of the Branch/Campus Registrar                                                          Correction of Entry
+                                                                                                                        Others
 ");
 
 /**
