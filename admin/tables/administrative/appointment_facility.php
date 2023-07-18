@@ -1,3 +1,4 @@
+
 <div class="table-responsive">
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
@@ -35,7 +36,12 @@
                     End Time Schedule
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center appointment-facility-status-header sortable-header" data-column="6" scope="col" data-order="asc">
+                <th class="text-center appointment-facility-purpose-header sortable-header" data-column="purpose" scope="col" data-order="asc">
+                    Purpose
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+
+                <th class="text-center appointment-facility-status-header sortable-header" data-column="purpose" scope="col" data-order="asc">
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
@@ -46,6 +52,7 @@
         </tbody>
     </table>
 </div>
+
 <div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
     <div class="d-flex gap-2">
         <div class="input-group">
@@ -54,7 +61,6 @@
                 <option value="1">Pending</option>
                 <option value="2">For Receiving</option>
                 <option value="3">For Evaluation</option>
-                <option value="4">Ready for Pickup</option>
                 <option value="5">Released</option>
                 <option value="6">Rejected</option>
             </select>
@@ -69,6 +75,194 @@
         </div>
     </nav>
 </div>
+<!-- View purpose modal -->
+<div id="viewPurposeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewPurposeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewPurposeModalLabel">Purpose of Appointment</h5>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view purpose modal -->
+    <br><br><br>
+
+    <div class="container-fluid text-center p-4">
+            <h3>Edit Facility</h3>
+    </div>
+    <hr>
+    
+<div class="table-responsive">
+    <table class="table text-center table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Facility ID</th>
+                <th>Facility Name</th>
+                <th>Availability</th>
+                <th>Facility Number</th>
+                <th>Facility Type ID</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Fetch the facility data from the database
+            $query = "SELECT * FROM facility";
+            $result = mysqli_query($connection, $query);
+
+            // Iterate over the rows and display the data in the table
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '<tr>';
+                echo '<td>' . $row['facility_id'] . '</td>';
+                echo '<td>' . $row['facility_name'] . '</td>';
+                echo '<td>' . $row['availability'] . '</td>';
+                echo '<td>' . $row['facility_number'] . '</td>';
+                echo '<td>' . $row['facility_type_id'] . '</td>';
+                echo '<td>' .
+                    '<button class="btn btn-primary" onclick="editFacility(' . $row['facility_id'] . ')">' .
+                    '<i class="fa fa-edit"></i> Edit' .
+                    '</button>' .
+                    '</td>';
+                echo '</tr>';
+            }
+
+            // Close the database connection
+            mysqli_close($connection);
+            ?>
+        </tbody>
+    </table>
+</div>
+
+
+    <!-- Edit Facility Modal -->
+    <div class="modal fade" id="editFacilityModal" tabindex="-1" role="dialog" aria-labelledby="editFacilityModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editFacilityModalLabel">Edit Facility Details</h5>
+
+            </div>
+            <div class="modal-body">
+                <!-- Add your form fields for editing the facility here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+        
+    <script>
+       function editFacility(facilityId) {
+        // Get the modal element
+        var modal = document.getElementById('editFacilityModal');
+
+        // Perform the necessary actions to edit the facility with the provided ID
+        // For example, make an AJAX request to fetch the facility data and populate the form fields in the modal
+
+        // Make an AJAX request to fetch the facility data
+        $.ajax({
+            url: 'tables/administrative/fetch_admin_facility.php',
+            method: 'POST',
+            data: {
+                facilityId: facilityId
+            },
+            success: function(response) {
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Populate the form fields in the modal with the fetched facility data
+                var modalBody = modal.querySelector('.modal-body');
+                modalBody.innerHTML = '';
+
+                // Add your form fields and populate them with the fetched facility data
+                modalBody.innerHTML += '<table class="table table-bordered">' +
+                    '<tr>' +
+                    '<td><label for="facilityName">Facility Name:</label></td>' +
+                    '<td><input type="text" id="facilityName" name="facilityName" value="' + data.facilityName + '" class="form-control"></td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td><label for="availability">Availability:</label></td>' +
+                    '<td>' +
+                    '<select id="availability" name="availability" class="form-control">' +
+                    '<option value="Available"' + (data.availability === 'Available' ? ' selected' : '') + '>Available</option>' +
+                    '<option value="Unavailable"' + (data.availability === 'Unavailable' ? ' selected' : '') + '>Unavailable</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td><label for="facilityNumber">Facility Number:</label></td>' +
+                    '<td><input type="text" id="facilityNumber" name="facilityNumber" value="' + data.facilityNumber + '" class="form-control"></td>' +
+                    '</tr>' +
+                    '</table>';
+
+                // Show the modal
+                var bootstrapModal = new bootstrap.Modal(modal);
+                bootstrapModal.show();
+
+                // Handle the Save Changes button click event
+                var saveChangesBtn = modal.querySelector('.btn-primary');
+                saveChangesBtn.addEventListener('click', function() {
+                    // Get the updated values from the form fields
+                    var updatedFacilityName = document.getElementById('facilityName').value;
+                    var updatedAvailability = document.getElementById('availability').value;
+                    var updatedFacilityNumber = document.getElementById('facilityNumber').value;
+
+                    // Call the function to update the facility data
+                    updateFacilityData(facilityId, updatedFacilityName, updatedAvailability, updatedFacilityNumber);
+                });
+            },
+            error: function() {
+                console.log('Error occurred while fetching facility data.');
+            }
+        });
+    }
+
+        function updateFacilityData(facilityId, facilityName, availability, facilityNumber) {
+            
+        // Make an AJAX request to update the facility data in the database
+        $.ajax({
+            url: 'tables/administrative/update_admin_facility.php',
+            method: 'POST',
+            data: {
+            facilityId: facilityId,
+            facilityName: facilityName,
+            availability: availability,
+            facilityNumber: facilityNumber
+            },
+            success: function(response) {
+            // Handle the success response
+                console.log('Facility updated successfully.');
+
+                // Hide the modal
+                var modal = document.getElementById('editFacilityModal');
+                var bootstrapModal = bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide();
+
+
+                // Reload the page to refresh the table
+                location.reload();
+            },
+            error: function() {
+            // Handle the error response
+            console.log('Error occurred while updating facility.');
+            }
+        });
+    }
+
+    </script>
+
+
+
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -150,6 +344,9 @@
                                 minute: 'numeric',
                                 hour12: true
                             }) + '</td>' +
+                            '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="#" class="btn-link" style="text-decoration: none;" onclick="openPurposeModal(\'' + appointment.purpose + '\')">See Purpose</a>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(appointment.status_name) + '">' + appointment.status_name + '</span>' +
                             '</td>' +
@@ -158,7 +355,7 @@
                         tableBody.innerHTML += row;
                     }
                 } else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="12">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 
@@ -300,5 +497,12 @@
             default:
                 return '';
         }
+    }
+
+    function openPurposeModal(purpose) {
+        var modalBody = document.getElementById('viewPurposeModal').querySelector('.modal-body');
+        modalBody.innerHTML = purpose;
+
+        $('#viewPurposeModal').modal('show');
     }
 </script>

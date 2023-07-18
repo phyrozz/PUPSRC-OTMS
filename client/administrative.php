@@ -36,6 +36,7 @@
                     <i class="fa-regular fa-circle-question"></i>
                     Help
             </a>
+            <a href="/client/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
             <?php
             $breadcrumbItems = [
                 ['text' => 'Administrative Office', 'active' => true],

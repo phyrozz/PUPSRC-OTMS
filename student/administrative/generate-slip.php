@@ -30,7 +30,7 @@ if (isset($_SESSION['request_details'])) {
 
     // Close the prepared statement
     $equipmentStmt->close();
-  } else {
+} else {
     // Set default values if request details are not available
     $date = '';
     $quantityEquip = '';
@@ -108,10 +108,6 @@ $dompdf->loadHtml($html);
 
 $dompdf->render();
 
-
-
-
-
 $equipmentNameModified = strtolower(str_replace(' ', '', $equipmentName));
 
 // Generate the file name with the current time, unique identifier, and equipment name
@@ -122,15 +118,17 @@ $directoryPath = 'C:/xampp/htdocs/student/administrative/requisition-slip/';
 $filePath = $directoryPath . $fileName;
 file_put_contents($filePath, $dompdf->output());
 
-// Store the PDF file path in the database
-$pdfFilePath = 'requisition-slip/' . $fileName;
+// Save the PDF content to a variable
+$pdfContent = $dompdf->output();
 
-// Update the request_equipment table with the PDF file path
+// Update the request_equipment table with the PDF file content
 $pdfUpdateQuery = "UPDATE request_equipment SET slip_content = ? WHERE request_id = ?";
 $pdfUpdateStmt = $connection->prepare($pdfUpdateQuery);
-$pdfUpdateStmt->bind_param("bi", $pdfFilePath, $requestId);
+$pdfUpdateStmt->bind_param("bs", $pdfContent, $requestId);
 $pdfUpdateStmt->execute();
 $pdfUpdateStmt->close();
 
 // Output the PDF to the browser
 $dompdf->stream($fileName, ["Attachment" => false]);
+
+?>
