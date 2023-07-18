@@ -41,6 +41,10 @@
         ?>
     <div class="container-fluid registrarbanner header"
       style="background-image: url('./registrar/assets/registrar.jpg')">
+      <a href="registrar/help.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">
+        <i class="fa-regular fa-circle-question"></i>
+        Help
+      </a>
       <!-- <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a> -->
       <?php
