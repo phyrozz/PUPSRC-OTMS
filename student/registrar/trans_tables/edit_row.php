@@ -9,14 +9,14 @@
     </div>
 </div>
 
-<table id="datatableid" class="table table-hover table-bordered">
+<table id="datatableid" class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th></th>
             <th class="text-center" scope="col">Request Code</th>
             <th class="text-center" scope="col">Office</th>
             <th class="text-center w-50" scope="col">Request</th>
-            <th class="text-center" scope="col"><i class="fa-solid fa-filter" onclick=""></i>Edit Schedule</th>
+            <th class="text-center" scope="col"></i>Edit Schedule</th>
             <th class="text-center" scope="col">Status</th>
         </tr>
     </thead>
@@ -37,11 +37,11 @@
                 <tr id=<?=$row['reg_id'];?>>
                   <td class="text-center"><button type="button" id="editbtn" class="btn editbtn" style="background-color:transparent"><i class="fas fa-edit"></i></button></td>
                   <td style="display: none"><?=$row['reg_id'];?></td> <!--hidden-->
-                  <td><?=$row['request_code'];?></td>
-                  <td><?=$row['office_name'];?></td>
-                  <td><?=$row['services'];?></td>
+                  <td class="text-center"><?=$row['request_code'];?></td>
+                  <td class="text-center"><?=$row['office_name'];?></td>
+                  <td class="text-center"><?=$row['services'];?></td>
                   <td style="display: none"><?=$row['services_id'];?></td> <!--hidden-->
-                  <td><?=$row['schedule'];?></td>
+                  <td class="text-center"><?=$row['schedule'];?></td>
                   <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
                 </tr>
                 <?php
@@ -50,7 +50,7 @@
           }else {
             ?>
               <tr>
-                <td class="text-center" colspan="6">No record found!</td>
+                <td class="text-center table-light p-4" colspan="6">No record found!</td>
               </tr>
             <?php
           }
@@ -85,8 +85,11 @@
                             <select name="request" id="request" class="form-control" required>
                                 <?php
                                 //fetching registrar service
-                                $result1 = mysqli_query($connection, "SELECT * FROM reg_services");
-                                while ($dropdown = mysqli_fetch_assoc($result1)){
+                                $result_registrar = mysqli_query($connection, "SELECT * FROM reg_services");
+                                while ($dropdown = mysqli_fetch_assoc($result_registrar)){
+                                    if ($dropdown['services_id'] === '23') {
+                                        break; // Stop the loop when services_id is 23
+                                    }
                                   echo '<option value="' . $dropdown['services_id'] . '">' . $dropdown['services'] . '</option>';
                                 }
                                 ?>

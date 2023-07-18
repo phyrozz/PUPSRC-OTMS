@@ -123,15 +123,6 @@
     <?php
         mysqli_close($connection);
     ?>
-    <script>
-        $(document).ready(function(){
-            $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
-            $(this).next('ul').toggle();
-            e.stopPropagation();
-            e.preventDefault();
-            });
-        });
-    </script>
     <script src="../../saved_settings.js"></script>
 </body>
 </html>

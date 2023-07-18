@@ -9,14 +9,14 @@
     </div>
 </div>
 
-<table id="transactions-table" class="table table-hover table-bordered">
+<table id="transactions-table" class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th></th>
             <th class="text-center" scope="col">Request Code</th>
             <th class="text-center" scope="col">Office</th>
             <th class="text-center w-50" scope="col">Request</th>
-            <th class="text-center" scope="col"><i class="fa-solid fa-filter" onclick=""></i>Schedule </th>
+            <th class="text-center" scope="col"></i>Schedule </th>
             <th class="text-center" scope="col">Status</th>
         </tr>
     </thead>
@@ -37,11 +37,11 @@
                 if ($row['status_id'] == "1" || $row['status_id'] == "6"){
                 ?>
                 <tr>
-                  <td><input type="checkbox" name="stud_delete_id[]" value="<?= $row ['reg_id'];?>"></td>
-                  <td><?=$row['request_code'];?></td>
-                  <td><?=$row['office_name'];?></td>
-                  <td><?=$row['services'];?></td>
-                  <td><?=$row['schedule'];?></td>
+                  <td class="text-center"><input type="checkbox" name="stud_delete_id[]" value="<?= $row ['reg_id'];?>"></td>
+                  <td class="text-center"><?=$row['request_code'];?></td>
+                  <td class="text-center"><?=$row['office_name'];?></td>
+                  <td class="text-center"><?=$row['services'];?></td>
+                  <td class="text-center"><?=$row['schedule'];?></td>
                   <?php if ($row['status_id'] == "1") { ?>
                     <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
                   <?php } else {?>
@@ -56,7 +56,7 @@
           else {
             ?>
               <tr>
-                <td class="text-center" colspan="6">No record found!</td>
+                <td class="text-center table-light p-4" colspan="6">No record found!</td>
               </tr>
               <td colspan="6"><input type="checkbox" name="del_all" onchange="checkAll(this)" disabled> Select all</input></td>
             <?php

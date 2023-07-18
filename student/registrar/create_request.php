@@ -35,30 +35,61 @@
     $row = mysqli_fetch_array($result);
 
     //fetching registrar services
-    $result1 = mysqli_query($connection, "SELECT * FROM reg_services");
-    
+    $result_services = mysqli_query($connection, "SELECT * FROM reg_services");
+
     //for generate registrar code
-    $code_query = "SELECT COUNT(reg_id) as count FROM reg_transaction";
-    $code_result = mysqli_query($connection, $code_query);
-    $code_row = mysqli_fetch_assoc($code_result);
-    $count = $code_row['count'];
-    // Assuming your text is in the format "REG-1"
-    $text = "REG-" . $count;
-    // Extract the number from the text using regular expressions
-    $pattern = "/\d+/";
-    preg_match($pattern, $text, $matches);
-    $number = $matches[0];
-    $add = "0";
-    // Increment the number
-    $number++;
-    $newText = preg_replace($pattern, $number, $text);
+    function generateUniqueCode() {
+        $prefix = "REG-";
+        $code = $prefix . generateRandomNumbers();
+        // Check uniqueness
+        while (!isCodeUnique($code)) {
+            $code = $prefix . generateRandomNumbers();
+        }
+        return $code;
+    }
+    function generateRandomNumbers() {
+        $numbers = '';
+        $length = 10;
+    
+        for ($i = 0; $i < $length; $i++) {
+            $numbers .= random_int(0, 9);
+        }
+    
+        return $numbers;
+    }
+    function isCodeUnique($code) {
+        $host = 'localhost';
+        $database = 'otms_db';
+        $username = 'root';
+        $password = '';
+
+        try {
+            $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare and execute the query
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM reg_transaction WHERE request_code = :request_code');
+            $stmt->bindParam(':request_code', $request_code);
+            $stmt->execute();
+
+            $count = $stmt->fetchColumn();
+
+            // If count is greater than 0, the code already exists
+            return $count === 0;
+        } catch (PDOException $e) {
+            // Handle the exception as per your application's error handling mechanism
+            die("Database connection failed: " . $e->getMessage());
+        }
+    }
+    // Usage example
+    $uniqueCode = generateUniqueCode();
 
     //for submit
     if(isset($_POST["submit"])){
-        $reg_code = $newText;
+        $reg_code = $uniqueCode;
         $req_student_service = $_POST["req_student_service"];
         $user_id = $id;
-        $office_id = "3"; //1-Registrar Office
+        $office_id = "3"; //3 - Registrar Office
         $date = $_POST["date"];
         $status_id = "1"; //1-Pending
 
@@ -73,8 +104,9 @@
             $result2 = mysqli_query($connection, $query);
             $_SESSION['success'] = true;
         }
+        unset($_POST);
     }
-    unset($_POST);
+    
 ?>
     <div class="wrapper">
         <?php
@@ -162,7 +194,10 @@
                                 <option hidden value="" >Select options here</option>
                                     <!-- connect to db -->
                                     <?php
-                                    while ($dropdown = mysqli_fetch_assoc($result1)){
+                                    while ($dropdown = mysqli_fetch_assoc($result_services)){
+                                        if ($dropdown['services_id'] === '23') {
+                                            break; // Stop the loop when services_id is 23
+                                        }
                                         echo '<option value="' . $dropdown['services_id'] . '" >' . $dropdown['services'] . '</option>';
                                     }
                                     ?>
