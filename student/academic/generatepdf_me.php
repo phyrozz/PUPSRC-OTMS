@@ -17,7 +17,7 @@ $pdf->SetKeywords('TCPDF, PDF, Academic, PUP, Office');
 
 
 // set default header data
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING, array(0,0,0), array(0,0,0));
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE3, PDF_HEADER_STRING3, array(0,0,0), array(0,0,0));
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 
 
@@ -40,7 +40,7 @@ $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 // set time
-$currentDate = date("F d, Y");
+$currentDate = date('F d, Y');
 
 
 // set image scale factor
@@ -79,66 +79,65 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
 $pdf->SetY(20,true,true);
 
 
-
 // Data Retrieval
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+      $first_name = $_POST ['first_name'];
+      $middle_name = $_POST ['middle_name'];
+      $last_name = $_POST ['last_name'];
+      $extension_name = $_POST ['extension_name'];
+      $student_no = $_POST ['student_no'];
+      $name = $first_name . " " . $middle_name . " " . $last_name . " " . $extension_name;
 
-        $first_name = $_POST ['first_name'];
-        $middle_name = $_POST ['middle_name'];
-        $last_name = $_POST ['last_name'];
-        $extension_name = $_POST ['extension_name'];
-        $student_no = $_POST ['student_no'];
-        $name = $first_name . " " . $middle_name . " " . $last_name . " " . $extension_name;
+      $yrSec = $_POST ['yr&Sec'];
+      $acadYear = $_POST ['acadYear'];
+      $reason = $_POST ['reason'];
 
-        $yrSec = $_POST ['yr&Sec'];
-        $acadYear = $_POST ['acadYear'];
-        $reason = $_POST ['reason'];
+      if (isset($_POST['semester'])) {
+        $semester = $_POST['semester'];
+      }
 
-        if (isset($_POST['semester'])) {
-          $semester = $_POST['semester'];
-        }
+      $code1 = $_POST['code1'];
+      $code2 = $_POST['code2'];
+      $code3 = $_POST['code3'];
 
-        $code1 = $_POST['code1'];
-        $code2 = $_POST['code2'];
-        $code3 = $_POST['code3'];
+      $desc1 = $_POST['desc1'];
+      $desc2 = $_POST['desc2'];
+      $desc3 = $_POST['desc3'];
 
-        $desc1 = $_POST['desc1'];
-        $desc2 = $_POST['desc2'];
-        $desc3 = $_POST['desc3'];
+      $courseYrSec1 = $_POST['courseYrSec1'];
+      $courseYrSec2 = $_POST['courseYrSec2'];
+      $courseYrSec3 = $_POST['courseYrSec3'];
 
-        $courseYrSec1 = $_POST['courseYrSec1'];
-        $courseYrSec2 = $_POST['courseYrSec2'];
-        $courseYrSec3 = $_POST['courseYrSec3'];
-
-        $units1 = $_POST['units1'];
-        $units2 = $_POST['units2'];
-        $units3 = $_POST['units3'];
+      $units1 = $_POST['units1'];
+      $units2 = $_POST['units2'];
+      $units3 = $_POST['units3'];
                                                   }
     
     else {
     // Set default values or handle the case when the form is not submitted
-        $name = '';
-        $studentNumber = '';
-        $yrSec ='';
-        $acadYear ='';
-        $reason ='';
-        $semester ='';
+    $name = '';
+    $studentNumber = '';
+    $yrSec ='';
+    $acadYear ='';
+    $reason ='';
+    $semester ='';
 
-        $code1 ='';
-        $code2 ='';
-        $code3 ='';
+    $code1 ='';
+    $code2 ='';
+    $code3 ='';
 
-        $desc1 ='';
-        $desc2 ='';
-        $desc3 ='';
+    $desc1 ='';
+    $desc2 ='';
+    $desc3 ='';
 
-        $courseYrSec1 ='';
-        $courseYrSec2 ='';
-        $courseYrSec3 ='';
+    $courseYrSec1 ='';
+    $courseYrSec2 ='';
+    $courseYrSec3 ='';
 
-        $units1 ='';
-        $units2 ='';
-        $units3 ='';
+    $units1 ='';
+    $units2 ='';
+    $units3 ='';
       }
 
 // Set some content to print
@@ -403,6 +402,7 @@ EOD;
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html3, 0, 1, 0, true, '', true);
 
+
 $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . "/assets/uploads/generated_pdf/";
 
 include "../../conn.php";
@@ -414,7 +414,7 @@ $result = $stmt->get_result();
 $userData = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-$uniqueFileName = 'SO_ACEFORM_' . $student_no . '_' . $last_name . '_' . $first_name . '.pdf';
+$uniqueFileName = 'ME_R0FORM_' . $student_no . '_' . $last_name . '_' . $first_name . '.pdf';
 
 // Create the path where the file will be stored
 $filePath = $uploadDirectory . $uniqueFileName;

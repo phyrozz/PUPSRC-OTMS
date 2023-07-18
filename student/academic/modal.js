@@ -62,19 +62,37 @@ function openModal2() {
 
 function checkRadioSelection() {
   var radioButtons = document.getElementsByName("option");
-  var button = document.getElementById("nextButton");
+  var nextButtonModal = document.getElementById("nextButtonModal");
+  var nextButtonRedirect = document.getElementById("nextButtonRedirect");
+
+  function updateNextButton() {
+      var isChecked = false;
+
+      for (var i = 0; i < radioButtons.length; i++) {
+          if (radioButtons[i].checked) {
+              isChecked = true;
+              break;
+          }
+      }
+
+      nextButtonModal.disabled = !isChecked;
+      nextButtonRedirect.disabled = !isChecked;
+
+      if (isChecked) {
+          nextButtonModal.classList.remove("disabled-button");
+          nextButtonRedirect.classList.remove("disabled-button");
+      } else {
+          nextButtonModal.classList.add("disabled-button");
+          nextButtonRedirect.classList.add("disabled-button");
+      }
+  }
 
   for (var i = 0; i < radioButtons.length; i++) {
-    radioButtons[i].addEventListener("change", function() {
-      for (var j = 0; j < radioButtons.length; j++) {
-        if (radioButtons[j].checked) {
-          button.disabled = false;
-          return;
-        }
-      }
-      button.disabled = true;
-    });
+      radioButtons[i].addEventListener("change", updateNextButton);
   }
+
+  // Initial check when the page loads
+  updateNextButton();
 }
 
 // Initial check when the page loads
