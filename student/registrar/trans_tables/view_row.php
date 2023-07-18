@@ -9,7 +9,7 @@
     }
 
     //total rows or records to display
-    $total_records_per_page = 10;
+    $total_records_per_page = 20;
     //get the page offset for the LIMIT query
     $offset = ($page_no - 1) * $total_records_per_page;
     //get previous page
@@ -58,20 +58,20 @@
     <div class="d-flex justify-content-end gap-2">
         <div class="input-group mb-3 d-flex">
             <button class="btn " type="button" name="query" disabled><i class="fas fa-search"></i></button>
-            <input type="text" name="search" id="search" class="form-control" placeholder="Search Here...">
+            <input type="text" name="search" id="search_text" class="form-control" placeholder="Search Here...">
         </div>
     </div>
 </div>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover" id="table-data">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th></th>
-            <th class="text-center" scope="col">Request Code</th>
-            <th class="text-center" scope="col">Office</th>
-            <th class="text-center w-50" scope="col">Request</th>
-            <th class="text-center" scope="col"><i class="fa-solid fa-filter" onclick=""></i>Schedule </th>
-            <th class="text-center" scope="col">Status</th>
+            <th class="text-center sortable-header" scope="col" data-order="desc">Request Code</th>
+            <th class="text-center sortable-header" scope="col" data-order="desc">Office</th>
+            <th class="text-center sortable-header w-50" scope="col" data-order="desc">Request</th>
+            <th class="text-center sortable-header" scope="col" data-order="desc">Schedule</th>
+            <th class="text-center sortable-header" scope="col" data-order="desc">Status</th>
         </tr>
     </thead>
     <tbody id="transactions_table">
@@ -82,10 +82,10 @@
                 ?>
                 <tr>
                   <td><input class="userinfo" type="checkbox" data-id="<?=$row['reg_id'];?>" onclick="uncheckCheckbox(this)"></input></td>
-                  <td><?=$row['request_code'];?></td>
-                  <td><?=$row['office_name'];?></td>
-                  <td><?=$row['services'];?></td>
-                  <td><?=$row['schedule'];?></td>
+                  <td class="text-center"><?=$row['request_code'];?></td>
+                  <td class="text-center"><?=$row['office_name'];?></td>
+                  <td class="text-center"><?=$row['services'];?></td>
+                  <td class="text-center"><?=$row['schedule'];?></td>
                   <?php if ($row['status_id'] == "1"){ ?>
                   <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
                   <?php } else if ($row['status_id'] == "2") { ?>
@@ -105,7 +105,7 @@
         }else {
             ?>
               <tr>
-                <td class="text-center" colspan="6">No record found!</td>
+                <td class="text-center table-light p-4" colspan="6">No record found!</td>
               </tr>
             <?php
           }
@@ -131,7 +131,7 @@
     </div>
   </ul>
 </nav>
-<div class="p-10">
+<div class="p-10 pagination">
     <strong>
         Page <?= $page_no ?> of <?= $total_no_of_pages ?>
     </strong>
@@ -161,8 +161,8 @@
         }
     }
 
-    $(document).ready(function(){  
-           $('#search').keyup(function(){  
+    /* $(document).ready(function(){  
+           $('#search_text').keyup(function(){  
                 search_table($(this).val());  
            });  
            function search_table(value){  
@@ -184,5 +184,32 @@
                      }  
                 });  
            }  
-      }); 
+      }); */
+
+      $(document).ready(function() {
+        var originalTable = $("#table-data").html(); // Store the original table HTML
+
+        $('#search_text').keyup(function() {
+        var search = $(this).val();
+        if (search === '') {
+            // Empty search input, show original table and pagination
+            $("#table-data").html(originalTable);
+            $(".pagination").show();
+        } else {
+            $.ajax({
+            url: 'trans_tables/search.php',
+            method: 'post',
+            data: {
+                query: search
+            },
+            success: function(response) {
+                $("#table-data").html(response);
+                // Hide pagination buttons during search
+                $(".pagination").hide();
+            }
+            });
+        }
+        });
+    });
+
 </script>
