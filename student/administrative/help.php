@@ -79,7 +79,7 @@
 
             <br><br><br>
 
-            <div class="container-fluid p-4">
+            <div class="container-fluid text-center p-4">
                 <h3>Request of Equipment</h3>
             </div>
 
@@ -153,7 +153,7 @@
             
             <br><br><br>
 
-            <div class="container-fluid p-4">
+            <div class="container-fluid text-center p-4">
                 <h3>Facility Appointment</h3>
             </div>
 
@@ -283,22 +283,22 @@
 </div>
 
 <script>
-    const messageTextarea = document.getElementById('message');
+    // const messageTextarea = document.getElementById('message');
 
-    messageTextarea.addEventListener('input', function() {
-        const inputValue = messageTextarea.value;
+    // messageTextarea.addEventListener('input', function() {
+    //     const inputValue = messageTextarea.value;
 
-        const pattern = /^[a-zA-Z0-9'!@#$%^&*() ]{1,}\s[a-zA-Z0-9'!@#$%^&*()\s]*$/;
-        const isValid = pattern.test(inputValue);
+    //     const pattern = /^[a-zA-Z0-9'!@#$%^&*()\s.,]+$/;
+    //     const isValid = pattern.test(inputValue);
 
-        if (isValid) {
-            messageTextarea.setCustomValidity('');
-            messageTextarea.classList.remove('is-invalid');
-        } else {
-            messageTextarea.setCustomValidity('Please provide a valid feedbacks.');
-            messageTextarea.classList.add('is-invalid');
-        }
-    });
+    //     if (isValid) {
+    //         messageTextarea.setCustomValidity('');
+    //         messageTextarea.classList.remove('is-invalid');
+    //     } else {
+    //         messageTextarea.setCustomValidity('Please provide a valid feedbacks.');
+    //         messageTextarea.classList.add('is-invalid');
+    //     }
+    // });
 
     // Function to handle form submission
     function handleSubmit() {

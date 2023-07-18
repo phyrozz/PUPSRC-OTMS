@@ -31,6 +31,10 @@
                     Schedule
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center request-equipment-purpose-header sortable-header" data-column="purpose" scope="col" data-order="asc">
+                    Purpose
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
                 <th class="text-center request-equipment-status-header sortable-header" data-column="status_name" scope="col" data-order="asc">
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -68,6 +72,192 @@
         </div>
     </nav>
 </div>
+<!-- View purpose modal -->
+<div id="viewPurposeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewPurposeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewPurposeModalLabel">Purpose of Request</h5>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view purpose modal -->
+<br><br><br>
+
+<div class="container-fluid text-center p-4">
+        <h3>Edit Equipment</h3>
+</div>
+<hr>
+
+<div class="table-responsive">
+    <table class="table text-center table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Equipment ID</th>
+                <th>Equipment Name</th>
+                <th>Availability</th>
+                <th>Quantity</th>
+                <th>Equipment Type ID</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Fetch the equipment data from the database
+            $query = "SELECT * FROM equipment";
+            $result = mysqli_query($connection, $query);
+
+            // Iterate over the rows and display the data in the table
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '<tr>';
+                echo '<td>' . $row['equipment_id'] . '</td>';
+                echo '<td>' . $row['equipment_name'] . '</td>';
+                echo '<td>' . $row['availability'] . '</td>';
+                echo '<td>' . $row['quantity'] . '</td>';
+                echo '<td>' . $row['equipment_type_id'] . '</td>';
+                echo '<td>' .
+                '<button class="btn btn-primary" onclick="editEquipment(' . $row['equipment_id'] . ')">' .
+                '<i class="fa fa-edit"></i> Edit' .
+                '</button>' .
+                '</td>';
+                echo '</tr>';
+            }
+
+            // Close the database connection
+            mysqli_close($connection);
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<!-- Edit equipment Modal -->
+<div class="modal fade" id="editEquipmentModal" tabindex="-1" role="dialog" aria-labelledby="editEquipmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editEquipmentModalLabel">Edit Equipment Details</h5>
+
+        </div>
+        <div class="modal-body">
+            <!-- Add your form fields for editing the equipment here -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save Changes</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+       function editEquipment(equipmentId) {
+        // Get the modal element
+        var modal = document.getElementById('editEquipmentModal');
+
+        // Perform the necessary actions to edit the equipment with the provided ID
+
+
+        // Make an AJAX request to fetch the equipment data
+        $.ajax({
+            url: 'tables/administrative/fetch_admin_equipment.php',
+            method: 'POST',
+            data: {
+                equipmentId: equipmentId
+            },
+            success: function(response) {
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Populate the form fields in the modal with the fetched equipment data
+                var modalBody = modal.querySelector('.modal-body');
+                modalBody.innerHTML = '';
+
+                // Add your form fields and populate them with the fetched equipment data
+                modalBody.innerHTML += '<table class="table table-bordered">' +
+                    '<tr>' +
+                    '<td><label for="equipmentName">Equipment Name:</label></td>' +
+                    '<td><input type="text" id="equipmentName" name="equipmentName" value="' + data.equipmentName + '" class="form-control"></td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td><label for="availability">Availability:</label></td>' +
+                    '<td>' +
+                    '<select id="availability" name="availability" class="form-control">' +
+                    '<option value="Available"' + (data.availability === 'Available' ? ' selected' : '') + '>Available</option>' +
+                    '<option value="Unavailable"' + (data.availability === 'Unavailable' ? ' selected' : '') + '>Unavailable</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td><label for="quantity">Quantity:</label></td>' +
+                    '<td><input type="number" id="quantity" name="quantity" min="0" max="50" value="' + data.quantity + '" class="form-control" oninput="validateQuantity(this)"></td>'
+
+                    '</tr>' +
+                    '</table>';
+
+                // Show the modal
+                var bootstrapModal = new bootstrap.Modal(modal);
+                bootstrapModal.show();
+
+                // Handle the Save Changes button click event
+                var saveChangesBtn = modal.querySelector('.btn-primary');
+                saveChangesBtn.addEventListener('click', function() {
+                    // Get the updated values from the form fields
+                    var updatedEquipmentName = document.getElementById('equipmentName').value;
+                    var updatedAvailability = document.getElementById('availability').value;
+                    var updatedQuantity= document.getElementById('quantity').value;
+
+                    // Call the function to update the equipment data
+                    updateEquipmentData(equipmentId, updatedEquipmentName, updatedAvailability, updatedQuantity);
+                });
+            },
+            error: function() {
+                console.log('Error occurred while fetching equipment data.');
+            }
+        });
+    }
+
+        function updateEquipmentData(equipmentId, equipmentName, availability, quantity) {
+            
+            // Make an AJAX request to update the equipment data in the database
+            $.ajax({
+                url: 'tables/administrative/update_admin_equipment.php',
+                method: 'POST',
+                data: {
+                    equipmentId: equipmentId,
+                    equipmentName: equipmentName,
+                    availability: availability,
+                    quantity: quantity
+                },
+                success: function(response) {
+                // Handle the success response
+                    console.log('Equipment updated successfully.');
+
+                    // Hide the modal
+                    var modal = document.getElementById('editEquipmentModal');
+                    var bootstrapModal = bootstrap.Modal.getInstance(modal);
+                    bootstrapModal.hide();
+
+
+                    // Reload the page to refresh the table
+                    location.reload();
+                },
+                error: function() {
+                // Handle the error response
+                console.log('Error occurred while updating equipment.');
+                }
+            });
+    }
+
+    </script>
+
+
 
 <script>
     function getStatusBadgeClass(status) {
@@ -139,11 +329,11 @@
                                 hour: 'numeric',
                                 minute: 'numeric',
                                 hour12: true
-                            }) + '</td>' +  
+                            }) + '</td>' +
+                            '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="#" class="btn-link" style="text-decoration: none;" onclick="openPurposeModal(\'' + requestEquip.purpose + '\')">See Purpose</a>' +  
 
-                            // '<td class="text-center">' +
-                            // scheduleButton +
-                            // '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(requestEquip.status_name) + '">' + requestEquip.status_name + '</span>' +
                             '</td>' +
@@ -152,7 +342,7 @@
                         tableBody.innerHTML += row;
                     }
                 } else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="12">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
                 // Update the pagination links
@@ -177,6 +367,10 @@
             }
         });
     }
+
+    function validateQuantity(input) {
+                input.value = input.value.replace(/\D/g, ''); // Remove non-digit characters
+            }
 
     // Function to toggle the sort icons
     function toggleSortIcons(header) {
@@ -286,5 +480,12 @@
                 default:
                     return '';
             }
+        }
+
+        function openPurposeModal(purpose) {
+            var modalBody = document.getElementById('viewPurposeModal').querySelector('.modal-body');
+            modalBody.innerHTML = purpose;
+
+            $('#viewPurposeModal').modal('show');
         }
 </script>

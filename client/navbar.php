@@ -47,8 +47,8 @@
                                 break;
                             case 'Administrative Office':
                                 echo '
-								<li><a class="dropdown-item" href="/student/administrative/view-equipment.php">View Available Equipment</a></li>
-                                <li><a class="dropdown-item" href="/student/administrative/view-facility.php">View Available Facilities</a></li>
+								<li><a class="dropdown-item" href="/client/administrative/view-equipment.php">View Available Equipment</a></li>
+                                <li><a class="dropdown-item" href="/client/administrative/view-facility.php">View Available Facilities</a></li>
 								';
                                 break;
 							case 'Registrar Office':

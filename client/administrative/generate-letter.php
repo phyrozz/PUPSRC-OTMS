@@ -22,6 +22,7 @@ if(isset($_SESSION['appointment_details'])) {
     $client =  $appointmentDetails['client'];
 
 
+
         $currentDate = new DateTime("now", new DateTimeZone("Asia/Manila"));
         $currentTime = $currentDate->format("F j, Y ");
 
@@ -247,21 +248,28 @@ $html = <<<EOD
     <div class="letter-body">
         <p>Greetings in pursuit of wisdom!</p>
 
+
         <p class="indent">
             We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name )</span>, will be conducting a Seminar entitled "<span id="reason">$purpose</span>" to be held on <span id="start-date">$startDate</span>, from <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> at PUP-Santa Rosa <span id="facility">$facilityName</span>.
         </p>
+
 
         <p class="indent">
             This activity can be a good way for students to acquire new knowledge, enabling them to better develop the necessary skills and knowledge to become literate in the field of managing Human Capital.
         </p>
 
+
         <p>Hoping for your kind consideration.</p>
 
+
         <br>
+
 
         <p>Respectfully Yours,</p>
 
+
         <br>
+
 
         <div class="sender">
             <p>
@@ -270,6 +278,8 @@ $html = <<<EOD
             </p>
         </div>
     </div>
+
+
 
     <div class="footer">
         <p>
