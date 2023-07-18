@@ -53,7 +53,6 @@
                 <h5 class="modal-title" id="viewEditModalLabel">Edit request</h5>
             </div>
             <div class="modal-body">
-                <!-- Please add edit fields here for the Request description (either Request Clearance or Request Good Moral Document) and Scheduled Date using Flatpickr. -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

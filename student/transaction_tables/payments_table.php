@@ -77,7 +77,7 @@
                         var payments = data.payments[i];
 
                         var row = '<tr>' +
-                            '<td>' + 'AO-' + payments.payment_id + '</td>' +
+                            '<td>' + 'AP-' + payments.payment_id + '</td>' +
                             '<td>' + payments.course + '</td>' +
                             '<td>' + payments.documentType + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +

@@ -31,17 +31,18 @@
         $password = $_POST['password'];
         $clientRole = 2;
 
-        $query = "SELECT user_id, email, first_name, last_name, password FROM users WHERE email = ? and user_role = ?";
+        $query = "SELECT user_id, email, first_name, last_name, extension_name, password FROM users WHERE email = ? and user_role = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("si", $email, $clientRole);
         $stmt->execute();
-        $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbPassword);
+        $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
         $stmt->fetch();
 
         if ($dbEmail && password_verify($password, $dbPassword)) {
             $_SESSION['user_id'] = $userId;
             $_SESSION['first_name'] = $dbFirstName;
             $_SESSION['last_name'] = $dbLastName;
+            $_SESSION['extension_name'] = $dbExtensionName;
             $_SESSION['user_role'] = 2;
             header("Location: ../client/home.php");
             exit();

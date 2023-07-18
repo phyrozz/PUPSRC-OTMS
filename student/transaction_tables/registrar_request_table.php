@@ -2,21 +2,20 @@
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-                <th class="text-center"></th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="offsetting_id" scope="col" data-order="desc">
-                    Transaction Code
+                <th class="text-center doc-request-id-header sortable-header" data-column="request_code" scope="col" data-order="desc">
+                    Request Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-office-header sortable-header" data-column="timestamp" scope="col" data-order="desc">
-                    Transaction Date
+                <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="desc">
+                    Office
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-description-header sortable-header" data-column="amountToOffset" scope="col" data-order="desc">
-                    Amount to Offset
+                <th class="text-center doc-request-description-header sortable-header" data-column="services" scope="col" data-order="desc">
+                    Request
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-amount-header sortable-header" data-column="offsetType" scope="col" data-order="desc">
-                    Offset Type
+                <th class="text-center doc-request-amount-header sortable-header" data-column="schedule" scope="col" data-order="desc">
+                    Schedule
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
@@ -29,15 +28,6 @@
             <!-- Table rows will be generated dynamically using JavaScript -->
         </tbody>
     </table>
-</div>
-<div id="pagination" class="container-fluid p-0">
-    <nav aria-label="Page navigation">
-        <div class="d-flex justify-content-between align-items-start gap-3">
-            <ul class="pagination" id="pagination-links">
-                <!-- Pagination links will be generated dynamically using JavaScript -->
-            </ul>
-        </div>
-    </nav>
 </div>
 <script>
     function getStatusBadgeClass(status) {
@@ -56,8 +46,36 @@
                 return 'bg-dark';
         }
     }
+    
+    // Add more cases here for other office document requests
+    function getSchedulePageRedirect(request) {
+        switch (request) {
+            case "Request Good Moral Document":
+                return "/student/guidance/doc_appointments/good_morals.php";
+            case "Request Clearance":
+                return "/student/guidance/doc_appointments/clearance.php";
+            default:
+                return "#";
+        }
+    }
 
-    function handlePagination(page, searchTerm = '', column = 'timestamp', order = 'desc') {
+    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
+    function generateUrlToOfficeColumn(officeName) {
+        switch (officeName) {
+            case 'Guidance Office':
+                return 'http://localhost/student/guidance.php';
+            case 'Registrar Office':
+                return 'http://localhost/student/registrar.php';
+            case 'Academic Office':
+                return 'http://localhost/student/academic.php';
+            case 'Accounting Office':
+                return 'http://localhost/student/accounting.php';
+            case 'Administrative Office':
+                return 'http://localhost/student/administrative.php';
+        }
+    }
+
+    function handlePagination(page, searchTerm = '', column = 'reg_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
         loadingIndicator.style.display = 'block';
@@ -68,7 +86,7 @@
         
         // Make an AJAX request to fetch the document requests
         $.ajax({
-            url: 'transaction_tables/fetch_offsettings.php',
+            url: 'transaction_tables/fetch_registrar_request.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
@@ -86,32 +104,30 @@
                 tableBody.innerHTML = '';
 
                 if (data.total_records > 0) {
-                    for (var i = 0; i < data.offsettings.length; i++) {
-                        var offsetting = data.offsettings[i];
+                    for (var i = 0; i < data.registrar_requests.length; i++) {
+                        var registrar = data.registrar_requests[i];
+                        var scheduleButton = '';
+
+                        // Add schedule button if the status is "Pending"
+                        if (registrar.status_name === 'Pending') {
+                            var schedulePageRedirect = getSchedulePageRedirect(registrar.services);
+                            scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
+                        }
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + offsetting.offsetting_id + '" name="' + offsetting.offsetting_id + '" value="' + offsetting.offsetting_id + '"></td>' +
-                            '<td>AO-' + offsetting.offsetting_id + '</td>' +
-                            '<td>' + (offsetting.timestamp !== null ? (new Date(offsetting.timestamp)).toLocaleString('en-US', {
-                            month: 'long',
-                            day: 'numeric',
-                            year: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric',
-                            hour12: true
-                            }) : 'Not yet scheduled')
-                            + '</td>' +
-                            '<td>' + '₱' + offsetting.amountToOffset + '</td>' +
-                            '<td>' + offsetting.offsetType + '</td>' +
+                            '<td>' + registrar.request_code + '</td>' +
+                            '<td><a href="' + generateUrlToOfficeColumn(registrar.office_name) + '">' + registrar.office_name + '</a></td>' +
+                            '<td>' + registrar.services + '</td>' +
+                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+                            '<td>' + registrar.schedule + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(offsetting.status_name) + '">' + offsetting.status_name + '</span>' +
-                            '</td>' +
-                            // '<td><a href="#" class="btn btn-primary btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' + 
+                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(registrar.status_name) + '">' + registrar.status_name + '</span>' +
+                            '</td>'
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="5">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 
@@ -127,6 +143,7 @@
                         paginationLinks.innerHTML += pageLink;
                     }
                 }
+
             },
             error: function() {
                 // Hide the loading indicator in case of an error
@@ -164,12 +181,12 @@
     });
 
     // Initial pagination request (page 1)
-    handlePagination(1, '', 'timestamp', 'desc');
+    handlePagination(1, '', 'reg_id', 'desc');
 
     $(document).ready(function() {
         $('#button-addon2').click(function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm, 'timestamp', 'desc');
+            handlePagination(1, searchTerm, 'request_id', 'desc');
         });
     });
 </script>

@@ -20,7 +20,6 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -50,6 +49,7 @@
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
                                         <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                         <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
+                                        <option value="guidance_feedbacks" <?php if ($table === 'guidance_feedbacks') echo 'selected'; ?>>Feedbacks</option>
                                     </select>
                                     <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary">Load Table</button>
                                 </form>
@@ -58,13 +58,7 @@
                                 <div id="filterByStatusSection" class="input-group">
                                     <label class="input-group-text" for="filterByStatus">Filter by Status:</label>
                                     <select name="filterByStatus" id="filterByStatus" class="form-select">
-                                        <!-- <option value="all">All</option>    
-                                        <option value="1">Pending</option>
-                                        <option value="2">For Receiving</option>
-                                        <option value="3">For Evaluation</option>
-                                        <option value="4">Ready for Pickup</option>
-                                        <option value="5">Released</option>
-                                        <option value="6">Rejected</option> -->
+                                        <!-- Select options are dynamically displayed depending on the table -->
                                     </select>
                                 </div>
                             </div>
@@ -101,21 +95,13 @@
                             elseif ($table === 'scheduled_appointments') {
                                 include 'tables/guidance/counseling_appointments.php';
                             }
+                            elseif ($table === 'guidance_feedbacks') {
+                                include 'tables/guidance/feedbacks_table.php';
+                            }
                         ?>
                     </div>
                 </div>
             </div>
-            <!-- <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <button class="btn btn-primary" disabled>Previous</button>
-                    <button class="btn btn-primary" disabled>Next</button>
-                </div>
-            </div>
-             -->
         </div>
         <div class="push"></div>
     </div>
