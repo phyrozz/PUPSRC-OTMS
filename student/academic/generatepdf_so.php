@@ -1,4 +1,5 @@
 <?php
+
 // Include the main TCPDF library (search for installation path).
 require_once('TCPDF/tcpdf.php');
 require_once('TCPDF/config/tcpdf_config.php');
@@ -40,7 +41,7 @@ $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 // set time
-$currentDate = date('Y-m-d');
+$currentDate = date("F d, Y");
 
 
 // set image scale factor
@@ -79,17 +80,18 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
 $pdf->SetY(20,true,true);
 
 
+
 // Data Retrieval
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Retrieve form data
-        $first_name = $_POST['first_name'];
-        $middle_name = $_POST['middle_name'];
-        $last_name = $_POST['last_name'];
-        $suffix = $_POST['suffix'];
-        $name = $first_name . " " . $middle_name . " " . $last_name . " " . $suffix;
 
-        $studentNumber = $_POST['studentNumber'];
-        $yrSec = $_POST ['yrSec'];
+        $first_name = $_POST ['first_name'];
+        $middle_name = $_POST ['middle_name'];
+        $last_name = $_POST ['last_name'];
+        $extension_name = $_POST ['extension_name'];
+        $student_no = $_POST ['student_no'];
+        $name = $first_name . " " . $middle_name . " " . $last_name . " " . $extension_name;
+
+        $yrSec = $_POST ['yr&Sec'];
         $acadYear = $_POST ['acadYear'];
         $reason = $_POST ['reason'];
 
@@ -101,9 +103,9 @@ $pdf->SetY(20,true,true);
         $code2 = $_POST['code2'];
         $code3 = $_POST['code3'];
 
-        $des1 = $_POST['des1'];
-        $des2 = $_POST['des2'];
-        $des3 = $_POST['des3'];
+        $desc1 = $_POST['desc1'];
+        $desc2 = $_POST['desc2'];
+        $desc3 = $_POST['desc3'];
 
         $courseYrSec1 = $_POST['courseYrSec1'];
         $courseYrSec2 = $_POST['courseYrSec2'];
@@ -253,7 +255,7 @@ $html2 = <<<EOD
   </tr>
   <tr>
     <th><div style="font-size:5px">&nbsp;</div>STUDENT NUMBER:</th>
-    <td class="tdname"><div style="font-size:5px">&nbsp;</div>$studentNumber</td>
+    <td class="tdname"><div style="font-size:5px">&nbsp;</div>$student_no</td>
     <th><div style="font-size:5px">&nbsp;</div>APPLICATION DATE:</th>
     <td class="tdname2"><div style="font-size:5px">&nbsp;</div>$currentDate</td>
   </tr>
@@ -361,7 +363,7 @@ $html3 = <<<EOD
 
 <tr>
   <td class="tdclass" style="width:10%";>$code1</td>
-  <td class="tdclass" style="width:25%";>$des1</td>
+  <td class="tdclass" style="width:25%";>$desc1</td>
   <td class="tdclass" style="width:10%";>$courseYrSec1</td>
   <td class="tdclass" style="width:7%";></td>
   <td class="tdclass" style="width:12%";></td>
@@ -373,7 +375,7 @@ $html3 = <<<EOD
 
 <tr>
   <td class="tdclass" style="width:10%";>$code2</td>
-  <td class="tdclass" style="width:25%";>$des2</td>
+  <td class="tdclass" style="width:25%";>$desc2</td>
   <td class="tdclass" style="width:10%";>$courseYrSec2</td>
   <td class="tdclass" style="width:7%";></td>
   <td class="tdclass" style="width:12%";></td>
@@ -385,7 +387,7 @@ $html3 = <<<EOD
 
 <tr>
   <td class="tdclass" style="width:10%";>$code3</td>
-  <td class="tdclass" style="width:25%";>$des3</td>
+  <td class="tdclass" style="width:25%";>$desc3</td>
   <td class="tdclass" style="width:10%";>$courseYrSec3</td>
   <td class="tdclass" style="width:7%";></td>
   <td class="tdclass" style="width:12%";></td>
@@ -402,13 +404,76 @@ EOD;
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html3, 0, 1, 0, true, '', true);
 
+$uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . "/assets/uploads/generated_pdf/";
 
-// Close and output PDF document
-// This method has several options, check the source code documentation for more information.
-$pdf->Output('pupsrc-generated-file-student.pdf', 'I');
+include "../../conn.php";
+$query = "SELECT student_no, last_name, first_name FROM users WHERE user_id = ?";
+$stmt = $connection->prepare($query);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$userData = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 
-//============================================================+
-// END OF FILE
-//============================================================+
+$uniqueFileName = 'SO_ACEFORM_' . $student_no . '_' . $last_name . '_' . $first_name . '.pdf';
+
+// Create the path where the file will be stored
+$filePath = $uploadDirectory . $uniqueFileName;
+
+// Output the PDF file
+$pdf->Output($filePath, 'F');
+
+include "../../conn.php";
+// Insert to Database
+// Get the file size
+$fileSize = filesize($filePath);
+
+$type = "Generated PDF";
+
+try {
+  // Prepare the query to check if the file already exists in the database
+$checkQuery = "SELECT COUNT(*) as count FROM files WHERE file_name = ?";
+$checkStmt = $connection->prepare($checkQuery);
+$checkStmt->bind_param("s", $uniqueFileName);
+$checkStmt->execute();
+$checkResult = $checkStmt->get_result();
+$fileExists = $checkResult->fetch_assoc()['count'];
+$checkStmt->close();
+
+// Prepare the query to insert or update the file details in the database
+if ($fileExists) {
+  $query = "UPDATE files SET file_path = ?, file_size = ? WHERE file_name = ?";
+} else {
+  $query = "INSERT INTO files (file_name, file_path, file_size, type) VALUES (?, ?, ?, ?)";
+}
+
+$stmt = $connection->prepare($query);
+if ($fileExists) {
+  $stmt->bind_param("sss", $filePath, $fileSize, $uniqueFileName);
+} else {
+  $stmt->bind_param("ssss", $uniqueFileName, $filePath, $fileSize, $type);
+}
+$stmt->execute();
+
+if ($stmt->affected_rows > 0) {
+  if ($fileExists) {
+    echo "<script>alert('Generated PDF updated successfully.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+  } else {
+    echo "<script>alert('Generated PDF uploaded successfully.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+  }
+} else {
+  echo "<script>alert('Failed to upload generated PDF.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+}
+
+$stmt->close();
+
+  
+} catch (Exception $e) {
+    $errorCode = $e->getCode();
+    $errorMessage = $e->getMessage();
+    echo "<script>alert('An error occurred: Error code " . $errorCode . ". Error message: " . $errorMessage . "'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+}
+
+
 
 ?>

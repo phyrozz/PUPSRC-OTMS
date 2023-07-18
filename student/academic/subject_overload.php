@@ -8,57 +8,82 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+
     <!-- Loading page -->
     <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
     <div id="loader" class="center">
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <link rel="stylesheet" href="academic.css">
+     
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="academic.css">
 </head>
 <body onload="openModal()">
 <div class="wrapper">
     <?php
         $office_name = "Academic Office";
+        $transaction = "Subject Overload";
         include('../navbar.php');
         include('uploadmodal.php');
         include('editmodal-so.php');
+
+        //include('helpmodal.php');
         include '../../breadcrumb.php';
-        //include('generate_pdf.php')
+        include "../../conn.php";
+
     ?>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <div id="modalContent" class="modal-content">
-            <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/><h2>Are you a student in good standing?</h2>
-            <p>(no failing grade in previous semester)</p>
-            <div class="modal-radio-group">
-                <input type="radio" name="option" value="option1" class="radio-option1">
-                <label for="option1">Yes</label>
-                <input type="radio" name="option" value="option2" class="radio-option2">
-                <label for="option2">No</label>
-            </div>
-            <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="questionModal()" disabled>Next</button>
-            <!-- <span id="countdownText" class="countdown"></span> -->
-        </div>
-    </div>
+    
+    <?php
+    
+    // Start the session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
-    <!-- When answered No Modal-->
-    <div id="redirectModal" class="modal">
-        <div id="modalContent" class="modal-content">
-            <a href="../academic.php" class="btn-close" aria-label="Close"></a>
-            <img src="../../assets/exclamation.png" class="exclamationpic">
-            <br/><h1>Subject overload is only allowed for academically outstanding students.</h1>
-            <a href="../academic.php" class="btn btn-primary" id="nextButton">Home</a>
+    // Check if the modal has already been shown in this session
+    if (!isset($_SESSION['session_so'])) {
+        // Set the session variable to indicate that the modal has been shown
+        $_SESSION['isLoggedIn'] = true;
+    
+        // Display the modal
+        // ... Your modal HTML code goes here ...
+        echo '<!-- The Modal -->
+        <div id="myModal" class="modal">
+            <div id="modalContent" class="modal-content">
+                <img src="/assets/exclamation.png" class="exclamationpic">
+                <br/><h2>Are you a student in good standing?</h2>
+                <p>(no failing grade in previous semester)</p>
+                <div class="modal-radio-group">
+                    <input type="radio" name="option" value="option1" class="radio-option1">
+                    <label for="option1">Yes</label>
+                    <input type="radio" name="option" value="option2" class="radio-option2">
+                    <label for="option2">No</label>
+                </div>
+                <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="questionModal(); ' . '$_SESSION[\'session_so\'] = true;">Next</button>
+
+            </div>
         </div>
-    </div>
+    
+        <!-- When answered No Modal-->
+        <div id="redirectModal" class="modal">
+            <div id="modalContent" class="modal-content">
+                <a href="../academic.php" class="btn-close" aria-label="Close"></a>
+                <img src="../../assets/exclamation.png" class="exclamationpic">
+                <br/><h1>Subject overload is only allowed for academically outstanding students.</h1>
+                <a href="../academic.php" class="btn btn-primary" id="nextButton">Home</a>
+            </div>
+        </div>';
+    }
+    
+    ?>
 
     <div class="container-fluid academicbanner header" style="height:250px">
         <?php
@@ -87,9 +112,7 @@
                         <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                             <i class="fa-solid fa-arrows-rotate"></i> Reset Form 
                         </button>
-                        <button class="btn btn-outline-primary mb-2">
-                            <i class="fa-solid fa-circle-question"></i> Help
-                        </button>
+                        <button type="button" class="btn btn-outline-primary mb-2" data-toggle="modal" data-target="#helpmodal"><i class="fa-solid fa-circle-question"></i> Help</button>
                     </div>
                 </div>
             </div>
@@ -127,7 +150,7 @@
                             </form>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button>
                         </div>
                     </div>
 					
