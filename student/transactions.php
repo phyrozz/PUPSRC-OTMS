@@ -106,7 +106,7 @@
                                 include 'transaction_tables/request_equipment_table.php';
                             } elseif ($table === 'appointment_facility') {
                                 include 'transaction_tables/appointment_facility_table.php';
-                            } elseif ($table === 'academic_transactions') {
+                            } elseif ($table === 'academic_subjectoverload') {
                                 include 'transaction_tables/academic_table.php';
                             } elseif ($table === 'registrar_request') {
                                 include 'transaction_tables/registrar_request_table.php';
