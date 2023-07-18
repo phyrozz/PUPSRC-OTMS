@@ -1,4 +1,5 @@
 <?php
+
 // Include the main TCPDF library (search for installation path).
 require_once('TCPDF/tcpdf.php');
 require_once('TCPDF/config/tcpdf_config.php');
@@ -128,9 +129,9 @@ $pdf->SetY(20,true,true);
         $code2 ='';
         $code3 ='';
 
-        $desc1 ='';
-        $desc2 ='';
-        $desc3 ='';
+        $des1 ='';
+        $des2 ='';
+        $des3 ='';
 
         $courseYrSec1 ='';
         $courseYrSec2 ='';

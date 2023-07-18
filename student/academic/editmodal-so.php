@@ -112,7 +112,7 @@ $stmt->close();
   <div class="col-md-12">
               <div class="form-group">
                 <label for="input8">Reason for Subject Overload</label>
-                <input type="text" maxlength="100" class="form-control" id="input8" name="reason" required>
+                <input type="text" maxlength="100" class="form-control" id="input8" name="reason">
               </div>
             </div>
 

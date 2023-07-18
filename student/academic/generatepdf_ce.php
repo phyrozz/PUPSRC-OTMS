@@ -26,7 +26,7 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(25, PDF_MARGIN_TOP, 15);
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -61,244 +61,75 @@ $pdf->AddPage();
 $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(255,255,255), 'opacity'=>1, 'blend_mode'=>'Normal'));
 
 // set time
-$currentDate = date('F d, Y');
+$currentDate = date('Y-m-d');
 
 // Data Retrieval
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve form data
-        $first_name = $_POST ['first_name'];
-        $middle_name = $_POST ['middle_name'];
-        $last_name = $_POST ['last_name'];
-        $extension_name = $_POST ['extension_name'];
-        $student_no = $_POST ['student_no'];
-        $name = $first_name . " " . $middle_name . " " . $last_name . " " . $extension_name;
-
-        $yrSec = $_POST ['yr&Sec'];
-        $acadYear = $_POST ['acadYear'];
-        $branch = $_POST ['branch'];
-
-
-        if (isset($_POST['semester'])) {
-            $semester = $_POST['semester'];
-          }
-  
-          $code1 = $_POST['code1'];
-          $code2 = $_POST['code2'];
-          $code3 = $_POST['code3'];
-  
-          $desc1 = $_POST['desc1'];
-          $desc2 = $_POST['desc2'];
-          $desc3 = $_POST['desc3'];
-  
-          $units1 = $_POST['units1'];
-          $units2 = $_POST['units2'];
-          $units3 = $_POST['units3'];
+        $firstName = $_POST['firstName'];
+        $middleName = $_POST['middleName'];
+        $lastName = $_POST['lastName'];
+        $nameSuffix = $_POST['nameSuffix'];
+        $studentNumber = $_POST['studentNumber'];
+        $courseYrSec = $_POST ['courseYrSec'];
+        $acadyear = $_POST ['acadyear'];  
+        //$courseCode = $_POST ['courseCode'];
+        //$description = $_POST ['description'];
+        //$units = $_POST ['units'];
+        $acadyear = $_POST ['acadyear'];
     }else{
     // Set default values or handle the case when the form is not submitted
-        $name = '';
+        $firstName = '';
+        $middleName ='';
+        $lastName = '';
+        $nameSuffix ='';
         $studentNumber = '';
-        $yrSec ='';
-        $acadYear ='';
-        $reason ='';
-        $semester ='';
-        $course ='';
-        $branch ='';
-
-        $code1 ='';
-        $code2 ='';
-        $code3 ='';
-
-        $desc1 ='';
-        $desc2 ='';
-        $desc3 ='';
-
-        $units1 ='';
-        $units2 ='';
-        $units3 ='';
-      }             
+        $courseYrSec ='';
+        $acadyear ='';
+        //$courseCode ='';
+        //$description ='';
+        //$units ='';
+        $acadyear ='';                     
+    }
+// Concatenate first name, middle name, last name, and suffix to form the recipient's full name
+$recipientName = $firstName . ' ' . $middleName . ' ' . $lastName . ' ' . $nameSuffix;
 
 // Set some content to print
     $html = <<<EOD
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            font-size: 14px;
-        }
+    <h2>Personal Information</h2>
+        <p style="text-indent: 5em; line-height: 1;">First Name: $firstName</p>
+        <p style="text-indent: 5em; line-height: 1;">Middle Name: $middleName</p>
+        <p style="text-indent: 5em; line-height: 1;">Last Name: $lastName</p>
+        <p style="text-indent: 5em; line-height: 1;">Name Suffix: $nameSuffix</p>
+        <p style="text-indent: 5em; line-height: 1;">Student Number: $studentNumber</p>
+        <p style="text-indent: 5em; line-height: 1;">Course/Year/Section: $courseYrSec</p>
+        <p style="text-indent: 5em; line-height: 1;">Academic Year: $acadyear</p>
+        <p style="text-indent: 5em; line-height: 1;">Exact Date: $currentDate</p>
 
-        .letter {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        .table-container {
-            margin-top: 20px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            font-size: 14px;
-        }
-
-        th, td {
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .footer {
-            margin-top: 20px;
-        }
-    </style>
-
-    <div class="letter">
-        <p style="line-height: 1.2;">$currentDate</p>
+        <h2>Dear $recipientName,</h2>
         
-        <br>
-        <p style="line-height: .3;"><b>--------------</b></p>
-        <p style="line-height: .3;">--------------</p>
-        <p style="line-height: .3;">PUP Santa Rosa Branch</p>
-        <p style="line-height: .3;">Brgy. Tagapo, Santa Rosa, Laguna</p>
-
-        <p style="line-height: 1.8;">Dear Ma'am/Sir,</p>
-
-        <p style="text-indent: 35px;">I am $name, a $yrSec student from PUP Santa Rosa, would like to ask your permission to cross-enroll the following subject/s for $semester of $acadYear at PUP $branch Branch.</p>
-
-        <div class="table-container" style="line-height: 2;">
-            <table>
-                <thead>
-                    <tr>
-                        <th><b>Course Code</b></th>
-                        <th><b>Course Description</b></th>
-                        <th><b>Units</b></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>$code1</td>
-                        <td>$desc1</td>
-                        <td>$units1</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                <tr>
-                        <td>$code2</td>
-                        <td>$desc2</td>
-                        <td>$units2</td>
-                </tr>
-                </tbody>
-                <tbody>
-                <tr>
-                        <td>$code3</td>
-                        <td>$desc3</td>
-                        <td>$units3</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <p style="line-height: .5;">I am seeking after your most great response about this issue. Thank you and God bless.</p>
+        <p style="text-indent: 5em; text-align: justify; line-height: 1;">As a participant in this program, you will have the opportunity to engage in a wide range of educational activities, including lectures, workshops, and hands-on projects.</p>
         
-        <div></div>
+        <p style="text-indent: 5em; text-align: justify; line-height: 1;">Please find attached the necessary documents and information for your enrollment. If you have any questions or require further assistance, don't hesitate to contact our office.</p>
         
-        <div class="footer">
-            <p style="line-height: .3;">Sincerely yours,</p>
-            <br>
-            <p style="line-height: .3;">$name</p>
-            <p style="line-height: .3;">$student_no</p>
-
-            <div></div><div></div>
-
-            <p style="line-height: .3;">Noted by:</p>
-            <br>
-            <p style="line-height: .3;">---------------</p>
-            <p style="line-height: .3;">---------------</p>
-        </div>
-    </div>
+        <p style="text-indent: 5em; text-align: justify; line-height: 1;">Thank you for your interest in the PUP Academic Office program. We look forward to welcoming you and supporting your educational journey.</p>
+        
+        <p style="text-indent: 142em; line-height: 1;">Best regards,</p>
+        <p style="text-indent: 5em; text-align: right; line-height: 1;">The PUP Academic Office Team</p>
         
     EOD;
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
-$uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . "/assets/uploads/generated_pdf/";
+// ---------------------------------------------------------
 
-include "../../conn.php";
-$query = "SELECT student_no, last_name, first_name FROM users WHERE user_id = ?";
-$stmt = $connection->prepare($query);
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result();
-$userData = $result->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
+// Close and output PDF document
+// This method has several options, check the source code documentation for more information.
+$pdf->Output('pupsrc-generated-file-student.pdf', 'I');
 
-$uniqueFileName = 'CE_APPLETTER_' . $student_no . '_' . $last_name . '_' . $first_name . '.pdf';
-
-// Create the path where the file will be stored
-$filePath = $uploadDirectory . $uniqueFileName;
-
-// Output the PDF file
-$pdf->Output($filePath, 'F');
-
-include "../../conn.php";
-// Insert to Database
-// Get the file size
-$fileSize = filesize($filePath);
-
-$type = "Generated PDF";
-
-try {
-  // Prepare the query to check if the file already exists in the database
-$checkQuery = "SELECT COUNT(*) as count FROM files WHERE file_name = ?";
-$checkStmt = $connection->prepare($checkQuery);
-$checkStmt->bind_param("s", $uniqueFileName);
-$checkStmt->execute();
-$checkResult = $checkStmt->get_result();
-$fileExists = $checkResult->fetch_assoc()['count'];
-$checkStmt->close();
-
-// Prepare the query to insert or update the file details in the database
-if ($fileExists) {
-  $query = "UPDATE files SET file_path = ?, file_size = ? WHERE file_name = ?";
-} else {
-  $query = "INSERT INTO files (file_name, file_path, file_size, type) VALUES (?, ?, ?, ?)";
-}
-
-$stmt = $connection->prepare($query);
-if ($fileExists) {
-  $stmt->bind_param("sss", $filePath, $fileSize, $uniqueFileName);
-} else {
-  $stmt->bind_param("ssss", $uniqueFileName, $filePath, $fileSize, $type);
-}
-$stmt->execute();
-
-if ($stmt->affected_rows > 0) {
-  if ($fileExists) {
-    echo "<script>alert('Generated PDF updated successfully.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
-  } else {
-    echo "<script>alert('Generated PDF uploaded successfully.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
-  }
-} else {
-  echo "<script>alert('Failed to upload generated PDF.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
-}
-
-$stmt->close();
-
-  
-} catch (Exception $e) {
-    $errorCode = $e->getCode();
-    $errorMessage = $e->getMessage();
-    echo "<script>alert('An error occurred: Error code " . $errorCode . ". Error message: " . $errorMessage . "'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
-}
-
-
+//============================================================+
+// END OF FILE
+//============================================================+
 
 ?>

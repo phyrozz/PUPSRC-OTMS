@@ -20,7 +20,7 @@
     </div>
      
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="academic.css">
@@ -41,65 +41,49 @@
     ?>
 
     
-<?php
-// Start the session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Check if the modal has already been shown in this session
-if (!isset($_SESSION['session_so'])) {
-    // Display the modal
-    // ... Your modal HTML code goes here ...
-    echo '<!-- The Modal -->
-    <div id="myModal" class="modal">
-        <div id="modalContent" class="modal-content">
-            <img src="/assets/exclamation.png" class="exclamationpic">
-            <br/>
-            <h2>Are you a student in good standing?</h2>
-            <p>(no failing grade in the previous semester)</p>
-            <div class="modal-radio-group">
-                <input type="radio" name="option" value="option1" class="radio-option1">
-                <label for="option1">Yes</label>
-                <input type="radio" name="option" value="option2" class="radio-option2">
-                <label for="option2">No</label>
-            </div>
-            <br/>
-            <form action="update_session.php" method="POST" id="sessionForm">
-                <button type="submit" class="btn btn-primary" id="nextButtonModal" onclick="disableModal()">Next</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- When answered No Modal-->
-    <div id="redirectModal" class="modal">
-        <div id="modalContent" class="modal-content">
-            <a href="../academic.php" class="btn-close" aria-label="Close"></a>
-            <img src="../../assets/exclamation.png" class="exclamationpic">
-            <br/>
-            <h1>Subject overload is only allowed for academically outstanding students.</h1>
-            <a href="../academic.php" class="btn btn-primary" id="nextButtonRedirect">Home</a>
-        </div>
-    </div>';
-
-    // Include JavaScript code
-    echo '<script type="text/javascript">
-
-        document.addEventListener("DOMContentLoaded", function() {
-            // Check if the button was clicked to disable the modal
-            if (!document.getElementById("nextButtonModal").disabled) {
-                // Set the session variable to indicate that the modal has been shown
-                $_SESSION["session_so"] = true;
-            }
-        });
-    </script>';
+    <?php
     
-} else {
-    // Set the session variable to indicate that the modal has been shown
-    $_SESSION['session_so'] = true;
-}
-?>
+    // Start the session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
+    // Check if the modal has already been shown in this session
+    if (!isset($_SESSION['session_so'])) {
+        // Set the session variable to indicate that the modal has been shown
+        $_SESSION['isLoggedIn'] = true;
+    
+        // Display the modal
+        // ... Your modal HTML code goes here ...
+        echo '<!-- The Modal -->
+        <div id="myModal" class="modal">
+            <div id="modalContent" class="modal-content">
+                <img src="/assets/exclamation.png" class="exclamationpic">
+                <br/><h2>Are you a student in good standing?</h2>
+                <p>(no failing grade in previous semester)</p>
+                <div class="modal-radio-group">
+                    <input type="radio" name="option" value="option1" class="radio-option1">
+                    <label for="option1">Yes</label>
+                    <input type="radio" name="option" value="option2" class="radio-option2">
+                    <label for="option2">No</label>
+                </div>
+                <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="questionModal(); ' . '$_SESSION[\'session_so\'] = true;">Next</button>
+
+            </div>
+        </div>
+    
+        <!-- When answered No Modal-->
+        <div id="redirectModal" class="modal">
+            <div id="modalContent" class="modal-content">
+                <a href="../academic.php" class="btn-close" aria-label="Close"></a>
+                <img src="../../assets/exclamation.png" class="exclamationpic">
+                <br/><h1>Subject overload is only allowed for academically outstanding students.</h1>
+                <a href="../academic.php" class="btn btn-primary" id="nextButton">Home</a>
+            </div>
+        </div>';
+    }
+    
+    ?>
 
     <div class="container-fluid academicbanner header" style="height:250px">
         <?php
@@ -161,13 +145,12 @@ if (!isset($_SESSION['session_so'])) {
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
                         </div>
                         <div class="col-sm-2">
-                            <form action="view_attachment.php" method="post" target="_blank">
+                            <form action="generatepdf_so.php" method="post" target="_blank">
                                 <input type="submit" class="btn btn-primary" value="View Attachment">
                             </form>
                         </div>
                         <div class="col-sm-2">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button>
-                        
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button>
                         </div>
                     </div>
 					

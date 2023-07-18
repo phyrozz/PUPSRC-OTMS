@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
     $last_name = $_POST['last_name'];
     $first_name = $_POST['first_name'];
 
-    $uniqueFileName = $acad_transaction . "_" . $requirement . "_" . $student_no . "_" . $last_name . "_" . $first_name . "_" . $fileName;
+    $uniqueFileName = $acad_transaction . "_" . $student_no . "_" . $last_name . "_" . $first_name . "_" . $fileName;
 
     // Create the path where the file will be stored
     $filePath = $uploadDirectory . $uniqueFileName;
@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
         exit;
     }
 
-    // Check if the file size exceeds the limit (10 MB)
+    // Check if the file size exceeds the limit (5 MB)
     $maxFileSize = 10 * 1024 * 1024; // 10 MB in bytes
     if ($fileSize > $maxFileSize) {
         echo "<script>alert('File size exceeds the limit of 10 MB.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
