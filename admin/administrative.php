@@ -41,9 +41,6 @@
         ?>
         
         <div class="container-fluid py-2">
-            <div class="container-fluid text-center p-4">
-                    <h2>Admin's Playground</h2>
-            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="d-md-flex w-100 pb-2 justify-content-between align-items-end">
