@@ -33,10 +33,50 @@ $stmt->close();
         <span class="uploadsubtext">Note: If possible, please use a stable internet connection to avoid errors when uploading. Sudden interruptions/spike may cause it to fail.</span>
       </div>
       <div class="modal-footer">
-      <input type="submit" value="Upload File" name="submit" class="btn btn-primary submit">
+      <input type="button" value="Upload File" name="submit" id="uploadSubmit" class="btn btn-primary submit">
             </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- File upload success modal -->
+<!-- <div id="fileUploadSuccessModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fileUploadSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fileUploadSuccessModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>File uploaded successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- File upload failed modal -->
+<div id="fileUploadFailedModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fileUploadFailedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fileUploadFailedModalLabel">Upload failed</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>File cannot be uploaded. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  
+</script>
 

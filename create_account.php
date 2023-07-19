@@ -43,6 +43,11 @@ if (isset($_POST['studentSignup'])) {
         $query = "INSERT INTO users (student_no, last_name, first_name, middle_name, extension_name, contact_no, email, birth_date, password, user_role)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $userDetailsQuery = "INSERT INTO user_details (sex, home_address, province, city, barangay, zip_code, course_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $crossEnrollmentQuery = "INSERT INTO cross_enrollment (user_id) VALUES (?)";
+        $manualEnrollmentQuery = "INSERT INTO manual_enrollment (user_id) VALUES (?)";
+        $gradeAccreditationQuery = "INSERT INTO grade_accreditation (user_id) VALUES (?)";
+        $shiftingQuery = "INSERT INTO shifting (user_id) VALUES (?)";
+        $subjectOverloadQuery = "INSERT INTO subject_overload (user_id) VALUES (?)";
     
         $stmt = $connection->prepare($query);
         $stmt->bind_param("sssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
@@ -54,6 +59,29 @@ if (isset($_POST['studentSignup'])) {
             $stmt->bind_param("isssssii", $gender, $address, $province, $city, $barangay, $zipCode, $course, $lastId);
             $stmt->execute();
             $stmt->close();
+
+            // Insert initial value queries on all academic services
+            $stmt = $connection->prepare($crossEnrollmentQuery);
+            $stmt->bind_param("i", $lastId);
+            $stmt->execute();
+            $stmt->close();
+            $stmt = $connection->prepare($manualEnrollmentQuery);
+            $stmt->bind_param("i", $lastId);
+            $stmt->execute();
+            $stmt->close();
+            $stmt = $connection->prepare($gradeAccreditationQuery);
+            $stmt->bind_param("i", $lastId);
+            $stmt->execute();
+            $stmt->close();
+            $stmt = $connection->prepare($shiftingQuery);
+            $stmt->bind_param("i", $lastId);
+            $stmt->execute();
+            $stmt->close();
+            $stmt = $connection->prepare($subjectOverloadQuery);
+            $stmt->bind_param("i", $lastId);
+            $stmt->execute();
+            $stmt->close();
+
             header("Location: http://localhost/login/student.php");
             $_SESSION['account_created'] = true;
         } 
