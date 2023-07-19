@@ -205,7 +205,7 @@ $stmt->close();
 
 
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary submit">Submit</button>
+        <button type="submit" class="btn btn-primary submit" name="submit">Submit</button>
       </div>
 
       </form>

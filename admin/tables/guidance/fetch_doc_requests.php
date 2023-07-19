@@ -69,7 +69,8 @@ if (!empty($searchTerm)) {
                                 OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name) LIKE '%$searchTerm%'
                                 OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
                                 OR CONCAT(users.first_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                                OR DATE_FORMAT(scheduled_datetime, '%M %e, %Y') LIKE '%$searchTerm%'
+                                OR DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%M %e, %Y %l:%i:%s %p') LIKE '%$searchTerm%'
+                                -- OR DATE_FORMAT(scheduled_datetime, '%M %e, %Y') LIKE '%$searchTerm%'
                                 OR status_name LIKE '%$searchTerm%'
                                 OR amount_to_pay LIKE '%$searchTerm%')";
 }
@@ -137,7 +138,8 @@ if ($result) {
                                 OR CONCAT(users.last_name, ', ', users.first_name, ' ', users.middle_name, ' ', users.extension_name) LIKE '%$searchTerm%'
                                 OR CONCAT(users.first_name, ' ', users.middle_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
                                 OR CONCAT(users.first_name, ' ', users.last_name, ' ', users.extension_name) LIKE '%$searchTerm%'
-                                OR DATE_FORMAT(scheduled_datetime, '%M %e, %Y') LIKE '%$searchTerm%'
+                                OR DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%M %e, %Y %l:%i:%s %p') LIKE '%$searchTerm%'
+                                -- OR DATE_FORMAT(scheduled_datetime, '%M %e, %Y') LIKE '%$searchTerm%'
                                 OR status_name LIKE '%$searchTerm%'
                                 OR amount_to_pay LIKE '%$searchTerm%')";
     }

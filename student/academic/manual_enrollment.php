@@ -29,6 +29,48 @@
         include ('../navbar.php');
         include ('editmodal-me.php');
         include '../../breadcrumb.php';
+
+        include '../../conn.php';
+
+        $query = "SELECT r_zero_form, r_zero_form_status FROM manual_enrollment WHERE user_id = ?";
+
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $queryData = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        $connection->close();
+
+        function academicStatus($status) {
+            switch ($status) {
+                case 1:
+                    return '<button type="button" class="btn btn-secondary">
+                    <i class="fa-solid fa-spinner"></i> Pending
+                </button>';
+                    break;
+                case 2:
+                    return '<button type="button" class="btn btn-danger">
+                    <i class="fa-solid fa-circle-question"></i> Missing
+                </button>';
+                    break;
+                case 3:
+                    return '<button type="button" class="btn btn-info">
+                    <i class="fa-solid fa-magnifying-glass"></i> Under Verification
+                </button>';
+                    break;
+                case 4:
+                    return '<button type="button" class="btn btn-success">
+                    <i class="fa-solid fa-circle-check"></i> Verified
+                </button>';
+                    break;
+                case 5:
+                    return '<button type="button" class="btn btn-secondary">
+                    None
+                </button>';
+                    break;
+            }
+        }
     ?>
 
     <div class="container-fluid academicbanner header" style="height: 250px">
@@ -88,14 +130,12 @@
                             R0 (R Zero) Form
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-circle-question"></i> Missing
-                            </button>
+                            <?php
+                            echo academicStatus($queryData[0]['r_zero_form_status']);
+                            ?>
                         </div>
                         <div class="col-sm-2">
-                            <form action="trygenerate_pdf.php" method="post" target="_blank">
-                                <input type="submit" class="btn btn-primary" value="View Attachment">
-                            </form>
+                            <a href="<?php echo '../../assets/uploads/generated_pdf/' . $queryData[0]['r_zero_form']; ?>" class="btn btn-primary" target="_blank">View Attachment</a>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
@@ -135,15 +175,7 @@
     </div>
 </div>
 
-<div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-    <div>
-        <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-    </div>
-    <div>
-        <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-        <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-    </div>
-</div>
+<?php include '../../footer.php'; ?>
 <script src="../../loading.js"></script>
 <script src="modal.js"></script>
 <script src="upload.js"></script>

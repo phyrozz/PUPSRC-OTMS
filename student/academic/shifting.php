@@ -25,6 +25,9 @@
 <body onload="openModal()">
 <div class="wrapper">
         <?php
+
+use FontLib\Table\Type\head;
+
             $office_name = "Academic Office";
             include ('../navbar.php');
             include ('uploadmodal.php');
@@ -83,6 +86,60 @@
         
         </div>
     </div>';
+    }
+
+    // Each if block sets a session variable for a requirement for upload.php to fetch
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if ($_POST['requestLetterUpload']) {
+            $_SESSION['requestLetterUpload'] = true;
+        }
+        if ($_POST['firstCtcUpload']) {
+            $_SESSION['firstCtcUpload'] = true;
+        }
+        if ($_POST['secondCtcUpload']) {
+            $_SESSION['secondCtcUpload'] = true;
+        }
+    }
+
+    // Dynamically display statuses on each requirements
+    $query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status, first_ctc_status, second_ctc_status FROM shifting WHERE user_id = ?";
+
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $reqData = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    $connection->close();
+
+    function academicStatus($status) {
+        switch ($status) {
+            case 1:
+                return '<button type="button" class="btn btn-secondary">
+                <i class="fa-solid fa-spinner"></i> Pending
+            </button>';
+                break;
+            case 2:
+                return '<button type="button" class="btn btn-danger">
+                <i class="fa-solid fa-circle-question"></i> Missing
+            </button>';
+                break;
+            case 3:
+                return '<button type="button" class="btn btn-info">
+                <i class="fa-solid fa-magnifying-glass"></i> Under Verification
+            </button>';
+                break;
+            case 4:
+                return '<button type="button" class="btn btn-success">
+                <i class="fa-solid fa-circle-check"></i> Verified
+            </button>';
+                break;
+            case 5:
+                return '<button type="button" class="btn btn-secondary">
+                None
+            </button>';
+                break;
+        }
     }
     ?>
 
@@ -144,16 +201,16 @@
 	<div class="subtext">(<span class="justification">Letter that contains justification of the need to shift</span>)</div>
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
+        <?php echo academicStatus($reqData[0]['request_letter_status']); ?>
     </div>
     <div class="col-sm-2">
-                            <form action="trygenerate_pdf.php" method="post" target="_blank">
-                                <input type="submit" class="btn btn-primary" value="View Attachment">
-                            </form>
+        <a href="<?php echo (is_null($reqData[0]['request_letter']) ? '' : '../../assets/uploads/user_uploads/' . $reqData[0]['request_letter']); ?>" class="btn <?php echo (is_null($reqData[0]['request_letter']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
-
+        <form method="post">
+            <input type="hidden" name="requestLetterUpload" value="1">
+            <button type="button" name="requestLetterUploadBtn" id="requestLetterUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+        </form>
     </div>
   </div>
  <div class="row">
@@ -162,14 +219,16 @@
 	<div class="subtext">(<span class="justification">Picture of issued copy</span>)</div>
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
+        <?php echo academicStatus($reqData[0]['first_ctc_status']); ?>
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-primary"> View Attachment</button> 
+    <a href="<?php echo (is_null($reqData[0]['first_ctc']) ? '' : '../../assets/uploads/user_uploads/' . $reqData[0]['first_ctc']); ?>" class="btn <?php echo (is_null($reqData[0]['first_ctc']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
-
+        <form method="post">
+            <input type="hidden" name="firstCtcUpload" value="1">
+            <button type="button" name="firstCtcUploadBtn" id="firstCtcUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+        </form>
     </div>
   </div>
   <div class="row">
@@ -178,13 +237,16 @@
 	<div class="subtext">(<span class="justification">To be submitted at the Academic Office</span>)</div>
     </div>
      <div class="col-sm-2">
-    <button type="button" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Verified</button>
+        <?php echo academicStatus($reqData[0]['second_ctc_status']); ?>
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-primary"> View Attachment</button> 
+        <a href="<?php echo (is_null($reqData[0]['second_ctc']) ? '' : '../../assets/uploads/user_uploads/' . $reqData[0]['second_ctc']); ?>" class="btn <?php echo (is_null($reqData[0]['second_ctc']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
     </div>
     <div class="col-sm-2">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+        <form method="post">
+            <input type="hidden" name="secondCtcUpload" value="1">
+            <button type="button" name="secondCtcUploadBtn" id="secondCtcUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+        </form>
     </div>
   </div>
 </div>
@@ -193,7 +255,7 @@
                                 <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
                                     <i class="fa-solid fa-arrow-left"></i> Back
                                 </button>
-                                <input id="submitBtn" value="Submit "type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
+                                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
                             </div>
 
                             <!-- confirmModal -->
@@ -220,21 +282,101 @@
         </div>
         <div class="push"></div>
     </div>
-    <div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </div>
+    <?php include '../../footer.php'; ?>
     <script src="../../loading.js"></script>
     <script src="modal.js"></script>
     <script src="upload.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	
-	 <script>
+    <script>
+
+        // Call the function on page load to check the initial status
+        $(document).ready(function() {
+            checkRequirements();
+
+            // Function to check if all requirements are uploaded and enable/disable the submit button accordingly
+            function checkRequirements() {
+                var requestLetterStatus = <?php echo $reqData[0]['request_letter_status']; ?>;
+                var firstCtcStatus = <?php echo $reqData[0]['first_ctc_status']; ?>;
+                var secondCtcStatus = <?php echo $reqData[0]['second_ctc_status']; ?>;
+                var submitBtn = document.getElementById("submitBtn");
+
+                // Enable the submit button only if all three requirements are uploaded
+                if (requestLetterStatus == 1 && firstCtcStatus == 1 && secondCtcStatus == 1) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
+            }
+        });
+
+        $('#requestLetterUploadBtn').on('click', function () {
+            uploadRequirement('requestLetter');
+        });
+
+        $('#firstCtcUploadBtn').on('click', function () {
+            uploadRequirement('firstCtc');
+        });
+
+        $('#secondCtcUploadBtn').on('click', function () {
+            uploadRequirement('secondCtc');
+        });
+
+        function uploadRequirement(requirementName) {
+            // Event listener for file upload button click
+            $('#uploadSubmit').on('click', function() {
+                // Get the file input element
+                var fileInput = document.getElementById('hiddenFileInput');
+
+                // Create a new FormData object
+                var formData = new FormData();
+
+                // Append the selected file to the FormData object
+                formData.append('fileToUpload', fileInput.files[0]);
+
+                // Append the other form data to the FormData object
+                formData.append('student_no', '<?php echo htmlspecialchars($userData[0]['student_no'], ENT_QUOTES); ?>');
+                formData.append('last_name', '<?php echo htmlspecialchars($userData[0]['last_name'], ENT_QUOTES); ?>');
+                formData.append('first_name', '<?php echo htmlspecialchars($userData[0]['first_name'], ENT_QUOTES); ?>');
+                formData.append('requirement_name', requirementName); // Replace 'requestLetter' with the appropriate value based on the requirement
+
+                // Create a new XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
+
+                // Set up the AJAX request
+                xhr.open('POST', 'upload.php', true);
+
+                // Set the event listener to handle the response
+                xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Success: handle the response from the server
+                    try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        console.log('File uploaded successfully.');
+                        checkRequirements();
+                    } else {
+                        console.error('Error: ' + response.message);
+                    }
+                    } catch (e) {
+                    console.error('Error parsing JSON response: ' + e);
+                    }
+                    location.reload();
+                } else {
+                    console.error('Error: ' + xhr.status);
+                }
+                };
+
+                // Set the event listener to handle errors
+                xhr.onerror = function() {
+                console.error('Error occurred during the AJAX request.');
+                };
+
+                // Send the AJAX request with the FormData object
+                xhr.send(formData);
+            });
+        }
+
         // Disable submit button initially
         document.getElementById("submitBtn").disabled = true;
 
@@ -250,11 +392,10 @@
         }
 
         // Event listener for upload button click
-        document.getElementById("uploadModal").addEventListener("click", function() {
+        document.getElementById("uploadModal").addEventListener("click", function () {
             this.setAttribute("data-clicked", "true");
             enableSubmitButton();
         });
-
     </script>
     <script src="../../saved_settings.js"></script>
 </body>

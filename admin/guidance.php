@@ -51,7 +51,7 @@
                                         <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                         <option value="guidance_feedbacks" <?php if ($table === 'guidance_feedbacks') echo 'selected'; ?>>Feedbacks</option>
                                     </select>
-                                    <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary">Load Table</button>
+                                    <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
                                 </form>
                             </div>
                             <div>
