@@ -68,8 +68,8 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Prepare and execute the query
-            $stmt = $pdo->prepare('SELECT COUNT(*) FROM reg_transaction WHERE request_code = :request_code');
-            $stmt->bindParam(':request_code', $request_code);
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM doc_requests WHERE request_id = :request_id');
+            $stmt->bindParam(':request_id', $request_id);
             $stmt->execute();
 
             $count = $stmt->fetchColumn();
@@ -94,15 +94,15 @@
         $status_id = "1"; //1-Pending
         $amount = "0.00";
 
-        $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE request_description = '$req_student_service' AND status_id = '$status_id'");
+        $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE request_description = '$req_student_service' AND status_id = '$status_id' AND request_id = '$id'");
         if(mysqli_num_rows($query_check) > 0) {
             // Data is redundant
             $_SESSION['redundant'] = true;
         } else {
             // Data is not redundant, proceed with insertion
             // Insert the new data into the database
-            $query = "INSERT INTO doc_requests VALUES('$reg_code','$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$amount', NULL)";
-            $result2 = mysqli_query($connection, $query);
+            $query_insert = "INSERT INTO doc_requests VALUES('$reg_code','$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$amount', NULL, NULL)";
+            $result_insert = mysqli_query($connection, $query_insert);
             $_SESSION['success'] = true;
         }
         unset($_POST);
