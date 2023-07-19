@@ -45,7 +45,7 @@ $stmt->close();
                 <input type="text" class="form-control readonly-input" id="input2" name="middle_name" value="<?php echo htmlspecialchars($userData[0]['middle_name'], ENT_QUOTES); ?>" readonly>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="input3">Last Name</label>
                 <input type="text" class="form-control readonly-input" id="input3" name="last_name" value="<?php echo htmlspecialchars($userData[0]['last_name'], ENT_QUOTES); ?>" required readonly>
@@ -73,7 +73,7 @@ $stmt->close();
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input7">Academic Year</label>
                   <input type="text" name="acadYear" pattern="20[1-9][0-9]-20[2-9][0-9]" maxlength="9" class="form-control" id="input7" placeholder="2020-2021" required>
                 </div>
@@ -120,13 +120,13 @@ $stmt->close();
 
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input8">Course Code</label>
                   <input type="text" maxlength="10"  class="form-control" id="input8" name="code1" placeholder="COMP 20133" required>
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input9">Course Description</label>
                   <input type="text" class="form-control" id="input9" name="desc1" placeholder="Applications Development and Emerging Technologies" required>
                 </div>
@@ -141,13 +141,13 @@ $stmt->close();
 
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input11">Course Code</label>
                   <input type="text" maxlength="10"  class="form-control" id="input11" name="code2">
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input12">Course Description</label>
                   <input type="text" class="form-control" id="input12" name="desc2">
                 </div>
@@ -162,13 +162,13 @@ $stmt->close();
 
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input14">Course Code</label>
                   <input type="text" maxlength="10"  class="form-control" id="input14" name="code3">
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input15">Course Description</label>
                   <input type="text" class="form-control" id="input15" name="desc3">
                 </div>
