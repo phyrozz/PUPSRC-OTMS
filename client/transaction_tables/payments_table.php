@@ -1,4 +1,4 @@
-<table id="transactions-table" class="table table-hover table-bordered hidden">
+<table id="transactions-table" class="table table-hover hidden">
     <thead>
         <tr class="table-active">
             <th class="text-center doc-request-id-header sortable-header" data-column="payment_id" scope="col" data-order="desc">
@@ -13,10 +13,6 @@
                 Document Type
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <!-- <th class="text-center doc-request-schedule-header sortable-header" data-column="4" scope="col" data-order="asc">
-                Schedule
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th> -->
             <th class="text-center doc-request-amount-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
                 Reference Number
                 <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -77,7 +73,7 @@
                         var payments = data.payments[i];
 
                         var row = '<tr>' +
-                            '<td>' + 'AO-' + payments.payment_id + '</td>' +
+                            '<td>' + 'AP-' + payments.payment_id + '</td>' +
                             '<td>' + payments.course + '</td>' +
                             '<td>' + payments.documentType + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +

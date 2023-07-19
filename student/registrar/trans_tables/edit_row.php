@@ -13,36 +13,35 @@
     <thead>
         <tr class="table-active">
             <th></th>
-            <th class="text-center" scope="col">Request Code</th>
-            <th class="text-center" scope="col">Office</th>
-            <th class="text-center w-50" scope="col">Request</th>
-            <th class="text-center" scope="col"></i>Edit Schedule</th>
-            <th class="text-center" scope="col">Status</th>
+            <th class="text-center sortable-header w-25" scope="col" data-order="desc">Request Code</th>
+            <th class="text-center sortable-header w-25" scope="col" data-order="desc">Office</th>
+            <th class="text-center sortable-header w-25" scope="col" data-order="desc">Request</th>
+            <th class="text-center sortable-header w-25" scope="col" data-order="desc">Schedule</th>
+            <th class="text-center sortable-header" scope="col" data-order="desc">Amount to pay</th>
+            <th class="text-center sortable-header" scope="col" data-order="desc">Status</th>
         </tr>
     </thead>
     <tbody id="transactions_table">
           <?php 
           $id = $_SESSION['user_id'];
-          $query_set = "SELECT * FROM users
-          INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
-          INNER JOIN offices ON reg_transaction.office_id = offices.office_id
-          INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-          INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
-          WHERE users.user_id = $id";
+          $query_set = "SELECT * FROM doc_requests
+          INNER JOIN offices ON doc_requests.office_id = offices.office_id
+          INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
+          WHERE user_id = $id AND doc_requests.office_id = '3'";
           $query_run = mysqli_query($connection, $query_set);
           if(mysqli_num_rows($query_run) > 0){
               foreach($query_run as $row){
                 if ($row['status_id'] == "1"){
                 ?>
-                <tr id=<?=$row['reg_id'];?>>
-                  <td class="text-center"><button type="button" id="editbtn" class="btn editbtn" style="background-color:transparent"><i class="fas fa-edit"></i></button></td>
-                  <td style="display: none"><?=$row['reg_id'];?></td> <!--hidden-->
-                  <td class="text-center"><?=$row['request_code'];?></td>
-                  <td class="text-center"><?=$row['office_name'];?></td>
-                  <td class="text-center"><?=$row['services'];?></td>
-                  <td style="display: none"><?=$row['services_id'];?></td> <!--hidden-->
-                  <td class="text-center"><?=$row['schedule'];?></td>
-                  <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
+                <tr id=<?=$row['request_id'];?>>
+                    <td class="text-center"><button type="button" id="editbtn" class="btn editbtn" style="background-color:transparent"><i class="fas fa-edit"></i></button></td>
+                    <td class="text-center"><?=$row['request_id'];?></td>
+                    <td class="text-center"><?=$row['office_name'];?></td>
+                    <td class="text-center"><?=$row['request_description'];?></td>
+                    <td style="display: none"><?=date('Y-m-d', strtotime($row['scheduled_datetime']));?></td> <!--hidden-->
+                    <td class="text-center"><?= date('F d, Y', strtotime($row['scheduled_datetime'])); ?></td>
+                    <td class="text-center">₱<?=$row['amount_to_pay'];?></td>
+                    <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
                 </tr>
                 <?php
               }
@@ -50,7 +49,7 @@
           }else {
             ?>
               <tr>
-                <td class="text-center table-light p-4" colspan="6">No record found!</td>
+                <td class="text-center table-light p-4" colspan="7">No record found!</td>
               </tr>
             <?php
           }
@@ -90,7 +89,7 @@
                                     if ($dropdown['services_id'] === '23') {
                                         break; // Stop the loop when services_id is 23
                                     }
-                                  echo '<option value="' . $dropdown['services_id'] . '">' . $dropdown['services'] . '</option>';
+                                  echo '<option value="' . $dropdown['services'] . '">' . $dropdown['services'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -98,7 +97,7 @@
 
                         <div class="form-group">
                             <label> Schedule </label>
-                            <input type="date" name="date" id="date" class="form-control is-invalid" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>">
+                            <input type="date" name="date" id="date" class="form-control is-invalid" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" required>
                         </div>
 
                     </div>
@@ -122,9 +121,9 @@
                 }).get();
                 console.log(data);
                 $('#id').val(data[1]);
-                $('#code').val(data[2]);
-                $('#request').val(data[5]);
-                $('#date').val(data[6]);
+                $('#code').val(data[1]);
+                $('#request').val(data[3]);
+                $('#date').val(data[4]);
             });
         });
 

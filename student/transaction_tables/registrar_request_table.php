@@ -2,7 +2,8 @@
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-                <th class="text-center doc-request-id-header sortable-header" data-column="request_code" scope="col" data-order="desc">
+                <th class="text-center"></th>
+                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
                     Request Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
@@ -10,18 +11,23 @@
                     Office
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-description-header sortable-header" data-column="services" scope="col" data-order="desc">
+                <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
                     Request
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-amount-header sortable-header" data-column="schedule" scope="col" data-order="desc">
-                    Schedule
+                <th class="text-center doc-request-schedule-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
+                    Scheduled Date
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
+                <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
+                    Amount to pay
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -29,6 +35,33 @@
         </tbody>
     </table>
 </div>
+<div id="pagination" class="container-fluid p-0">
+    <nav aria-label="Page navigation">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
+            <ul class="pagination" id="pagination-links">
+                <!-- Pagination links will be generated dynamically using JavaScript -->
+            </ul>
+        </div>
+    </nav>
+</div>
+<!-- View edit modal -->
+<div id="viewEditModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewEditModalLabel">Edit request</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view edit modal -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -59,6 +92,64 @@
         }
     }
 
+    function handleDeleteRequest(requestIds) {
+        // Make an AJAX request to delete the document requests
+        $.ajax({
+            url: 'transaction_tables/delete_document_request.php',
+            method: 'POST',
+            data: { request_id: requestIds },
+            success: function(response) {
+                // Refresh the table after deletion
+                handlePagination(1, '');
+            }
+        });
+    }
+
+    function addDeleteButtonListeners() {
+        var deleteButton = document.getElementById('delete-button');
+
+        // Get all the checkboxes
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        // Function to update the delete button state based on checkbox selection and status_id value
+        function updateDeleteButtonState() {
+            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            // Check the status_id value of the selected rows
+            var canDelete = Array.from(checkedCheckboxes).every(function (checkbox) {
+                var row = checkbox.closest('tr');
+                var statusCell = row.querySelector('.doc-request-status-cell');
+                var status = statusCell.textContent.trim();
+                
+                return status === 'Pending' || status === 'Rejected';
+            });
+
+            deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
+        }
+
+        // Add event listeners to checkboxes
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', updateDeleteButtonState);
+        });
+
+        // Add event listener to delete button
+        deleteButton.addEventListener('click', function () {
+            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            // Get the request ids of the checked rows
+            var requestIds = Array.from(checkedCheckboxes).map(function (checkbox) {
+                return checkbox.value;
+            });
+
+            if (confirm('Are you sure you want to delete the selected appointment(s)?')) {
+                handleDeleteRequest(requestIds);
+            }
+        });
+
+        // Update delete button state initially
+        updateDeleteButtonState();
+    }
+
     // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
@@ -75,7 +166,125 @@
         }
     }
 
-    function handlePagination(page, searchTerm = '', column = 'reg_id', order = 'desc') {
+    // Event listener for edit buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('edit-request')) {
+            var editId = event.target.getAttribute('data-request-id');
+            populateEditModal(editId);
+        }
+    });
+
+    // Function to populate the edit modal with the request details
+    function populateEditModal(editId) {
+        $.ajax({
+            url: 'transaction_tables/get_registrar_request.php',
+            method: 'POST',
+            data: { edit_id: editId },
+            success: function(response) {
+                var request = JSON.parse(response);
+                var modalTitle = document.getElementById('viewEditModalLabel');
+                var modalBody = document.querySelector('#viewEditModal .modal-body');
+
+                modalTitle.innerText = 'Edit Request';
+
+                modalBody.innerHTML = `
+                    <form id="editForm" action="" method="POST">
+                        <div class="mb-3">
+                            <label for="requestDescription" class="form-label">Request Description</label>
+                            <select id="requestDescription" class="form-select" name="requestDescription" value="${request.request_description}" required>
+                                <option value="Application for Graduation SIS and Non-SIS">Application for Graduation SIS and Non-SIS</option>
+                                <option value="Correction of Entry of Grade">Correction of Entry of Grade</option>
+                                <option value="Completion of Incomplete Grade">Completion of Incomplete Grade</option>
+                                <option value="Late Reporting of Grade">Late Reporting of Grade</option>
+                                <option style="font-size: 11px;" value="Processing of Request for Correction of Name in Conformity with the PSA Certificate">
+                                Processing of Request for Correction of Name in Conformity with the PSA Certificate</option>
+                                <option value="Certification, Verification, Authentication (CAV/Apostile)">Certification, Verification, Authentication (CAV/Apostile)</option>
+                                <option value="Certificates of Attendance">Certificates of Attendance</option>
+                                <option value="Certificate of Graduation">Certificate of Graduation</option>
+                                <option value="Certificate of Medium of Instruction">Certificate of Medium of Instruction</option>
+                                <option value="Certificate of General Weighted Average (GWA)">Certificate of General Weighted Average (GWA)</option>
+                                <option value="Non-Issuance of Special Order">Non-Issuance of Special Order</option>
+                                <option value="Certified True Copy">Certified True Copy</option>
+                                <option value="Course/Subject Description">Course/Subject Description</option>
+                                <option value="Certificate of Transfer Credential/Honorable Dismissal">Certificate of Transfer Credential/Honorable Dismissal</option>
+                                <option value="Transcript of Records (First Copy)">Transcript of Records (First Copy)</option>
+                                <option value="Transcript of Records (Second and succeeding copies)">Transcript of Records (Second and succeeding copies)</option>
+                                <option value="Transcript of Records (Copy for Another School)">Transcript of Records (Copy for Another School)</option>
+                                <option style="font-size: 14px;" value="Course Accreditation Service-Senior High School to Bridge Course">Course Accreditation Service-Senior High School to Bridge Course</option>
+                                <option style="font-size: 14px;" value="Course Accreditation Service (For Shiftees and Regular Students)">Course Accreditation Service (For Shiftees and Regular Students)</option>
+                                <option value="Course Accreditation Service (for Transferees)">Course Accreditation Service (for Transferees)</option>
+                                <option value="Informative Copy of Grades">Informative Copy of Grades</option>
+                                <option value="Leave of Absence">Leave of Absence</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="scheduledDate" class="form-label">Scheduled Date</label>
+                            <input type="text" class="form-control" id="scheduledDate" name="scheduledDate" value="${request.scheduled_datetime}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                `;
+
+                flatpickr('#scheduledDate', {
+                    readonly: false,
+                    allowInput: true,
+                    defaultDate: "today",
+                    dateFormat: "Y-m-d",
+                    theme: "custom-datepicker",
+                    minDate: "today",
+                    maxDate: "31.12.2033",
+                    disable: [
+                        function(date) {
+                            // Disable date on Sundays
+                            return (date.getDay() === 0);
+
+                        }
+                    ],
+                    locale: {
+                        "firstDayOfWeek": 1 // start week on Monday
+                    },
+                });
+
+                var editForm = document.getElementById('editForm');
+                editForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    updateRequest(editId);
+                });
+
+                $("#viewEditModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching request details.');
+            }
+        });
+    }
+
+    
+    // Function to update the request using AJAX
+    function updateRequest(editId) {
+        var form = document.getElementById('editForm');
+        var formData = new FormData(form);
+
+        formData.append('edit_id', editId);
+
+        $.ajax({
+            url: 'transaction_tables/update_registrar_requests.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $("#viewEditModal").modal("hide");
+                handlePagination(1, '');
+                form.reset();
+            },
+            error: function() {
+                console.log('Error occurred while updating request.');
+            }
+        });
+    }
+
+    function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
         loadingIndicator.style.display = 'block';
@@ -104,30 +313,32 @@
                 tableBody.innerHTML = '';
 
                 if (data.total_records > 0) {
-                    for (var i = 0; i < data.registrar_requests.length; i++) {
-                        var registrar = data.registrar_requests[i];
+                    for (var i = 0; i < data.document_requests.length; i++) {
+                        var request = data.document_requests[i];
                         var scheduleButton = '';
 
                         // Add schedule button if the status is "Pending"
-                        if (registrar.status_name === 'Pending') {
-                            var schedulePageRedirect = getSchedulePageRedirect(registrar.services);
+                        if (request.status_name === 'Pending') {
+                            var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
                             scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
                         }
 
                         var row = '<tr>' +
-                            '<td>' + registrar.request_code + '</td>' +
-                            '<td><a href="' + generateUrlToOfficeColumn(registrar.office_name) + '">' + registrar.office_name + '</a></td>' +
-                            '<td>' + registrar.services + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-                            '<td>' + registrar.schedule + '</td>' +
+                            '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
+                            '<td>' + request.request_id + '</td>' +
+                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
+                            '<td>' + request.request_description + '</td>' +
+                            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
+                            '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(registrar.status_name) + '">' + registrar.status_name + '</span>' +
-                            '</td>'
+                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
+                            '</td>' +
+                            '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + request.request_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="5">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 
@@ -144,6 +355,8 @@
                     }
                 }
 
+                // Add event listeners for delete buttons
+                addDeleteButtonListeners();
             },
             error: function() {
                 // Hide the loading indicator in case of an error
@@ -181,12 +394,21 @@
     });
 
     // Initial pagination request (page 1)
-    handlePagination(1, '', 'reg_id', 'desc');
+    handlePagination(1, '', 'request_id', 'desc');
 
     $(document).ready(function() {
         $('#button-addon2').click(function() {
             var searchTerm = $('#search-input').val();
             handlePagination(1, searchTerm, 'request_id', 'desc');
         });
+    });
+
+
+    jQuery('#request option').each(function() {
+    var optionText = this.text;
+    console.log(optionText);
+    var newOption = optionText.substring(0,30);
+    console.log(newOption);
+    jQuery(this).text(newOption + '..');
     });
 </script>

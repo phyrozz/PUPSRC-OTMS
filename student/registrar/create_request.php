@@ -68,8 +68,8 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Prepare and execute the query
-            $stmt = $pdo->prepare('SELECT COUNT(*) FROM reg_transaction WHERE request_code = :request_code');
-            $stmt->bindParam(':request_code', $request_code);
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM doc_requests WHERE request_id = :request_id');
+            $stmt->bindParam(':request_id', $request_id);
             $stmt->execute();
 
             $count = $stmt->fetchColumn();
@@ -89,19 +89,20 @@
         $reg_code = $uniqueCode;
         $req_student_service = $_POST["req_student_service"];
         $user_id = $id;
-        $office_id = "3"; //3 - Registrar Office
+        $office_id = 3; //3 - Registrar Office
         $date = $_POST["date"];
-        $status_id = "1"; //1-Pending
+        $status_id = 1; //1-Pending
+        $amount = 0.00;
 
-        $query_check =  mysqli_query($connection, "SELECT * FROM reg_transaction WHERE services_id = '$req_student_service' AND status_id = '$status_id'");
+        $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE request_description = '$req_student_service' AND status_id = '$status_id' AND request_id = '$id'");
         if(mysqli_num_rows($query_check) > 0) {
             // Data is redundant
             $_SESSION['redundant'] = true;
         } else {
             // Data is not redundant, proceed with insertion
             // Insert the new data into the database
-            $query = "INSERT INTO reg_transaction VALUES('','$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
-            $result2 = mysqli_query($connection, $query);
+            $query_insert = "INSERT INTO doc_requests VALUES('$reg_code','$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$amount', NULL, NULL)";
+            $result_insert = mysqli_query($connection, $query_insert);
             $_SESSION['success'] = true;
         }
         unset($_POST);
@@ -198,7 +199,7 @@
                                         if ($dropdown['services_id'] === '23') {
                                             break; // Stop the loop when services_id is 23
                                         }
-                                        echo '<option value="' . $dropdown['services_id'] . '" >' . $dropdown['services'] . '</option>';
+                                        echo '<option value="' . $dropdown['services'] . '" >' . $dropdown['services'] . '</option>';
                                     }
                                     ?>
                                 </div>
@@ -251,10 +252,9 @@
                                     <div class="modal-body">
                                         <p>Your request has been submitted successfully!</p>
                                         <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
-                                        <p>You can also check the status on the <b>Registrar Transactions History</b> page.</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="your_transaction.php" class="btn btn-primary">Registrar Transactions History</a>
+                                        <a href="../transactions.php" class="btn btn-primary">My Transactions</a>
                                     </div>
                                 </div>
                             </div>

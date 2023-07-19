@@ -558,10 +558,9 @@ a .autocomplete-item:hover {
     }
 
     .jumbotron {
-        align-items: end;
+        /* align-items: end; */
+        padding-top: 100px;
         width: 100vw;
-        margin: 0;
-        padding: 200px 0 0 0;
         height: 100vh;
     }
 }

@@ -17,6 +17,7 @@
             <th class="text-center" scope="col">Office</th>
             <th class="text-center w-50" scope="col">Request</th>
             <th class="text-center" scope="col"></i>Schedule </th>
+            <th class="text-center" scope="col"></i>Amount to pay </th>
             <th class="text-center" scope="col">Status</th>
         </tr>
     </thead>
@@ -24,12 +25,10 @@
           <?php 
           
           $id = $_SESSION['user_id'];
-          $query = "SELECT * FROM users
-          INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
-          INNER JOIN offices ON reg_transaction.office_id = offices.office_id
-          INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-          INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
-          WHERE users.user_id = $id";
+          $query = "SELECT * FROM doc_requests
+          INNER JOIN offices ON doc_requests.office_id = offices.office_id
+          INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
+          WHERE user_id = $id AND doc_requests.office_id = '3'";
           $query_run = mysqli_query($connection, $query);
 
           if(mysqli_num_rows($query_run) > 0){
@@ -37,11 +36,12 @@
                 if ($row['status_id'] == "1" || $row['status_id'] == "6"){
                 ?>
                 <tr>
-                  <td class="text-center"><input type="checkbox" name="stud_delete_id[]" value="<?= $row ['reg_id'];?>"></td>
-                  <td class="text-center"><?=$row['request_code'];?></td>
+                  <td class="text-center"><input type="checkbox" name="stud_delete_id[]" value="<?= $row ['request_id'];?>"></td>
+                  <td class="text-center"><?=$row['request_id'];?></td>
                   <td class="text-center"><?=$row['office_name'];?></td>
-                  <td class="text-center"><?=$row['services'];?></td>
-                  <td class="text-center"><?=$row['schedule'];?></td>
+                  <td class="text-center"><?=$row['request_description'];?></td>
+                  <td class="text-center"><?= date('F d, Y', strtotime($row['scheduled_datetime'])); ?></td>
+                  <td class="text-center">₱<?=$row['amount_to_pay'];?></td>
                   <?php if ($row['status_id'] == "1") { ?>
                     <td class="text-center"><span class="badge rounded-pill bg-dark"><?=$row['status_name'];?></td>
                   <?php } else {?>
@@ -56,7 +56,7 @@
           else {
             ?>
               <tr>
-                <td class="text-center table-light p-4" colspan="6">No record found!</td>
+                <td class="text-center table-light p-4" colspan="7">No record found!</td>
               </tr>
               <td colspan="6"><input type="checkbox" name="del_all" onchange="checkAll(this)" disabled> Select all</input></td>
             <?php

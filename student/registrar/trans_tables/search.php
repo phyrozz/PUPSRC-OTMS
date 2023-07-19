@@ -9,18 +9,12 @@ if (isset($_POST['query'])) {
     
     // Get the necessary variables from transactions.php
     $id = $_SESSION['user_id'];
-    $page_no = $_GET['page_no'] ?? 1;
-    $total_records_per_page = 20;
-    $offset = ($page_no - 1) * $total_records_per_page;
     
     // Construct the search query
-    $search_query = "SELECT * FROM users
-    INNER JOIN reg_transaction ON users.user_id = reg_transaction.user_id
-    INNER JOIN offices ON reg_transaction.office_id = offices.office_id
-    INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-    INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
-    WHERE users.user_id = $id AND (request_code LIKE '%$search%' OR office_name LIKE '%$search%' OR services LIKE '%$search%' OR schedule LIKE '%$search%' OR status_name LIKE '%$search%')
-    LIMIT $offset, $total_records_per_page";
+    $search_query = "SELECT * FROM doc_requests
+    INNER JOIN offices ON doc_requests.office_id = offices.office_id
+    INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
+    WHERE user_id = $id AND doc_requests.office_id = 3 AND (request_id LIKE '%$search%' OR office_name LIKE '%$search%' OR request_description LIKE '%$search%' OR scheduled_datetime LIKE '%$search%' OR status_name LIKE '%$search%')";
 
     // Execute the search query
     $search_result = mysqli_query($connection, $search_query);
@@ -31,10 +25,11 @@ if (isset($_POST['query'])) {
             <thead>
                 <tr class="table-active">
                     <th></th>
-                    <th class="text-center sortable-header" scope="col" data-order="desc">Request Code</th>
-                    <th class="text-center sortable-header" scope="col" data-order="desc">Office</th>
-                    <th class="text-center sortable-header w-50" scope="col" data-order="desc">Request</th>
-                    <th class="text-center sortable-header" scope="col" data-order="desc">Schedule</th>
+                    <th class="text-center sortable-header w-25" scope="col" data-order="desc">Request Code</th>
+                    <th class="text-center sortable-header w-25" scope="col" data-order="desc">Office</th>
+                    <th class="text-center sortable-header w-25" scope="col" data-order="desc">Request</th>
+                    <th class="text-center sortable-header w-25" scope="col" data-order="desc">Schedule</th>
+                    <th class="text-center sortable-header" scope="col" data-order="desc">Amount to pay</th>
                     <th class="text-center sortable-header" scope="col" data-order="desc">Status</th>
                 </tr>
             </thead>
@@ -42,11 +37,12 @@ if (isset($_POST['query'])) {
         foreach ($search_result as $row) {
             ?>
             <tr>
-                <td><input class="userinfo" type="checkbox" data-id="<?= $row['reg_id']; ?>" onclick="uncheckCheckbox(this)"></td>
-                <td class="text-center"><?= $row['request_code']; ?></td>
-                <td class="text-center"><?= $row['office_name']; ?></td>
-                <td class="text-center"><?= $row['services']; ?></td>
-                <td class="text-center"><?= $row['schedule']; ?></td>
+                <td><input class="userinfo" type="checkbox" data-id="<?=$row['request_id'];?>" onclick="uncheckCheckbox(this)"></input></td>
+                <td class="text-center"><?=$row['request_id'];?></td>
+                <td class="text-center"><?=$row['office_name'];?></td>
+                <td class="text-center"><?=$row['request_description'];?></td>
+                <td class="text-center"><?= date('F d, Y', strtotime($row['scheduled_datetime'])); ?></td>
+                <td class="text-center">₱<?=$row['amount_to_pay'];?></td>
                 <?php if ($row['status_id'] == "1") { ?>
                     <td class="text-center"><span class="badge rounded-pill bg-dark"><?= $row['status_name']; ?></span></td>
                 <?php } else if ($row['status_id'] == "2") { ?>
@@ -62,7 +58,7 @@ if (isset($_POST['query'])) {
                 <?php } ?>
             </tr>
         <?php
-        }
+            } 
         echo '</tbody>
         </table>';
     } else {
