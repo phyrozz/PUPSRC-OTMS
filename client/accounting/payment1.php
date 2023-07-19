@@ -1,15 +1,8 @@
 <!-- INSERT PHP SECTION -->
 <?php
-$office_name = "Accounting Office";
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "otms_db";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$office_name = 'Accounting Office';
+include '../navbar.php';
+include '../../conn.php';
 
 if (isset($_POST['submit'])) {
     // Retrieve form data
@@ -18,9 +11,9 @@ if (isset($_POST['submit'])) {
     $firstName = $_POST['firstName'];
     $middleName = $_POST['middleName'];
     $lastName = $_POST['lastName'];
-    $studentNumber = $_POST['studentNumber'];
     $amount = $_POST['amount'];
     $referenceNumber = $_POST['referenceNumber'];
+    $userId = $_SESSION['user_id'];
 
     // Handle file upload
     if (isset($_FILES['receiptImage'])) {
@@ -34,12 +27,12 @@ if (isset($_POST['submit'])) {
         // Check if the file is uploaded successfully
         if ($fileError === UPLOAD_ERR_OK) {
             // Insert the data into the database
-            $sql = "INSERT INTO student_info (course, documentType, firstName, middleName, lastName, studentNumber, amount, referenceNumber) 
-                    VALUES ('$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber', '$amount', '$referenceNumber')";
+            $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, amount, referenceNumber) 
+                    VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$amount', '$referenceNumber')";
 
-            if ($conn->query($sql) === TRUE) {
+            if ($connection->query($sql) === TRUE) {
                 // Get the last inserted ID
-                $lastInsertedId = $conn->insert_id;
+                $lastInsertedId = $connection->insert_id;
 
                 // Generate a new filename using the last inserted ID, firstName, and lastName
                 $imageFileName = "payment_" . $lastInsertedId . "_" . $firstName . '_' . $lastName . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
@@ -49,18 +42,18 @@ if (isset($_POST['submit'])) {
                 if (move_uploaded_file($fileTmpName, $targetPath)) {
                     // Update the image URL in the database
                     $updateSql = "UPDATE student_info SET image_url = '$targetPath' WHERE payment_id = '$lastInsertedId'";
-                    if ($conn->query($updateSql) === TRUE) {
+                    if ($connection->query($updateSql) === TRUE) {
                         $_SESSION['payment_id'] = $lastInsertedId;
                         header("Location: payment2.php");
                         exit();
                     } else {
-                        echo "Error updating image URL: " . $conn->error;
+                        echo "Error updating image URL: " . $connection->error;
                     }
                 } else {
                     echo "Error moving uploaded file.";
                 }
             } else {
-                echo "Error inserting data: " . $conn->error;
+                echo "Error inserting data: " . $connection->error;
             }
         } else {
             echo "Error uploading file. Error code: " . $fileError;
@@ -69,7 +62,7 @@ if (isset($_POST['submit'])) {
         echo "No file uploaded.";
     }
 
-    $conn->close();
+    $connection->close();
 }
 ?>
 
@@ -103,7 +96,6 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
 <?php
-    include '../navbar.php';
     include '../../breadcrumb.php';
     ?>
     <div class="container-fluid p-4">
@@ -120,7 +112,7 @@ if (isset($_POST['submit'])) {
     <div class="fetch-data">
         <?php
         $user_id = $_SESSION["user_id"];
-                    $select = mysqli_query($conn, "SELECT * FROM users WHERE user_id = '$user_id'") or die ('query failed');
+                    $select = mysqli_query($connection, "SELECT * FROM users WHERE user_id = '$user_id'") or die ('query failed');
                     if(mysqli_num_rows($select) > 0){
                         $fetch = mysqli_fetch_assoc($select);
                     }

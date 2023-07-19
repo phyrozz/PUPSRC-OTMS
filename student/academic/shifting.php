@@ -89,17 +89,17 @@ use FontLib\Table\Type\head;
     }
 
     // Each if block sets a session variable for a requirement for upload.php to fetch
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        if ($_POST['requestLetterUpload']) {
-            $_SESSION['requestLetterUpload'] = true;
-        }
-        if ($_POST['firstCtcUpload']) {
-            $_SESSION['firstCtcUpload'] = true;
-        }
-        if ($_POST['secondCtcUpload']) {
-            $_SESSION['secondCtcUpload'] = true;
-        }
-    }
+    // if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    //     if ($_POST['requestLetterUpload']) {
+    //         $_SESSION['requestLetterUpload'] = true;
+    //     }
+    //     if ($_POST['firstCtcUpload']) {
+    //         $_SESSION['firstCtcUpload'] = true;
+    //     }
+    //     if ($_POST['secondCtcUpload']) {
+    //         $_SESSION['secondCtcUpload'] = true;
+    //     }
+    // }
 
     // Dynamically display statuses on each requirements
     $query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status, first_ctc_status, second_ctc_status FROM shifting WHERE user_id = ?";

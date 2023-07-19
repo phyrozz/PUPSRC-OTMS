@@ -89,10 +89,10 @@
         $reg_code = $uniqueCode;
         $req_student_service = $_POST["req_student_service"];
         $user_id = $id;
-        $office_id = "3"; //3 - Registrar Office
+        $office_id = 3; //3 - Registrar Office
         $date = $_POST["date"];
-        $status_id = "1"; //1-Pending
-        $amount = "0.00";
+        $status_id = 1; //1-Pending
+        $amount = 0.00;
 
         $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE request_description = '$req_student_service' AND status_id = '$status_id'");
         if(mysqli_num_rows($query_check) > 0) {
