@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2023 at 11:42 AM
+-- Generation Time: Jul 20, 2023 at 12:24 PM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,8 @@ CREATE TABLE `accounting_feedbacks` (
   `feedback_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `feedback_text` text NOT NULL
+  `feedback_text` text NOT NULL,
+  `submitted_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -42,7 +43,8 @@ CREATE TABLE `accounting_feedbacks` (
 -- Indexes for table `accounting_feedbacks`
 --
 ALTER TABLE `accounting_feedbacks`
-  ADD PRIMARY KEY (`feedback_id`);
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `accountingfeedback_ibfk` (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -52,7 +54,17 @@ ALTER TABLE `accounting_feedbacks`
 -- AUTO_INCREMENT for table `accounting_feedbacks`
 --
 ALTER TABLE `accounting_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `accounting_feedbacks`
+--
+ALTER TABLE `accounting_feedbacks`
+  ADD CONSTRAINT `accountingfeedback_ibfk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
