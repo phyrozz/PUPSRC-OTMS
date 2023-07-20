@@ -39,13 +39,13 @@ $stmt->close();
                 <input type="text" class="form-control readonly-input" id="input1" name="first_name" value="<?php echo htmlspecialchars($userData[0]['first_name'], ENT_QUOTES); ?>" required readonly>
               </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="input2">Middle</label>
                 <input type="text" class="form-control readonly-input" id="input2" name="middle_name" value="<?php echo htmlspecialchars($userData[0]['middle_name'], ENT_QUOTES); ?>" readonly>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="input3">Last Name</label>
                 <input type="text" class="form-control readonly-input" id="input3" name="last_name" value="<?php echo htmlspecialchars($userData[0]['last_name'], ENT_QUOTES); ?>" required readonly>
@@ -67,13 +67,13 @@ $stmt->close();
                 </div>
               </div>
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input6">Yr&Sec</label>
                   <input type="text" name="yr&Sec" class="form-control" id="input6" placeholder="BSIT 3-1" required>
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group text-center">
                   <label for="input7">Academic Year</label>
                   <input type="text" name="acadYear" pattern="20[1-9][0-9]-20[2-9][0-9]" maxlength="9" class="form-control" id="input7" placeholder="2020-2021" required>
                 </div>
@@ -110,7 +110,7 @@ $stmt->close();
   </div>
 
   <div class="col-md-12">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input8">Reason for Subject Overload</label>
                 <input type="text" maxlength="100" class="form-control" id="input8" name="reason" required>
               </div>
@@ -126,7 +126,7 @@ $stmt->close();
               </div>
             </div>
             <div class="col-md-5">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input10">Description</label>
                 <input type="text" maxlength="30" class="form-control" id="input10" name="desc1" placeholder="Applications Development and Emerging Technologies" required>
               </div>
@@ -154,7 +154,7 @@ $stmt->close();
               </div>
             </div>
             <div class="col-md-5">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input10">Description</label>
                 <input type="text" class="form-control" id="input10" name="desc2">
               </div>
@@ -181,7 +181,7 @@ $stmt->close();
               </div>
             </div>
             <div class="col-md-5">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input10">Description</label>
                 <input type="text" class="form-control" id="input10" name="desc3">
               </div>

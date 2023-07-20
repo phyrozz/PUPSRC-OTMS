@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guidance Office - Help</title>
+    <title>Academic Office - Help</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@
         $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['guidanceFeedbackText']);
         if ($stmt->execute()) {
             $_SESSION['success'] = true;
-            // header("Location: http://localhost/student/guidance/success.php");
+            // header("Location: http://localhost/student/academic/success.php");
         }
         else {
             var_dump($stmt->error);
@@ -69,39 +69,143 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    What does the Academic Office do?
+                What is Subject Overload?
                 </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        <p>Application for subject overload allows students who intend to add additional subject/s more than the prescribed number of units specified in the curriculum for the current semester prior to the opening of classes or within the adjustment period specified in the University calendar and approved by the Director/ Head of Academic Program.
+                           </p>
                     </div>
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Where can I find the office?
+                Who can request for Subject Overload?
                 </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        <p>Requests for subject overload may be allowed for graduating students during the last school term. For undergraduate students, overload may be allowed under the following considerations:
+                           </p>
+                        <p>Academically outstanding student as certified by the Director/ Head of Academic Program.<br>
+                           Transferee/Shiftee who is in good standing (no failing grade in the previous semester.<br>
+                            </p>
                     </div>
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    How do I inquire with the office?
+                What are the requirements for Application for Subject Overload?
                 </button>
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                      <p>Request Letter for Subject Overload (Letter that contains justification of the need for overload)<br>
+                         Fully Accomplished ACE Form (Adding of Subject)<br>
+                         Certificate of Registration for the current semester<br>
+                          </p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                What is Application for Change of Enrollment?
+                </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+                    <div class="accordion-body">
+                     <p>Application for Change of Enrollment is specifically for adding of subjects or changing of subject/schedule.
+                        This is both for regular and irregular students of the University and is done during the adjustment period.
+                          </p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                Where can I get a copy of ACE Form?
+                </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                    <div class="accordion-body">
+                     <p>To get a copy of ACE form, you can visit the link provided:</p>
+                     <p>Application for Change of Enrollment Form (ACE Form 2018, Adding of Subject) -<a href=" https://drive.google.com/file/d/1EiysBrZ9jj1Rfp7XkL6NyYP3mA2U5tHv/view">ACE FORM</a>
+                       </p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                How to get the Certificate of Registration?
+                </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix">
+                    <div class="accordion-body">
+                     <p>Students can get a copy of their registration by downloading it in their PUP-SIS account under the enrollment page.
+                         The Certificate of Registration is downloadable only for a limited period. Once it is not available to download, students may go to the Registrar office and request for the copy of their Certificate of Registration. 
+                          </p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                What is Shifting?
+                </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven">
+                    <div class="accordion-body">
+                     <p>Application for Shifting allows students who intend to shift to another program in the University.
+                         Students must have 1 year residency from the current program to qualify for shifting to another program. Application for shifting shall be accomplished prior to the start of the next academic school year. Qualification varies depending on the program where the student intends to shift.
+                          </p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEight">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                What are the requirements for Application for Shifting?
+                </button>
+                </h2>
+                <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight">
+                    <div class="accordion-body">
+                    <p>Request Letter for Shifting (Letter that contains justification of the need to shift)<br>
+                       Certified Copy of Grades<br>
+                    </p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingNine">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                Who can request for Shifting?
+                </button>
+                </h2>
+                <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine">
+                    <div class="accordion-body">
+                    <p>Students with 1 year residency from the current program are qualified for shifting to another program.
+                    </p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTen">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                How to get a Certified Copy of Grades?
+                </button>
+                </h2>
+                <div id="collapseTen" class="accordion-collapse collapse" aria-labelledby="headingTen">
+                    <div class="accordion-body">
+                    <p>Student must prepare the following requirements and submit to Registrar’s Office:</p>
+                    <p>Signed request letter (sample template available at the Registrar’s Office)<br>
+                       Official Receipt (Payment of Php 150 for the COR)<br>
+                       1 pc. documentary stamp (available at the campus)<br>
+                       </p>
                     </div>
                 </div>
             </div>
