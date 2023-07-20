@@ -624,7 +624,7 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill appointment-facility-status-cell ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
                             '</td>' +
-                            '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + appointmentFacility.appointment_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' +
+                            '<td><button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + appointmentFacility.appointment_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></button></td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
@@ -647,9 +647,36 @@
                 }
                 // Add event listeners for delete buttons
                 addDeleteButtonListeners();
+                // Add event listeners for edit buttons
+                updateEditButtonStatus();
             }
         });
     }
+
+    function updateEditButtonStatus() {
+        var editButtons = document.querySelectorAll('.edit-request');
+
+        editButtons.forEach(function (button) {
+            var row = button.closest('tr');
+            var statusCell = row.querySelector('.appointment-facility-status-cell');
+            var status = statusCell.textContent.trim();
+
+            // Disable the Edit button if the status is "Rejected"
+            if (status === 'Rejected' || status ===  'For Evaluation' || status === 'Ready for Pickup' || status === 'Released') {
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+            }
+        });
+    }
+
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('edit-request') && !event.target.disabled) {
+            var editId = event.target.getAttribute('data-request-id');
+            populateEditModal(editId);
+        }
+    });
+
 
     // Function to toggle the sort icons
     function toggleSortIcons(header) {
