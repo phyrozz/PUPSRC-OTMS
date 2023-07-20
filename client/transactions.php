@@ -74,7 +74,7 @@
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                     <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                 </select>
-                                <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
+                                <button type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
                             </form>
                         </div>
                         <div class="d-flex justify-content-end p-2">

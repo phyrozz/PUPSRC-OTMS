@@ -134,7 +134,7 @@
                             <?php echo academicStatus($queryData[0]['r_zero_form_status']);?>
                         </div>
                         <div class="col-sm-2">
-                            <a href="<?php echo '../../assets/uploads/generated_pdf/' . $queryData[0]['r_zero_form']; ?>" class="btn btn-primary" target="_blank">View Attachment</a>
+                        <a href="<?php echo (is_null($queryData[0]['r_zero_form']) ? '' : '../../assets/uploads/generated_pdf/' . $queryData[0]['r_zero_form']); ?>" class="btn <?php echo (is_null($queryData[0]['r_zero_form']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">

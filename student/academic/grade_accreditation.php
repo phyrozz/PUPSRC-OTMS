@@ -63,7 +63,7 @@
                 <br/>
                 <form action="update_session.php" method="POST" id="sessionForm">
                     <input type="hidden" name="session_transaction" value="ga">
-                    <button type="submit" class="btn btn-primary" id="nextButtonModal" onclick="close_payModal()">Okay</button>
+                    <button type="submit" class="btn btn-primary" onclick="close_payModal()">Okay</button>
                 </form>
             </div>
         </div>';

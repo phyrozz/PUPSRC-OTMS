@@ -189,7 +189,7 @@
                             <label for="scheduledDate" class="form-label">Scheduled Date</label>
                             <input type="text" class="form-control" id="scheduledDate" name="scheduledDate" value="${request.scheduled_datetime}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
                     </form>
                 `;
 

@@ -31,6 +31,7 @@
             include "../breadcrumb.php";
 
             $table = 'document_request';
+            $academictable = 'subject_overload';
 
             if (isset($_POST['filter-button'])) {
                 $table = $_POST['table-select'];
@@ -69,17 +70,17 @@
                         <div class="d-flex p-2">
                             <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
                                 <select id="transactionTableSelect" class="form-select" name="table-select">
-                                    <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Guidance Requests</option>
                                     <option value="registrar_request" <?php if ($table === 'registrar_request') echo 'selected'; ?>>Registrar Requests</option>
+                                    <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Guidance Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                     <option value="offsettings" <?php if ($table === 'offsettings') echo 'selected'; ?>>Offsettings</option>
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                     <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                     <option value="registrar_request" <?php if ($table === 'registrar_request') echo 'selected'; ?>>Registrar Requests</option>
-                                    <option value="acad_so" <?php if ($table === 'acad_so') echo 'selected'; ?>>Academic Transactions</option>
+                                    <option value="acad_transactions" <?php if ($table === 'acad_transactions') echo 'selected'; ?>>Academic Transactions</option>
                                 </select>
-                                <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
+                                <button type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
                             </form>
                         </div>
                         <div class="d-flex justify-content-end p-2">
@@ -107,8 +108,8 @@
                                 include 'transaction_tables/request_equipment_table.php';
                             } elseif ($table === 'appointment_facility') {
                                 include 'transaction_tables/appointment_facility_table.php';
-                            } elseif ($table === 'acad_so') {
-                                include 'transaction_tables/acad_so.php';
+                            } elseif ($table === 'acad_transactions') {
+                                include 'transaction_tables/academic_table.php';
                             } elseif ($table === 'registrar_request') {
                                 include 'transaction_tables/registrar_request_table.php';
                             }
