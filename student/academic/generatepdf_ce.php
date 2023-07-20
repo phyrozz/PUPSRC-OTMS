@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Include the main TCPDF library (search for installation path).
 require_once('TCPDF/tcpdf.php');
 require_once('TCPDF/config/tcpdf_config.php');
@@ -226,6 +228,7 @@ $currentDate = date('F d, Y');
     </div>
         
     EOD;
+
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
@@ -240,7 +243,8 @@ $result = $stmt->get_result();
 $userData = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-$uniqueFileName = 'CE_APPLETTER_' . $student_no . '_' . $last_name . '_' . $first_name . '.pdf';
+$uniqueFileName = 'AO_CE_' . $student_no . '_' . $last_name . '_' . $first_name . '_APPLETTER.pdf';
+$_SESSION['fileName'] = $uniqueFileName;
 
 // Create the path where the file will be stored
 $filePath = $uploadDirectory . $uniqueFileName;
@@ -250,42 +254,29 @@ $pdf->Output($filePath, 'F');
 
 include "../../conn.php";
 // Insert to Database
-// Get the file size
-$fileSize = filesize($filePath);
 
-$type = "Generated PDF";
+$setStatus = 2;
 
 try {
   // Prepare the query to check if the file already exists in the database
-$checkQuery = "SELECT COUNT(*) as count FROM files WHERE file_name = ?";
+$checkQuery = "SELECT COUNT(*) as count FROM acad_cross_enrollment WHERE user_id = ?";
 $checkStmt = $connection->prepare($checkQuery);
-$checkStmt->bind_param("s", $uniqueFileName);
+$checkStmt->bind_param("s", $_SESSION['user_id']);
 $checkStmt->execute();
 $checkResult = $checkStmt->get_result();
 $fileExists = $checkResult->fetch_assoc()['count'];
 $checkStmt->close();
 
 // Prepare the query to insert or update the file details in the database
-if ($fileExists) {
-  $query = "UPDATE files SET file_path = ?, file_size = ? WHERE file_name = ?";
-} else {
-  $query = "INSERT INTO files (file_name, file_path, file_size, type) VALUES (?, ?, ?, ?)";
-}
+$query = "UPDATE acad_cross_enrollment SET application_letter = ?, application_letter_status = ? WHERE user_id = ?";
+
 
 $stmt = $connection->prepare($query);
-if ($fileExists) {
-  $stmt->bind_param("sss", $filePath, $fileSize, $uniqueFileName);
-} else {
-  $stmt->bind_param("ssss", $uniqueFileName, $filePath, $fileSize, $type);
-}
+$stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
 $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
-  if ($fileExists) {
-    echo "<script>alert('Generated PDF updated successfully.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
-  } else {
-    echo "<script>alert('Generated PDF uploaded successfully.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
-  }
+  echo "<script>alert('Generated PDF uploaded successfully.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
 } else {
   echo "<script>alert('Failed to upload generated PDF.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
 }
@@ -298,7 +289,5 @@ $stmt->close();
     $errorMessage = $e->getMessage();
     echo "<script>alert('An error occurred: Error code " . $errorCode . ". Error message: " . $errorMessage . "'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
 }
-
-
 
 ?>

@@ -83,61 +83,37 @@ $pdf->SetY(20,true,true);
 
 // Data Retrieval
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-      // Add session variables to store post variables in it
-      $_SESSION['academic_first_name'] = $_POST['first_name'];
-      $_SESSION['academic_last_name'] = $_POST['last_name'];
-      $_SESSION['academic_middle_name'] = $_POST['middle_name'];
-      $_SESSION['academic_extension_name'] = $_POST['extension_name'];
-      $_SESSION['academic_student_no'] = $_POST['student_no'];
-        
-      $first_name = $_SESSION['academic_first_name'];
-      $middle_name = $_SESSION['academic_middle_name'];
-      $last_name = $_SESSION['academic_last_name'];
-      $extension_name = $_SESSION['academic_extension_name'];
-      $student_no = $_SESSION['academic_student_no'];
+      
+      $first_name = $_POST ['first_name'];
+      $middle_name = $_POST ['middle_name'];
+      $last_name = $_POST ['last_name'];
+      $extension_name = $_POST ['extension_name'];
+      $student_no = $_POST ['student_no'];
       $name = $first_name . " " . $middle_name . " " . $last_name . " " . $extension_name;
 
-      $_SESSION['yr&Sec'] = $_POST ['yr&Sec'];
-      $_SESSION['acadYear'] = $_POST ['acadYear'];
-      $_SESSION['reason'] = $_POST ['reason'];
+      $yrSec = $_POST ['yr&Sec'];
+      $acadYear = $_POST ['acadYear'];
+      $reason = $_POST ['reason'];
 
-      $yrSec = $_SESSION['yr&Sec'];
-      $acadYear = $_SESSION['acadYear'];
-      $reason = $_SESSION['reason'];
-
-      $_SESSION['semester'] = $_POST['semester'];
-      if (isset($_SESSION['semester'])) {
-        $semester = $_SESSION['semester'];
+      if (isset($_POST['semester'])) {
+        $semester = $_POST['semester'];
       }
 
-      $_SESSION['code1'] = $_POST['code1'];
-      $_SESSION['code2'] = $_POST['code2'];
-      $_SESSION['code3'] = $_POST['code3'];
-      $code1 = $_SESSION['code1'];
-      $code2 = $_SESSION['code2'];
-      $code3 = $_SESSION['code3'];
+      $code1 = $_POST['code1'];
+      $code2 = $_POST['code2'];
+      $code3 = $_POST['code3'];
 
-      $_SESSION['desc1'] = $_POST['desc1'];
-      $_SESSION['desc2'] = $_POST['desc2'];
-      $_SESSION['desc3'] = $_POST['desc3'];
-      $desc1 = $_SESSION['desc1'];
-      $desc2 = $_SESSION['desc2'];
-      $desc3 = $_SESSION['desc3'];
+      $desc1 = $_POST['desc1'];
+      $desc2 = $_POST['desc2'];
+      $desc3 = $_POST['desc3'];
 
-      $_SESSION['courseYrSec1'] = $_POST['courseYrSec1'];
-      $_SESSION['courseYrSec2'] = $_POST['courseYrSec2'];
-      $_SESSION['courseYrSec3'] = $_POST['courseYrSec3'];
-      $courseYrSec1 = $_SESSION['courseYrSec1'];
-      $courseYrSec2 = $_SESSION['courseYrSec2'];
-      $courseYrSec3 = $_SESSION['courseYrSec3'];
+      $courseYrSec1 = $_POST['courseYrSec1'];
+      $courseYrSec2 = $_POST['courseYrSec2'];
+      $courseYrSec3 = $_POST['courseYrSec3'];
 
-      $_SESSION['units1'] = $_POST['units1'];
-      $_SESSION['units2'] = $_POST['units2'];
-      $_SESSION['units3'] = $_POST['units3'];
-      $units1 = $_SESSION['units1'];
-      $units2 = $_SESSION['units2'];
-      $units3 = $_SESSION['units3'];
+      $units1 = $_POST['units1'];
+      $units2 = $_POST['units2'];
+      $units3 = $_POST['units3'];
                                                   }
     
     else {
@@ -440,7 +416,7 @@ $result = $stmt->get_result();
 $userData = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-$uniqueFileName = 'ME_R0FORM_' . $student_no . '_' . $last_name . '_' . $first_name . '.pdf';
+$uniqueFileName = 'AO_ME_' . $student_no . '_' . $last_name . '_' . $first_name . '_R0FORM.pdf';
 $_SESSION['fileName'] = $uniqueFileName;
 
 // Create the path where the file will be stored
@@ -450,16 +426,12 @@ $filePath = $uploadDirectory . $uniqueFileName;
 $pdf->Output($filePath, 'F');
 
 include "../../conn.php";
-// Insert to Database
-// Get the file size
-// $fileSize = filesize($filePath);
-// $attachmentStatus = 2;
-$type = "Generated PDF";
-$setStatus = 1;
+
+$setStatus = 2;
 
 try {
   // Prepare the query to check if the file already exists in the database
-$checkQuery = "SELECT COUNT(*) as count FROM manual_enrollment WHERE user_id = ?";
+$checkQuery = "SELECT COUNT(*) as count FROM acad_manual_enrollment WHERE user_id = ?";
 $checkStmt = $connection->prepare($checkQuery);
 $checkStmt->bind_param("i", $_SESSION['user_id']);
 $checkStmt->execute();
@@ -468,7 +440,7 @@ $fileExists = $checkResult->fetch_assoc()['count'];
 $checkStmt->close();
 
 // Prepare the query to insert or update the file details in the database
-$query = "UPDATE manual_enrollment SET r_zero_form = ?, r_zero_form_status = ? WHERE user_id = ?";
+$query = "UPDATE acad_manual_enrollment SET r_zero_form = ?, r_zero_form_status = ? WHERE user_id = ?";
 
 $stmt = $connection->prepare($query);
 $stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
@@ -482,13 +454,11 @@ if ($stmt->affected_rows > 0) {
 
 $stmt->close();
 
-  
+
 } catch (Exception $e) {
     $errorCode = $e->getCode();
     $errorMessage = $e->getMessage();
     echo "<script>alert('An error occurred: Error code " . $errorCode . ". Error message: " . $errorMessage . "'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
 }
-
-
 
 ?>

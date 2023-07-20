@@ -43,11 +43,11 @@ if (isset($_POST['studentSignup'])) {
         $query = "INSERT INTO users (student_no, last_name, first_name, middle_name, extension_name, contact_no, email, birth_date, password, user_role)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $userDetailsQuery = "INSERT INTO user_details (sex, home_address, province, city, barangay, zip_code, course_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $crossEnrollmentQuery = "INSERT INTO cross_enrollment (user_id) VALUES (?)";
-        $manualEnrollmentQuery = "INSERT INTO manual_enrollment (user_id) VALUES (?)";
-        $gradeAccreditationQuery = "INSERT INTO grade_accreditation (user_id) VALUES (?)";
-        $shiftingQuery = "INSERT INTO shifting (user_id) VALUES (?)";
-        $subjectOverloadQuery = "INSERT INTO subject_overload (user_id) VALUES (?)";
+        $crossEnrollmentQuery = "INSERT INTO acad_cross_enrollment (user_id) VALUES (?)";
+        $manualEnrollmentQuery = "INSERT INTO acad_manual_enrollment (user_id) VALUES (?)";
+        $gradeAccreditationQuery = "INSERT INTO acad_grade_accreditation (user_id) VALUES (?)";
+        $shiftingQuery = "INSERT INTO acad_shifting (user_id) VALUES (?)";
+        $subjectOverloadQuery = "INSERT INTO acad_subject_overload (user_id) VALUES (?)";
     
         $stmt = $connection->prepare($query);
         $stmt->bind_param("sssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
