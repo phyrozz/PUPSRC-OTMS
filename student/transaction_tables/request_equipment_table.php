@@ -333,6 +333,7 @@
                     for (var i = 0; i < data.request_equip.length; i++) {
                         var requestEquipment = data.request_equip[i];
 
+
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + requestEquipment.request_id + '" name="' + requestEquipment.request_id + '" value="' + requestEquipment.request_id + '"></td>' +
                             '<td class="text-center">' + requestEquipment.request_id + '</td>' +
@@ -353,8 +354,7 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill request-equipment-status-cell ' + getStatusBadgeClass(requestEquipment.status_name) + '">' + requestEquipment.status_name + '</span>' +
                             '</td>' +
-                            '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + requestEquipment.request_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' +
-                            '</tr>';
+                            '<td><button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + requestEquipment.request_id + '" >Edit <i class="fa-solid fa-pen-to-square"></i></button></td>' +                            '</tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
@@ -375,9 +375,35 @@
                 }
                 // Add event listeners for delete buttons
                 addDeleteButtonListeners();
+                // Add event listeners for edit buttons
+                updateEditButtonStatus();
             }
         });
     }
+
+    function updateEditButtonStatus() {
+        var editButtons = document.querySelectorAll('.edit-request');
+
+        editButtons.forEach(function (button) {
+            var row = button.closest('tr');
+            var statusCell = row.querySelector('.request-equipment-status-cell');
+            var status = statusCell.textContent.trim();
+
+            // Disable the Edit button if the status is "Rejected"
+            if (status === 'Rejected' || status ===  'For Evaluation' || status === 'Ready for Pickup' || status === 'Released') {
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+            }
+        });
+    }
+
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('edit-request') && !event.target.disabled) {
+            var editId = event.target.getAttribute('data-request-id');
+            populateEditModal(editId);
+        }
+    });
 
     // Function to toggle the sort icons
     function toggleSortIcons(header) {
