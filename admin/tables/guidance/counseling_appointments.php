@@ -25,7 +25,7 @@ $statuses = array(
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
             <th class="text-center doc-request-student-or-client-header sortable-header" data-column="role" scope="col" data-order="desc">
-                Student/Client
+                Student/Guest
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
             <th class="text-center doc-request-office-header sortable-header" data-column="appointment_description" scope="col" data-order="desc">

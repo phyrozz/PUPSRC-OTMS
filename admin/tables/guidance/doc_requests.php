@@ -32,7 +32,7 @@ $statuses = array(
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-student-or-client-header sortable-header" data-column="role" scope="col" data-order="desc">
-                    Student/Client
+                    Student/Guest
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
@@ -80,6 +80,22 @@ $statuses = array(
         </div>
     </nav>
 </div>
+<!-- View user details modal -->
+<div id="viewUserDetailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewUserDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewUserDetailsModalLabel">User Details</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view user details modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -96,6 +112,78 @@ $statuses = array(
             default:
                 return 'bg-dark';
         }
+    }
+
+    // Function to populate the edit modal with the request details
+    function populateUserInfoModal(userId) {
+        $.ajax({
+            url: 'tables/guidance/get_user_details.php',
+            method: 'POST',
+            data: { user_id: userId },
+            success: function(response) {
+                var userDetails = JSON.parse(response);
+                var modalTitle = document.getElementById('viewUserDetailsModalLabel');
+                var modalBody = document.querySelector('#viewUserDetailsModal .modal-body');
+
+                modalTitle.innerText = 'User details';
+
+                modalBody.innerHTML = `
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Name</strong></p>
+                                <p class="mx-2">${userDetails.last_name + ", " + userDetails.first_name + " " + userDetails.middle_name + " " + userDetails.extension_name}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Student/Guest</strong></p>
+                                <p class="mx-2">${userDetails.user_role_id == 1 ? "Student" : "Guest"}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Student Number</strong></p>
+                                <p class="mx-2">${userDetails.student_no}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Course</strong></p>
+                                <p class="mx-2">${userDetails.course}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Year and Section</strong></p>
+                                <p class="mx-2">${userDetails.year_and_section == "" || null ? 'N/A' : userDetails.year_and_section}</p>
+                            </div>
+                            </div>
+                        <div class="col-6">
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Sex</strong></p>
+                                <p class="mx-2">${userDetails.sex == 1 ? "Male" : "Female"}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Email</strong></p>
+                                <p class="mx-2">${userDetails.email}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Contact Number</strong></p>
+                                <p class="mx-2">${userDetails.contact_no}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Birth Date</strong></p>
+                                <p class="mx-2">${userDetails.formatted_birth_date}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Address</strong></p>
+                                <p class="mx-2 py-0 my-0">${userDetails.home_address}</p>
+                                <p class="mx-2 py-0 my-0">${userDetails.barangay + ", " + userDetails.city}</p>
+                                <p class="mx-2 py-0 my-0">${userDetails.province + (userDetails.zip_code ? ", " + userDetails.zip_code : "")}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $("#viewUserDetailsModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching request details.');
+            }
+        });
     }
 
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
@@ -129,29 +217,15 @@ $statuses = array(
                 if (data.total_records > 0) {
                     for (var i = 0; i < data.document_requests.length; i++) {
                         var request = data.document_requests[i];
-                        var scheduleButton = '';
-
-                        // // Add schedule button if the status is "Pending"
-                        // if (request.status_name === 'Pending') {
-                        //     var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
-                        //     scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
-                        // }
-
-                        // Convert the timestamp int value of request_id into a formatted datetime for the Date Requested column
-                        var timestamp = request.request_id;
-                        parsedTimestamp = parseInt(timestamp.substring(3));
-                        var date = new Date(parsedTimestamp * 1000);
-                        var formattedDate = date.toLocaleString();
 
                         var row = '<tr>' +
                             '<td><input type="checkbox" name="request-checkbox" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
-                            '<td>' + formattedDate + '</td>' +
-                            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
-                            '<td>' + request.last_name + ", " + request.first_name + " " + request.middle_name + " " + request.extension_name + '</td>' +
+                            '<td>' + request.formatted_request_id + '</td>' +
+                            '<td>' + (request.formatted_scheduled_datetime !== null ? request.formatted_scheduled_datetime : 'Not yet scheduled') + '</td>' +
+                            '<td><a href="#" class="user-details-link" data-user-id="' + request.user_id + '">' + request.last_name + ", " + request.first_name + " " + request.middle_name + " " + request.extension_name + '</a></td>' +
                             '<td>' + request.role + '</td>' +
                             '<td>' + request.request_description + '</td>' +
-                            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
@@ -162,7 +236,7 @@ $statuses = array(
                     }
                 }
                 else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="10">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 
@@ -178,6 +252,11 @@ $statuses = array(
                         paginationLinks.innerHTML += pageLink;
                     }
                 }
+
+                $('.user-details-link').on('click', function(event) {
+                    var userId = event.target.getAttribute('data-user-id');
+                    populateUserInfoModal(userId);
+                });
             },
             error: function() {
                 // Hide the loading indicator in case of an error
@@ -218,6 +297,11 @@ $statuses = array(
     handlePagination(1, '', 'request_id', 'desc');
 
     $(document).ready(function() {
+        $('#search-input').on('input', function() {
+            var searchTerm = $('#search-input').val();
+            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+        });
+
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
             handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
@@ -242,7 +326,6 @@ $statuses = array(
                 data: { requestIds: requestIds, statusId: statusId }, // Include the selected status ID in the data
                 success: function(response) {
                     // Handle the success response
-                    console.log('Status updated successfully');
 
                     // Refresh the table after status update
                     handlePagination(1, '', 'request_id', 'desc');
@@ -255,21 +338,22 @@ $statuses = array(
         });
 
         // Checkbox change listener using event delegation
-        $(document).on('change', 'input[name="request-checkbox"]', function() {
-            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
-            var updateButton = $('#update-status-button');
-            var statusDropdown = $('#update-status');
-
-            if (checkedCheckboxes.length > 0) {
-                updateButton.prop('disabled', false);
-                statusDropdown.prop('disabled', false);
-            }
-            else {
-                updateButton.prop('disabled', true);
-                statusDropdown.prop('disabled', true);
-            }
-        });
+        $(document).on('change', 'input[name="request-checkbox"]', handleCheckboxChange);
     });
+
+    function handleCheckboxChange() {
+        var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
+        var updateButton = $('#update-status-button');
+        var statusDropdown = $('#update-status');
+
+        if (checkedCheckboxes.length > 0) {
+            updateButton.prop('disabled', false);
+            statusDropdown.prop('disabled', false);
+        } else {
+            updateButton.prop('disabled', true);
+            statusDropdown.prop('disabled', true);
+        }
+    }
 
     // Perform search functionality when either the Filter or Search button is pressed
     function filterDocType() {

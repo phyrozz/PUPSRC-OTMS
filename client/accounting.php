@@ -12,6 +12,12 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -43,10 +49,6 @@
                 <h2>PAYMENTS</h2>
                 <p>Simplify your payments for campus documents</p>
             </a>
-            <a href="accounting/offsetting1.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
-            <h2>OFFSETTING</h2>
-                <p>Balance your campus accounts</p>
-            </a>
             <a href="transactions.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>TRANSACTION HISTORY</h2>
                 <p>Access your past and current transactions</p>
@@ -64,6 +66,8 @@
             });
         });
     </script>
+    <script src="../loading.js"></script>
+	<script src="../saved_settings.js"></script>
     <!--End of content-->
 </body>
 </html>

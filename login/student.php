@@ -26,11 +26,11 @@
         $studentNo = $_POST['studentNumber'];
         $password = $_POST['password'];
 
-        $query = "SELECT user_id, student_no, first_name, last_name, password FROM users WHERE student_no = ?";
+        $query = "SELECT user_id, student_no, first_name, last_name, extension_name, password FROM users WHERE student_no = ?";
         $stmt = $connection->prepare($query);
         $stmt->bind_param("s", $studentNo);
         $stmt->execute();
-        $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbPassword);
+        $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
         $stmt->fetch();
 
         if ($dbStudentNo && password_verify($password, $dbPassword)) {
@@ -38,6 +38,7 @@
             $_SESSION['student_no'] = $dbStudentNo;
             $_SESSION['first_name'] = $dbFirstName;
             $_SESSION['last_name'] = $dbLastName;
+            $_SESSION['extension_name'] = $dbExtensionName;
             $_SESSION['user_role'] = 1;
             header("Location: ../student/home.php");
             exit();
@@ -78,7 +79,7 @@
                             <p class="mb-0"><small>By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></small></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <a class="btn btn-outline-primary px-4" href="http://localhost/index.php">
+                            <a class="btn btn-outline-primary px-4" href="../index.php">
                                 <i class="fa-solid fa-arrow-left"></i> Back
                             </a>
                             <input id="submitBtn" value="Login" type="submit" class="btn btn-primary w-25" />

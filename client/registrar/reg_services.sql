@@ -71,6 +71,7 @@ INSERT INTO `reg_services` (`services_id`, `services`) VALUES
 (32, 'Transcript of Records (First Copy)'),
 (33, 'Transcript of Records (Second and succeeding copies)'),
 (34, 'Transcript of Records (Copy for Another School)');
+(35, 'Academic Verification Service');
 
 --
 -- Indexes for dumped tables

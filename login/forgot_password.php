@@ -116,7 +116,7 @@ if (isset($_POST['resetBtn'])) {
                             <input type="email" class="form-control" name="email" id="email" placeholder="Your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="5" maxlength="100" required>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <a class="btn btn-outline-primary px-4" href="http://localhost/index.php">
+                            <a class="btn btn-outline-primary px-4" href="../index.php">
                                 <i class="fa-solid fa-arrow-left"></i> Back
                             </a>
                             <button id="resetBtn" name="resetBtn" type="submit" class="btn btn-primary w-25">Reset</button>

@@ -1,15 +1,14 @@
-// Get the div and hidden file input element
-const uploadDiv = document.getElementById('uploadDiv');
-const fileInput = document.getElementById('hiddenFileInput');
-
-// Add click event listener to the div
-uploadDiv.addEventListener('click', function() {
-  // Programmatically trigger a click on the hidden file input
-  fileInput.click();
+// Add click event listener to the uploadDiv element
+document.getElementById('uploadDiv').addEventListener('click', function() {
+  // Trigger a click on the hiddenFileInput element
+  document.getElementById('hiddenFileInput').click();
 });
 
-// Add change event listener to the file input
-fileInput.addEventListener('change', function() {
-  // Display the selected file name in the div
-  uploadDiv.textContent = fileInput.files[0].name;
+// Add change event listener to the hiddenFileInput element
+document.getElementById('hiddenFileInput').addEventListener('change', function() {
+  // Retrieve the selected file from the fileInput element
+  const fileInput = this;
+  const selectedFile = fileInput.files[0];
+
+  // Perform further actions with the selected file, such as uploading it to a server or displaying its details
 });
