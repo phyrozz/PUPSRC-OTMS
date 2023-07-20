@@ -6,13 +6,13 @@ $previousPage = $_SERVER['HTTP_REFERER'];
 $acad_transaction = '';
 
 if (strpos($previousPage, 'subject_overload.php') !== false) {
-    $acad_transaction = 'SO';
+    $acad_transaction = 'AO_SO';
 } elseif (strpos($previousPage, 'grade_accreditation.php') !== false) {
-    $acad_transaction = 'GA';
+    $acad_transaction = 'AO_GA';
 } elseif (strpos($previousPage, 'cross_enrollment.php') !== false) {
-    $acad_transaction = 'CE';
+    $acad_transaction = 'AO_CE';
 } elseif (strpos($previousPage, 'shifting.php') !== false) {
-    $acad_transaction = 'S';
+    $acad_transaction = 'AO_S';
 }
 
 // Process file upload asynchronously using AJAX
@@ -21,8 +21,6 @@ $file = $_FILES['fileToUpload'];
 // Retrieve file data
 $fileName = $file['name'];
 $fileSize = $file['size'];
-$fileSizeKB = round($fileSize / 1024, 2); // Convert bytes to kilobytes and round to 2 decimal places
-$type = "User Upload";
 
 // Check if the uploaded file is an image
 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -46,32 +44,49 @@ $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . "/assets/uploads/user_uploads/";
 $student_no = $_POST['student_no'];
 $last_name = $_POST['last_name'];
 $first_name = $_POST['first_name'];
-
 $uniqueFileName = $acad_transaction . "_" . $student_no . "_" . $last_name . "_" . $first_name . "_" . $fileName;
 
 // Create the path where the file will be stored
 $filePath = $uploadDirectory . $uniqueFileName;
 
-$setStatus = 1;
+$setStatus = 2;
 
 // Move the uploaded file to the desired location
 if (move_uploaded_file($file['tmp_name'], $filePath)) {
     // Check if the session variables are set and assign values accordingly
     if ($_POST['requirement_name'] == 'requestLetter') {
         // This session variable will be used on view_attachment files
-        $stmt = $connection->prepare("UPDATE shifting SET request_letter = ?, request_letter_status = ? WHERE user_id = ?");
+        $stmt = $connection->prepare("UPDATE acad_shifting SET request_letter = ?, request_letter_status = ? WHERE user_id = ?");
         $stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
         $stmt->execute();
         $stmt->close();
     }
     if ($_POST['requirement_name'] == 'firstCtc') {
-        $stmt = $connection->prepare("UPDATE shifting SET first_ctc = ?, first_ctc_status = ? WHERE user_id = ?");
+        $stmt = $connection->prepare("UPDATE acad_shifting SET first_ctc = ?, first_ctc_status = ? WHERE user_id = ?");
         $stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
         $stmt->execute();
         $stmt->close();
     }
     if ($_POST['requirement_name'] == 'secondCtc') {
-        $stmt = $connection->prepare("UPDATE shifting SET second_ctc = ?, second_ctc_status = ? WHERE user_id = ?");
+        $stmt = $connection->prepare("UPDATE acad_shifting SET second_ctc = ?, second_ctc_status = ? WHERE user_id = ?");
+        $stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
+        $stmt->execute();
+        $stmt->close();
+    }
+    if ($_POST['requirement_name'] == 'overloadLetter') {
+        $stmt = $connection->prepare("UPDATE acad_subject_overload SET overload_letter = ?, overload_letter_status = ? WHERE user_id = ?");
+        $stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
+        $stmt->execute();
+        $stmt->close();
+    }
+    if ($_POST['requirement_name'] == 'certOfRegistration') {
+        $stmt = $connection->prepare("UPDATE acad_subject_overload SET cert_of_registration = ?, cert_of_registration_status = ? WHERE user_id = ?");
+        $stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
+        $stmt->execute();
+        $stmt->close();
+    }
+    if ($_POST['requirement_name'] == 'assessedFee') {
+        $stmt = $connection->prepare("UPDATE acad_grade_accreditation SET assessed_fee = ?, assessed_fee_status = ? WHERE user_id = ?");
         $stmt->bind_param("sii", $uniqueFileName, $setStatus, $_SESSION['user_id']);
         $stmt->execute();
         $stmt->close();

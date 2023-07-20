@@ -28,6 +28,9 @@
 <body onload="openModal()">
 <div class="wrapper">
     <?php
+
+        use FontLib\Table\Type\head;
+
         $office_name = "Academic Office";
         $transaction = "Subject Overload";
         include('../navbar.php');
@@ -66,6 +69,7 @@ if (!isset($_SESSION['session_so'])) {
             </div>
             <br/>
             <form action="update_session.php" method="POST" id="sessionForm">
+                <input type="hidden" name="session_transaction" value="so">
                 <button type="submit" class="btn btn-primary" id="nextButtonModal" onclick="disableModal()">Next</button>
             </form>
         </div>
@@ -98,6 +102,42 @@ if (!isset($_SESSION['session_so'])) {
     // Set the session variable to indicate that the modal has been shown
     $_SESSION['session_so'] = true;
 }
+
+// Dynamically display statuses on each requirements
+$query = "SELECT overload_letter, ace_form, cert_of_registration, overload_letter_status, ace_form_status, cert_of_registration_status FROM acad_subject_overload WHERE user_id = ?";
+
+$stmt = $connection->prepare($query);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$reqData = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+$connection->close();
+
+function academicStatus($status) {
+    switch ($status) {
+        case 1:
+            return '<button type="button" class="btn btn-danger" id="status_button" disabled>
+            <i class="fa-solid fa-circle-question"></i> Missing
+        </button>';
+            break;
+        case 2:
+            return '<button type="button" class="btn btn-secondary" id="status_button" disabled>
+            <i class="fa-solid fa-spinner"></i> Pending
+        </button>';
+            break;
+        case 3:
+            return '<button type="button" class="btn btn-info" id="status_button" disabled>
+            <i class="fa-solid fa-magnifying-glass"></i> Under Verification
+        </button>';
+            break;
+        case 4:
+            return '<button type="button" class="btn btn-success" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Verified
+        </button>';
+            break;
+    }
+}
 ?>
 
 
@@ -128,7 +168,7 @@ if (!isset($_SESSION['session_so'])) {
                         <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                             <i class="fa-solid fa-arrows-rotate"></i> Reset Form 
                         </button>
-                        <button type="button" class="btn btn-outline-primary mb-2" data-toggle="modal" data-target="#helpmodal"><i class="fa-solid fa-circle-question"></i> Help</button>
+                        <a href="help-academic.php" class="btn btn-outline-primary mb-2"><i class="fa-solid fa-circle-question"></i> Help</a>
                     </div>
                 </div>
             </div>
@@ -155,19 +195,19 @@ if (!isset($_SESSION['session_so'])) {
                     <div class="row">
                         <div class="col-sm-6">
 							<div class="request-letter">Request Letter for Overload</div>
-							<div class="subtext">(<span class="justification">Letter that contains justification of the need for overload</span>)</div>
+							<div class="subtext">(<span class="justification">Handwritten/Printed letter that contains justification of the need for overload</span>)</div>
 						</div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> Missing</button>
+                            <?php echo academicStatus($reqData[0]['overload_letter_status']); ?>
                         </div>
                         <div class="col-sm-2">
-                            <form action="view_attachment.php" method="post" target="_blank">
-                                <input type="submit" class="btn btn-primary" value="View Attachment">
-                            </form>
+                            <a href="<?php echo (is_null($reqData[0]['overload_letter']) ? '' : '../../assets/uploads/user_uploads/' . $reqData[0]['overload_letter']); ?>" class="btn <?php echo (is_null($reqData[0]['overload_letter']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
                         </div>
                         <div class="col-sm-2">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button>
-                        
+                        <form method="post">
+                            <input type="hidden" name="overloadLetterUpload" value="2">
+                            <button type="button" name="overloadLetterUploadBtn" id="overloadLetterUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+                        </form>
                         </div>
                     </div>
 					
@@ -178,15 +218,15 @@ if (!isset($_SESSION['session_so'])) {
                             
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Under Verification</button>
+                            <?php echo academicStatus($reqData[0]['ace_form_status']); ?>
                         </div>
                         <div class="col-sm-2">
-                            <form action="generatepdf_so.php" method="post" target="_blank">
-                                <input type="submit" class="btn btn-primary" value="View Attachment">
-                            </form>
+                            <a href="<?php echo (is_null($reqData[0]['ace_form']) ? '' : '../../assets/uploads/generated_pdf/' . $reqData[0]['ace_form']); ?>" class="btn <?php echo (is_null($reqData[0]['ace_form']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen-to-square"></i> Edit</button> 
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
                         </div>
                     </div>
                     <div class="row">
@@ -196,23 +236,22 @@ if (!isset($_SESSION['session_so'])) {
                        
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Verified</button>
+                            <?php echo academicStatus($reqData[0]['cert_of_registration_status']); ?>
                         </div>
                         <div class="col-sm-2">
-                            <form action="generatepdf_so.php" method="post" target="_blank">
-                                <input type="submit" class="btn btn-primary" value="View Attachment">
-                            </form>
+                            <a href="<?php echo (is_null($reqData[0]['cert_of_registration']) ? '' : '../../assets/uploads/user_uploads/' . $reqData[0]['cert_of_registration']); ?>" class="btn <?php echo (is_null($reqData[0]['cert_of_registration']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+                        <form method="post">
+                            <input type="hidden" name="certOfRegUpload" value="2">
+                            <button type="button" name="certOfRegUploadBtn" id="certOfRegUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
+                        </form>
                         </div>
                     </div>
                 </div>
 
                 <div class="d-flex w-100 justify-content-between p-1">
-                    <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                        <i class="fa-solid fa-arrow-left"></i> Back
-                    </button>
+                    <a href="../academic.php" class="btn btn-primary px-4"><i class="fa-solid fa-arrow-left"></i> Back</a>
                     <input id="submitBtn" value="Submit "type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
                 </div>
 
@@ -257,32 +296,88 @@ if (!isset($_SESSION['session_so'])) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	
     <script>
-        // Disable submit button initially
-        document.getElementById("submitBtn").disabled = true;
+        // Call the function on page load to check the initial status
+        $(document).ready(function() {
+            checkRequirements();
 
-        // Function to enable submit button if upload and edit buttons are clicked
-        function enableSubmitButton() {
-            var uploadButtonClicked = document.getElementById("uploadModal").getAttribute("data-clicked");
-            var editButtonClicked = document.getElementById("editModal").getAttribute("data-clicked");
+            // Function to check if all requirements are uploaded and enable/disable the submit button accordingly
+            function checkRequirements() {
+                var overloadLetterStatus = <?php echo $reqData[0]['overload_letter_status']; ?>;
+                var aceFormStatus = <?php echo $reqData[0]['ace_form_status']; ?>;
+                var certOfRegistrationStatus = <?php echo $reqData[0]['cert_of_registration_status']; ?>;
+                var submitBtn = document.getElementById("submitBtn");
 
-            if (uploadButtonClicked === "true" && editButtonClicked === "true") {
-                document.getElementById("submitBtn").disabled = false;
-            } else {
-                document.getElementById("submitBtn").disabled = true;
+                // Enable the submit button only if all three requirements are uploaded
+                if (overloadLetterStatus == 2 && aceFormStatus == 2 && certOfRegistrationStatus == 2) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
             }
+        });
+
+        $('#overloadLetterUploadBtn').on('click', function () {
+            uploadRequirement('overloadLetter');
+        });
+
+        $('#certOfRegUploadBtn').on('click', function () {
+            uploadRequirement('certOfRegistration');
+        });
+
+        function uploadRequirement(requirementName) {
+            // Event listener for file upload button click
+            $('#uploadSubmit').on('click', function() {
+                // Get the file input element
+                var fileInput = document.getElementById('hiddenFileInput');
+
+                // Create a new FormData object
+                var formData = new FormData();
+
+                // Append the selected file to the FormData object
+                formData.append('fileToUpload', fileInput.files[0]);
+
+                // Append the other form data to the FormData object
+                formData.append('student_no', '<?php echo htmlspecialchars($userData[0]['student_no'], ENT_QUOTES); ?>');
+                formData.append('last_name', '<?php echo htmlspecialchars($userData[0]['last_name'], ENT_QUOTES); ?>');
+                formData.append('first_name', '<?php echo htmlspecialchars($userData[0]['first_name'], ENT_QUOTES); ?>');
+                formData.append('requirement_name', requirementName);
+
+                // Create a new XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
+
+                // Set up the AJAX request
+                xhr.open('POST', 'upload.php', true);
+
+                // Set the event listener to handle the response
+                xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Success: handle the response from the server
+                    try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        console.log('File uploaded successfully.');
+                        checkRequirements();
+                    } else {
+                        console.error('Error: ' + response.message);
+                    }
+                    } catch (e) {
+                    console.error('Error parsing JSON response: ' + e);
+                    }
+                    location.reload();
+                } else {
+                    console.error('Error: ' + xhr.status);
+                }
+                };
+
+                // Set the event listener to handle errors
+                xhr.onerror = function() {
+                console.error('Error occurred during the AJAX request.');
+                };
+
+                // Send the AJAX request with the FormData object
+                xhr.send(formData);
+            });
         }
-
-        // Event listener for upload button click
-        document.getElementById("uploadModal").addEventListener("click", function() {
-            this.setAttribute("data-clicked", "true");
-            enableSubmitButton();
-        });
-
-        // Event listener for edit button click
-        document.getElementById("editModal").addEventListener("click", function() {
-            this.setAttribute("data-clicked", "true");
-            enableSubmitButton();
-        });
     </script>
     <script src="../../saved_settings.js"></script>
 </body>

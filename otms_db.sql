@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 19, 2023 at 09:05 AM
+-- Generation Time: Jul 20, 2023 at 11:14 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,50 +24,161 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `academic_statuses`
+-- Table structure for table `academic_feedbacks`
 --
 
-CREATE TABLE `academic_statuses` (
+CREATE TABLE `academic_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acad_cross_enrollment`
+--
+
+CREATE TABLE `acad_cross_enrollment` (
+  `so_id` int(11) NOT NULL,
+  `transaction_id` varchar(100) NOT NULL DEFAULT concat('AO-S-',unix_timestamp()),
+  `user_id` int(11) NOT NULL,
+  `application_letter` varchar(255) DEFAULT NULL,
+  `application_letter_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `acad_cross_enrollment`
+--
+
+INSERT INTO `acad_cross_enrollment` (`so_id`, `transaction_id`, `user_id`, `application_letter`, `application_letter_status`) VALUES
+(1, 'concat(\'AO-CE-\',unix_timestamp())', 51, NULL, 1),
+(2, 'concat(\'AO-CE-\',unix_timestamp())', 52, 'AO_CE_2020-20202-SR-0_LastName_FirstName_APPLETTER.pdf', 2),
+(3, 'AO-S-1689839930', 53, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acad_grade_accreditation`
+--
+
+CREATE TABLE `acad_grade_accreditation` (
+  `ga_id` int(11) NOT NULL,
+  `transaction_id` varchar(100) NOT NULL DEFAULT concat('AO-S-',unix_timestamp()),
+  `user_id` int(11) NOT NULL,
+  `completion_form` varchar(255) DEFAULT NULL,
+  `assessed_fee` varchar(255) DEFAULT NULL,
+  `completion_form_status` int(11) NOT NULL DEFAULT 1,
+  `assessed_fee_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `acad_grade_accreditation`
+--
+
+INSERT INTO `acad_grade_accreditation` (`ga_id`, `transaction_id`, `user_id`, `completion_form`, `assessed_fee`, `completion_form_status`, `assessed_fee_status`) VALUES
+(1, 'concat(\'AO-GA-\',unix_timestamp())', 51, NULL, NULL, 1, 1),
+(2, 'concat(\'AO-GA-\',unix_timestamp())', 52, 'AO_GA_2020-20202-SR-0_LastName_FirstName_CFORM.pdf', 'AO_GA_2020-20202-SR-0_LastName_FirstName_Screenshot 2023-07-19 164407.png', 2, 2),
+(3, 'AO-S-1689839930', 53, NULL, NULL, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acad_manual_enrollment`
+--
+
+CREATE TABLE `acad_manual_enrollment` (
+  `me_id` int(11) NOT NULL,
+  `transaction_id` varchar(100) NOT NULL DEFAULT concat('AO-S-',unix_timestamp()),
+  `user_id` int(11) NOT NULL,
+  `r_zero_form` varchar(1024) DEFAULT NULL,
+  `r_zero_form_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `acad_manual_enrollment`
+--
+
+INSERT INTO `acad_manual_enrollment` (`me_id`, `transaction_id`, `user_id`, `r_zero_form`, `r_zero_form_status`) VALUES
+(1, 'concat(\'AO-ME-\',unix_timestamp())', 51, NULL, 1),
+(2, 'concat(\'AO-ME-\',unix_timestamp())', 52, 'AO_ME_2020-20202-SR-0_LastName_FirstName_R0FORM.pdf', 2),
+(3, 'AO-S-1689839930', 53, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acad_shifting`
+--
+
+CREATE TABLE `acad_shifting` (
+  `s_id` int(11) NOT NULL,
+  `transaction_id` varchar(100) NOT NULL DEFAULT concat('AO-S-',unix_timestamp()),
+  `user_id` int(11) NOT NULL,
+  `request_letter` varchar(1024) DEFAULT NULL,
+  `first_ctc` varchar(1024) DEFAULT NULL,
+  `second_ctc` varchar(1024) DEFAULT NULL,
+  `request_letter_status` int(11) NOT NULL DEFAULT 1,
+  `first_ctc_status` int(11) NOT NULL DEFAULT 1,
+  `second_ctc_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `acad_shifting`
+--
+
+INSERT INTO `acad_shifting` (`s_id`, `transaction_id`, `user_id`, `request_letter`, `first_ctc`, `second_ctc`, `request_letter_status`, `first_ctc_status`, `second_ctc_status`) VALUES
+(1, 'concat(\'AO-S-\',unix_timestamp())', 51, NULL, NULL, NULL, 1, 1, 1),
+(2, 'concat(\'AO-S-\',unix_timestamp())', 52, 'AO_S_2020-20202-SR-0_LastName_FirstName_Screenshot 2023-07-19 174817.png', 'AO_S_2020-20202-SR-0_LastName_FirstName_Screenshot (25).png', 'AO_S_2020-20202-SR-0_LastName_FirstName_Screenshot 2023-07-08 125047.png', 2, 2, 2),
+(3, 'AO-S-1689839930', 53, NULL, NULL, NULL, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acad_status`
+--
+
+CREATE TABLE `acad_status` (
   `academic_status_id` int(11) NOT NULL,
   `status_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `academic_statuses`
+-- Dumping data for table `acad_status`
 --
 
-INSERT INTO `academic_statuses` (`academic_status_id`, `status_name`) VALUES
-(1, 'Pending'),
-(2, 'Missing'),
+INSERT INTO `acad_status` (`academic_status_id`, `status_name`) VALUES
+(1, 'Missing'),
+(2, 'Pending'),
 (3, 'Under Verification'),
-(4, 'Verified'),
-(5, 'None');
+(4, 'Verified');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `academic_transactions`
+-- Table structure for table `acad_subject_overload`
 --
 
-CREATE TABLE `academic_transactions` (
-  `transaction_id` int(11) NOT NULL,
+CREATE TABLE `acad_subject_overload` (
+  `so_id` int(11) NOT NULL,
+  `transaction_id` varchar(100) NOT NULL DEFAULT concat('AO-S-',unix_timestamp()),
   `user_id` int(11) NOT NULL,
-  `subject_overload` int(11) NOT NULL DEFAULT 5,
-  `grade_accreditation` int(11) NOT NULL DEFAULT 5,
-  `cross_enrollment` int(11) NOT NULL DEFAULT 5,
-  `shifting` int(11) NOT NULL DEFAULT 5,
-  `manual_enrollment` int(11) NOT NULL DEFAULT 5
+  `overload_letter` varchar(255) DEFAULT NULL,
+  `ace_form` varchar(255) DEFAULT NULL,
+  `cert_of_registration` varchar(255) DEFAULT NULL,
+  `overload_letter_status` int(11) NOT NULL DEFAULT 1,
+  `ace_form_status` int(11) NOT NULL DEFAULT 1,
+  `cert_of_registration_status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `academic_transactions`
+-- Dumping data for table `acad_subject_overload`
 --
 
-INSERT INTO `academic_transactions` (`transaction_id`, `user_id`, `subject_overload`, `grade_accreditation`, `cross_enrollment`, `shifting`, `manual_enrollment`) VALUES
-(1, 35, 5, 5, 5, 5, 5),
-(2, 39, 5, 5, 5, 5, 5),
-(3, 42, 5, 5, 5, 5, 5),
-(4, 43, 5, 5, 5, 5, 5);
+INSERT INTO `acad_subject_overload` (`so_id`, `transaction_id`, `user_id`, `overload_letter`, `ace_form`, `cert_of_registration`, `overload_letter_status`, `ace_form_status`, `cert_of_registration_status`) VALUES
+(1, 'concat(\'AO-SO-\',unix_timestamp())', 51, NULL, NULL, NULL, 1, 1, 1),
+(2, 'concat(\'AO-SO-\',unix_timestamp())', 52, 'AO_SO_2020-20202-SR-0_LastName_FirstName_Screenshot 2023-07-20 010438.png', 'AO_SO_2020-20202-SR-0_LastName_FirstName_ACEFORM.pdf', 'AO_SO_2020-20202-SR-0_LastName_FirstName_Screenshot 2023-07-19 174817.png', 2, 2, 2),
+(3, 'AO-S-1689839930', 53, NULL, NULL, NULL, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -89,26 +200,6 @@ CREATE TABLE `accounting_feedbacks` (
 INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
 (1, 39, 'sample@gmail.com', 'try lang hehe'),
 (2, 42, 'sample@gmail.com', 'hehehe ');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `administrative_feedbacks`
---
-
-CREATE TABLE `administrative_feedbacks` (
-  `feedback_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `feedback_text` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `administrative_feedbacks`
---
-
-INSERT INTO `administrative_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
-(8, 28, 'joshuamalabanan70@gmail.com', 'test lang po');
 
 -- --------------------------------------------------------
 
@@ -1076,22 +1167,62 @@ INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
 --
 
 --
--- Indexes for table `academic_statuses`
+-- Indexes for table `academic_feedbacks`
 --
-ALTER TABLE `academic_statuses`
+ALTER TABLE `academic_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `user_id` (`user_id`) USING BTREE;
+
+--
+-- Indexes for table `acad_cross_enrollment`
+--
+ALTER TABLE `acad_cross_enrollment`
+  ADD PRIMARY KEY (`so_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `application_letter_status` (`application_letter_status`);
+
+--
+-- Indexes for table `acad_grade_accreditation`
+--
+ALTER TABLE `acad_grade_accreditation`
+  ADD PRIMARY KEY (`ga_id`),
+  ADD KEY `assessed_fee_status` (`assessed_fee_status`),
+  ADD KEY `completion_form_status` (`completion_form_status`),
+  ADD KEY `grade_accreditation_ibfk_2` (`user_id`);
+
+--
+-- Indexes for table `acad_manual_enrollment`
+--
+ALTER TABLE `acad_manual_enrollment`
+  ADD PRIMARY KEY (`me_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `r_zero_form_status` (`r_zero_form_status`);
+
+--
+-- Indexes for table `acad_shifting`
+--
+ALTER TABLE `acad_shifting`
+  ADD PRIMARY KEY (`s_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `request_letter_status` (`request_letter_status`),
+  ADD KEY `first_ctc_status` (`first_ctc_status`),
+  ADD KEY `second_ctc_status` (`second_ctc_status`);
+
+--
+-- Indexes for table `acad_status`
+--
+ALTER TABLE `acad_status`
   ADD PRIMARY KEY (`academic_status_id`);
 
 --
--- Indexes for table `academic_transactions`
+-- Indexes for table `acad_subject_overload`
 --
-ALTER TABLE `academic_transactions`
-  ADD PRIMARY KEY (`transaction_id`),
-  ADD KEY `cross_enrollment` (`cross_enrollment`),
-  ADD KEY `grade_accreditation` (`grade_accreditation`),
-  ADD KEY `manual_enrollment` (`manual_enrollment`),
-  ADD KEY `shifting` (`shifting`),
-  ADD KEY `subject_overload` (`subject_overload`),
-  ADD KEY `user_id` (`user_id`);
+ALTER TABLE `acad_subject_overload`
+  ADD PRIMARY KEY (`so_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `ace_form_status` (`ace_form_status`),
+  ADD KEY `cert_of_registration_status` (`cert_of_registration_status`),
+  ADD KEY `overload_letter_status` (`overload_letter_status`);
 
 --
 -- Indexes for table `accounting_feedbacks`
@@ -1099,13 +1230,6 @@ ALTER TABLE `academic_transactions`
 ALTER TABLE `accounting_feedbacks`
   ADD PRIMARY KEY (`feedback_id`),
   ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `administrative_feedbacks`
---
-ALTER TABLE `administrative_feedbacks`
-  ADD PRIMARY KEY (`feedback_id`),
-  ADD KEY `user_id` (`user_id`) USING BTREE;
 
 --
 -- Indexes for table `admins`
@@ -1358,22 +1482,46 @@ ALTER TABLE `user_roles`
 --
 
 --
--- AUTO_INCREMENT for table `academic_statuses`
+-- AUTO_INCREMENT for table `academic_feedbacks`
 --
-ALTER TABLE `academic_statuses`
+ALTER TABLE `academic_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `acad_cross_enrollment`
+--
+ALTER TABLE `acad_cross_enrollment`
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `acad_grade_accreditation`
+--
+ALTER TABLE `acad_grade_accreditation`
+  MODIFY `ga_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `acad_manual_enrollment`
+--
+ALTER TABLE `acad_manual_enrollment`
+  MODIFY `me_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `acad_shifting`
+--
+ALTER TABLE `acad_shifting`
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `acad_status`
+--
+ALTER TABLE `acad_status`
   MODIFY `academic_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `academic_transactions`
+-- AUTO_INCREMENT for table `acad_subject_overload`
 --
-ALTER TABLE `academic_transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `administrative_feedbacks`
---
-ALTER TABLE `administrative_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `acad_subject_overload`
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `admins`
@@ -1540,17 +1688,6 @@ ALTER TABLE `user_roles`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `academic_transactions`
---
-ALTER TABLE `academic_transactions`
-  ADD CONSTRAINT `academic_transactions_ibfk_1` FOREIGN KEY (`cross_enrollment`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_transactions_ibfk_2` FOREIGN KEY (`grade_accreditation`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_transactions_ibfk_3` FOREIGN KEY (`manual_enrollment`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_transactions_ibfk_4` FOREIGN KEY (`shifting`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_transactions_ibfk_5` FOREIGN KEY (`subject_overload`) REFERENCES `academic_statuses` (`academic_status_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_transactions_ibfk_6` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `accounting_feedbacks`

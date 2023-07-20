@@ -24,18 +24,17 @@
 </head>
 <body onload="openModal()">
 <div class="wrapper">
+    
         <?php
 
-use FontLib\Table\Type\head;
+            use FontLib\Table\Type\head;
 
             $office_name = "Academic Office";
             include ('../navbar.php');
             include ('uploadmodal.php');
             include ('editmodal-so.php');
             include '../../breadcrumb.php';
-        ?>
-
-    <?php
+        
     // Start the session
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -44,9 +43,6 @@ use FontLib\Table\Type\head;
     // Check if the modal has already been shown in this session
     if (!isset($_SESSION['session_s'])) {
         // Set the session variable to indicate that the modal has been shown
-        $_SESSION['session_s'] = true;
-        $_SESSION['isLoggedIn'] = true;
-    
         // Display the modal
         // ... Your modal HTML code goes here ...
         echo '<!-- The Modal -->
@@ -60,8 +56,11 @@ use FontLib\Table\Type\head;
                 <input type="radio" name="option" value="option2" class="radio-option2">
                 <label for="option2">No</label>
         </div>
-        <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="openModal2()" disabled>Next</button>
-        <!-- <span id="countdownText" class="countdown"></span> -->
+        <br/>
+        <form action="update_session.php" method="POST" id="sessionForm">
+        <input type="hidden" name="session_transaction" value="s">
+        <button type="submit" class="btn btn-primary" id="nextButtonModal" onclick="disableModal()">Next</button>
+        </form>
         </div>
     </div>
 
@@ -75,34 +74,27 @@ use FontLib\Table\Type\head;
         </div>
     </div>
 
-    <!-- Pay Alert Modal -->
-    <div id="payModal" class="modal">
-        <div id="modalContent" class="modal-content">
-        <img src="/assets/exclamation.png" class="exclamationpic">
-        <br/><h2>Pay 150 PHP at the cashier for the certified copy of grades.</h2>
-        <p>Take a picture of the issued copy as it needs to be uploaded here later.<br/>
-        Then submit the copy to the academic office, with your transaction ID.</p>
-        <br/><button type="button" class="btn btn-primary" id="nextButton" onclick="close_payModal()">Next</button>
-        
-        </div>
-    </div>';
-    }
+    ';
 
-    // Each if block sets a session variable for a requirement for upload.php to fetch
-    // if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    //     if ($_POST['requestLetterUpload']) {
-    //         $_SESSION['requestLetterUpload'] = true;
-    //     }
-    //     if ($_POST['firstCtcUpload']) {
-    //         $_SESSION['firstCtcUpload'] = true;
-    //     }
-    //     if ($_POST['secondCtcUpload']) {
-    //         $_SESSION['secondCtcUpload'] = true;
-    //     }
-    // }
+    // Include JavaScript code
+    echo '<script type="text/javascript">
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if the button was clicked to disable the modal
+            if (!document.getElementById("nextButtonModal").disabled) {
+                // Set the session variable to indicate that the modal has been shown
+                $_SESSION["session_s"] = true;
+            }
+        });
+    </script>';
+        
+    } else {
+    // Set the session variable to indicate that the modal has been shown
+    $_SESSION['session_s'] = true;
+}
 
     // Dynamically display statuses on each requirements
-    $query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status, first_ctc_status, second_ctc_status FROM shifting WHERE user_id = ?";
+    $query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status, first_ctc_status, second_ctc_status FROM acad_shifting WHERE user_id = ?";
 
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $_SESSION['user_id']);
@@ -113,34 +105,29 @@ use FontLib\Table\Type\head;
     $connection->close();
 
     function academicStatus($status) {
-        switch ($status) {
-            case 1:
-                return '<button type="button" class="btn btn-secondary">
-                <i class="fa-solid fa-spinner"></i> Pending
-            </button>';
-                break;
-            case 2:
-                return '<button type="button" class="btn btn-danger">
-                <i class="fa-solid fa-circle-question"></i> Missing
-            </button>';
-                break;
-            case 3:
-                return '<button type="button" class="btn btn-info">
-                <i class="fa-solid fa-magnifying-glass"></i> Under Verification
-            </button>';
-                break;
-            case 4:
-                return '<button type="button" class="btn btn-success">
-                <i class="fa-solid fa-circle-check"></i> Verified
-            </button>';
-                break;
-            case 5:
-                return '<button type="button" class="btn btn-secondary">
-                None
-            </button>';
-                break;
-        }
+    switch ($status) {
+        case 1:
+            return '<button type="button" class="btn btn-danger" id="status_button" disabled>
+            <i class="fa-solid fa-circle-question"></i> Missing
+        </button>';
+            break;
+        case 2:
+            return '<button type="button" class="btn btn-secondary" id="status_button" disabled>
+            <i class="fa-solid fa-spinner"></i> Pending
+        </button>';
+            break;
+        case 3:
+            return '<button type="button" class="btn btn-info" id="status_button" disabled>
+            <i class="fa-solid fa-magnifying-glass"></i> Under Verification
+        </button>';
+            break;
+        case 4:
+            return '<button type="button" class="btn btn-success" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Verified
+        </button>';
+            break;
     }
+}
     ?>
 
         <div class="container-fluid academicbanner header" style="height:250px">
@@ -170,9 +157,7 @@ use FontLib\Table\Type\head;
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
-                            <button class="btn btn-outline-primary mb-2">
-                                <i class="fa-solid fa-circle-question"></i> Help
-                            </button>
+                        <a href="help-academic.php" class="btn btn-outline-primary mb-2"><i class="fa-solid fa-circle-question"></i> Help</a>
                         </div>
                     </div>
                 </div>
@@ -208,7 +193,7 @@ use FontLib\Table\Type\head;
     </div>
     <div class="col-sm-2">
         <form method="post">
-            <input type="hidden" name="requestLetterUpload" value="1">
+            <input type="hidden" name="requestLetterUpload" value="2">
             <button type="button" name="requestLetterUploadBtn" id="requestLetterUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
         </form>
     </div>
@@ -226,7 +211,7 @@ use FontLib\Table\Type\head;
     </div>
     <div class="col-sm-2">
         <form method="post">
-            <input type="hidden" name="firstCtcUpload" value="1">
+            <input type="hidden" name="firstCtcUpload" value="2">
             <button type="button" name="firstCtcUploadBtn" id="firstCtcUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
         </form>
     </div>
@@ -244,7 +229,7 @@ use FontLib\Table\Type\head;
     </div>
     <div class="col-sm-2">
         <form method="post">
-            <input type="hidden" name="secondCtcUpload" value="1">
+            <input type="hidden" name="secondCtcUpload" value="2">
             <button type="button" name="secondCtcUploadBtn" id="secondCtcUploadBtn" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal"><i class="fa-solid fa-paperclip"></i> Upload</button> 
         </form>
     </div>
@@ -252,10 +237,8 @@ use FontLib\Table\Type\head;
 </div>
 
                             <div class="d-flex w-100 justify-content-between p-1">
-                                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                                    <i class="fa-solid fa-arrow-left"></i> Back
-                                </button>
-                                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
+                                <a href="../academic.php" class="btn btn-primary px-4"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                                <input id="submitBtn" value="Submit "type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
                             </div>
 
                             <!-- confirmModal -->
@@ -302,7 +285,7 @@ use FontLib\Table\Type\head;
                 var submitBtn = document.getElementById("submitBtn");
 
                 // Enable the submit button only if all three requirements are uploaded
-                if (requestLetterStatus == 1 && firstCtcStatus == 1 && secondCtcStatus == 1) {
+                if (requestLetterStatus == 2 && firstCtcStatus == 2 && secondCtcStatus == 2) {
                     submitBtn.disabled = false;
                 } else {
                     submitBtn.disabled = true;
@@ -338,7 +321,7 @@ use FontLib\Table\Type\head;
                 formData.append('student_no', '<?php echo htmlspecialchars($userData[0]['student_no'], ENT_QUOTES); ?>');
                 formData.append('last_name', '<?php echo htmlspecialchars($userData[0]['last_name'], ENT_QUOTES); ?>');
                 formData.append('first_name', '<?php echo htmlspecialchars($userData[0]['first_name'], ENT_QUOTES); ?>');
-                formData.append('requirement_name', requirementName); // Replace 'requestLetter' with the appropriate value based on the requirement
+                formData.append('requirement_name', requirementName);
 
                 // Create a new XMLHttpRequest object
                 var xhr = new XMLHttpRequest();
@@ -376,26 +359,6 @@ use FontLib\Table\Type\head;
                 xhr.send(formData);
             });
         }
-
-        // Disable submit button initially
-        document.getElementById("submitBtn").disabled = true;
-
-        // Function to enable submit button if upload and edit buttons are clicked
-        function enableSubmitButton() {
-            var uploadButtonClicked = document.getElementById("uploadModal").getAttribute("data-clicked");
-
-            if (uploadButtonClicked === "true") {
-                document.getElementById("submitBtn").disabled = false;
-            } else {
-                document.getElementById("submitBtn").disabled = true;
-            }
-        }
-
-        // Event listener for upload button click
-        document.getElementById("uploadModal").addEventListener("click", function () {
-            this.setAttribute("data-clicked", "true");
-            enableSubmitButton();
-        });
     </script>
     <script src="../../saved_settings.js"></script>
 </body>

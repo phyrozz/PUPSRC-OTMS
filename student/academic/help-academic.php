@@ -31,12 +31,12 @@
     $userData = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    if(isset($_POST['guidanceFeedbackSubmit'])) {
-        $query = "INSERT INTO guidance_feedbacks (user_id, email, feedback_text)
+    if(isset($_POST['academicFeedbackSubmit'])) {
+        $query = "INSERT INTO academic_feedbacks (user_id, email, feedback_text)
         VALUES (?, ?, ?)";
 
         $stmt = $connection->prepare($query);
-        $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['guidanceFeedbackText']);
+        $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['academicFeedbackText']);
         if ($stmt->execute()) {
             $_SESSION['success'] = true;
             // header("Location: http://localhost/student/academic/success.php");
@@ -214,7 +214,7 @@
             <div class="container-fluid text-center p-4">
                 <h3>Submit Feedback</h3>
             </div>
-            <form id="guidanceFeedbackForm" method="POST">
+            <form id="academicFeedbackForm" method="POST">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" value="<?php echo $userData[0]['first_name'] . " " . $userData[0]['last_name'] . " ". $userData[0]['extension_name'] ?>" class="form-control" id="name" required disabled>
@@ -225,7 +225,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" pattern="[A-Za-z0-9]+" name="guidanceFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" style="resize: none;" required></textarea>
+                    <textarea class="form-control" pattern="[A-Za-z0-9]+" name="academicFeedbackText" id="message" rows="5" minlength="5" maxlength="2048" style="resize: none;" required></textarea>
                     <div class="invalid-feedback">Invalid feedback.</div>
                 </div>
                 <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
@@ -242,7 +242,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                            <button type="submit" id="submit" class="btn btn-primary" name="guidanceFeedbackSubmit">Yes</button>
+                            <button type="submit" id="submit" class="btn btn-primary" name="academicFeedbackSubmit">Yes</button>
                         </div>
                         </div>
                     </div>
@@ -291,7 +291,7 @@
         // Function to handle form submission
         function handleSubmit() {
             validateForm();
-            if (document.getElementById('guidanceFeedbackForm').checkValidity()) {
+            if (document.getElementById('academicFeedbackForm').checkValidity()) {
                 $('#confirmSubmitModal').modal('show');
             }
         }

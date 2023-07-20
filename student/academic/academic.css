@@ -156,3 +156,10 @@ iframe {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Styling for the disabled button */
+#status_button[disabled] {
+  /* Apply styles to make the button look like it's enabled */
+  opacity: 1.0; /* You can set any desired opacity value */
+  cursor: pointer;
+}

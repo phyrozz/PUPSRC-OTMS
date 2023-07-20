@@ -22,7 +22,7 @@ $stmt->close();
         Browse from device:
         <br/>
         <div class="uploadbox" id="uploadDiv">
-        <form action="upload.php" method="POST" enctype="multipart/form-data">
+        
           <i class="fa-solid fa-upload fa-4x"></i>
             <input type="file" name="fileToUpload" id="hiddenFileInput" style="display:none">
             <input type="hidden" id="input1" name="student_no" value="<?php echo htmlspecialchars($userData[0]['student_no'], ENT_QUOTES); ?>">
@@ -39,44 +39,3 @@ $stmt->close();
     </div>
   </div>
 </div>
-
-<!-- File upload success modal -->
-<!-- <div id="fileUploadSuccessModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fileUploadSuccessModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fileUploadSuccessModalLabel">Success</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>File uploaded successfully!</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-<!-- File upload failed modal -->
-<div id="fileUploadFailedModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fileUploadFailedModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fileUploadFailedModalLabel">Upload failed</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>File cannot be uploaded. Please try again.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-  
-</script>
-
