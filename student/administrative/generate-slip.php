@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require "../../vendor/autoload.php";
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -114,7 +118,7 @@ $equipmentNameModified = strtolower(str_replace(' ', '', $equipmentName));
 $fileName = 'requisition_slip' . '_' . $equipmentNameModified . '_' . uniqid(). '.pdf';
 
 // Save the PDF to a directory in your file system
-$directoryPath = 'C:/xampp/htdocs/student/administrative/requisition-slip/';
+$directoryPath = $_SERVER['DOCUMENT_ROOT'] . '/student/administrative/requisition-slip/';
 $filePath = $directoryPath . $fileName;
 file_put_contents($filePath, $dompdf->output());
 

@@ -110,7 +110,7 @@ $stmt->close();
   </div>
 
   <div class="col-md-12">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input8">Reason for Manual Enrollment</label>
                 <input type="text" maxlength="100" class="form-control" id="input8" name="reason" required>
               </div>
@@ -126,7 +126,7 @@ $stmt->close();
               </div>
             </div>
             <div class="col-md-5">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input10">Description</label>
                 <input type="text" maxlength="30" class="form-control" id="input10" name="desc1" placeholder="Applications Development and Emerging Technologies" required>
               </div>
@@ -154,7 +154,7 @@ $stmt->close();
               </div>
             </div>
             <div class="col-md-5">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input10">Description</label>
                 <input type="text" class="form-control" id="input10" name="desc2">
               </div>
@@ -181,7 +181,7 @@ $stmt->close();
               </div>
             </div>
             <div class="col-md-5">
-              <div class="form-group">
+              <div class="form-group text-center">
                 <label for="input10">Description</label>
                 <input type="text" class="form-control" id="input10" name="desc3">
               </div>

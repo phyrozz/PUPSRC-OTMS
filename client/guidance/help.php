@@ -107,7 +107,7 @@
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                     <div class="accordion-body">
-                        <p>You can find the office on the second floor by looking for the <b>Student Services</b> room.</p>
+                        <p>You can find the office on the second floor by looking for the <b>Student Services</b> room (Room 210).</p>
                     </div>
                 </div>
             </div>

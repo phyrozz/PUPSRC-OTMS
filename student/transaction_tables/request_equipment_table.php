@@ -174,7 +174,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="timeSched" class="form-label">Scheduled Time</label>
-                        <select class="form-control" id="timeSched" name="timeSched" required>
+                        <select class="form-select" id="timeSched" name="timeSched"  required>
                             <option value="">--Select--</option>
                             <option value="08:00:00" ${request.time === '08:00:00' ? 'selected' : ''}>8:00 AM</option>
                             <option value="08:30:00" ${request.time === '08:30:00' ? 'selected' : ''}>8:30 AM</option>
@@ -283,7 +283,7 @@
         formData.append('edit_id', editId);
 
         $.ajax({
-            url: 'transaction_tables/update_appointment_facility.php',
+            url: 'transaction_tables/update_request_equipment.php',
             method: 'POST',
             data: formData,
             processData: false,

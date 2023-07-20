@@ -56,7 +56,7 @@
                         <i class="fa-solid fa-circle-info"></i> Reminder
                         </h4>
                         <p class="mb-0" >Always check your transaction status to follow instructions.</p>
-                        <p class="mb-0">You can delete and edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
+                        <p class="mb-0">You can delete or edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
                         <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle the deficiency/ies to necessary office.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected by the admin.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For receiving</span> - The request is currently in Receiving window and waiting for submission of requirements.</small></p>
@@ -69,7 +69,8 @@
                         <div class="d-flex p-2">
                             <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
                                 <select id="transactionTableSelect" class="form-select" name="table-select">
-                                    <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
+                                    <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Guidance Requests</option>
+                                    <option value="registrar_request" <?php if ($table === 'registrar_request') echo 'selected'; ?>>Registrar Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                     <option value="offsettings" <?php if ($table === 'offsettings') echo 'selected'; ?>>Offsettings</option>
