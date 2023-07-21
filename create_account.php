@@ -48,7 +48,6 @@ if (isset($_POST['studentSignup'])) {
         $gradeAccreditationQuery = "INSERT INTO acad_grade_accreditation (user_id) VALUES (?)";
         $shiftingQuery = "INSERT INTO acad_shifting (user_id) VALUES (?)";
         $subjectOverloadQuery = "INSERT INTO acad_subject_overload (user_id) VALUES (?)";
-        $acadTransactionsQuery = "INSERT INTO academic_transactions (user_id) VALUES (?)";
     
         $stmt = $connection->prepare($query);
         $stmt->bind_param("sssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
@@ -79,10 +78,6 @@ if (isset($_POST['studentSignup'])) {
             $stmt->execute();
             $stmt->close();
             $stmt = $connection->prepare($subjectOverloadQuery);
-            $stmt->bind_param("i", $lastId);
-            $stmt->execute();
-            $stmt->close();
-            $stmt = $connection->prepare($acadTransactionsQuery);
             $stmt->bind_param("i", $lastId);
             $stmt->execute();
             $stmt->close();

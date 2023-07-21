@@ -1,3 +1,16 @@
+<?php
+    // Include the database connection file (conn.php)
+    include "../conn.php";
+
+    $office_name = "Academic Office";
+    include "navbar.php";
+
+    // Avoid admin user from accessing other office pages
+    if ($_SESSION['office_name'] != "Academic Office") {
+        header("Location: http://localhost/admin/redirect.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,23 +64,41 @@
                         break;
                 }
             });
+
+            // Handle status dropdown change event
+            $("select.status-dropdown").change(function () {
+                const userId = $(this).data("user-id");
+                const statusType = $(this).data("status-type");
+                const status = $(this).val();
+
+                // Call the function to update the status in the database using AJAX
+                updateStatusInDatabase(userId, statusType, status);
+            });
+
+            // Function to update the status in the database using AJAX
+            function updateStatusInDatabase(userId, statusType, status) {
+                $.ajax({
+                    url: "tables/academic/update_status.php",
+                    type: "POST",
+                    data: {
+                        userId: userId,
+                        type: statusType,
+                        status: status,
+                    },
+                    success: function (response) {
+                        // Handle the response (optional)
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors, if any
+                        console.log("Error: " + error);
+                    },
+                });
+            }
         });
     </script>
 </head>
 <body>
-    <?php
-        // Include the database connection file (conn.php)
-        include "../conn.php";
-
-        $office_name = "Academic Office";
-        include "navbar.php";
-
-        // Avoid admin user from accessing other office pages
-        if ($_SESSION['office_name'] != "Academic Office") {
-            header("Location: http://localhost/admin/redirect.php");
-            exit();
-        }
-    ?>
     <div class="wrapper">
         <!-- Loading page -->
         <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
@@ -110,56 +141,77 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                                // Fetch data from the acad_subject_overload table with join queries
-                                $query = "SELECT ao.transaction_id, u.user_id, u.student_no, ao.completion_form, ao.assessed_fee,  
-                                          ao.completion_form_status, ao.assessed_fee_status
-                                          FROM acad_grade_accreditation ao
-                                          INNER JOIN users u ON ao.user_id = u.user_id";
-                                $result = $connection->query($query);
+                        <?php
+                        // Function to generate the options for the status dropdown
+                        function generateStatusOptions($selectedStatusID)
+                        {
+                            // You can fetch the status options from your database or define them manually
+                            $statusOptions = array(
+                                1 => "Missing",
+                                2 => "Pending",
+                                3 => "Under Verification",
+                                4 => "Verified"
+                            );
 
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row['student_no'] . "</td>";
-                                        echo "<td>Grade Accreditation</td>";
-                                        echo "<td>" . $row['transaction_id'] . "</td>";
-                                        echo "<td>";
+                            // Generate the options
+                            $options = "";
+                            foreach ($statusOptions as $statusID => $statusName) {
+                                $selected = ($statusID == $selectedStatusID) ? "selected" : "";
+                                $options .= "<option value='{$statusID}' {$selected}>{$statusName}</option>";
+                            }
 
-                                        // Display link to overload letter attachment, if available
-                                        if (!empty($row['completion_form'])) {
-                                            echo '<a href="../assets/uploads/generated_pdf/' . $row['completion_form'] . '" target="_blank" class="btn btn-primary">View attachment</a>';
-                                        } else {
-                                            echo 'No attachment';
-                                        }
+                            return $options;
+                        }
 
-                                        echo "</td>";
-                                        echo '<td><select class="form-select status-dropdown" data-request-id="' . $row['transaction_id'] . '">';
+                        // Fetch data from the acad_grade_accreditation table with join queries
+                        $query = "SELECT ao.transaction_id, u.user_id, u.student_no, ao.completion_form, ao.assessed_fee,  
+                        ao.completion_form_status, ao.assessed_fee_status
+                        FROM acad_grade_accreditation ao
+                        INNER JOIN users u ON ao.user_id = u.user_id";
+                        $result = $connection->query($query);
 
-                                        // ... (code for generating and displaying the options for overload letter status dropdown) ...
+                        if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row['student_no'] . "</td>";
+                        echo "<td>Grade Accreditation</td>";
+                        echo "<td>" . $row['transaction_id'] . "</td>";
+                        echo "<td>";
 
-                                        echo "</select></td>";
+                        // Display link to completion form attachment, if available
+                        if (!empty($row['completion_form'])) {
+                            echo '<a href="../assets/uploads/generated_pdf/' . $row['completion_form'] . '" target="_blank" class="btn btn-primary">View attachment</a>';
+                        } else {
+                            echo 'No attachment';
+                        }
 
-                                        echo "<td>";
-                                        // Display link to Ace Form attachment, if available
-                                        if (!empty($row['assessed_fee'])) {
-                                            echo '<a href="../assets/uploads/user_uploads' . $row['assessed_fee'] . '" target="_blank" class="btn btn-primary">View attachment</a>';
-                                        } else {
-                                            echo 'No attachment';
-                                        }
-                                        echo "</td>";
-                                        echo '<td><select class="form-select status-dropdown" data-request-id="' . $row['transaction_id'] . '">';
+                        echo "</td>";
+                        echo '<td><select class="form-select status-dropdown" data-user-id="' . $row['user_id'] . '" data-status-type="completionForm">';
+                        // Generate the options for completion form status dropdown
+                        echo generateStatusOptions($row['completion_form_status']);
+                        echo "</select></td>";
 
-                                        // ... (code for generating and displaying the options for Ace Form status dropdown) ...
+                        echo "<td>";
+                        // Display link to assessed fee attachment, if available
+                        if (!empty($row['assessed_fee'])) {
+                            echo '<a href="../assets/uploads/user_uploads/' . $row['assessed_fee'] . '" target="_blank" class="btn btn-primary">View attachment</a>';
+                        } else {
+                            echo 'No attachment';
+                        }
+                        echo "</td>";
+                        echo '<td><select class="form-select status-dropdown" data-user-id="' . $row['user_id'] . '" data-status-type="assessedFee">';
+                        // Generate the options for assessed fee status dropdown
+                        echo generateStatusOptions($row['assessed_fee_status']);
+                        echo "</select></td>";
 
-                                        echo "</select></td>";
+                        // ... (other columns and data remain unchanged) ...
 
-                                        
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='9' class='text-center'>No records found.</td></tr>";
-                                }
-                            ?>
+                        echo "</tr>";
+                        }
+                        } else {
+                        echo "<tr><td colspan='9' class='text-center'>No records found.</td></tr>";
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>

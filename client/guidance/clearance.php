@@ -230,7 +230,7 @@
                                             <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the request letter and other requirements.</li>
                                             <li>Wait for the request to be approved by constantly checking its status on the <b>My Transactions</b> page.</li>
                                         </ol>
-                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
+                                        <a href="./generate_pdf-c.php" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
                                     </div>
                                     <div class="modal-footer">
                                         <a href="../transactions.php" class="btn btn-primary"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
