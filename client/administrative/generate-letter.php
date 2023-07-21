@@ -250,13 +250,12 @@ $html = <<<EOD
 
 
         <p class="indent">
-            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name )</span>, will be conducting a Seminar entitled "<span id="reason">$purpose</span>" to be held on <span id="start-date">$startDate</span>, from <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> at PUP-Santa Rosa <span id="facility">$facilityName</span>.
+            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name)</span>, will be utilizing <span id="facility">$facilityName</span> at Pup Sta. Rosa
+            on <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> for the purpose of
+             "<span id="reason">$purpose</span>".
+            This reservation is part of our requirements for the scheduled activity.".
         </p>
 
-
-        <p class="indent">
-            This activity can be a good way for students to acquire new knowledge, enabling them to better develop the necessary skills and knowledge to become literate in the field of managing Human Capital.
-        </p>
 
 
         <p>Hoping for your kind consideration.</p>

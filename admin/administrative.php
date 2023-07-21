@@ -52,6 +52,7 @@
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
                                         <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                         <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment </option>
+                                        <option value="administrative_feedbacks" <?php if ($table === 'administrative_feedbacks') echo 'selected'; ?>>Feedbacks</option>
                                     </select>
                                     <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
                                 </form>
@@ -102,6 +103,9 @@
                             }
                             elseif ($table === 'appointment_facility') {
                                 include 'tables/administrative/appointment_facility.php';
+                            }
+                            elseif ($table === 'administrative_feedbacks') {
+                                include 'tables/administrative/feedbacks_table.php';
                             }
                         ?>
                     </div>
