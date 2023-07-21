@@ -11,7 +11,7 @@
                     Date Requested
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-centersortable-header" data-column="last_name" scope="col" data-order="desc">
+                <th class="text-center sortable-header" data-column="last_name" scope="col" data-order="desc">
                     Requestor
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
@@ -23,7 +23,7 @@
                     Offset Type
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center sortable-header" data-column="status_id" scope="col" data-order="desc">
+                <th class="text-center sortable-header" data-column="status_name" scope="col" data-order="desc">
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
@@ -178,6 +178,9 @@
     handlePagination(1, '', 'offsetting_id', 'desc');
 
     $(document).ready(function() {
+        $('#filterByStatusSection').hide();
+        $('#filterByDocTypeSection').hide();
+        $('#filterButton').hide();
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
             handlePagination(1, searchTerm, 'offsetting_id', 'desc');
