@@ -2,7 +2,6 @@
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-                <th class="text-center"></th>
                 <th class="text-center doc-request-id-header sortable-header" data-column="offsetting_id" scope="col" data-order="desc">
                     Transaction Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -90,8 +89,7 @@
                         var offsetting = data.offsettings[i];
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + offsetting.offsetting_id + '" name="' + offsetting.offsetting_id + '" value="' + offsetting.offsetting_id + '"></td>' +
-                            '<td>AO-' + offsetting.offsetting_id + '</td>' +
+                            '<td>' + 'AO-' + offsetting.offsetting_id + '</td>' +
                             '<td>' + (offsetting.timestamp !== null ? (new Date(offsetting.timestamp)).toLocaleString('en-US', {
                             month: 'long',
                             day: 'numeric',
