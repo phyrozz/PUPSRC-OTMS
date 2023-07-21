@@ -24,7 +24,7 @@ $accountingFeedbacksQuery = "SELECT accounting_feedbacks.email, feedback_text, D
                         INNER JOIN users ON accounting_feedbacks.user_id = users.user_id";
 
 if (!empty($searchTerm)) {
-    $accountingFeedbacksQuery .= " AND (accounting_feedbacks LIKE '%$searchTerm%'
+    $accountingFeedbacksQuery .= " AND (feedback_id LIKE '%$searchTerm%'
                                 OR users.first_name LIKE '%$searchTerm%'
                                 OR users.last_name LIKE '%$searchTerm%'
                                 OR users.middle_name LIKE '%$searchTerm%'
