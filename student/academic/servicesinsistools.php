@@ -97,7 +97,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <a href="../survey.php" class="btn btn-primary">Yes</a>
+                        <a href="../academic.php" class="btn btn-primary">Yes</a>
                     </div>
                 </div>
             </div>
