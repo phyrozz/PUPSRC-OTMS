@@ -553,7 +553,7 @@
   <?php
 
   if(isset($_POST['feedbackSubmit'])) {
-    $query = "INSERT INTO registrar_feedbacks (user_id, feedback)
+    $query = "INSERT INTO registrar_feedbacks (user_id, feedback_text)
     VALUES (?, ?)";
 
     $stmt = $connection->prepare($query);
