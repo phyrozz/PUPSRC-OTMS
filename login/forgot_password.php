@@ -65,7 +65,7 @@ if (isset($_POST['resetBtn'])) {
             $mail->Subject = 'PUPSRC-OTMS Password Reset';
             $mail->addEmbeddedImage('../assets/verify_email_header.png', 'email_header');
             $mail->Body = "<img src='cid:email_header' alt='PUPSRC-OTMS Email Header' height=50>
-                        <p>Please click the following link to reset your password: <a href='http://localhost/login/reset_password.php?token=$token'>Reset Password</a></p>";
+                        <p>Please click the following link to reset your password: <a href='http://192.168.84.183/login/reset_password.php?token=$token'>Reset Password</a></p>";
             $mail->send();
 
             $_SESSION['email_exists'] = true;

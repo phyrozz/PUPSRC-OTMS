@@ -39,7 +39,7 @@
         $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['administrativeFeedbackText']);
         if ($stmt->execute()) {
             $_SESSION['success'] = true;
-            // header("Location: http://localhost/student/guidance/success.php");
+            // header("Location: http://192.168.84.183/student/guidance/success.php");
         }
         else {
             var_dump($stmt->error);
@@ -317,7 +317,7 @@
     if (isset($_SESSION['success'])) {
         ?>
         <script>
-            // window.location.href="http://localhost/student/guidance/clearance.php";
+            // window.location.href="http://192.168.84.183/student/guidance/clearance.php";
             $(document).ready(function() {
                 $("#successModal").modal("show");
             })
