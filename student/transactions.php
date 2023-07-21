@@ -31,6 +31,7 @@
             include "../breadcrumb.php";
 
             $table = 'document_request';
+            $academictable = 'subject_overload';
 
             if (isset($_POST['filter-button'])) {
                 $table = $_POST['table-select'];
@@ -56,7 +57,7 @@
                         <i class="fa-solid fa-circle-info"></i> Reminder
                         </h4>
                         <p class="mb-0" >Always check your transaction status to follow instructions.</p>
-                        <p class="mb-0">You can delete and edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
+                        <p class="mb-0">You can delete or edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
                         <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle the deficiency/ies to necessary office.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected by the admin.</small></p>
                         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For receiving</span> - The request is currently in Receiving window and waiting for submission of requirements.</small></p>
@@ -69,16 +70,17 @@
                         <div class="d-flex p-2">
                             <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
                                 <select id="transactionTableSelect" class="form-select" name="table-select">
-                                    <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
+                                    <option value="registrar_request" <?php if ($table === 'registrar_request') echo 'selected'; ?>>Registrar Requests</option>
+                                    <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Guidance Requests</option>
                                     <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                                     <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                     <option value="offsettings" <?php if ($table === 'offsettings') echo 'selected'; ?>>Offsettings</option>
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                     <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
-                                    <option value="academic_transactions" <?php if ($table === 'academic_transactions') echo 'selected'; ?>>Academic Transactions</option>
                                     <option value="registrar_request" <?php if ($table === 'registrar_request') echo 'selected'; ?>>Registrar Requests</option>
+                                    <option value="acad_transactions" <?php if ($table === 'acad_transactions') echo 'selected'; ?>>Academic Transactions</option>
                                 </select>
-                                <button type="submit" name="filter-button" class="btn btn-primary">Filter</button>
+                                <button type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
                             </form>
                         </div>
                         <div class="d-flex justify-content-end p-2">
@@ -106,7 +108,7 @@
                                 include 'transaction_tables/request_equipment_table.php';
                             } elseif ($table === 'appointment_facility') {
                                 include 'transaction_tables/appointment_facility_table.php';
-                            } elseif ($table === 'academic_transactions') {
+                            } elseif ($table === 'acad_transactions') {
                                 include 'transaction_tables/academic_table.php';
                             } elseif ($table === 'registrar_request') {
                                 include 'transaction_tables/registrar_request_table.php';

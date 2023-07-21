@@ -1,7 +1,7 @@
 <?php
 require "conn.php";
 
-$equipID = $_POST['equipID'];
+$equipID = $_POST['id'];
 
 $sql = "SELECT equipment_name FROM equipment WHERE equipment_id = '$equipID'";
 $result = $connection->query($sql);

@@ -45,6 +45,7 @@
                 $officeId = 5;
                 $statusId = 1;
                 $amountToPay = 0.00;
+                $purpose = $_POST['purpose'];
             
                 // Check if a file was uploaded
                 if (isset($_FILES['supportingDocuments']) && $_FILES['supportingDocuments']['error'] === UPLOAD_ERR_OK) {
@@ -85,12 +86,21 @@
                 }
 
                 // Insert the form data into the database
-                $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, amount_to_pay, attached_files)
-                                VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, purpose, amount_to_pay, attached_files)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $connection->prepare($insertQuery);
-                $stmt->bind_param("ssiiids", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay, $fileContents);
+                $stmt->bind_param("ssiiisds", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $purpose, $amountToPay, $fileContents);
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
+
+                    $getLastIDQuery = "SELECT MAX(request_id) AS last_inserted_id FROM doc_requests";
+                    $result = $connection->query($getLastIDQuery);
+                    
+                    if ($result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        $lastInsertedID = $row['last_inserted_id'];
+                        $_SESSION['request_id'] = $lastInsertedID;
+                    }
                 } else {
                     var_dump($stmt->error);
                 }
@@ -168,10 +178,26 @@
                                 <input type="email" class="form-control" id="email" value="<?php echo $userData[0]['email'] ?>" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Request Information</h6>
-                            <div class="form-group required col-md-12">
+                            <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
                                 <input type="text" class="form-control" name="date" id="datepicker" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
                                 <div id="dateValidationMessage" class="text-danger"></div>
+                            </div>
+                            <div class="form-group required col-md-6">
+                                <label for="purpose" class="form-label">Purpose of request</label>
+                                <select class="form-control form-select" name="purpose" id="purpose" required>
+                                    <option value="">--Select--</option>
+                                    <option value="Job Application">Job Application</option>
+                                    <option value="School Requirement">School Requirement</option>
+                                    <option value="Professional Licenses">Professional Licenses</option>
+                                    <option value="Immigration or Visa Applications">Immigration or Visa Applications</option>
+                                    <option value="Volunteering and Community Service">Volunteering and Community Service</option>
+                                    <option value="Adoption">Adoption</option>
+                                    <option value="Government Services">Government Services</option>
+                                    <option value="Rental or Lease Agreements">Rental or Lease Agreements</option>
+                                    <option value="Legal Proceedings">Legal Proceedings</option>
+                                </select>
+                                <div class="invalid-feedback" id="purposeMessage">Please choose a time.</div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
@@ -223,12 +249,18 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>Your request has been submitted successfully!</p>
-                                        <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
-                                        <p>You must print this request letter and submit it to the Director's Office before proceeding to the respective office.</p>
-                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
+                                        <h5>What should I do next?</h5>
+                                        <ol>
+                                            <li>Print the <samp>.pdf</samp> copy of your request letter by clicking on the <b>Print Letter</b> button.</li>
+                                            <li>Proceed to the Director's Office for the request letter to be signed by the Campus Director.</li>
+                                            <li>Prepare other requirements needed for the request (Refer to the <b>Help</b> page).</li>
+                                            <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the request letter and other requirements.</li>
+                                            <li>Wait for the request to be approved by constantly checking its status on the <b>My Transactions</b> page.</li>
+                                        </ol>
+                                        <a href="./generate_pdf-gm.php" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="../transactions.php" class="btn btn-primary">Go to My Transactions</a>
+                                        <a href="../transactions.php" class="btn btn-primary"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
                                     </div>
                                 </div>
                             </div>
@@ -266,6 +298,8 @@
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
         const dateInput = document.getElementById('datepicker');
         const dateValidationMessage = document.getElementById('dateValidationMessage');
+        const purposeSelectInput = document.getElementById('purpose');
+        const purposeSelectMessage = document.getElementById('purposeMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
@@ -292,6 +326,18 @@
             } else {
                 contactNoValidationMessage.textContent = '';
                 contactNoInput.classList.remove('is-invalid');
+            }
+        });
+
+        purposeSelectInput.addEventListener('change', () => {
+            const purposeSelectValue = purposeSelectInput.value;
+
+            if (purposeSelectValue == "") {
+                purposeSelectMessage.textContent = 'Please enter a purpose for requesting.';
+                purposeSelectInput.classList.add('is-invalid');
+            } else {
+                purposeSelectMessage.textContent = '';
+                purposeSelectInput.classList.remove('is-invalid');
             }
         });
 

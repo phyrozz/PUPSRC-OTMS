@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +20,7 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 <div class="wrapper">
@@ -213,9 +213,10 @@
 
                             <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" name="date" id="date" required>
-                                <div class="invalid-feedback">Please choose a valid date. (Sundays are not allowed).</div>
+                                <input type="text" class="form-control" name="date" id="datepicker" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
+                                <div id="dateValidationMessage" class="text-danger"></div>
                             </div>
+
                             <div class="form-group required col-md-6">
                                 <label for="time" class="form-label">Time</label>
                                 <select class="form-control form-select" name="time" id="time" required>
@@ -288,6 +289,8 @@
                                     </div>
                                 </div>
                             </div>
+                        
+                        </form>
                         <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -299,7 +302,7 @@
                                     <div class="modal-body">
                                         <p>Your request has been submitted successfully!</p>
                                         <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
-                                        <p><b>You must print this slip and submit it to the Administrative Office before your request.</b></p>
+                                        <p><b>You must print this slip and submit it to the Administrative Office before your appointment request.</b></p>
                                         <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Slip</button>
                                     </div>
                                     <div class="modal-footer">
@@ -308,7 +311,6 @@
                                 </div>
                             </div>
                         </div>
-                        </form>
 
                        
                     </div>
@@ -319,42 +321,16 @@
     </div>
     <?php include '../../footer.php'; ?>
     <script src="../../loading.js"></script>
-    <script src="jquery.js"></script>
-        <script>
-            var date = new Date();
-            let day = date.getDate();
-            day = day.toString().padStart(2, '0');
-            let month = date.getMonth() + 1;
-            month = month.toString().padStart(2, '0');
-            let year = date.getFullYear();
+    <script src="../../jquery.js"></script>
 
-            let currentDate = `${year}-${month}-${day}`;
-            console.log(currentDate);
-
-            var maxDate = "2030-12-31";
-
-            document.getElementById("date").min = currentDate;
-            document.getElementById("date").max = maxDate;
-
-            document.addEventListener("DOMContentLoaded", function() {
-            var dateInput = document.getElementById("date");
-
-            dateInput.addEventListener("change", function() {
-                var selectedDate = new Date(this.value);
-
-                if (selectedDate.getDay() === 0) {
-                this.setCustomValidity("Sundays are not allowed. Please choose a different date.");
-                } else {
-                this.setCustomValidity("");
-                }
-            });
-            });
+    <script>
+        const dateValidation = document.getElementById('datepicker');
+        const dateValidationMessage = document.getElementById('dateValidationMessage');
 
             function validateForm() {
                 var form = document.getElementById('request-form');
                 var selectFields = form.querySelectorAll('select[required]');
                 var quantityField = document.getElementById('quantityequip');
-                var emailInput = document.getElementById('email');
                 var quantityValue = parseInt(quantityField.value);
 
                 if (quantityValue < 0) {
@@ -363,6 +339,15 @@
                 } else {
                     quantityField.classList.add('is-valid');
                     quantityField.classList.remove('is-invalid');
+                }
+
+                if (dateValidation.value.trim() === '') {
+                dateValidationMessage.textContent = "Please select a date.";
+                dateValidation.classList.add('is-invalid');
+                }
+                else {
+                    dateValidationMessage.textContent = "";
+                    dateValidation.classList.remove('is-invalid');
                 }
                 
                 for (var i = 0; i < selectFields.length; i++) {
@@ -383,15 +368,28 @@
                 }
                 
                 });
+
                 if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
-                form.classList.add('was-validated');
-
-                
-              
+                form.classList.add('was-validated');              
             }
+
+            dateValidation.addEventListener('change', () => {
+            const dateValue = dateValidation.value.trim();
+
+            if (dateValue === '') {
+                dateValidationMessage.textContent = "Please select a date.";
+                dateValidation.classList.add('is-invalid');
+            }
+            else {
+                dateValidationMessage.textContent = "";
+                dateValidation.classList.remove('is-invalid');
+            }
+
+            console.log(dateValue);
+            });
 
             function validateQuantity(input) {
                 input.value = input.value.replace(/\D/g, ''); // Remove non-digit characters
@@ -423,6 +421,63 @@
             
 
         </script>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+
+            flatpickr("#datepicker", {
+                altInput: true,
+                dateFormat: "Y-m-d",
+                theme: "custom-datepicker",
+                minDate: "today",
+                maxDate: "31.12.2033",
+                disable: [
+                    function(date) {
+                        // Disable date on Sundays
+                        return (date.getDay() === 0);
+                    }
+                ],
+                locale: {
+                    "firstDayOfWeek": 1 // start week on Monday
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    var currentDate = new Date();
+                    var selectedDate = selectedDates[0];
+                    var timeSelect = document.getElementById("time");
+                    
+                    if (selectedDate.toDateString() === currentDate.toDateString()) {
+                        // Reset the selected time value when the date is changed to today
+                        timeSelect.value = '';
+                        
+                        // Enable all options in the time select for today's date
+                        for (var i = 0; i < timeSelect.options.length; i++) {
+                            timeSelect.options[i].disabled = false;
+                        }
+                        
+                        // Disable past times in the time select based on the current time
+                        var currentHour = currentDate.getHours();
+                        var currentMinute = currentDate.getMinutes();
+                        for (var i = 0; i < timeSelect.options.length; i++) {
+                            var timeValue = timeSelect.options[i].value.split(":");
+                            var optionHour = parseInt(timeValue[0]);
+                            var optionMinute = parseInt(timeValue[1]);
+                            if (optionHour < currentHour || (optionHour === currentHour && optionMinute <= currentMinute)) {
+                                timeSelect.options[i].disabled = true;
+                            }
+                        }
+                    } else {
+                        // Enable all options in the time select for other dates
+                        for (var i = 0; i < timeSelect.options.length; i++) {
+                            timeSelect.options[i].disabled = false;
+                        }
+                    }
+                }
+            });
+        </script>
+
+        
+
             <?php if (isset($_SESSION['success']) && $_SESSION['success']) {
                     echo "
                     <script>
@@ -435,28 +490,29 @@
                 unset($_SESSION['success']);
                 ?>
 
-        <script>
-            $(document).ready(function() {
-                // Get the equipment ID from the query parameter in the URL
-                var equipID = <?php echo $_POST['id']; ?>;
+            <script>
+                $(document).ready(function() {
+                    // Get the equipment ID from the query parameter in the URL
+                    var equipID = <?php echo isset($_POST['id']) ? $_POST['id'] : 0; ?>
 
-
-                // AJAX request to fetch the equipment name based on the equipment ID
-                $.ajax({
-                    type: "POST",
-                    url: "get-equipment-name.php",
-                    data: { equipID: equipID },
-                    success: function(response) {
-                        // Update the value of the "Equipment Name" input field with the fetched equipment name
-                        $("#equipName").val(response);
-                    },
-                    error: function() {
-                        console.log("An error occurred while fetching the equipment name.");
+                    // Only make the AJAX request if equipID is not 0
+                    if (equipID !== 0) {
+                        // AJAX request to fetch the equipment name based on the equipment ID
+                        $.ajax({
+                            type: "POST",
+                            url: "get-equipment-name.php",
+                            data: { equipID: equipID },
+                            success: function(response) {
+                                // Update the value of the "Equipment Name" input field with the fetched equipment name
+                                $("#equipName").val(response);
+                            },
+                            error: function() {
+                                console.log("An error occurred while fetching the equipment name.");
+                            }
+                        });
                     }
                 });
-            });
-            
-        </script>
+            </script>
         <script src="../../saved_settings.js"></script>
 </body>
 </html>

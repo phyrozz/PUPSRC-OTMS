@@ -8,18 +8,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $editMiddleName = $_POST["editMiddleName"];
     $editExtensionName = $_POST["editExtensionName"];
     $editContactNo = $_POST["editContactNumber"];
-    $editCourse = $_POST["editCourse"];
-    $editYearAndSection = $_POST["editLevelAndSection"];
+    $editBirthDate = $_POST['editBirthDate'];
     // Add more variables for other form fields
 
     // Update the user details in the database
     $updateQuery = "UPDATE users
                     INNER JOIN user_details ON users.user_id = user_details.user_id
-                    SET users.last_name = ?, users.first_name = ?, users.middle_name = ?, users.extension_name = ?, users.contact_no = ?
+                    SET users.last_name = ?, users.first_name = ?, users.middle_name = ?, users.extension_name = ?, users.contact_no = ?, users.birth_date = ?
                     WHERE users.user_id = ?";
 
     $stmt = $connection->prepare($updateQuery);
-    $stmt->bind_param("sssssi", $editLastName, $editFirstName, $editMiddleName, $editExtensionName, $editContactNo, $_SESSION['user_id']);
+    $stmt->bind_param("ssssssi", $editLastName, $editFirstName, $editMiddleName, $editExtensionName, $editContactNo, $editBirthDate, $_SESSION['user_id']);
     $stmt->execute();
     $stmt->close();
     $connection->close();

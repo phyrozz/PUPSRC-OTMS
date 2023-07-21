@@ -11,25 +11,72 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../style.css">
+
     <!-- Loading page -->
     <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
     <div id="loader" class="center">
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <link rel="stylesheet" href="academic.css">
+    
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="academic.css">
 </head>
 <body>
 <div class="wrapper">
     <?php
+    
+    use FontLib\Table\Type\head;
+
     $office_name = "Academic Office";
     include ('../navbar.php');
     include ('editmodal-ce.php');
-    include "../../breadcrumb.php";
-    ?>
+    
+    //include('helpmodal.php');
+    include '../../breadcrumb.php';
+    include "../../conn.php";
+
+
+    // Dynamically display statuses on each requirements
+    $query = "SELECT application_letter, application_letter_status FROM acad_cross_enrollment WHERE user_id = ?";
+
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $reqData = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    $connection->close();
+
+    function academicStatus($status) {
+    switch ($status) {
+        case 1:
+            return '<button type="button" class="btn btn-danger" id="status_button" disabled>
+            <i class="fa-solid fa-circle-question"></i> Missing
+        </button>';
+            break;
+        case 2:
+            return '<button type="button" class="btn btn-secondary" id="status_button" disabled>
+            <i class="fa-solid fa-spinner"></i> Pending
+        </button>';
+            break;
+        case 3:
+            return '<button type="button" class="btn btn-info" id="status_button" disabled>
+            <i class="fa-solid fa-magnifying-glass"></i> Under Verification
+        </button>';
+            break;
+        case 4:
+            return '<button type="button" class="btn btn-success" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Verified
+        </button>';
+            break;
+    }
+}
+?>
+
     <div class="container-fluid academicbanner header" style="height:250px">
         <?php
         $breadcrumbItems = [
@@ -55,9 +102,7 @@
                         <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                             <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                         </button>
-                        <button class="btn btn-outline-primary mb-2">
-                            <i class="fa-solid fa-circle-question"></i> Help
-                        </button>
+                        <a href="help-academic.php" class="btn btn-outline-primary mb-2"><i class="fa-solid fa-circle-question"></i> Help</a>
                     </div>
                 </div>
             </div>
@@ -74,14 +119,10 @@
                     <div class="row">
                         <div class="col-sm-6">Application Letter for Cross-Enrollment</div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-circle-question"></i> Missing
-                            </button>
+                            <?php echo academicStatus($reqData[0]['application_letter_status']); ?>
                         </div>
                         <div class="col-sm-2">
-                            <form action="generatepdf_ce.php" method="post" target="_blank">
-                                <input type="submit" class="btn btn-primary" value="View Attachment">
-                            </form>
+                            <a href="<?php echo (is_null($reqData[0]['application_letter']) ? '' : '../../assets/uploads/generated_pdf/' . $reqData[0]['application_letter']); ?>" class="btn <?php echo (is_null($reqData[0]['application_letter']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
@@ -91,9 +132,7 @@
                     </div>
                 </div>
                 <div class="d-flex w-100 justify-content-between p-1">
-                    <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                        <i class="fa-solid fa-arrow-left"></i> Back
-                    </button>
+                    <a href="../academic.php" class="btn btn-primary px-4"><i class="fa-solid fa-arrow-left"></i> Back</a>
                     <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
                 </div>
                 <div class="modal fade modal-dark" id="confirmModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
@@ -131,26 +170,26 @@
 <script src="modal.js"></script>
 <script src="upload.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
 <script>
-        // Disable submit button initially
-        document.getElementById("submitBtn").disabled = true;
+        // Call the function on page load to check the initial status
+        $(document).ready(function() {
+            checkRequirements();
 
-        // Function to enable submit button if upload and edit buttons are clicked
-        function enableSubmitButton() {
-            var editButtonClicked = document.getElementById("editModal").getAttribute("data-clicked");
+            // Function to check if all requirements are uploaded and enable/disable the submit button accordingly
+            function checkRequirements() {
+                var applicationFormStatus = <?php echo $reqData[0]['application_form_status']; ?>;
+                var submitBtn = document.getElementById("submitBtn");
 
-            if (editButtonClicked === "true") {
-                document.getElementById("submitBtn").disabled = false;
-            } else {
-                document.getElementById("submitBtn").disabled = true;
+                // Enable the submit button only if all three requirements are uploaded
+                if (applicationFormStatus == 2) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
             }
-        }
-
-        // Event listener for edit button click
-        document.getElementById("editModal").addEventListener("click", function() {
-            this.setAttribute("data-clicked", "true");
-            enableSubmitButton();
         });
+
     </script>
     <script src="../../saved_settings.js"></script>
 </body>

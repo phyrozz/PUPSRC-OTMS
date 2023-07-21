@@ -9,26 +9,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    
     <!-- Loading page -->
     <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
     <div id="loader" class="center">
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <link rel="stylesheet" href="academic.css">
+     
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
-    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="academic.css">
 </head>
 <body>
 <div class="wrapper">
     <?php
+
+        use FontLib\Table\Type\head;
+
         $office_name = "Academic Office";
         include ('../navbar.php');
         include ('editmodal-me.php');
+
+        //include('helpmodal.php');
         include '../../breadcrumb.php';
+        include "../../conn.php";
+
+        
+        $query = "SELECT r_zero_form, r_zero_form_status FROM acad_manual_enrollment WHERE user_id = ?";
+
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $queryData = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        $connection->close();
+
+        function academicStatus($status) {
+        switch ($status) {
+        case 1:
+            return '<button type="button" class="btn btn-danger" id="status_button" disabled>
+            <i class="fa-solid fa-circle-question"></i> Missing
+        </button>';
+            break;
+        case 2:
+            return '<button type="button" class="btn btn-secondary" id="status_button" disabled>
+            <i class="fa-solid fa-spinner"></i> Pending
+        </button>';
+            break;
+        case 3:
+            return '<button type="button" class="btn btn-info" id="status_button" disabled>
+            <i class="fa-solid fa-magnifying-glass"></i> Under Verification
+        </button>';
+            break;
+        case 4:
+            return '<button type="button" class="btn btn-success" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Verified
+        </button>';
+            break;
+    }
+}
     ?>
 
     <div class="container-fluid academicbanner header" style="height: 250px">
@@ -58,9 +103,7 @@
                         <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                             <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                         </button>
-                        <button class="btn btn-outline-primary mb-2">
-                            <i class="fa-solid fa-circle-question"></i> Help
-                        </button>
+                        <a href="help-academic.php" class="btn btn-outline-primary mb-2"><i class="fa-solid fa-circle-question"></i> Help</a>
                     </div>
                 </div>
             </div>
@@ -88,14 +131,10 @@
                             R0 (R Zero) Form
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-circle-question"></i> Missing
-                            </button>
+                            <?php echo academicStatus($queryData[0]['r_zero_form_status']);?>
                         </div>
                         <div class="col-sm-2">
-                            <form action="trygenerate_pdf.php" method="post" target="_blank">
-                                <input type="submit" class="btn btn-primary" value="View Attachment">
-                            </form>
+                        <a href="<?php echo (is_null($queryData[0]['r_zero_form']) ? '' : '../../assets/uploads/generated_pdf/' . $queryData[0]['r_zero_form']); ?>" class="btn <?php echo (is_null($queryData[0]['r_zero_form']) ? "disabled" : "btn-primary"); ?>" target="_blank">View Attachment</a>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
@@ -104,50 +143,73 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
     <div class="d-flex w-100 justify-content-between p-1">
-        <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-            <i class="fa-solid fa-arrow-left"></i> Back
-        </button>
-        <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
-    </div>
-
-    <!-- confirmModal -->
-    <div class="modal fade modal-dark" id="confirmModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
-                    <button type="button" class="btn-close upload" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <a href="../academic.php" class="btn btn-primary px-4"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                    <input id="submitBtn" value="Submit "type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmModal" />
                 </div>
+
+                <!-- confirmModal -->
+                <div class="modal fade modal-dark" id="confirmModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Form Submission</h5>
+                                <button type="button" class="btn-close upload" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h5><center>Are you sure you want to submit these requirements?</center></h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
                 <div class="modal-body">
-                    <h5><center>Are you sure you want to submit these requirements?</center></h5>
+                    Application successfully submitted!
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="../survey.php" class="btn btn-primary">Submit</a>
+                <a href="../survey.php" class="btn btn-primary">Okay</a>
+                </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="push"></div>
     </div>
-</div>
-
-<div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-    <div>
-        <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-    </div>
-    <div>
-        <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-        <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-    </div>
-</div>
+<?php include '../../footer.php'; ?>
 <script src="../../loading.js"></script>
 <script src="modal.js"></script>
 <script src="upload.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="../../saved_settings.js"></script>
+
+<script>
+
+        // Call the function on page load to check the initial status
+        $(document).ready(function() {
+            checkRequirements();
+
+            // Function to check if all requirements are uploaded and enable/disable the submit button accordingly
+            function checkRequirements() {
+                var rzeroFormStatus = <?php echo $reqData[0]['r_zero_form_status']; ?>;
+                var submitBtn = document.getElementById("submitBtn");
+
+                // Enable the submit button only if all three requirements are uploaded
+                if (rzeroFormStatus == 2) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
+            }
+        });
+
+    </script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

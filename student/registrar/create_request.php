@@ -35,46 +35,79 @@
     $row = mysqli_fetch_array($result);
 
     //fetching registrar services
-    $result1 = mysqli_query($connection, "SELECT * FROM reg_services");
-    
+    $result_services = mysqli_query($connection, "SELECT * FROM reg_services");
+
     //for generate registrar code
-    $code_query = "SELECT COUNT(reg_id) as count FROM reg_transaction";
-    $code_result = mysqli_query($connection, $code_query);
-    $code_row = mysqli_fetch_assoc($code_result);
-    $count = $code_row['count'];
-    // Assuming your text is in the format "REG-1"
-    $text = "REG-" . $count;
-    // Extract the number from the text using regular expressions
-    $pattern = "/\d+/";
-    preg_match($pattern, $text, $matches);
-    $number = $matches[0];
-    $add = "0";
-    // Increment the number
-    $number++;
-    $newText = preg_replace($pattern, $number, $text);
+    function generateUniqueCode() {
+        $prefix = "REG-";
+        $code = $prefix . generateRandomNumbers();
+        // Check uniqueness
+        while (!isCodeUnique($code)) {
+            $code = $prefix . generateRandomNumbers();
+        }
+        return $code;
+    }
+    function generateRandomNumbers() {
+        $numbers = '';
+        $length = 10;
+    
+        for ($i = 0; $i < $length; $i++) {
+            $numbers .= random_int(0, 9);
+        }
+    
+        return $numbers;
+    }
+    function isCodeUnique($code) {
+        $host = 'localhost';
+        $database = 'otms_db';
+        $username = 'root';
+        $password = '';
+
+        try {
+            $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare and execute the query
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM doc_requests WHERE request_id = :request_id');
+            $stmt->bindParam(':request_id', $request_id);
+            $stmt->execute();
+
+            $count = $stmt->fetchColumn();
+
+            // If count is greater than 0, the code already exists
+            return $count === 0;
+        } catch (PDOException $e) {
+            // Handle the exception as per your application's error handling mechanism
+            die("Database connection failed: " . $e->getMessage());
+        }
+    }
+    // Usage example
+    $uniqueCode = generateUniqueCode();
 
     //for submit
     if(isset($_POST["submit"])){
-        $reg_code = $newText;
+        $reg_code = $uniqueCode;
         $req_student_service = $_POST["req_student_service"];
         $user_id = $id;
-        $office_id = "3"; //1-Registrar Office
+        $office_id = 3; //3 - Registrar Office
         $date = $_POST["date"];
-        $status_id = "1"; //1-Pending
+        $status_id = 1; //1-Pending
+        $amount = 0.00;
 
-        $query_check =  mysqli_query($connection, "SELECT * FROM reg_transaction WHERE services_id = '$req_student_service' AND status_id = '$status_id'");
+        $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE request_description = '$req_student_service' AND status_id = '$status_id' AND request_id = '$id'");
         if(mysqli_num_rows($query_check) > 0) {
             // Data is redundant
             $_SESSION['redundant'] = true;
         } else {
             // Data is not redundant, proceed with insertion
             // Insert the new data into the database
-            $query = "INSERT INTO reg_transaction VALUES('','$reg_code', '$user_id' , '$office_id' , '$req_student_service','$date', '$status_id')";
-            $result2 = mysqli_query($connection, $query);
+            $query_insert = "INSERT INTO doc_requests VALUES('$reg_code','$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$amount', NULL, NULL)";
+            $result_insert = mysqli_query($connection, $query_insert);
             $_SESSION['success'] = true;
         }
+        unset($_POST);
     }
-    unset($_POST);
+    
 ?>
     <div class="wrapper">
         <?php
@@ -162,8 +195,11 @@
                                 <option hidden value="" >Select options here</option>
                                     <!-- connect to db -->
                                     <?php
-                                    while ($dropdown = mysqli_fetch_assoc($result1)){
-                                        echo '<option value="' . $dropdown['services_id'] . '" >' . $dropdown['services'] . '</option>';
+                                    while ($dropdown = mysqli_fetch_assoc($result_services)){
+                                        if ($dropdown['services_id'] === '23') {
+                                            break; // Stop the loop when services_id is 23
+                                        }
+                                        echo '<option value="' . $dropdown['services'] . '" >' . $dropdown['services'] . '</option>';
                                     }
                                     ?>
                                 </div>
@@ -216,10 +252,9 @@
                                     <div class="modal-body">
                                         <p>Your request has been submitted successfully!</p>
                                         <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
-                                        <p>You can also check the status on the <b>Registrar Transactions History</b> page.</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="your_transaction.php" class="btn btn-primary">Registrar Transactions History</a>
+                                        <a href="../transactions.php" class="btn btn-primary">My Transactions</a>
                                     </div>
                                 </div>
                             </div>

@@ -74,7 +74,7 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                     <div class="accordion-body">
-                        <p>The University's Accounting Office manages the university's finances, including budgets, payments, payroll, and financial records. They ensure the proper use of funds and provide financial reports for transparency. Most common transactions include transcript request payments, miscellaneous payments, and student refunds (offsetting).</p>
+                        <p>The Accounting Office facilitates document requests and manages offset payments for school-related purposes. By securely handling financial transactions, our Accounting Office ensures efficient and accurate execution of these transactions.</p>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                     <div class="accordion-body">
-                        <p>The accounting office can be located in room 202 on the second floor of the main building.</p>
+                        <p>The Accounting Office is situated in Room 210 of the PUP Santa Rosa Campus Building.</p>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                     <div class="accordion-body">
-                        <p>Inquiries can be made through email or a direct visit on the office. You can contact them at mengveloz@gmail.com.</p>
+                        <p>For any additional concerns or inquiries, we kindly request that you visit our office directly and ask for Mrs. Veloz. Upon arrival, we kindly ask you to join the queue and await your turn to process payment transactions and manage your balances. Our office hours are from 8 A.M. to 5 P.M., with the exception of the lunch hours.</p>
                     </div>
                 </div>
             </div>

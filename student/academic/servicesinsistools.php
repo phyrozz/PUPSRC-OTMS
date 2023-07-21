@@ -28,18 +28,32 @@
             //include('generate_pdf.php')
         ?>
 
-        <!-- Pay Alert Modal -->
+    <?php
+    // Start the session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Check if the modal has already been shown in this session
+    if (!isset($_SESSION['session_sistools'])) {
+        // Set the session variable to indicate that the modal has been shown
+        $_SESSION['session_sistools'] = true;
+        $_SESSION['isLoggedIn'] = true;
+    
+        // Display the modal
+        // ... Your modal HTML code goes here ...
+        echo '<!-- Pay Alert Modal -->
         <div id="payModal" class="modal">
             <div id="modalContent" class="modal-content">
-                <img src="/assets/exclamation.png" class="exclamationpic">
-                <br>
+                <img src="/assets/exclamation.png" class="exclamationpic"><br/>
                 <h2>You will complete this transaction in the SIS Tools Website</h2>
-                <p>Please prepare your SIS Account.<br>
-                Once you're finished, click the "Done" button.</p>
-                <br>
+                <p>Please prepare your SIS Account.<br/>Once you are finished, click the "Done" button.</p><br/>
                 <button type="button" class="btn btn-primary" id="nextButton" onclick="close_payModal()">Okay</button>
             </div>
-        </div>
+        </div>';
+    }
+    ?>
+        
 
         <div class="container-fluid academicbanner header" style="height: 250px">
             <?php

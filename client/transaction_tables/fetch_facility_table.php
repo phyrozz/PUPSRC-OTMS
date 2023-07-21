@@ -18,7 +18,7 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'appointment_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 
 // Retrieve the facility appointment data
-$appointmentQuery = "SELECT appointment_id, status_name, start_date_time_sched, end_date_time_sched, facility_name, facility_number
+$appointmentQuery = "SELECT appointment_id, status_name, start_date_time_sched, end_date_time_sched, facility_name, facility_number, client
                         FROM appointment_facility
                         INNER JOIN statuses ON appointment_facility.status_id = statuses.status_id
                         INNER JOIN facility ON appointment_facility.facility_id = facility.facility_id
@@ -31,7 +31,8 @@ if (!empty($searchTerm)) {
                            OR end_date_time_sched LIKE '%$searchTerm%'
                            OR status_name LIKE '%$searchTerm%'
                            OR facility_name LIKE '%$searchTerm%'
-                           OR facility_number LIKE '%$searchTerm%')";
+                           OR facility_number LIKE '%$searchTerm%'
+                           OR client LIKE '%$searchTerm%')";
 }
 
 // Add the sorting parameters to the query

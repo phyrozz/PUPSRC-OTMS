@@ -18,7 +18,7 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the request_equipment requests
-$requestQuery = "SELECT request_id, datetime_schedule, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, quantity_equip, status_name, equipment_name,
+$requestQuery = "SELECT request_id, datetime_schedule, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, quantity_equip, purpose, status_name, equipment_name,
                  users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role
                  FROM request_equipment
                  INNER JOIN users ON request_equipment.user_id = users.user_id

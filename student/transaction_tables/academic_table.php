@@ -1,104 +1,54 @@
-<div class="table-responsive">
-    <table id="transactions-table" class="table table-hover hidden">
-        <thead>
-            <tr class="table-active">
-                <th class="text-center"></th>
-                <th class="text-center">
-                    Status
-                </th>
-            </tr>
-        </thead>
-        <tbody id="table-body">
-            <!-- Table rows will be generated dynamically using JavaScript -->
-        </tbody>
-    </table>
+<?php
+    $academicTable = 'subject_overload';
+
+    if (isset($_POST['filter-academic-button'])) {
+        $academicTable = $_POST['academic-table-select'];
+    }
+?>
+<div class="d-md-flex w-100 justify-content-start pb-2 mx-2">
+    <div class="d-flex">
+        <div class="input-group">
+            <label class="input-group-text" for="table-select">Service:</label>
+            <select id="academicTableSelect" class="form-select" name="academic-table-select">
+                <option value="subject_overload" <?php if ($academicTable === 'subject_overload') echo 'selected'; ?>>Subject Overload</option>
+                <option value="grade_accreditation" <?php if ($academicTable === 'grade_accreditation') echo 'selected'; ?>>Grade Accreditation</option>
+                <option value="cross_enrollment" <?php if ($academicTable === 'cross_enrollment') echo 'selected'; ?>>Cross-Enrollment</option>
+                <option value="shifting" <?php if ($academicTable === 'shifting') echo 'selected'; ?>>Shifting</option>
+                <option value="manual_enrollment" <?php if ($academicTable === 'manual_enrollment') echo 'selected'; ?>>Manual Enrollment</option>
+            </select>
+            <button type="button" id="filter-academic-button" class="btn btn-primary"><i class="fa-solid fa-filter"></i> Select Service</button>
+        </div>
+    </div>
+</div>
+<div id="academic-table-container">
+
 </div>
 <script>
-    function getStatusBadgeClass(status) {
-        switch (status) {
-            case 'Verified':
-                return 'bg-success';
-            case 'Missing':
-                return 'bg-danger';
-            case 'Under Verification':
-                return 'bg-warning text-dark';
-            case 'Pending':
-                return 'bg-dark';
-            default:
-                return 'bg-dark';
-        }
-    }
-
-    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
-    function generateUrlToTransactionsColumn(transactionName) {
-        switch (transactionName) {
-            case 'Subject Overload':
-                return 'http://localhost/student/academic/subject_overload.php';
-            case 'Grade Accreditation':
-                return 'http://localhost/student/academic/grade_accreditation.php';
-            case 'Cross-Enrollment':
-                return 'http://localhost/student/academic/cross_enrollment.php';
-            case 'Shifting':
-                return 'http://localhost/student/academic/shifting.php';
-            case 'Manual Enrollment':
-                return 'http://localhost/student/academic/manual_enrollment.php';
-        }
-    }
-
-    function handlePagination() {
-        // Show the loading indicator
-        var loadingIndicator = document.getElementById('loading-indicator');
-        loadingIndicator.style.display = 'block';
-
-        // Hide the table
-        var table = document.getElementById('transactions-table');
-        table.classList.add('hidden');
-        
-        // Make an AJAX request to fetch the academic transactions
-        $.ajax({
-            url: 'transaction_tables/fetch_academic_transactions.php',
-            method: 'POST',
-            data: {},
-            success: function(response) {
-                // Hide the loading indicator
-                loadingIndicator.style.display = 'none';
-
-                // Show the table
-                table.classList.remove('hidden');
-
-                // Parse the JSON response
-                var data = JSON.parse(response);
-
-                // Update the table body with the received data
-                var tableBody = document.getElementById('table-body');
-                tableBody.innerHTML = '';
-
-                academicTransactionNames = ["Subject Overload", "Grade Accreditation", "Cross-Enrollment", "Shifting", "Manual Enrollment"];
-                academicTransactionStatuses = ["subject_overload_status", "grade_accreditation_status", "cross_enrollment_status", "shifting_status", "manual_enrollment_status"];
-
-                for (var i = 0; i < academicTransactionNames.length; i++) {
-                    var academic = data.academic_transactions[0]; // Use index 0 to access the single object in the array
-
-                    var row = '<tr>' +
-                        '<td><a href="' + generateUrlToTransactionsColumn(academicTransactionNames[i]) + '">' + academicTransactionNames[i] + '</a></td>' +
-                        '<td class="text-center">' +
-                        '<span class="badge rounded-pill ' + getStatusBadgeClass(academic[academicTransactionStatuses[i]]) + '">' + academic[academicTransactionStatuses[i]] + '</span>' +
-                        '</td>' +
-                        '</tr>';
-                    tableBody.innerHTML += row;
-
-                    console.log(academic[academicTransactionStatuses[i]]);
+    $(document).ready(function() {
+        function loadTransactionTable() {
+            var selectedTable = $('#academicTableSelect').val();
+            // Send an AJAX request to load the corresponding academic table
+            $.ajax({
+                url: 'transaction_tables/academic/' + selectedTable + '.php',
+                type: 'GET',
+                dataType: 'html',
+                success: function(data) {
+                    $('#academic-table-container').html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error: ' + error);
                 }
-            },
-            error: function() {
-                // Hide the loading indicator in case of an error
-                loadingIndicator.style.display = 'none';
+            });
+        }
 
-                // Handle the error appropriately
-                console.log('Error occurred while fetching data.');
-            }
+        // Load the transaction table when the page loads
+        loadTransactionTable();
+
+        $('#filter-academic-button').on('click', function(event) {
+            loadTransactionTable();
         });
-    }
 
-    handlePagination();
+        $('#search-input').hide();
+        $('#search-button').hide();
+    });
 </script>

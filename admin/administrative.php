@@ -39,19 +39,21 @@
                 $table = $_POST['table-select'];
             }
         ?>
+        
         <div class="container-fluid py-2">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="d-md-flex w-100 pb-2 justify-content-between align-items-end">
                         <div class="d-flex flex-column gap-1">
                             <div>
+                            
                                 <form id="defaultTableValueSelect" class="d-flex input-group" action="administrative.php" method="post">
                                     <label class="input-group-text" for="table-select">Service:</label>    
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
                                         <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                         <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment </option>
                                     </select>
-                                    <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary">Load Table</button>
+                                    <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
                                 </form>
                             </div>
                             <div>

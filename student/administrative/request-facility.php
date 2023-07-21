@@ -20,6 +20,7 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -179,7 +180,6 @@
                                     <option value="BTL-HE">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
 
                                 </select>
-
                                 <div class="invalid-feedback">Please choose a course.</div>
                             </div>
 
@@ -224,14 +224,16 @@
                             
                             <div class="form-group required col-md-6">
                                 <label for="startDate" class="form-label">Date Requested</label>
-                                <input type="date" class="form-control" name="startDate" id="startDate" required>
-                                <div class="invalid-feedback">Please choose a different request date. (Sundays are not allowed)</div>
+                                <input type="text" class="form-control" name="startDate" id="startDate" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
+                                <div id="startDateValidationMessage" class="text-danger"></div>
                             </div>
+
                             <div class="form-group required col-md-6">
                                 <label for="endDate" class="form-label">Date Ended</label>
-                                <input type="date" class="form-control" name="endDate" id="endDate" required>
-                                <div class="invalid-feedback">Please choose a different end date. (Sundays are not allowed)</div>
+                                <input type="text" class="form-control" name="endDate" id="endDate" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
+                                <div id="endDateValidationMessage" class="text-danger"></div>
                             </div>
+
                             <div class="form-group required col-md-6">
                                 <label for="startTime" class="form-label">Time Requested</label>
                                 <select class="form-control form-select" name="startTime" id="startTime" required>
@@ -346,7 +348,7 @@
                                     <div class="modal-body">
                                         <p>Your appointment request has been submitted successfully!</p>
                                         <p>You can check the status of your appointment request on the <b>My Transactions</b> page.</p>
-                                        <p><b>You must print this letter and submit it to the Administrative Office before your request.</b></p>
+                                        <p><b>You must print this letter and submit it to the Administrative Office before your appointment.</b></p>
                                         <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Letter</button>
                                     </div>
                                     <div class="modal-footer">
@@ -365,36 +367,9 @@
     </div>
     <?php include '../../footer.php'; ?>
     <script src="../../loading.js"></script>
-    <script src="jquery.js"></script>
+    <script src="../../jquery.js"></script>
     
     <script>
-        var date = new Date();
-
-        // Get the day, month, and year
-        let day = date.getDate();
-        day = day.toString().padStart(2, '0');
-        let month = date.getMonth() + 1;
-        month = month.toString().padStart(2, '0');
-        let year = date.getFullYear();
-
-        // Format the current date
-        let currentDate = `${year}-${month}-${day}`;
-
-        // Define the maximum date allowed
-        var maxDate = "2030-12-31";
-
-        // Set the minimum and maximum dates for the "Date Requested" input field
-        document.getElementById("startDate").min = currentDate;
-        document.getElementById("endDate").max = maxDate;
-
-
-        // Set the minimum date for the "Date Ended" input field to the selected date in "Date Requested"
-        document.getElementById("startDate").addEventListener("change", () => {
-        const selectedDate = document.getElementById("startDate").value;
-        document.getElementById("endDate").min = selectedDate;
-        });
-
-
         // Get the date requested and date ended input elements
         const startDateInput = document.getElementById("startDate");
         const endDateInput = document.getElementById("endDate");
@@ -474,6 +449,178 @@
         // Initial update of end time options
         updateEndTimeOptions();
 
+    </script>
+
+    <script>
+        var startDateValidation = document.getElementById("startDate");
+        var endDateValidation = document.getElementById("endDate");
+        var startDateValidationMessage = document.getElementById("startDateValidationMessage");
+        var endDateValidationMessage = document.getElementById("endDateValidationMessage");
+            function validateForm() {
+                var form = document.getElementById('appointment-form');
+                var selectFields = form.querySelectorAll('select[required]');
+
+
+                for (var i = 0; i < selectFields.length; i++) {
+                    var selectField = selectFields[i];
+                    if (selectField.value === "") {
+                        selectField.classList.add('is-invalid');
+                        selectField.classList.remove('is-valid');
+                    } else {
+                        selectField.classList.add('is-valid');
+                        selectField.classList.remove('is-invalid');
+                    }
+                }
+                // Check if start date is empty
+                if (startDateValidation.value.trim() === '') {
+                    startDateValidationMessage.textContent = "Please select a starting date.";
+                    startDateValidation.classList.add('is-invalid');
+                }
+                    else {
+                        startDateValidationMessage.textContent = "";
+                        startDateValidation.classList.remove('is-invalid');
+                    }
+                // Check if end date is empty
+                if (endDateValidation.value.trim() === '') {
+                    endDateValidationMessage.textContent = "Please select a ending date.";
+                    endDateValidation.classList.add('is-invalid');
+                }
+                    else {
+                        endDateValidationMessage.textContent = "";
+                        endDateValidation.classList.remove('is-invalid');
+                    }
+                
+
+
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }
+                
+                // startDateValidationMEssage disappears after the user select an date
+                startDateValidation.addEventListener('change', () => {
+                const dateValue = startDateValidation.value.trim();
+
+                    if (dateValue === '') {
+                        startDateValidationMessage.textContent = "Please select a date.";
+                        startDateValidation.classList.add('is-invalid');
+                    }
+                    else {
+                        startDateValidationMessage.textContent = "";
+                        startDateValidation.classList.remove('is-invalid');
+                    }
+
+                });
+                // endDateValidationMEssage disappears after the user select an date
+                endDateValidation.addEventListener('change', () => {
+                    const dateValue = endDateValidation.value.trim();
+
+                    if (dateValue === '') {
+                        endDateValidationMessage.textContent = "Please select a date.";
+                        endDateValidation.classList.add('is-invalid');
+                    }
+                    else {
+                        endDateValidationMessage.textContent = "";
+                        endDateValidation.classList.remove('is-invalid');
+                    }
+
+                });
+
+                // Function to handle form submission
+                function handleSubmit() {
+                    validateForm();
+                    if (document.getElementById('appointment-form').checkValidity()) {
+                    $('#confirmSubmitModal').modal('show');
+                    }
+                }
+
+                // Add event listener to the submit button
+                document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+                
+                function redirectToViewEquipment() {
+                    // Redirect to the view-equipment.php page
+                    window.location.href = "view-facility.php";
+                }
+                function redirectToAnotherPage() {
+                    var url = "http://localhost/student/administrative/generate-letter.php";
+                    window.open(url, "_blank"); 
+                }
+    </script>
+
+
+    <!-- custom calendar where sundays are disabled -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        var disableSundays = function(date) {
+        // Disable date on Sundays
+        return (date.getDay() === 0);
+        };
+
+        var startDatePicker = flatpickr("#startDate", {
+        altInput: true,
+        dateFormat: "Y-m-d",
+        theme: "custom-datepicker",
+        minDate: "today",
+        maxDate: "31.12.2033",
+        disable: [
+            disableSundays
+        ],
+        locale: {
+            "firstDayOfWeek": 1 // start week on Monday
+        },
+        onChange: function(selectedDates, dateStr, instance) {
+            var currentDate = new Date();
+                    var selectedDate = selectedDates[0];
+                    var timeSelect = document.getElementById("startTime");
+                    
+                    if (selectedDate.toDateString() === currentDate.toDateString()) {
+                        // Reset the selected time value when the date is changed to today
+                        timeSelect.value = '';
+                        // Enable all options in the time select for today's date
+                        for (var i = 0; i < timeSelect.options.length; i++) {
+                            timeSelect.options[i].disabled = false;
+                        }
+                        
+                        // Disable past times in the time select based on the current time
+                        var currentHour = currentDate.getHours();
+                        var currentMinute = currentDate.getMinutes();
+                        for (var i = 0; i < timeSelect.options.length; i++) {
+                            var timeValue = timeSelect.options[i].value.split(":");
+                            var optionHour = parseInt(timeValue[0]);
+                            var optionMinute = parseInt(timeValue[1]);
+                            if (optionHour < currentHour || (optionHour === currentHour && optionMinute <= currentMinute)) {
+                                timeSelect.options[i].disabled = true;
+                            }
+                        }
+                    } else {
+                        // Enable all options in the time select for other dates
+                        for (var i = 0; i < timeSelect.options.length; i++) {
+                            timeSelect.options[i].disabled = false;
+                        }
+                    }
+
+                // Update the minDate of the endDate datepicker
+                if (selectedDates.length > 0) {
+                endDatePicker.set("minDate", selectedDates[0]);
+                }
+            }
+        });
+
+        var endDatePicker = flatpickr("#endDate", {
+        altInput: true,
+        dateFormat: "Y-m-d",
+        theme: "custom-datepicker",
+        minDate: "today",
+        maxDate: "31.12.2033",
+        disable: [
+            disableSundays
+        ],
+        locale: {
+            "firstDayOfWeek": 1 // start week on Monday
+        },
+        });
 
     </script>
 
@@ -507,6 +654,7 @@
                     sectionSelect.appendChild(option);
                 }
             }
+                
         }
 
         // Add event listener to the course select dropdown
@@ -514,97 +662,6 @@
     </script>
 
 
-    <script>
-
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get the date input elements
-            var startDateInput = document.getElementById("startDate");
-            var endDateInput = document.getElementById("endDate");
-
-            // Add event listeners for when the dates change
-            startDateInput.addEventListener("change", validateDate);
-            endDateInput.addEventListener("change", validateDate);
-
-            function validateDate() {
-            var startDate = new Date(startDateInput.value);
-            var endDate = new Date(endDateInput.value);
-
-            // Check if either the start date or end date is a Sunday
-            if (startDate.getDay() === 0 || endDate.getDay() === 0) {
-                startDateInput.setCustomValidity("Sundays are not allowed. Please choose different dates.");
-                endDateInput.setCustomValidity("Sundays are not allowed. Please choose different dates.");
-            } else {
-                startDateInput.setCustomValidity("");
-                endDateInput.setCustomValidity("");
-            }
-            }
-        });
-
-        function validateForm() {
-            var form = document.getElementById('appointment-form');
-            var selectFields = form.querySelectorAll('select[required]');
-            var startDateField = document.getElementById('startDate');
-            var endDateField = document.getElementById('endDate');
-
-            for (var i = 0; i < selectFields.length; i++) {
-                var selectField = selectFields[i];
-                if (selectField.value === "") {
-                    selectField.classList.add('is-invalid');
-                    selectField.classList.remove('is-valid');
-                } else {
-                    selectField.classList.add('is-valid');
-                    selectField.classList.remove('is-invalid');
-                }
-            }
-
-            if (startDateField.value === "") {
-                startDateField.classList.add('is-invalid');
-                startDateField.classList.remove('is-valid');
-            } else {
-                startDateField.classList.add('is-valid');
-                startDateField.classList.remove('is-invalid');
-            }
-
-            if (endDateField.value === "") {
-                endDateField.classList.add('is-invalid');
-                endDateField.classList.remove('is-valid');
-            } else {
-                endDateField.classList.add('is-valid');
-                endDateField.classList.remove('is-invalid');
-            }
-
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }
-
-
-
-            // Function to handle form submission
-            function handleSubmit() {
-                validateForm();
-                if (document.getElementById('appointment-form').checkValidity()) {
-                $('#confirmSubmitModal').modal('show');
-                }
-            }
-
-
-
-            // Add event listener to the submit button
-            document.getElementById('submitBtn').addEventListener('click', handleSubmit);
-            
-            function redirectToViewEquipment() {
-                // Redirect to the view-equipment.php page
-                window.location.href = "view-facility.php";
-            }
-            function redirectToAnotherPage() {
-                var url = "http://localhost/student/administrative/generate-letter.php";
-                window.open(url, "_blank"); 
-            }
-
-    </script>
 
     <script>
         $(document).ready(function() {

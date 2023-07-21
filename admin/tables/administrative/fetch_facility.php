@@ -20,7 +20,7 @@ $order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 
 // Retrieve the facility appointment data
 
-$appointmentQuery = "SELECT appointment_id, course, section, start_date_time_sched, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(appointment_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_appointment_id, end_date_time_sched, status_name, facility_name, facility_number,
+$appointmentQuery = "SELECT appointment_id, course, section, start_date_time_sched, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(appointment_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_appointment_id, end_date_time_sched, status_name, purpose, facility_name, facility_number,
                  users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role
                  FROM appointment_facility
                  INNER JOIN users ON appointment_facility.user_id = users.user_id

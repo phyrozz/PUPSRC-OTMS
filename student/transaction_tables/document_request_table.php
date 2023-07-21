@@ -7,10 +7,6 @@
                     Request Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="desc">
-                    Office
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
                 <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
                     Request
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -79,18 +75,6 @@
                 return 'bg-dark';
         }
     }
-    
-    // Add more cases here for other office document requests
-    function getSchedulePageRedirect(request) {
-        switch (request) {
-            case "Request Good Moral Document":
-                return "/student/guidance/doc_appointments/good_morals.php";
-            case "Request Clearance":
-                return "/student/guidance/doc_appointments/clearance.php";
-            default:
-                return "#";
-        }
-    }
 
     function handleDeleteRequest(requestIds) {
         // Make an AJAX request to delete the document requests
@@ -150,22 +134,6 @@
         updateDeleteButtonState();
     }
 
-    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
-    function generateUrlToOfficeColumn(officeName) {
-        switch (officeName) {
-            case 'Guidance Office':
-                return 'http://localhost/student/guidance.php';
-            case 'Registrar Office':
-                return 'http://localhost/student/registrar.php';
-            case 'Academic Office':
-                return 'http://localhost/student/academic.php';
-            case 'Accounting Office':
-                return 'http://localhost/student/accounting.php';
-            case 'Administrative Office':
-                return 'http://localhost/student/administrative.php';
-        }
-    }
-
     // Event listener for edit buttons
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-request')) {
@@ -200,7 +168,7 @@
                             <label for="scheduledDate" class="form-label">Scheduled Date</label>
                             <input type="text" class="form-control" id="scheduledDate" name="scheduledDate" value="${request.scheduled_datetime}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
                     </form>
                 `;
 
@@ -293,18 +261,10 @@
                 if (data.total_records > 0) {
                     for (var i = 0; i < data.document_requests.length; i++) {
                         var request = data.document_requests[i];
-                        var scheduleButton = '';
-
-                        // Add schedule button if the status is "Pending"
-                        if (request.status_name === 'Pending') {
-                            var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
-                            scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
-                        }
 
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
-                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</a></td>' +
                             '<td>' + request.request_description + '</td>' +
                             '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +

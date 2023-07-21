@@ -15,42 +15,42 @@ $startingRecord = ($page - 1) * $recordsPerPage;
 $searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
 // Retrieve the sorting parameters from the AJAX request
-$column = isset($_POST['column']) ? $_POST['column'] : 'reg_id';
+$column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the document requests
-$registrarRequestsQuery = "SELECT * FROM reg_transaction
-                        INNER JOIN users ON reg_transaction.user_id = users.user_id
-                        INNER JOIN offices ON reg_transaction.office_id = offices.office_id
-                        INNER JOIN reg_services ON reg_transaction.services_id = reg_services.services_id
-                        INNER JOIN statuses ON reg_transaction.status_id = statuses.status_id
-                        WHERE users.user_id = " . $_SESSION['user_id'] . "";
+$documentRequestsQuery = "SELECT request_id, office_name, request_description, scheduled_datetime, status_name, amount_to_pay
+                        FROM doc_requests
+                        INNER JOIN offices ON doc_requests.office_id = offices.office_id
+                        INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
+                        WHERE user_id = " . $_SESSION['user_id'] . " AND office_name = 'Registrar Office'";
 
 if (!empty($searchTerm)) {
-    $registrarRequestsQuery .= " AND (request_code LIKE '%$searchTerm%'
+    $documentRequestsQuery .= " AND (request_id LIKE '%$searchTerm%'
                            OR office_name LIKE '%$searchTerm%'
-                           OR services LIKE '%$searchTerm%'
-                           OR scheduled LIKE '%$searchTerm%'
-                           OR status_name LIKE '%$searchTerm%')";
+                           OR request_description LIKE '%$searchTerm%'
+                           OR scheduled_datetime LIKE '%$searchTerm%'
+                           OR status_name LIKE '%$searchTerm%'
+                           OR amount_to_pay LIKE '%$searchTerm%')";
 }
 
 // Add the sorting parameters to the query
-$registrarRequestsQuery .= " ORDER BY $column $order
+$documentRequestsQuery .= " ORDER BY $column $order
 LIMIT $startingRecord, $recordsPerPage";
 
 
-$result = mysqli_query($connection, $registrarRequestsQuery);
+$result = mysqli_query($connection, $documentRequestsQuery);
 
 if ($result) {
-    $registrarRequests = array();
+    $documentRequests = array();
     while ($row = mysqli_fetch_assoc($result)) {
-        $registrarRequests[] = $row;
+        $documentRequests[] = $row;
     }
 
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
-                          FROM reg_transaction
-                          WHERE user_id = " . $_SESSION['user_id'] . "";
+                          FROM doc_requests
+                          WHERE user_id = " . $_SESSION['user_id'] . " AND office_id = 3";
     $totalRecordsResult = mysqli_query($connection, $totalRecordsQuery);
     $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
     $totalRecords = $totalRecordsRow['total_records'];
@@ -60,7 +60,7 @@ if ($result) {
 
     // Prepare the JSON response
     $response = array(
-        'registrar_requests' => $registrarRequests,
+        'document_requests' => $documentRequests,
         'total_records' => $totalRecords,
         'total_pages' => $totalPages,
         'current_page' => $page

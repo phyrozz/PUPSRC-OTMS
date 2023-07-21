@@ -45,11 +45,11 @@
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
-            <a href="registrar/create_request.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="registrar/create_request.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
                 <h2>Create Request</h2>
                 <p>Seeks the registrar office's help in requesting related to academic records</p>
             </a>
-            <a href="registrar/your_transaction.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="registrar/your_transaction.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Registrar Transactions History</h2>
                 <p>Status of current request with the registrar office</p>
             </a>
