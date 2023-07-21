@@ -246,7 +246,7 @@ rpm:
 # Start the development server
 .PHONY: server
 server:
-	$(PHP) -t example -S localhost:$(PORT)
+	$(PHP) -t example -S 192.168.84.183:$(PORT)
 
 # Tag this GIT version
 .PHONY: tag

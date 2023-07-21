@@ -7,7 +7,7 @@
 
     // Avoid admin user from accessing other office pages
     if ($_SESSION['office_name'] != "Academic Office") {
-        header("Location: http://localhost/admin/redirect.php");
+        header("Location: http://192.168.84.183/admin/redirect.php");
         exit();
     }
 ?>

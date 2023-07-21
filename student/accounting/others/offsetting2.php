@@ -1,7 +1,7 @@
 <?php
 /*IN PROGRESS (waiting for database)
 session_start();
-$servername = "localhost";
+$servername = "192.168.84.183";
 $username =  "root";
 $password = "";
 $dbname =  "accountingdb";

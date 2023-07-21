@@ -2,7 +2,7 @@
     session_start();
     
     if (!isset($_SESSION['user_id']) or $_SESSION['user_role'] != 2) {
-        header('Location: http://localhost/index.php');
+        header('Location: http://192.168.84.183/index.php');
         exit;
     }
 
@@ -10,9 +10,9 @@
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
   <div class="container-fluid">
-    <a href="http://localhost/client/home.php"><img class="p-2" src="http://localhost/assets/pup-logo.png"
+    <a href="http://192.168.84.183/client/home.php"><img class="p-2" src="http://192.168.84.183/assets/pup-logo.png"
         alt="PUP Logo" width="40"></a>
-    <a class="navbar-brand" href="http://localhost/client/home.php"><strong>PUPSRC-OTMS</strong></a>
+    <a class="navbar-brand" href="http://192.168.84.183/client/home.php"><strong>PUPSRC-OTMS</strong></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -27,10 +27,10 @@
                         ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-            <li><a class="dropdown-item" href="http://localhost/client/registrar.php">Registrar</a></li>
-            <li><a class="dropdown-item" href="http://localhost/client/guidance.php">Guidance</a></li>
-            <li><a class="dropdown-item" href="http://localhost/client/accounting.php">Accounting</a></li>
-            <li><a class="dropdown-item" href="http://localhost/client/administrative.php">Administrative Services</a>
+            <li><a class="dropdown-item" href="http://192.168.84.183/client/registrar.php">Registrar</a></li>
+            <li><a class="dropdown-item" href="http://192.168.84.183/client/guidance.php">Guidance</a></li>
+            <li><a class="dropdown-item" href="http://192.168.84.183/client/accounting.php">Accounting</a></li>
+            <li><a class="dropdown-item" href="http://192.168.84.183/client/administrative.php">Administrative Services</a>
             </li>
           </ul>
         </li>
@@ -87,9 +87,9 @@
             <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-            <li><a class="dropdown-item" href="http://localhost/client/transactions.php">My Transactions</a></li>
-            <li><a class="dropdown-item" href="http://localhost/client/my_account.php">Account Settings</a></li>
-            <li><a class="dropdown-item" href="http://localhost/sign_out.php"><i
+            <li><a class="dropdown-item" href="http://192.168.84.183/client/transactions.php">My Transactions</a></li>
+            <li><a class="dropdown-item" href="http://192.168.84.183/client/my_account.php">Account Settings</a></li>
+            <li><a class="dropdown-item" href="http://192.168.84.183/sign_out.php"><i
                   class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
           </ul>
         </li>

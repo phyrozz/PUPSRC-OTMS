@@ -1,7 +1,7 @@
 <!-- INSERT PHP SECTION -->
 <?php
 $office_name = "Accounting Office";
-$servername = "localhost";
+$servername = "192.168.84.183";
 $username = "root";
 $password = "";
 $dbname = "otms_db";
