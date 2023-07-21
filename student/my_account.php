@@ -17,12 +17,12 @@
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -136,17 +136,6 @@
                     <div class="card mb-4 px-5 py-5 shadow-lg">
                         <h4 class="pb-3 text-md-start text-center">Settings</h4>
                         <div class="m-0 pt-3">
-                            <p class="fs-6 m-0 my-1"><strong>Default Transactions table</strong></p>
-                            <select id="transactionTableSelect" class="form-select-sm">
-                                <option value="document_request">Document Requests</option>
-                                <option value="scheduled_appointments">Counseling Schedules</option>
-                                <option value="payments">Payments</option>
-                                <option value="request_equipment">Request of Equipment</option>
-                                <option value="appointment_facility">Facility Appointment</option>
-                            </select>
-                        </div>
-                        <hr />
-                        <div class="m-0 pt-3">
                             <p class="fs-6 m-0 my-1"><strong>Enable Dark Mode</strong></p>
                             <input id="darkModeSwitch" type="checkbox" data-toggle="switchbutton" data-width="75">
                             <div id="switchValue" class="pt-3"></div>
@@ -251,7 +240,7 @@
     <?php include '../footer.php'; ?>
     <script src="../loading.js"></script>
     <script src="../saved_settings.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="../node_modules/flatpickr/dist/flatpickr.min.js"></script>
     <script>
         $(document).ready(function() {
             document.getElementById('darkModeSwitch').switchButton();

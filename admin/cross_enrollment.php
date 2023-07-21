@@ -1,3 +1,16 @@
+<?php
+    // Include the database connection file (conn.php)
+    include "../conn.php";
+
+    $office_name = "Academic Office";
+    include "navbar.php";
+
+    // Avoid admin user from accessing other office pages
+    if ($_SESSION['office_name'] != "Academic Office") {
+        header("Location: http://192.168.100.4/admin/redirect.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +24,7 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
@@ -51,23 +64,41 @@
                         break;
                 }
             });
+
+            // Handle status dropdown change event
+            $("select.status-dropdown").change(function () {
+                const userId = $(this).data("user-id");
+                const statusType = $(this).data("status-type");
+                const status = $(this).val();
+
+                // Call the function to update the status in the database using AJAX
+                updateStatusInDatabase(userId, statusType, status);
+            });
+
+            // Function to update the status in the database using AJAX
+            function updateStatusInDatabase(userId, statusType, status) {
+                $.ajax({
+                    url: "tables/academic/update_status.php",
+                    type: "POST",
+                    data: {
+                        userId: userId,
+                        type: statusType,
+                        status: status,
+                    },
+                    success: function (response) {
+                        // Handle the response (optional)
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors, if any
+                        console.log("Error: " + error);
+                    },
+                });
+            }
         });
     </script>
 </head>
 <body>
-    <?php
-        // Include the database connection file (conn.php)
-        include "../conn.php";
-
-        $office_name = "Academic Office";
-        include "navbar.php";
-
-        // Avoid admin user from accessing other office pages
-        if ($_SESSION['office_name'] != "Academic Office") {
-            header("Location: http://localhost/admin/redirect.php");
-            exit();
-        }
-    ?>
     <div class="wrapper">
         <!-- Loading page -->
         <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
@@ -108,6 +139,28 @@
                         </thead>
                         <tbody>
                             <?php
+                                // Function to generate the options for the status dropdown
+                                function generateStatusOptions($selectedStatusID)
+                                {
+                                    // You can fetch the status options from your database or define them manually
+                                    $statusOptions = array(
+                                        1 => "Missing",
+                                        2 => "Pending",
+                                        3 => "Under Verification",
+                                        4 => "Verified",
+                                        5 => "Rejected"
+                                    );
+
+                                    // Generate the options
+                                    $options = "";
+                                    foreach ($statusOptions as $statusID => $statusName) {
+                                        $selected = ($statusID == $selectedStatusID) ? "selected" : "";
+                                        $options .= "<option value='{$statusID}' {$selected}>{$statusName}</option>";
+                                    }
+
+                                    return $options;
+                                }
+
                                 // Fetch data from the acad_subject_overload table with join queries
                                 $query = "SELECT ao.transaction_id, u.user_id, u.student_no, ao.application_letter, ao.application_letter_status
                                           FROM acad_cross_enrollment ao
@@ -130,10 +183,8 @@
                                         }
 
                                         echo "</td>";
-                                        echo '<td><select class="form-select status-dropdown" data-request-id="' . $row['transaction_id'] . '">';
-
-                                        // ... (code for generating and displaying the options for overload letter status dropdown) ...
-
+                                        echo '<td><select class="form-select status-dropdown" data-user-id="' . $row['user_id'] . '" data-status-type="applicationLetter">';
+                                        echo generateStatusOptions($row['application_letter_status']);
                                         echo "</select></td>";
 
                                         

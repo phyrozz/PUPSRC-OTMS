@@ -17,10 +17,10 @@
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -83,19 +83,41 @@
                 }
             }
 
-            // Insert the form data into the database
-            $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, amount_to_pay, attached_files)
-                            VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $connection->prepare($insertQuery);
-            $stmt->bind_param("ssiiids", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay, $fileContents);
-            if ($stmt->execute()) {
-                $_SESSION['success'] = true;
-            } else {
-                var_dump($stmt->error);
-            }
-        
+            // Generate a unique request_id based on the current timestamp
+            $timestamp = time(); // Get the current timestamp
+            $requestId = 'DR-' . $timestamp;
+
+            // Check the last request_id submitted by the user from the database
+            $lastRequestIdQuery = "SELECT MAX(request_id) AS last_request_id FROM doc_requests WHERE user_id = ? AND request_description = ?";
+            $stmt = $connection->prepare($lastRequestIdQuery);
+            $stmt->bind_param("is", $_SESSION['user_id'], $requestDescription);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $lastRequestId = $row['last_request_id'];
             $stmt->close();
-            $connection->close();
+
+            // If the user has submitted a request within the last 20 minutes, prevent the form submission
+            $timeDifference = $timestamp - intval(substr($lastRequestId, 3));
+            if ($lastRequestId !== null && $timeDifference < 1200) { // 20 minutes = 20 * 60 seconds = 1200 seconds
+                // Set a session variable to show a message to the user
+                $_SESSION['requestIntervalExceeded'] = true;
+            }
+            else {
+                // Insert the form data into the database
+                $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, amount_to_pay, attached_files)
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $connection->prepare($insertQuery);
+                $stmt->bind_param("ssiiids", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay, $fileContents);
+                if ($stmt->execute()) {
+                $_SESSION['success'] = true;
+                } else {
+                var_dump($stmt->error);
+                }
+
+                $stmt->close();
+                $connection->close();
+            }
         }
         ?>
         <div class="container-fluid p-4">
@@ -230,10 +252,10 @@
                                             <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the request letter and other requirements.</li>
                                             <li>Wait for the request to be approved by constantly checking its status on the <b>My Transactions</b> page.</li>
                                         </ol>
-                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
+                                        <a href="./generate_pdf-c.php" id="print-letter-btn" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="../transactions.php" class="btn btn-primary"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
+                                        <a href="../transactions.php" id="redirect-btn" class="btn disabled"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
                                     </div>
                                 </div>
                             </div>
@@ -257,6 +279,24 @@
                             </div>
                         </div>
                         <!-- End of file upload failed modal -->
+                        <!-- Request Interval Exceeded modal -->
+                        <div id="requestIntervalExceededModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="requestIntervalExceededModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="requestIntervalExceededModalLabel">Error</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>You have already recently requested. Please try again within the next 20 minutes.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of Request Interval Exceeded modal -->
                     </div>
                 </div>
             </div>
@@ -321,8 +361,16 @@
 
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+
+        // Add event listener to the Print Letter button on success modal in order to enable the state of the Go to My Transactions button
+        document.getElementById('print-letter-btn').addEventListener('click', () => {
+            redirectBtn = document.getElementById('redirect-btn');
+
+            redirectBtn.classList.add('btn-primary');
+            redirectBtn.classList.remove('disabled');
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
     <script>
         flatpickr("#datepicker", {
             readonly: false,
@@ -349,7 +397,7 @@
     if (isset($_SESSION['success'])) {
         ?>
         <script>
-            // window.location.href="http://localhost/student/guidance/clearance.php";
+            // window.location.href="http://192.168.100.4/student/guidance/clearance.php";
             $(document).ready(function() {
                 $("#successModal").modal("show");
             })
@@ -366,6 +414,16 @@
         </script>
         <?php
         unset($_SESSION['failedToUploadAttachment']);
+    }
+    if (isset($_SESSION['requestIntervalExceeded'])) {
+        ?>
+        <script>
+            $(document).ready(function() {
+                $("#requestIntervalExceededModal").modal("show");
+            })
+        </script>
+        <?php
+        unset($_SESSION['requestIntervalExceeded']);
     }
     exit();
     ?>

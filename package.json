@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.0",
     "bootstrap": "^5.2.3",
     "datatables.net-dt": "^1.13.5",
+    "flatpickr": "^4.6.13",
     "jquery": "^3.6.4",
     "requirejs": "^2.3.6"
   }

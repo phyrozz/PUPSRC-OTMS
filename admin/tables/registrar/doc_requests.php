@@ -62,6 +62,21 @@ $statuses = array(
     </tbody>
   </table>
 </div>
+<div id="viewUserDetailsModal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="viewUserDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewUserDetailsModalLabel">User Details</h5>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
   <div class="d-flex gap-2">
     <div class="input-group">
@@ -102,6 +117,91 @@ function getStatusBadgeClass(status) {
     default:
       return 'bg-dark';
   }
+}
+
+// Function to populate the user details modal
+function populateUserInfoModal(userId) {
+  $.ajax({
+    url: 'tables/registrar/get_user_details.php',
+    method: 'POST',
+    data: {
+      user_id: userId
+    },
+    success: function(response) {
+      var userDetails = JSON.parse(response);
+      var modalTitle = document.getElementById('viewUserDetailsModalLabel');
+      var modalBody = document.querySelector('#viewUserDetailsModal .modal-body');
+
+      modalTitle.innerText = 'User details';
+
+      modalBody.innerHTML = `
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Name</strong></p>
+                                <p class="mx-2">${userDetails.last_name + ", " + userDetails.first_name + " " + userDetails.middle_name + " " + userDetails.extension_name}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Student/Guest</strong></p>
+                                <p class="mx-2">${userDetails.user_role_id == 1 ? "Student" : "Guest"}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Student Number</strong></p>
+                                <p class="mx-2">${userDetails.student_no}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Course</strong></p>
+                                <p class="mx-2">${userDetails.course}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Year and Section</strong></p>
+                                <p class="mx-2">${userDetails.year_and_section == "" || null ? 'N/A' : userDetails.year_and_section}</p>
+                            </div>
+                            </div>
+                        <div class="col-6">
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Sex</strong></p>
+                                <p class="mx-2">${userDetails.sex == 1 ? "Male" : "Female"}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Email</strong></p>
+                                <p class="mx-2">${userDetails.email}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Contact Number</strong></p>
+                                <p class="mx-2">${userDetails.contact_no}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Birth Date</strong></p>
+                                <p class="mx-2">${userDetails.formatted_birth_date}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Address</strong></p>
+                                <p class="mx-2 py-0 my-0">${userDetails.home_address}</p>
+                                <p class="mx-2 py-0 my-0">${userDetails.barangay + ", " + userDetails.city}</p>
+                                <p class="mx-2 py-0 my-0">${userDetails.province + (userDetails.zip_code ? ", " + userDetails.zip_code : "")}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+      $("#viewUserDetailsModal").modal("show");
+    },
+    error: function() {
+      console.log('Error occurred while fetching request details.');
+    }
+  });
+}
+
+function populateFeedbackTextModal(feedbackText) {
+  var modalTitle = document.getElementById('viewFeedbackTextModalLabel');
+  var modalBody = document.querySelector('#viewFeedbackTextModal .modal-body');
+
+  modalTitle.innerText = 'Feedback Text';
+
+  modalBody.innerHTML = feedbackText;
+
+  $("#viewFeedbackTextModal").modal("show");
 }
 
 function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
@@ -163,8 +263,9 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
                 day: 'numeric',
                 year: 'numeric'
               })) : 'Not yet scheduled') + '</td>' +
-            '<td>' + request.last_name + ", " + request.first_name + " " + request.middle_name + " " + request
-            .extension_name + '</td>' +
+            '<td><a href="#" class="user-details-link" data-user-id="' + request.user_id + '">' + request
+            .last_name + ", " + request.first_name + " " + request.middle_name + " " + request
+            .extension_name + '</a></td>' +
             '<td>' + request.role + '</td>' +
             '<td>' + request.request_description + '</td>' +
             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
@@ -194,6 +295,16 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
           paginationLinks.innerHTML += pageLink;
         }
       }
+
+      $('.user-details-link').on('click', function(event) {
+        var userId = event.target.getAttribute('data-user-id');
+        populateUserInfoModal(userId);
+      });
+
+      $('.user-feedback-link').on('click', function(event) {
+        var feedbackText = event.target.textContent;
+        populateFeedbackTextModal(feedbackText);
+      });
     },
     error: function() {
       // Hide the loading indicator in case of an error

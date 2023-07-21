@@ -11,7 +11,7 @@
     <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -39,7 +39,7 @@
         $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['guidanceFeedbackText']);
         if ($stmt->execute()) {
             $_SESSION['success'] = true;
-            // header("Location: http://localhost/student/guidance/success.php");
+            // header("Location: http://192.168.100.4/student/guidance/success.php");
         }
         else {
             var_dump($stmt->error);
@@ -230,7 +230,7 @@
     if (isset($_SESSION['success'])) {
         ?>
         <script>
-            // window.location.href="http://localhost/student/guidance/clearance.php";
+            // window.location.href="http://192.168.100.4/student/guidance/clearance.php";
             $(document).ready(function() {
                 $("#successModal").modal("show");
             })

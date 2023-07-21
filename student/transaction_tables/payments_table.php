@@ -43,6 +43,22 @@
         </div>
     </nav>
 </div>
+<div class="d-flex">
+    <div id="reminder-container" class="alert alert-info mt-3" role="alert">
+        <h4 class="alert-heading">
+            <i class="fa-solid fa-circle-info"></i> Reminder
+        </h4>
+        <p class="mb-0">Always check your transaction status to follow instructions.</p>
+        <p class="mb-0">You can delete or edit transactions during <span
+            class="badge rounded-pill bg-dark">Pending</span> status.</p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The payment is being processed by the office.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
+            by the office.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Processed</span> -
+            The Accounting Office has processed your payment.</small></p>
+        <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
+    </div>
+</div>
 <script>
     function handlePagination(page, searchTerm = '', column = 'payment_id', order = 'desc') {
         // Show the loading indicator

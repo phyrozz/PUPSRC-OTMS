@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="../../../assets/favicon.ico">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -37,11 +37,11 @@
             $stmt->close();
 
             if(isset($_POST['registrarFeedbackSubmit'])) {
-                $query = "INSERT INTO registrar_feedbacks (user_id, email, feedback_text)
-                VALUES (?, ?, ?)";
+                $query = "INSERT INTO registrar_feedbacks (user_id, feedback_text)
+                VALUES (?, ?)";
         
                 $stmt = $connection->prepare($query);
-                $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['registrarFeedbackText']);
+                $stmt->bind_param("is", $_SESSION['user_id'], $_POST['registrarFeedbackText']);
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
                     // 

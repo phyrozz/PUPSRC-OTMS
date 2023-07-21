@@ -30,6 +30,8 @@
                 return 'bg-info';
             case "4":
                 return 'bg-success';
+            case "5":
+                return 'bg-danger';
         }
     }
 
@@ -43,6 +45,8 @@
                 return "Under Verification";
             case "4":
                 return "Verified";
+            case "5":  
+                return "Rejected";
         }
     }
 
@@ -103,3 +107,4 @@
 
     loadTable();
 </script>
+<script src="../../../saved_settings.js"></script>

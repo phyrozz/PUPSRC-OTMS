@@ -27,7 +27,7 @@ $offsettingsQuery = "SELECT offsetting_id, CONCAT(DATE_FORMAT(offsettingtb.times
 
 if (!empty($searchTerm)) {
     $offsettingsQuery .= " AND (offsetting_id LIKE '%$searchTerm%'
-                        OR formatted_timestamp LIKE '%$searchTerm%'
+                        OR timestamp LIKE '%$searchTerm%'
                         OR users.first_name LIKE '%$searchTerm%'
                         OR users.last_name LIKE '%$searchTerm%'
                         OR users.middle_name LIKE '%$searchTerm%'

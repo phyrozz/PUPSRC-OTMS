@@ -17,10 +17,10 @@
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -45,6 +45,7 @@
                 $officeId = 5;
                 $statusId = 1;
                 $amountToPay = 0.00;
+                $purpose = $_POST['purpose'];
             
                 // Check if a file was uploaded
                 if (isset($_FILES['supportingDocuments']) && $_FILES['supportingDocuments']['error'] === UPLOAD_ERR_OK) {
@@ -84,19 +85,50 @@
                     }
                 }
 
-                // Insert the form data into the database
-                $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, amount_to_pay, attached_files)
-                                VALUES (?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $connection->prepare($insertQuery);
-                $stmt->bind_param("ssiiids", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay, $fileContents);
-                if ($stmt->execute()) {
-                    $_SESSION['success'] = true;
-                } else {
-                    var_dump($stmt->error);
-                }
-            
+                // Generate a unique request_id based on the current timestamp
+                $timestamp = time(); // Get the current timestamp
+                $requestId = 'DR-' . $timestamp;
+
+                // Check the last request_id submitted by the user from the database
+                $lastRequestIdQuery = "SELECT MAX(request_id) AS last_request_id FROM doc_requests WHERE user_id = ? AND request_description = ?";
+                $stmt = $connection->prepare($lastRequestIdQuery);
+                $stmt->bind_param("is", $_SESSION['user_id'], $requestDescription);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_assoc();
+                $lastRequestId = $row['last_request_id'];
                 $stmt->close();
-                $connection->close();
+
+                // If the user has submitted a request within the last 20 minutes, prevent the form submission
+                $timeDifference = $timestamp - intval(substr($lastRequestId, 3));
+                if ($lastRequestId !== null && $timeDifference < 1200) { // 20 minutes = 20 * 60 seconds = 1200 seconds
+                    // Set a session variable to show a message to the user
+                    $_SESSION['requestIntervalExceeded'] = true;
+                }
+                else {
+                    // Insert the form data into the database
+                    $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, purpose, amount_to_pay, attached_files)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = $connection->prepare($insertQuery);
+                    $stmt->bind_param("ssiiisds", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $purpose, $amountToPay, $fileContents);
+                    if ($stmt->execute()) {
+                        $_SESSION['success'] = true;
+
+                        $getLastIDQuery = "SELECT MAX(request_id) AS last_inserted_id FROM doc_requests";
+                        $result = $connection->query($getLastIDQuery);
+                        
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $lastInsertedID = $row['last_inserted_id'];
+                            $_SESSION['request_id'] = $lastInsertedID;
+                        }
+                    } else {
+                        var_dump($stmt->error);
+                    }
+
+                    $stmt->close();
+                    $connection->close();
+                }
             }
         ?>
         <div class="container-fluid p-4">
@@ -168,10 +200,26 @@
                                 <input type="email" class="form-control" id="email" value="<?php echo $userData[0]['email'] ?>" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Request Information</h6>
-                            <div class="form-group required col-md-12">
+                            <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
                                 <input type="text" class="form-control" name="date" id="datepicker" placeholder="Select Date..." style="cursor: pointer !important;" required data-input>
                                 <div id="dateValidationMessage" class="text-danger"></div>
+                            </div>
+                            <div class="form-group required col-md-6">
+                                <label for="purpose" class="form-label">Purpose of request</label>
+                                <select class="form-control form-select" name="purpose" id="purpose" required>
+                                    <option value="">--Select--</option>
+                                    <option value="Job Application">Job Application</option>
+                                    <option value="School Requirement">School Requirement</option>
+                                    <option value="Professional Licenses">Professional Licenses</option>
+                                    <option value="Immigration or Visa Applications">Immigration or Visa Applications</option>
+                                    <option value="Volunteering and Community Service">Volunteering and Community Service</option>
+                                    <option value="Adoption">Adoption</option>
+                                    <option value="Government Services">Government Services</option>
+                                    <option value="Rental or Lease Agreements">Rental or Lease Agreements</option>
+                                    <option value="Legal Proceedings">Legal Proceedings</option>
+                                </select>
+                                <div class="invalid-feedback" id="purposeMessage">Please choose a time.</div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
@@ -231,10 +279,10 @@
                                             <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the request letter and other requirements.</li>
                                             <li>Wait for the request to be approved by constantly checking its status on the <b>My Transactions</b> page.</li>
                                         </ol>
-                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
+                                        <a href="./generate_pdf-gm.php" id="print-letter-btn" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="../transactions.php" class="btn btn-primary"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
+                                        <a href="../transactions.php" id="redirect-btn" class="btn disabled"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
                                     </div>
                                 </div>
                             </div>
@@ -258,6 +306,24 @@
                             </div>
                         </div>
                         <!-- End of file upload failed modal -->
+                        <!-- Request Interval Exceeded modal -->
+                        <div id="requestIntervalExceededModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="requestIntervalExceededModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="requestIntervalExceededModalLabel">Error</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>You have already recently requested. Please try again within the next 20 minutes.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of Request Interval Exceeded modal -->
                     </div>
                 </div>
             </div>
@@ -272,6 +338,8 @@
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
         const dateInput = document.getElementById('datepicker');
         const dateValidationMessage = document.getElementById('dateValidationMessage');
+        const purposeSelectInput = document.getElementById('purpose');
+        const purposeSelectMessage = document.getElementById('purposeMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
@@ -301,6 +369,18 @@
             }
         });
 
+        purposeSelectInput.addEventListener('change', () => {
+            const purposeSelectValue = purposeSelectInput.value;
+
+            if (purposeSelectValue == "") {
+                purposeSelectMessage.textContent = 'Please enter a purpose for requesting.';
+                purposeSelectInput.classList.add('is-invalid');
+            } else {
+                purposeSelectMessage.textContent = '';
+                purposeSelectInput.classList.remove('is-invalid');
+            }
+        });
+
         dateInput.addEventListener('input', () => {
             const dateValue = dateInput.value.trim();
 
@@ -322,8 +402,16 @@
 
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+
+        // Add event listener to the Print Letter button on success modal in order to enable the state of the Go to My Transactions button
+        document.getElementById('print-letter-btn').addEventListener('click', () => {
+            redirectBtn = document.getElementById('redirect-btn');
+
+            redirectBtn.classList.add('btn-primary');
+            redirectBtn.classList.remove('disabled');
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
     <script>
         flatpickr("#datepicker", {
             readonly: false,
@@ -366,6 +454,16 @@
         </script>
         <?php
         unset($_SESSION['failedToUploadAttachment']);
+    }
+    if (isset($_SESSION['requestIntervalExceeded'])) {
+        ?>
+        <script>
+            $(document).ready(function() {
+                $("#requestIntervalExceededModal").modal("show");
+            })
+        </script>
+        <?php
+        unset($_SESSION['requestIntervalExceeded']);
     }
     exit();
     ?>

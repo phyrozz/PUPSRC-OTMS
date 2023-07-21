@@ -17,7 +17,7 @@
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -50,8 +50,8 @@
                 <p>Schedule an appointment for counseling with the guidance councelor of the campus</p>
             </a>
             <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
-            <h2>Request Good Moral Document</h2>
-                <p>Request for a good moral document for requirement purposes</p>
+            <h2>Request Good Moral Certificate</h2>
+                <p>Request for a good moral certificate for requirement purposes</p>
             </a>
             <a href="guidance/clearance.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Request Clearance</h2>

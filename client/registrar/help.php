@@ -36,7 +36,7 @@
     <div class="loading-spinner"></div>
     <p class="loading-text display-3 pt-3">Getting things ready...</p>
   </div>
-  <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+  <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
   <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -553,7 +553,7 @@
   <?php
 
   if(isset($_POST['feedbackSubmit'])) {
-    $query = "INSERT INTO registrar_feedbacks (user_id, feedback)
+    $query = "INSERT INTO registrar_feedbacks (user_id, feedback_text)
     VALUES (?, ?)";
 
     $stmt = $connection->prepare($query);
@@ -565,7 +565,7 @@
   $(document).ready(function() {
     $("#successModal").modal("show");
     document.querySelector('#dismiss-button').addEventListener('click', (e) => {
-      window.location.replace('http://localhost/client/registrar/help.php');
+      window.location.replace('http://192.168.100.4/client/registrar/help.php');
     })
   })
   </script>

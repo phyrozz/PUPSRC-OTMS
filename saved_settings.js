@@ -1,17 +1,3 @@
-// Retrieve the default transaction table from localStorage
-var defaultTable = localStorage.getItem('defaultTransactionTable');
-  
-// Set the initial value of the select dropdown based on the retrieved value
-$('#transactionTableSelect').val(defaultTable);
-
-// Change event listener for the select dropdown
-$('#transactionTableSelect').change(function() {
-  var selectedTable = $(this).val();
-  
-  // Store the selected table in localStorage
-  localStorage.setItem('defaultTransactionTable', selectedTable);
-});
-
 // Check if dark mode is enabled in localStorage
 var isDarkMode = localStorage.getItem('darkMode');
 if (isDarkMode === 'true') {

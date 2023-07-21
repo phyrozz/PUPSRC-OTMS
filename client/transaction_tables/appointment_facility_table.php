@@ -73,7 +73,7 @@
     </div>
 </div>
 <!-- End of view edit modal -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {

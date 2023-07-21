@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="./registrar/css/style.css"> -->
   <!-- <link rel="stylesheet" href="./registrar/css/bg.css"> -->
-  <!-- <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+  <!-- <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
 	<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
     <div class="loading-spinner"></div>
     <p class="loading-text display-3 pt-3">Getting things ready...</p>
   </div>
-  <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+  <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -41,6 +41,10 @@
         ?>
     <div class="container-fluid registrarbanner header"
       style="background-image: url('./registrar/assets/registrar.jpg')">
+      <a href="registrar/help.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">
+        <i class="fa-regular fa-circle-question"></i>
+        Help
+      </a>
       <!-- <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a> -->
       <?php
@@ -55,12 +59,12 @@
     </div>
     <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
       <a href="./registrar/create_request.php"
-        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
         <h2>Create Request</h2>
         <p>Seeks the registrar office's help in requesting related to academic records</p>
       </a>
       <a href="transactions.php"
-        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
         <h2>Your Transactions</h2>
         <p>Status of current requests</p>
       </a>
