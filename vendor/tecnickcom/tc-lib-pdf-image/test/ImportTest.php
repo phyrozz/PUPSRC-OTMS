@@ -199,7 +199,7 @@ class ImportTest extends TestUtil
         );
 
         // disabled because of libpngerror
-        // $iid = $testObj->add('*http://localhost:8000/200x100_INDEX16.png');
+        // $iid = $testObj->add('*http://192.168.84.183:8000/200x100_INDEX16.png');
         // $this->assertEquals(
         //     'q 150.000000 0 0 75.000000 2.250000 371.250000 cm /IMG18 Do Q',
         //     $testObj->getSetImage($iid, 3, 5, 200, 100, 600)

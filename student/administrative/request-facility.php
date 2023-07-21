@@ -544,7 +544,7 @@
                     window.location.href = "view-facility.php";
                 }
                 function redirectToAnotherPage() {
-                    var url = "http://localhost/student/administrative/generate-letter.php";
+                    var url = "http://192.168.84.183/student/administrative/generate-letter.php";
                     window.open(url, "_blank"); 
                 }
     </script>

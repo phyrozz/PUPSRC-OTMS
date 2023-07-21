@@ -61,7 +61,7 @@
                 // $insertedId = $connection->insert_id;
                 // if (!$insertedId > 0) {
                 //     $connection->close();
-                //     // header("Location: http://localhost/student/guidance/counseling.php");
+                //     // header("Location: http://192.168.84.183/student/guidance/counseling.php");
                 //     exit();
                 // }
                 $stmt->close();

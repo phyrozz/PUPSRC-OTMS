@@ -23,6 +23,10 @@ $statuses = array(
           data-order="desc">
           Feedback
         </th>
+        <th class="doc-request-shelf-location-header sortable-header" data-column="shelf-location" scope="col"
+          data-order="desc">
+          Date Sent
+        </th>
       </tr>
     </thead>
     <tbody id="table-body">
@@ -45,6 +49,7 @@ $.ajax({
           <tr>
             <td>${student.name}</td>
             <td>${student.feedback_text}</td>
+            <td>${student.time}</td>
           </tr>
         `
     })

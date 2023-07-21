@@ -414,7 +414,7 @@
                 window.location.href = "view-equipment.php";
             }
             function redirectToAnotherPage() {
-                var url = "http://localhost/student/administrative/generate-slip.php";
+                var url = "http://192.168.84.183/student/administrative/generate-slip.php";
                 window.open(url, "_blank"); 
             }
             

@@ -18,7 +18,7 @@ if (mysqli_num_rows($query_check) > 0) {
     echo 'window.location.href = "../your_transaction.php";';
     echo '</script>';
 } else {
-    $connection = new PDO("mysql:host=localhost;dbname=otms_db", "root", "");
+    $connection = new PDO("mysql:host=192.168.84.183;dbname=otms_db", "root", "");
     $query = "UPDATE doc_requests SET request_description = :request, scheduled_datetime = :date WHERE request_id = :id";
     $statement = $connection->prepare($query);
     $statement->bindValue(':request', $request, PDO::PARAM_STR);

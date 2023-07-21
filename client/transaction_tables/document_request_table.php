@@ -154,15 +154,15 @@
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
             case 'Guidance Office':
-                return 'http://localhost/student/guidance.php';
+                return 'http://192.168.84.183/student/guidance.php';
             case 'Registrar Office':
-                return 'http://localhost/student/registrar.php';
+                return 'http://192.168.84.183/student/registrar.php';
             case 'Academic Office':
-                return 'http://localhost/student/academic.php';
+                return 'http://192.168.84.183/student/academic.php';
             case 'Accounting Office':
-                return 'http://localhost/student/accounting.php';
+                return 'http://192.168.84.183/student/accounting.php';
             case 'Administrative Office':
-                return 'http://localhost/student/administrative.php';
+                return 'http://192.168.84.183/student/administrative.php';
         }
     }
 

@@ -37,11 +37,11 @@
             $stmt->close();
 
             if(isset($_POST['registrarFeedbackSubmit'])) {
-                $query = "INSERT INTO registrar_feedbacks (user_id, email, feedback_text)
-                VALUES (?, ?, ?)";
+                $query = "INSERT INTO registrar_feedbacks (user_id, feedback_text)
+                VALUES (?, ?)";
         
                 $stmt = $connection->prepare($query);
-                $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['registrarFeedbackText']);
+                $stmt->bind_param("is", $_SESSION['user_id'], $_POST['registrarFeedbackText']);
                 if ($stmt->execute()) {
                     $_SESSION['success'] = true;
                     // 
