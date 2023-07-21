@@ -2013,6 +2013,23 @@ ALTER TABLE `user_details`
   ADD CONSTRAINT `user_details_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE;
 COMMIT;
 
+-- Drop the existing table if it exists
+DROP TABLE IF EXISTS `acad_survey`;
+
+-- Create the `acad_survey` table with an auto-incremented `id` column as the primary key
+CREATE TABLE `acad_survey` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `rating` VARCHAR(10) NOT NULL,
+  `suggestions` TEXT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Insert sample data into the `acad_survey` table. This is the default datas.
+INSERT INTO `acad_survey` (`rating`, `suggestions`) VALUES
+('Excellent', 'This was an excellent experience!'),
+('Good', 'This was a good experience.'),
+('Average', 'This was an average experience.'),
+('Poor', 'This was a poor experience.');
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
