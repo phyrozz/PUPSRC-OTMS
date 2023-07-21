@@ -1,59 +1,17 @@
-<?php
-// Generate a list of statuses for this table to be rendered on <select> in guidance.php
-$statuses = array(
-    'all' => 'All',
-    '1' => 'Pending',
-    '2' => 'For Receiving',
-    '3' => 'For Evaluation',
-    '4' => 'Ready for Pickup',
-    '5' => 'Released',
-    '6' => 'Rejected'
-);
-?>
 <div class="table-responsive">
   <table id="transactions-table" class="table table-hover hidden">
     <thead>
       <tr class="table-active">
-        <th class="text-center"></th>
-        <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col"
-          data-order="desc">
-          Request Code
+        <th class="doc-request-id-header sortable-header" data-column="last_name" scope="col" data-order="desc">
+          Submitted by
           <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
-        <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col"
-          data-order="desc">
-          Date requested
+        <th class="doc-request-id-header sortable-header" data-column="submitted_on" scope="col" data-order="desc">
+          Submitted on
           <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
-        <th class="text-center doc-request-id-header sortable-header" data-column="scheduled_datetime" scope="col"
-          data-order="desc">
-          Scheduled Date
-          <i class="sort-icon fa-solid fa-caret-down"></i>
-        </th>
-        <th class="text-center doc-request-requestor-header sortable-header" data-column="last_name" scope="col"
-          data-order="desc">
-          Requestor
-          <i class="sort-icon fa-solid fa-caret-down"></i>
-        </th>
-        <th class="text-center doc-request-student-or-client-header sortable-header" data-column="role" scope="col"
-          data-order="desc">
-          Student/Client
-          <i class="sort-icon fa-solid fa-caret-down"></i>
-        </th>
-        <th class="text-center doc-request-description-header sortable-header" data-column="request_description"
-          scope="col" data-order="desc">
-          Request
-          <i class="sort-icon fa-solid fa-caret-down"></i>
-        </th>
-        <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col"
-          data-order="desc">
-          Amount to pay
-          <i class="sort-icon fa-solid fa-caret-down"></i>
-        </th>
-        <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col"
-          data-order="desc">
-          Status
-          <i class="sort-icon fa-solid fa-caret-down"></i>
+        <th class="">
+          Feedback
         </th>
       </tr>
     </thead>
@@ -62,6 +20,32 @@ $statuses = array(
     </tbody>
   </table>
 </div>
+<div id="pagination" class="container-fluid p-0 d-flex justify-content-end w-100">
+  <nav aria-label="Page navigation">
+    <div class="d-flex justify-content-between align-items-start gap-3">
+      <ul class="pagination" id="pagination-links">
+        <!-- Pagination links will be generated dynamically using JavaScript -->
+      </ul>
+    </div>
+  </nav>
+</div>
+<!-- View feedback text modal -->
+<div id="viewFeedbackTextModal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="viewFeedbackTextModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewFeedbackTextModalLabel">User Feedback</h5>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of view feedback text modal -->
+<!-- View user details text modal -->
 <div id="viewUserDetailsModal" class="modal fade" tabindex="-1" role="dialog"
   aria-labelledby="viewUserDetailsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -77,48 +61,8 @@ $statuses = array(
     </div>
   </div>
 </div>
-<div id="pagination" class="container-fluid p-0 d-flex justify-content-between w-100">
-  <div class="d-flex gap-2">
-    <div class="input-group">
-      <div class="input-group-text">Update Status:</div>
-      <select class="form-select" name="update-status" id="update-status" disabled>
-        <option value="1">Pending</option>
-        <option value="2">For Receiving</option>
-        <option value="3">For Evaluation</option>
-        <option value="4">Ready for Pickup</option>
-        <option value="5">Released</option>
-        <option value="6">Rejected</option>
-      </select>
-    </div>
-    <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i>
-      Update</button>
-  </div>
-  <nav aria-label="Page navigation">
-    <div class="d-flex justify-content-between align-items-start gap-3">
-      <ul class="pagination" id="pagination-links">
-        <!-- Pagination links will be generated dynamically using JavaScript -->
-      </ul>
-    </div>
-  </nav>
-</div>
+<!-- End of view user details modal -->
 <script>
-function getStatusBadgeClass(status) {
-  switch (status) {
-    case 'Released':
-      return 'bg-success';
-    case 'Rejected':
-      return 'bg-danger';
-    case 'For Receiving':
-      return 'bg-warning text-dark';
-    case 'For Evaluation':
-      return 'bg-primary';
-    case 'Ready for Pickup':
-      return 'bg-info';
-    default:
-      return 'bg-dark';
-  }
-}
-
 // Function to populate the user details modal
 function populateUserInfoModal(userId) {
   $.ajax({
@@ -204,7 +148,7 @@ function populateFeedbackTextModal(feedbackText) {
   $("#viewFeedbackTextModal").modal("show");
 }
 
-function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
+function handlePagination(page, searchTerm = '', column = 'feedback_id', order = 'desc') {
   // Show the loading indicator
   var loadingIndicator = document.getElementById('loading-indicator');
   loadingIndicator.style.display = 'block';
@@ -215,7 +159,7 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
 
   // Make an AJAX request to fetch the document requests
   $.ajax({
-    url: 'tables/registrar/fetch_doc_requests.php',
+    url: 'tables/registrar/fetch_feedbacks.php',
     method: 'POST',
     data: {
       page: page,
@@ -226,6 +170,7 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
     success: function(response) {
       // Hide the loading indicator
       loadingIndicator.style.display = 'none';
+
       // Show the table
       table.classList.remove('hidden');
 
@@ -237,47 +182,21 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
       tableBody.innerHTML = '';
 
       if (data.total_records > 0) {
-        for (var i = 0; i < data.document_requests.length; i++) {
-          var request = data.document_requests[i];
-          var scheduleButton = '';
-
-          // // Add schedule button if the status is "Pending"
-          // if (request.status_name === 'Pending') {
-          //     var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
-          //     scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
-          // }
-
-          // Convert the timestamp int value of request_id into a formatted datetime for the Date Requested column
-          var timestamp = request.request_id;
-          parsedTimestamp = parseInt(timestamp.substring(3));
-          var date = new Date(parsedTimestamp * 1000);
-          var formattedDate = date.toLocaleString();
+        for (var i = 0; i < data.feedbacks.length; i++) {
+          var feedback = data.feedbacks[i];
 
           var row = '<tr>' +
-            '<td><input type="checkbox" name="request-checkbox" value="' + request.request_id + '"></td>' +
-            '<td>' + request.request_id + '</td>' +
-            '<td>' + formattedDate + '</td>' +
-            '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)
-              .toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-              })) : 'Not yet scheduled') + '</td>' +
-            '<td><a href="#" class="user-details-link" data-user-id="' + request.user_id + '">' + request
-            .last_name + ", " + request.first_name + " " + request.middle_name + " " + request
-            .extension_name + '</a></td>' +
-            '<td>' + request.role + '</td>' +
-            '<td>' + request.request_description + '</td>' +
-            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-            '<td>' + '₱' + request.amount_to_pay + '</td>' +
-            '<td class="text-center">' +
-            '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request
-            .status_name + '</span>' + '</td>' +
+            '<td><a href="#" class="user-details-link" data-user-id="' + feedback.user_id + '">' + feedback
+            .last_name + ", " + feedback.first_name + " " + feedback.middle_name + " " + feedback.extension_name +
+            '</a></td>' +
+            '<td>' + feedback.formatted_datetime + '</td>' +
+            '<td class="text-truncate" style="word-wrap: break-word;min-width: 160px;max-width: 160px;"><a href="#" class="user-feedback-link">' +
+            feedback.feedback_text + '</a></td>' +
             '</tr>';
           tableBody.innerHTML += row;
         }
       } else {
-        var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
+        var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="10">No Transactions</td></tr>';
         tableBody.innerHTML = noRecordsRow;
       }
 
@@ -290,7 +209,7 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
           var pageLink = '<li class="page-item">' +
             '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') +
             '" href="#" onclick="handlePagination(' + i + ', \'' + searchTerm +
-            '\', \'request_id\', \'desc\')">' + i + '</a>' +
+            '\', \'feedback_id\', \'desc\')">' + i + '</a>' +
             '</li>';
           paginationLinks.innerHTML += pageLink;
         }
@@ -342,97 +261,31 @@ sortableHeaders.forEach(function(sortableHeader) {
 });
 
 // Initial pagination request (page 1)
-handlePagination(1, '', 'request_id', 'desc');
+handlePagination(1, '', 'feedback_id', 'desc');
 
 $(document).ready(function() {
+  $('#filterByStatusSection').hide();
+  $('#filterByDocTypeSection').hide();
+  $('#filterButton').hide();
+
+
+  $('#search-input').on('input', function() {
+    var searchTerm = $('#search-input').val();
+    handlePagination(1, searchTerm, 'feedback_id', 'desc');
+  });
+
+  $('#search-input').hide();
+
   $('#search-button').on('click', function() {
     var searchTerm = $('#search-input').val();
-    handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+    handlePagination(1, searchTerm, 'feedback_id', 'desc');
   });
+
+  $('#search-button').hide();
 
   $('#filterButton').on('click', function() {
     var searchTerm = $('#search-input').val();
-    handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
-  });
-
-  // Update status button listener
-  $('#update-status-button').on('click', function() {
-    var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
-    var requestIds = checkedCheckboxes.map(function() {
-      return $(this).val();
-    }).get();
-    var statusId = $('#update-status').val(); // Get the selected status ID
-
-    $.ajax({
-      url: 'tables/guidance/update_doc_requests.php',
-      method: 'POST',
-      data: {
-        requestIds: requestIds,
-        statusId: statusId
-      }, // Include the selected status ID in the data
-      success: function(response) {
-        // Handle the success response
-        console.log('Status updated successfully');
-
-        // Refresh the table after status update
-        handlePagination(1, '', 'request_id', 'desc');
-      },
-      error: function() {
-        // Handle the error response
-        console.log('Error occurred while updating status');
-      }
-    });
-  });
-
-  // Checkbox change listener using event delegation
-  $(document).on('change', 'input[name="request-checkbox"]', function() {
-    var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
-    var updateButton = $('#update-status-button');
-    var statusDropdown = $('#update-status');
-
-    if (checkedCheckboxes.length > 0) {
-      updateButton.prop('disabled', false);
-      statusDropdown.prop('disabled', false);
-    } else {
-      updateButton.prop('disabled', true);
-      statusDropdown.prop('disabled', true);
-    }
+    handlePagination(1, searchTerm, 'feedback_id', 'desc');
   });
 });
-
-// Perform search functionality when either the Filter or Search button is pressed
-function filterDocType() {
-  var filterByDocTypeVal = $('#filterByDocType').val();
-  if (filterByDocTypeVal == "all") {
-    return '';
-  }
-  return ' ' + filterByDocTypeVal.toLowerCase();
-}
-
-function filterStatus() {
-  var filterByStatusVal = $('#filterByStatus').val();
-
-  switch (filterByStatusVal) {
-    case '1':
-      return ' pending';
-      break;
-    case '2':
-      return ' for receiving';
-      break;
-    case '3':
-      return ' for evaluation';
-      break;
-    case '4':
-      return ' ready for pickup';
-      break;
-    case '5':
-      return ' released';
-      break;
-    case '6':
-      return ' rejected';
-      break;
-    default:
-      return '';
-  }
-}
 </script>

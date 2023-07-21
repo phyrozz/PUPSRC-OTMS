@@ -2,7 +2,7 @@
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
-                <th class="text-center"></th>
+            <th class="text-center"></th>
                 <th class="text-center doc-request-id-header sortable-header" data-column="offsetting_id" scope="col" data-order="desc">
                     Transaction Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -23,6 +23,7 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -31,8 +32,9 @@
     </table>
 </div>
 <div id="pagination" class="container-fluid p-0">
-    <nav aria-label="Page navigation">
+<nav aria-label="Page navigation">
         <div class="d-flex justify-content-between align-items-start gap-3">
+            <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
             <ul class="pagination" id="pagination-links">
                 <!-- Pagination links will be generated dynamically using JavaScript -->
             </ul>
@@ -74,6 +76,71 @@
                 return 'bg-dark';
         }
     }
+    function handleDeleteRequest(requestIds) {
+        // Make an AJAX request to delete the document requests
+        $.ajax({
+            url: 'transaction_tables/delete_offsetting.php',
+            method: 'POST',
+            data: { offsetting_id: requestIds },
+            success: function(response) {
+                // Refresh the table after deletion
+                handlePagination(1, '');
+            }
+        });
+    }
+
+    function addDeleteButtonListeners() {
+        var deleteButton = document.getElementById('delete-button');
+
+        // Get all the checkboxes
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        // Function to update the delete button state based on checkbox selection and status_id value
+        function updateDeleteButtonState() {
+            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            // Check the status_id value of the selected rows
+            var canDelete = Array.from(checkedCheckboxes).every(function (checkbox) {
+                var row = checkbox.closest('tr');
+                var statusCell = row.querySelector('.doc-request-status-cell');
+                var status = statusCell.textContent.trim();
+                
+                return status === 'Pending' || status === 'Rejected';
+            });
+
+            deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
+        }
+
+        // Add event listeners to checkboxes
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', updateDeleteButtonState);
+        });
+
+        // Add event listener to delete button
+        deleteButton.addEventListener('click', function () {
+            var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            // Get the request ids of the checked rows
+            var requestIds = Array.from(checkedCheckboxes).map(function (checkbox) {
+                return checkbox.value;
+            });
+
+            if (confirm('Are you sure you want to delete the selected appointment(s)?')) {
+                handleDeleteRequest(requestIds);
+            }
+        });
+
+        // Update delete button state initially
+        updateDeleteButtonState();
+    }
+
+    // Event listener for edit buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('edit-request')) {
+            var editId = event.target.getAttribute('data-request-id');
+            populateEditModal(editId);
+        }
+    });
 
     function handlePagination(page, searchTerm = '', column = 'timestamp', order = 'desc') {
         // Show the loading indicator
@@ -108,8 +175,8 @@
                         var offsetting = data.offsettings[i];
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + offsetting.offsetting_id + '" name="' + offsetting.offsetting_id + '" value="' + offsetting.offsetting_id + '"></td>' +
-                            '<td>AO-' + offsetting.offsetting_id + '</td>' +
+                        '<td><input type="checkbox" id="' + offsetting.offsetting_id + '" name="' + offsetting.offsetting_id + '" value="' + offsetting.offsetting_id + '"></td>' +
+                            '<td>' + 'AO-' + offsetting.offsetting_id + '</td>' +
                             '<td>' + (offsetting.timestamp !== null ? (new Date(offsetting.timestamp)).toLocaleString('en-US', {
                             month: 'long',
                             day: 'numeric',
@@ -122,9 +189,8 @@
                             '<td>' + '₱' + offsetting.amountToOffset + '</td>' +
                             '<td>' + offsetting.offsetType + '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(offsetting.status_name) + '">' + offsetting.status_name + '</span>' +
+                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(offsetting.status_name) + '">' + offsetting.status_name + '</span>' + 
                             '</td>' +
-                            // '<td><a href="#" class="btn btn-primary btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' + 
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
@@ -145,6 +211,8 @@
                         paginationLinks.innerHTML += pageLink;
                     }
                 }
+                             // Add event listeners for delete buttons
+                             addDeleteButtonListeners();
             },
             error: function() {
                 // Hide the loading indicator in case of an error
