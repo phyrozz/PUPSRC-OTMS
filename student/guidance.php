@@ -50,8 +50,8 @@
                 <p>Schedule an appointment for counseling with the guidance councelor of the campus</p>
             </a>
             <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
-            <h2>Request Good Moral Document</h2>
-                <p>Request for a good moral document for requirement purposes</p>
+            <h2>Request Good Moral Certificate</h2>
+                <p>Request for a good moral certificate for requirement purposes</p>
             </a>
             <a href="guidance/clearance.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Request Clearance</h2>

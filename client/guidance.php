@@ -46,8 +46,8 @@
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
             <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
-            <h2>Request Good Moral Document</h2>
-                <p>Request for a good moral document for requirement purposes</p>
+            <h2>Request Good Moral Certificate</h2>
+                <p>Request for a good moral certificate for requirement purposes</p>
             </a>
             <a href="guidance/clearance.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
             <h2>Request Clearance</h2>
