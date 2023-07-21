@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2023 at 07:44 PM
+-- Generation Time: Jul 21, 2023 at 07:35 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,24 +24,23 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `academic_statuses`
+-- Table structure for table `academic_feedbacks`
 --
 
-CREATE TABLE `academic_statuses` (
-  `academic_status_id` int(11) NOT NULL,
-  `status_name` varchar(50) NOT NULL
+CREATE TABLE `academic_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `feedback_text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `academic_statuses`
+-- Dumping data for table `academic_feedbacks`
 --
 
-INSERT INTO `academic_statuses` (`academic_status_id`, `status_name`) VALUES
-(1, 'Pending'),
-(2, 'Missing'),
-(3, 'Under Verification'),
-(4, 'Verified'),
-(5, 'None');
+INSERT INTO `academic_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
+(1, 47, 'erwin@gmail.com', 'this is first feedback'),
+(2, 47, 'erwin@gmail.com', 'second feedback');
 
 -- --------------------------------------------------------
 
@@ -70,7 +69,8 @@ INSERT INTO `academic_transactions` (`transaction_id`, `last_transaction`, `user
 (3, NULL, 34, 5, 5, 5, 5, 5),
 (4, NULL, 35, 5, 5, 5, 5, 5),
 (5, NULL, 39, 5, 5, 5, 5, 5),
-(6, NULL, 43, 5, 5, 5, 5, 5);
+(6, NULL, 43, 5, 5, 5, 5, 5),
+(7, NULL, 47, 5, 5, 5, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -96,7 +96,8 @@ INSERT INTO `acad_cross_enrollment` (`so_id`, `transaction_id`, `user_id`, `appl
 (3, 'AO-CE-1689855418', 34, NULL, 1),
 (4, 'AO-CE-1689855418', 35, NULL, 1),
 (5, 'AO-CE-1689855418', 39, NULL, 1),
-(6, 'AO-CE-1689855418', 43, NULL, 1);
+(6, 'AO-CE-1689855418', 43, NULL, 1),
+(7, 'AO-CE-1689911577', 47, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -124,7 +125,8 @@ INSERT INTO `acad_grade_accreditation` (`ga_id`, `transaction_id`, `user_id`, `c
 (3, 'AO-GA-1689855627', 34, NULL, NULL, 1, 1),
 (4, 'AO-GA-1689855627', 35, NULL, NULL, 1, 1),
 (5, 'AO-GA-1689855627', 39, NULL, NULL, 1, 1),
-(6, 'AO-GA-1689855627', 43, NULL, NULL, 1, 1);
+(6, 'AO-GA-1689855627', 43, NULL, NULL, 1, 1),
+(7, 'AO-GA-1689911577', 47, NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -150,7 +152,8 @@ INSERT INTO `acad_manual_enrollment` (`me_id`, `transaction_id`, `user_id`, `r_z
 (3, 'AO-ME-1689855662', 34, NULL, 1),
 (4, 'AO-ME-1689855662', 35, NULL, 1),
 (5, 'AO-ME-1689855662', 39, NULL, 1),
-(6, 'AO-ME-1689855662', 43, NULL, 1);
+(6, 'AO-ME-1689855662', 43, NULL, 1),
+(7, 'AO-ME-1689911577', 47, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -180,7 +183,8 @@ INSERT INTO `acad_shifting` (`s_id`, `transaction_id`, `user_id`, `request_lette
 (3, 'AO-S-1689855716', 34, NULL, NULL, NULL, 1, 1, 1),
 (4, 'AO-S-1689855716', 35, NULL, NULL, NULL, 1, 1, 1),
 (5, 'AO-S-1689855716', 39, NULL, NULL, NULL, 1, 1, 1),
-(6, 'AO-S-1689855716', 43, NULL, NULL, NULL, 1, 1, 1);
+(6, 'AO-S-1689855716', 43, NULL, NULL, NULL, 1, 1, 1),
+(7, 'AO-S-1689911577', 47, NULL, NULL, NULL, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -231,7 +235,29 @@ INSERT INTO `acad_subject_overload` (`so_id`, `transaction_id`, `user_id`, `over
 (3, 'AO-SO-1689855754', 34, NULL, NULL, NULL, 1, 1, 1),
 (4, 'AO-SO-1689855754', 35, NULL, NULL, NULL, 1, 1, 1),
 (5, 'AO-SO-1689855754', 39, NULL, NULL, NULL, 1, 1, 1),
-(6, 'AO-SO-1689855754', 43, 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_student_guidance_help.php.png', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_ACEFORM.pdf', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_admin_guidance.php_docreq.png', 2, 2, 2);
+(6, 'AO-SO-1689855754', 43, 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_student_guidance_help.php.png', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_ACEFORM.pdf', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_admin_guidance.php_docreq.png', 2, 2, 2),
+(7, 'AO-SO-1689911577', 47, 'AO_SO_2020-00238-SR-0_Nuque_Christian Erwin_Screenshot 2023-07-21 103348.png', 'AO_SO_2020-00238-SR-0_Nuque_Christian Erwin_ACEFORM.pdf', 'AO_SO_2020-00238-SR-0_Nuque_Christian Erwin_Screenshot 2023-07-21 014751.png', 2, 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acad_survey`
+--
+
+CREATE TABLE `acad_survey` (
+  `survey_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rating` text NOT NULL,
+  `suggestions` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `acad_survey`
+--
+
+INSERT INTO `acad_survey` (`survey_id`, `user_id`, `rating`, `suggestions`) VALUES
+(1, 47, 'Average', 'average'),
+(2, 47, 'Poor', 'very poor');
 
 -- --------------------------------------------------------
 
@@ -1200,7 +1226,8 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
 (39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$a4rycTCNbnsZ6.auPYz.kuodEWiw7lq82K/3QBP.V5IYZu3ukC5Ta', 1),
 (42, '', 'Dela Cruz', 'Pedro', '', '', '0900-000-0000', 'pendropenduko@yahoo.com', '1997-01-22', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
-(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', 'Jr.', '0900-000-0010', 'juandelacruz123@gmail.com', '1995-01-12', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1);
+(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', 'Jr.', '0900-000-0010', 'juandelacruz123@gmail.com', '1995-01-12', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1),
+(47, '2020-00238-SR-0', 'Nuque', 'Christian Erwin', 'Bruce', '', '0911-222-3333', 'erwin@gmail.com', '2002-07-10', '$2y$10$BbGLUD4QTqwfwg8F4yFR7uoEoZ7ZfCh6cSdxoCrD.j.CAPJ3/dky2', 1);
 
 -- --------------------------------------------------------
 
@@ -1228,7 +1255,8 @@ CREATE TABLE `user_details` (
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `course_id`, `year_and_section`, `user_id`) VALUES
 (1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, '3-1', 39),
 (3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', 12, NULL, 42),
-(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 8, '3-1', 43);
+(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 8, '3-1', 43),
+(8, 1, 'market market', 'LAGUNA', 'SANTA ROSA CITY', 'this is the barangay', '4026', 8, NULL, 47);
 
 -- --------------------------------------------------------
 
@@ -1255,10 +1283,11 @@ INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
 --
 
 --
--- Indexes for table `academic_statuses`
+-- Indexes for table `academic_feedbacks`
 --
-ALTER TABLE `academic_statuses`
-  ADD PRIMARY KEY (`academic_status_id`);
+ALTER TABLE `academic_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `academic_transactions`
@@ -1322,6 +1351,13 @@ ALTER TABLE `acad_subject_overload`
   ADD KEY `ace_form_status` (`ace_form_status`),
   ADD KEY `cert_of_registration_status` (`cert_of_registration_status`),
   ADD KEY `overload_letter_status` (`overload_letter_status`);
+
+--
+-- Indexes for table `acad_survey`
+--
+ALTER TABLE `acad_survey`
+  ADD PRIMARY KEY (`survey_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `accounting_feedbacks`
@@ -1589,40 +1625,40 @@ ALTER TABLE `user_roles`
 --
 
 --
--- AUTO_INCREMENT for table `academic_statuses`
+-- AUTO_INCREMENT for table `academic_feedbacks`
 --
-ALTER TABLE `academic_statuses`
-  MODIFY `academic_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `academic_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `academic_transactions`
 --
 ALTER TABLE `academic_transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `acad_cross_enrollment`
 --
 ALTER TABLE `acad_cross_enrollment`
-  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `acad_grade_accreditation`
 --
 ALTER TABLE `acad_grade_accreditation`
-  MODIFY `ga_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ga_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `acad_manual_enrollment`
 --
 ALTER TABLE `acad_manual_enrollment`
-  MODIFY `me_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `me_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `acad_shifting`
 --
 ALTER TABLE `acad_shifting`
-  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `acad_status`
@@ -1634,7 +1670,13 @@ ALTER TABLE `acad_status`
 -- AUTO_INCREMENT for table `acad_subject_overload`
 --
 ALTER TABLE `acad_subject_overload`
-  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `acad_survey`
+--
+ALTER TABLE `acad_survey`
+  MODIFY `survey_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `administrative_feedbacks`
@@ -1790,13 +1832,13 @@ ALTER TABLE `subject_overload`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user_roles`

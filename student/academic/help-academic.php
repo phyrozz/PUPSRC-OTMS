@@ -36,7 +36,7 @@
         VALUES (?, ?, ?)";
 
         $stmt = $connection->prepare($query);
-        $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0]['email'], $_POST['academicFeedbackText']);
+        $stmt->bind_param("iss", $_SESSION['user_id'], $userData[0] ['email'], $_POST['academicFeedbackText']);
         if ($stmt->execute()) {
             $_SESSION['success'] = true;
             // header("Location: http://localhost/student/academic/success.php");
