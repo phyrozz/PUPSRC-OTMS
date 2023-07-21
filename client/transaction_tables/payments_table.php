@@ -25,6 +25,9 @@
                 Amount
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
+            <th class="text-center doc-request-status-header" data-column="status" scope="col" data-order="desc">
+                Status
+            </th>
             <th class="text-center doc-request-status-header" scope="col">
                 Attached Image
             </th>
@@ -44,6 +47,15 @@
     </nav>
 </div>
 <script>
+    function getStatusBadgeClass(status) {
+        switch (status) {
+            case 'Processed':
+                return 'bg-success';
+            default:
+                return 'bg-dark';
+        }
+    }
+
     function handlePagination(page, searchTerm = '', column = 'payment_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
@@ -95,6 +107,9 @@
                             // scheduleButton +
                             // '</td>' +
                             '<td>₱' + payments.amount + '</td>' +
+                            '<td class="text-center">' +
+                            '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(payments.status) + '">' + payments.status + '</span>' +
+                            '</td>' +
                             '<td class="text-center"><a href="accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }

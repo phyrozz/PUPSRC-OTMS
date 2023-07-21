@@ -40,7 +40,6 @@
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
                             <select class="form-select" id="transaction-type" onchange="handleTransactionTypeChange(this.value)">
-                                <option value="">All</option>
                                 <option value="subjectoverload">Subject Overload</option>
                                 <option value="gradeaccreditation">Grade Accreditation</option>
                                 <option value="crossenrollment">Cross-Enrollment</option>

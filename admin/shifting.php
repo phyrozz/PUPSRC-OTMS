@@ -32,35 +32,28 @@
 	<script>
         // Wait for the page to load
         $(document).ready(function() {
+            // Set the value of the dropdown to "crossenrollment" on page load
+            $("#transaction-type").val("shifting");
+
             // Handle the dropdown change event
             $("#transaction-type").change(function() {
-                var selectedOption = $(this).val();
-                switch (selectedOption) {
-                    case "":
-                        // Redirect to academic.php when "All" is selected
-                        window.location.href = "academic.php";
-                        break;
+                switch ($(this).val()) {
                     case "subjectoverload":
-                        // Redirect to subject_overload.php when "Subject Overload" is selected
                         window.location.href = "subject_overload.php";
                         break;
                     case "gradeaccreditation":
-                         // Redirect to grade_accreditation.php when "Grade Accreditation" is selected
                         window.location.href = "grade_accreditation.php";
                         break;
                     case "crossenrollment":
-                       // Redirect to cross_enrollment.php when "Cross Enrollment" is selected
                         window.location.href = "cross_enrollment.php";
                         break;
                     case "shifting":
-                         // No action needed, stay on the current page when "Cross Enrollment" is selected
+                        window.location.href = "shifting.php";
                         break;
                     case "manualenrollment":
-                      // Redirect to manual_enrollment.php when "Manual Enrollment" is selected
                         window.location.href = "manual_enrollment.php";
                         break;
                     default:
-                        // For any other case, do nothing
                         break;
                 }
             });
@@ -111,14 +104,16 @@
                 <div class="col-xs-12">
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
-                            <select class="form-select" id="transaction-type">
-                                <option value="">All</option>
-                                <option value="subjectoverload">Subject Overload</option>
-                                <option value="gradeaccreditation">Grade Accreditation</option>
-                                <option value="crossenrollment">Cross-Enrollment</option>
-                                <option value="shifting">Shifting</option>
-                                <option value="manualenrollment">Manual Enrollment</option>
-                            </select>
+                            <div class="input-group">
+                                <label for="transaction-type" class="input-group-text">Service: </label>
+                                <select class="form-select" id="transaction-type">
+                                    <option value="subjectoverload">Subject Overload</option>
+                                    <option value="gradeaccreditation">Grade Accreditation</option>
+                                    <option value="crossenrollment">Cross-Enrollment</option>
+                                    <option value="shifting">Shifting</option>
+                                    <option value="manualenrollment">Manual Enrollment</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="d-flex justify-content-end gap-2">
                             <div class="input-group mb-3 d-flex justify-content-end">
