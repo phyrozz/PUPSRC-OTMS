@@ -37,75 +37,28 @@
     //fetching registrar services
     $result_services = mysqli_query($connection, "SELECT * FROM reg_services");
 
-    //for generate registrar code
-    function generateUniqueCode() {
-        $prefix = "REG-";
-        $code = $prefix . generateRandomNumbers();
-        // Check uniqueness
-        while (!isCodeUnique($code)) {
-            $code = $prefix . generateRandomNumbers();
-        }
-        return $code;
-    }
-    function generateRandomNumbers() {
-        $numbers = '';
-        $length = 10;
-    
-        for ($i = 0; $i < $length; $i++) {
-            $numbers .= random_int(0, 9);
-        }
-    
-        return $numbers;
-    }
-    function isCodeUnique($code) {
-        $host = 'localhost';
-        $database = 'otms_db';
-        $username = 'root';
-        $password = '';
-
-        try {
-            $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            // Prepare and execute the query
-            $stmt = $pdo->prepare('SELECT COUNT(*) FROM doc_requests WHERE request_id = :request_id');
-            $stmt->bindParam(':request_id', $request_id);
-            $stmt->execute();
-
-            $count = $stmt->fetchColumn();
-
-            // If count is greater than 0, the code already exists
-            return $count === 0;
-        } catch (PDOException $e) {
-            // Handle the exception as per your application's error handling mechanism
-            die("Database connection failed: " . $e->getMessage());
-        }
-    }
-    // Usage example
-    $uniqueCode = generateUniqueCode();
-
     //for submit
     if(isset($_POST["submit"])){
-        $reg_code = $uniqueCode;
-        $req_student_service = $_POST["req_student_service"];
+        $req_student_service = $_POST['req_student_service'];
         $user_id = $id;
         $office_id = 3; //3 - Registrar Office
-        $date = $_POST["date"];
+        $date = $_POST['date'];
         $status_id = 1; //1-Pending
         $amount = 0.00;
 
-        $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE request_description = '$req_student_service' AND status_id = '$status_id' AND request_id = '$id'");
-        if(mysqli_num_rows($query_check) > 0) {
-            // Data is redundant
-            $_SESSION['redundant'] = true;
-        } else {
-            // Data is not redundant, proceed with insertion
-            // Insert the new data into the database
-            $query_insert = "INSERT INTO doc_requests VALUES('$reg_code','$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$amount', NULL, NULL)";
-            $result_insert = mysqli_query($connection, $query_insert);
+        $query_check = "INSERT INTO doc_requests (office_id, request_description, scheduled_datetime, status_id, user_id) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $connection->prepare($query_check);
+        $stmt->bind_param("issii", $office_id, $req_student_service, $date, $status_id, $user_id);
+
+        if ($stmt->execute()) {
             $_SESSION['success'] = true;
+        } else {
+            var_dump($stmt->error);
         }
-        unset($_POST);
+    
+        $stmt->close();
+        $connection->close();
+
     }
     
 ?>
@@ -373,22 +326,12 @@
     if (isset($_SESSION['success'])) {
         ?>
         <script>
+            // window.location.href="http://localhost/student/guidance/clearance.php";
             $(document).ready(function() {
                 $("#successModal").modal("show");
             })
         </script>
         <?php
         unset($_SESSION['success']);
-        exit();
-    } else if (isset($_SESSION['redundant'])) {
-        ?>
-        <script>
-            $(document).ready(function() {
-                $("#redundantModal").modal("show");
-            })
-        </script>
-        <?php
-        unset($_SESSION['redundant']);
-        exit();
     }
 ?>
