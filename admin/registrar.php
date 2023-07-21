@@ -63,6 +63,7 @@
                       Document Requests</option>
                     <option value="student_records" <?php if ($table === 'student_records') echo 'selected'; ?>>Student
                       Records</option>
+                    <option value="feedback" <?php if ($table === 'feedback') echo 'selected'; ?>>Feedback Table</option>
                   </select>
                   <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary">Load
                     Table</button>
@@ -120,6 +121,9 @@
                 }
                 elseif ($table === 'student_records') {
                   include 'tables/registrar/student_records.php';
+                }
+                elseif ($table === 'feedback') {
+                  include 'tables/registrar/feedback.php';
                 }
             ?>
           </div>

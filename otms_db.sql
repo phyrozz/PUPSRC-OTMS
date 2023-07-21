@@ -1697,6 +1697,38 @@ ALTER TABLE `user_details`
   ADD CONSTRAINT `user_details_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE;
 COMMIT;
 
+
+--
+-- Table structure for table `registrar_feedbacks`
+--
+
+CREATE TABLE `registrar_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `registrar_feedbacks`
+--
+ALTER TABLE `registrar_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `registrar_feedbacks`
+--
+ALTER TABLE `registrar_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
+
 -- Drop the existing table if it exists
 DROP TABLE IF EXISTS `acad_survey`;
 
@@ -1713,6 +1745,7 @@ INSERT INTO `acad_survey` (`rating`, `suggestions`) VALUES
 ('Good', 'This was a good experience.'),
 ('Average', 'This was an average experience.'),
 ('Poor', 'This was a poor experience.');
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

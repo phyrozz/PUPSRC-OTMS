@@ -10,24 +10,18 @@ $statuses = array(
     '5' => 'Released',
     '6' => 'Rejected'
 );
+
 ?>
 <div class="table-responsive">
   <table id="transactions-table" class="table table-hover">
     <thead>
       <tr class="table-active">
-        <th class="doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
-          Course
-        </th>
-        <th class="doc-request-id-header sortable-header" data-column="scheduled_datetime" scope="col"
-          data-order="desc">
-          Year
-        </th>
         <th class="doc-request-requestor-header sortable-header" data-column="last_name" scope="col" data-order="desc">
           Student Name
         </th>
         <th class="doc-request-shelf-location-header sortable-header" data-column="shelf-location" scope="col"
           data-order="desc">
-          Shelf Location
+          Feedback
         </th>
       </tr>
     </thead>
@@ -40,16 +34,22 @@ $statuses = array(
 
 <script>
 let html = '';
-students.map((student) => {
-  html += `
+
+$.ajax({
+  url: 'tables/registrar/fetch_feedback.php',
+  method: 'GET',
+  success: function(response) {
+    const data = JSON.parse(response);
+    data.forEach((student) => {
+      html += `
           <tr>
-            <td>${student.Course}</td>
-            <td>${student.Year}</td>
-            <td>${student.Name}</td>
-            <td>${student["Shelf Location"]}</td>
+            <td>${student.name}</td>
+            <td>${student.feedback_text}</td>
           </tr>
         `
+    })
+    const body = document.querySelector('#table-body');
+    body.innerHTML = html;
+  }
 })
-const body = document.querySelector('#table-body');
-body.innerHTML = html;
 </script>
