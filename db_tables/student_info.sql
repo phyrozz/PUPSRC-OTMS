@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2023 at 12:06 PM
+-- Generation Time: Jul 21, 2023 at 01:39 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -65,8 +65,10 @@ INSERT INTO `student_info` (`payment_id`, `course`, `documentType`, `user_id`, `
 (41, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', '122.00', '32143432432565436234', 'uploads/payment_41_Joshua_Malabanan.png', '2023-07-19 18:20:33', ''),
 (42, 'Bachelor of Science in Information Technology', 'Certificate of Graduation', 42, 'Pedro', '', 'Dela Cruz', NULL, '100.00', '32158855324214754762', 'uploads/payment_42_Pedro_Dela Cruz.png', '2023-07-19 18:21:12', ''),
 (44, 'Bachelor of Science in Information Technology', 'Non Issuance of Special Order', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', '100.00', '45324423432654351245', 'uploads/payment_44_Juan_Dela Cruz.png', '2023-07-19 18:24:29', 'Processed'),
-(45, 'Bachelor of Science in Management Accounting', 'Certificate of Attendance', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', '100.00', '43546524236547634534', 'uploads/payment_45_Juan_Dela Cruz.png', '2023-07-19 18:28:06', 'Processed'),
-(46, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 47, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '20.00', '12312312312312312312', 'uploads/payment_46_John Mark_Garapan.jpg', '2023-07-21 14:55:11', 'Processed');
+(45, 'Bachelor of Science in Management Accounting', 'Certificate of Attendance', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', '100.00', '43546524236547634534', 'uploads/payment_45_Juan_Dela Cruz.png', '2023-07-19 18:28:06', 'Pending'),
+(46, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 47, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '20.00', '12312312312312312312', 'uploads/payment_46_John Mark_Garapan.jpg', '2023-07-21 14:55:11', 'Processed'),
+(47, 'Bachelor of Science in Information Technology', 'Late Reporting of Grade', 47, 'John Mark', 'Dauan', 'Garapan', '2020-00585-SR-0', '789.00', '78978797879879879879', 'uploads/payment_47_John Mark_Garapan.png', '2023-07-21 18:24:25', 'Processed'),
+(48, 'Bachelor of Science in Information Technology', 'Certified True Copy', 48, 'Dauan', 'Dan', 'Grace', NULL, '123.00', '12312312312312312312', 'uploads/payment_48_Dauan_Grace.png', '2023-07-21 18:55:43', 'Processed');
 
 --
 -- Indexes for dumped tables
@@ -87,7 +89,7 @@ ALTER TABLE `student_info`
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- Constraints for dumped tables

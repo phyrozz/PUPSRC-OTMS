@@ -74,8 +74,7 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        <p>The Accounting Office facilitates document requests and manages offset payments for school-related purposes. By securely handling financial transactions, our Accounting Office ensures efficient and accurate execution of these transactions.</p>
                     </div>
                 </div>
             </div>
@@ -87,8 +86,7 @@
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        <p>The Accounting Office is situated in Room 210 of the PUP Santa Rosa Campus Building.</p>
                     </div>
                 </div>
             </div>
@@ -100,11 +98,83 @@
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                     <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vehicula tortor dignissim, rutrum justo sed, placerat arcu. Nullam sed sapien id nibh feugiat lacinia. Nunc in faucibus purus. Maecenas ante nunc, sagittis vitae lorem non, finibus aliquam neque. Donec tristique posuere suscipit. In ut tortor sollicitudin urna ultrices feugiat et nec metus. Mauris ultricies massa non libero tempus, in consectetur ex commodo. Etiam velit mi, vulputate quis aliquet quis, condimentum a ante. Vivamus malesuada orci ac arcu gravida pretium. Nunc a condimentum purus, et efficitur massa. Duis pellentesque dui eget risus molestie, at tempor lacus tincidunt. Donec lacinia, purus eu sollicitudin rutrum, nisl sem ullamcorper felis, eget tempus enim ipsum aliquet urna.</p>
-                        <p>Quisque ut dapibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas viverra mauris lectus, vel faucibus orci sagittis nec. Nunc luctus est vel magna commodo, a blandit mi pharetra. Praesent urna lacus, tempus quis pretium et, suscipit sit amet justo. Praesent porta, sapien sit amet aliquam tempor, turpis eros aliquet nunc, nec vulputate diam quam pellentesque felis. Ut lacus augue, faucibus nec tempor id, viverra eget nulla. Quisque ac nisi nec sapien ultricies sollicitudin a ac nisl. Aenean et volutpat ante. Sed at congue odio. Proin at tincidunt mi. Fusce pretium, felis sed ultrices pretium, sem sem viverra leo, nec bibendum arcu neque at nisl. Ut pretium nulla eget arcu iaculis cursus. Nunc ornare sollicitudin eros, sed placerat lacus pretium eu. Nunc blandit, arcu eu luctus ornare, ante sem venenatis dui, ultrices eleifend dolor velit eget libero. Donec elementum eros tempor ante condimentum, sed varius tortor dictum.</p>
+                        <p>For any additional concerns or inquiries, we kindly request that you visit our office directly and ask for Mrs. Veloz. Upon arrival, we kindly ask you to join the queue and await your turn to process payment transactions and manage your balances. Our office hours are from 8 A.M. to 5 P.M., with the exception of the lunch hours.</p>
                     </div>
                 </div>
             </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                What is Offsetting?
+                </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+                    <div class="accordion-body">
+                        <p>Processing of offsetting of Overpayment of Tuition Fees/Miscellaneous Fees.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                What is an overpayment of tuition fees or miscellaneous fees?
+                </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                    <div class="accordion-body">
+                        <p>An overpayment occurs when a student pays more than the required amount for their tuition fees or miscellaneous fees.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                How does an overpayment occur?
+                </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix">
+                    <div class="accordion-body">
+                        <p>Overpayments can happen due to various reasons, such as errors in payment calculations, duplicate payments, or changes in enrollment status.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                Who may avail this service?
+                </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven">
+                    <div class="accordion-body">
+                        <p>All students who are currently enrolled.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEight">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                What types of offsetting transactions can be offset using the system?
+                </button>
+                </h2>
+                <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight">
+                    <div class="accordion-body">
+                        <p>The system is designed to facilitate offsetting transactions related to miscellaneous and tuition fees.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingNine">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                What should students do if ever they encounter any issues or discrepancies with the offsetting transaction while using the system?
+                </button>
+                </h2>
+                <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine">
+                    <div class="accordion-body">
+                        <p>Contact the university’s available support channel or report the issue directly to the appropriate office which is the accounting office.</p>
+                    </div>
+                </div>
+            </div>
+            <!--faq-->
         </div>
         <div class="container py-5">
             <div class="container-fluid text-center p-4">

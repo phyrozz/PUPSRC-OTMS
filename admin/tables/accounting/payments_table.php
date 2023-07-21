@@ -100,6 +100,16 @@
                 if (data.total_records > 0) {
                     for (var i = 0; i < data.payments.length; i++) {
                         var payments = data.payments[i];
+                        var imageUrl = '';
+
+                        // Check if the studentNumber is present
+                        if (payments.studentNumber) {
+                            // It is a student
+                            imageUrl = '../../../student/accounting/' + payments.image_url;
+                        } else {
+                            // It is a client
+                            imageUrl = '../../../client/accounting/' + payments.image_url;
+                        }
 
                         // Define the options for the status dropdown
                         var statusOptions = '<option value="Pending" ' + (payments.status === 'Pending' ? 'selected' : '') + '>Pending</option>' +
@@ -125,7 +135,7 @@
                                      statusOptions +
                                     '</select>' +
                             '</td>' +
-                            '<td class="text-center"><a href="../../../student/accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
+                            '<td class="text-center"><a href="' + imageUrl + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }
