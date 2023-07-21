@@ -19,7 +19,7 @@
     <div class="loading-spinner"></div>
     <p class="loading-text display-3 pt-3">Getting things ready...</p>
   </div>
-  <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+  <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
   <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -60,11 +60,8 @@
             $query_insert = "INSERT INTO doc_requests(request_description, scheduled_datetime, office_id, user_id, status_id) VALUES('$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id')";
             $result_insert = mysqli_query($connection, $query_insert);
             $_SESSION['success'] = true;
-        } else {
-            var_dump($stmt->error);
         }
     
-        $stmt->close();
         $connection->close();
 
     }
