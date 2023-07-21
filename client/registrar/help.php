@@ -565,7 +565,7 @@
   $(document).ready(function() {
     $("#successModal").modal("show");
     document.querySelector('#dismiss-button').addEventListener('click', (e) => {
-      window.location.replace('http://192.168.84.183/client/registrar/help.php');
+      window.location.replace('http://192.168.100.4/client/registrar/help.php');
     })
   })
   </script>

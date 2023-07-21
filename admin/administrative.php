@@ -30,7 +30,7 @@
 
             // Avoid admin user from accessing other office pages
             if ($_SESSION['office_name'] != "Administrative Office") {
-                header("Location: http://192.168.84.183/admin/redirect.php");
+                header("Location: http://192.168.100.4/admin/redirect.php");
             }
 
             $table = 'request_equipment';

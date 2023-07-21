@@ -50,7 +50,7 @@
             //     $insertedId = $connection->insert_id;
             //     if (!$insertedId > 0) {
             //         $connection->close();
-            //         header("Location: http://192.168.84.183/student/guidance/counceling.php");
+            //         header("Location: http://192.168.100.4/student/guidance/counceling.php");
             //         exit();
             //     }
             //     $stmt->close();

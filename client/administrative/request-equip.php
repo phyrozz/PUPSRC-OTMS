@@ -21,7 +21,7 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 <div class="wrapper">
@@ -410,7 +410,7 @@
                 window.location.href = "view-equipment.php";
             }
             function redirectToAnotherPage() {
-                var url = "http://192.168.84.183/client/administrative/generate-slip.php";
+                var url = "http://192.168.100.4/client/administrative/generate-slip.php";
                 window.open(url, "_blank"); 
             }
             
@@ -419,7 +419,7 @@
         </script>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
         <script>
 
             flatpickr("#datepicker", {

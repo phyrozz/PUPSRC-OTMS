@@ -9,6 +9,8 @@ include "../../conn.php";
 
 session_start();
 
+$requestId = $_SESSION['counseling_id'];
+
 $currentDate = new DateTime("now", new DateTimeZone("Asia/Manila"));
 $currentTime = $currentDate->format("F j, Y ");
 
@@ -24,7 +26,31 @@ $lastName = $userResult['last_name'];
 $middleName = $userResult['middle_name'];
 $extensionName = $userResult['extension_name'];
 
+
+    // Close the prepared statement
 $userStmt->close();
+
+
+// Retrieve the facility name and facility number from the database based on the facility ID
+$requestStmt = $connection->prepare("SELECT appointment_description, comments FROM counseling_schedules WHERE counseling_id = ?");
+$requestStmt->bind_param("s", $requestId);
+$requestStmt->execute();
+$requestResult = $requestStmt->get_result();
+$requestRow = $requestResult->fetch_assoc();
+$appointmentDescription = $requestRow['appointment_description'];
+$comments = $requestRow['comments'];
+
+// Close the prepared statement
+$requestStmt->close();
+
+function printAdditionalComment($appointmentDescription, $comments) {
+    if ($appointmentDescription == "Other") {
+        return "for the following reason: " . $comments;
+    }
+    else {
+        return "for the following reason: " . $appointmentDescription;
+    }
+}
 
 $html = <<<EOD
 <!DOCTYPE html>
@@ -188,7 +214,7 @@ $html = <<<EOD
 
     <div class="reciever">
         <p>
-            <strong>DR. GILFRED A. ACIERTO</strong><br>
+            <strong>___</strong><br>
             <em>Head, Guidance Office</em>
             <br>
             This Campus
@@ -205,7 +231,7 @@ $html = <<<EOD
         <p>Greetings in pursuit of wisdom!</p>
 
         <p class="indent">
-            I hope this letter finds you in good health and high spirits. I am writing to request copy of my Academic Clearance. I kindly request you to issue the document at your earliest convenience. If there are any fees or formalities associated with this request, please inform me, and I will gladly comply.
+            I hope this letter finds you in good health and high spirits. I am writing to schedule an counseling appointment with the Head of Guidance Office {printAdditionalComment($appointmentDescription, $comments)}. I kindly request you to issue the certificate at your earliest convenience. If there are any fees or formalities associated with this request, please inform me, and I will gladly comply.
         </p>
 
         <p>Please find attached a copy of my identification and any other required documents to facilitate the process. Hoping for your kind consideration.</p>
@@ -227,7 +253,7 @@ $html = <<<EOD
     <div class="footer">
         <p>
             Noted by:<br><br><br>
-            <strong>Asst. Prof. Leny V. Salmingo Ph.D</strong><br>
+            <strong>Dr. Leny V. Salmingo</strong><br>
             Subject Facilitator<br>
             This Campus
         </p>
@@ -268,6 +294,6 @@ $dompdf->loadHtml($html);
 $dompdf->render();
 
 // Output the PDF to the browser
-$dompdf->stream("request_letter-clearance.pdf", ["Attachment" => false]);
+$dompdf->stream("request_letter-guidance_counseling.pdf", ["Attachment" => false]);
 ?>
 

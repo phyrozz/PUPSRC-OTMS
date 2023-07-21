@@ -48,7 +48,7 @@
 //define ('K_PATH_MAIN', '');
 
 /**
- * URL path to tcpdf installation folder (http://192.168.84.183/tcpdf/).
+ * URL path to tcpdf installation folder (http://192.168.100.4/tcpdf/).
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
 //define ('K_PATH_URL', '');

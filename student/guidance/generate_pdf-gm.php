@@ -204,7 +204,7 @@ $html = <<<EOD
 
     <div class="reciever">
         <p>
-            <strong>___</strong><br>
+            <strong>DR. GILFRED A. ACIERTO</strong><br>
             <em>Head, Guidance Office</em>
             <br>
             This Campus
@@ -243,7 +243,7 @@ $html = <<<EOD
     <div class="footer">
         <p>
             Noted by:<br><br><br>
-            <strong>Dr. Leny V. Salmingo</strong><br>
+            <strong>Asst. Prof. Leny V. Salmingo Ph.D</strong><br>
             Subject Facilitator<br>
             This Campus
         </p>

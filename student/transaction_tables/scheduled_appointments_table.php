@@ -34,6 +34,25 @@
         </div>
     </nav>
 </div>
+<div class="d-flex">
+    <div id="reminder-container" class="alert alert-info mt-3" role="alert">
+        <h4 class="alert-heading">
+            <i class="fa-solid fa-circle-info"></i> Reminder
+        </h4>
+        <p class="mb-0">Always check your transaction status to follow instructions.</p>
+        <p class="mb-0">You can delete or edit transactions during <span
+            class="badge rounded-pill bg-dark">Pending</span> status.</p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The appointment is under review by the office.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The appointment is rejected
+            by the office.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                evaluation</span> - Additional requirements or appointment purpose is under review by the office.</small>
+        </p>
+        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Approved</span> -
+            The appointment is approved and the requestor must proceed to the Guidance Office.</small></p>
+        <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
+    </div>
+</div>
 <!-- View comment modal -->
 <div id="viewCommentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewCommentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

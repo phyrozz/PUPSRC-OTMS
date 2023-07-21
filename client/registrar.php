@@ -59,12 +59,12 @@
     </div>
     <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
       <a href="./registrar/create_request.php"
-        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
         <h2>Create Request</h2>
         <p>Seeks the registrar office's help in requesting related to academic records</p>
       </a>
       <a href="transactions.php"
-        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+        class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
         <h2>Your Transactions</h2>
         <p>Status of current requests</p>
       </a>

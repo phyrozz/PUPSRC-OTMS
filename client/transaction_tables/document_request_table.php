@@ -62,7 +62,7 @@
     </div>
 </div>
 <!-- End of view edit modal -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -154,15 +154,15 @@
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
             case 'Guidance Office':
-                return 'http://192.168.84.183/student/guidance.php';
+                return 'http://192.168.100.4/student/guidance.php';
             case 'Registrar Office':
-                return 'http://192.168.84.183/student/registrar.php';
+                return 'http://192.168.100.4/student/registrar.php';
             case 'Academic Office':
-                return 'http://192.168.84.183/student/academic.php';
+                return 'http://192.168.100.4/student/academic.php';
             case 'Accounting Office':
-                return 'http://192.168.84.183/student/accounting.php';
+                return 'http://192.168.100.4/student/accounting.php';
             case 'Administrative Office':
-                return 'http://192.168.84.183/student/administrative.php';
+                return 'http://192.168.100.4/student/administrative.php';
         }
     }
 

@@ -23,7 +23,7 @@
   <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 
 <body>
@@ -56,30 +56,6 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading">
-              <i class="fa-solid fa-circle-info"></i> Reminder
-            </h4>
-            <p class="mb-0">Always check your transaction status to follow instructions.</p>
-            <p class="mb-0">You can delete or edit transactions during <span
-                class="badge rounded-pill bg-dark">Pending</span> status.</p>
-            <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
-                the deficiency/ies to necessary office.</small></p>
-            <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
-                by the admin.</small></p>
-            <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
-                  receiving</span> - The request is currently in Receiving window and waiting for submission of
-                requirements.</small></p>
-            <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
-                  evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small>
-            </p>
-            <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for
-                  pickup</span> - The requested document/s is/are already available for pickup at the releasing section
-                of student records.</small></p>
-            <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> -
-                The requested document/s was/were claimed.</small></p>
-            <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
-          </div>
           <div class="d-flex w-100 justify-content-between p-0">
             <div class="d-flex p-2">
               <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">

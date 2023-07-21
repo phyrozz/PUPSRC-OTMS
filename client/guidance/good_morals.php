@@ -20,7 +20,7 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -257,10 +257,10 @@
                                             <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the request letter and other requirements.</li>
                                             <li>Wait for the request to be approved by constantly checking its status on the <b>My Transactions</b> page.</li>
                                         </ol>
-                                        <a href="./generate_pdf-gm.php" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
+                                        <a href="./generate_pdf-gm.php" id="print-letter-btn" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="../transactions.php" class="btn btn-primary"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
+                                        <a href="../transactions.php" id="redirect-btn" class="btn disabled"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
                                     </div>
                                 </div>
                             </div>
@@ -362,8 +362,16 @@
 
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+
+        // Add event listener to the Print Letter button on success modal in order to enable the state of the Go to My Transactions button
+        document.getElementById('print-letter-btn').addEventListener('click', () => {
+            redirectBtn = document.getElementById('redirect-btn');
+
+            redirectBtn.classList.add('btn-primary');
+            redirectBtn.classList.remove('disabled');
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
     <script>
         flatpickr("#datepicker", {
             readonly: false,

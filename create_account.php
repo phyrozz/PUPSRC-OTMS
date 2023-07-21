@@ -19,7 +19,7 @@ if (isset($_POST['studentSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://192.168.84.183/login/student.php");
+        header("Location: http://192.168.100.4/login/student.php");
         $_SESSION['account_exists'] = true;
         exit();
     }
@@ -82,11 +82,11 @@ if (isset($_POST['studentSignup'])) {
             $stmt->execute();
             $stmt->close();
 
-            header("Location: http://192.168.84.183/login/student.php");
+            header("Location: http://192.168.100.4/login/student.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://192.168.84.183/login/student.php");
+            header("Location: http://192.168.100.4/login/student.php");
             $_SESSION['account_failed'] = true;
         }
         $connection->close();
@@ -107,7 +107,7 @@ else if (isset($_POST['clientSignup'])) {
     $checkStmt->close();
 
     if ($count > 0) {
-        header("Location: http://192.168.84.183/login/client.php");
+        header("Location: http://192.168.100.4/login/client.php");
         $_SESSION['account_exists'] = true;
         exit();
     }
@@ -140,11 +140,11 @@ else if (isset($_POST['clientSignup'])) {
             $stmt->bind_param("isssssi", $gender, $address, $province, $city, $barangay, $zipCode, $lastId);
             $stmt->execute();
             $stmt->close();
-            header("Location: http://192.168.84.183/login/client.php");
+            header("Location: http://192.168.100.4/login/client.php");
             $_SESSION['account_created'] = true;
         } 
         else {
-            header("Location: http://192.168.84.183/login/client.php");
+            header("Location: http://192.168.100.4/login/client.php");
             $_SESSION['account_failed'] = true;
         }
     }

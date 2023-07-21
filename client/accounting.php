@@ -45,11 +45,11 @@
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
-            <a href="accounting/payment1.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="accounting/payment1.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
                 <h2>PAYMENTS</h2>
                 <p>Simplify your payments for campus documents</p>
             </a>
-            <a href="transactions.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="transactions.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>TRANSACTION HISTORY</h2>
                 <p>Access your past and current transactions</p>
             </a>

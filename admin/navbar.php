@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: http://192.168.84.183/index.php');
+    header('Location: http://192.168.100.4/index.php');
     exit;
 }
 

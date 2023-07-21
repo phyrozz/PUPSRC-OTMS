@@ -45,11 +45,11 @@
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
-            <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Request Good Moral Certificate</h2>
                 <p>Request for a good moral certificate for requirement purposes</p>
             </a>
-            <a href="guidance/clearance.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="guidance/clearance.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Request Clearance</h2>
                 <p>Request and check the status of your academic clearance</p>
             </a>

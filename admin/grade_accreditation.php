@@ -7,7 +7,7 @@
 
     // Avoid admin user from accessing other office pages
     if ($_SESSION['office_name'] != "Academic Office") {
-        header("Location: http://192.168.84.183/admin/redirect.php");
+        header("Location: http://192.168.100.4/admin/redirect.php");
         exit();
     }
 ?>
@@ -150,7 +150,8 @@
                                 1 => "Missing",
                                 2 => "Pending",
                                 3 => "Under Verification",
-                                4 => "Verified"
+                                4 => "Verified",
+                                5 => "Rejected"
                             );
 
                             // Generate the options

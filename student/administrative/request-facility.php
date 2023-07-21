@@ -20,7 +20,7 @@
     <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="wrapper">
@@ -544,14 +544,14 @@
                     window.location.href = "view-facility.php";
                 }
                 function redirectToAnotherPage() {
-                    var url = "http://192.168.84.183/student/administrative/generate-letter.php";
+                    var url = "http://192.168.100.4/student/administrative/generate-letter.php";
                     window.open(url, "_blank"); 
                 }
     </script>
 
 
     <!-- custom calendar where sundays are disabled -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
     <script>
         var disableSundays = function(date) {
         // Disable date on Sundays
