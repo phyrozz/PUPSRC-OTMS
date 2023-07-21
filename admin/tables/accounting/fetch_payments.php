@@ -6,7 +6,7 @@ session_start();
 // Retrieve the page number from the AJAX request
 $page = isset($_POST['page']) ? $_POST['page'] : 1;
 
-// Define the number of records per page
+// Define the numeber of records per page
 $recordsPerPage = 20;
 
 // Calculate the starting record for the requested page
@@ -19,9 +19,9 @@ $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the document requests
 $paymentsQuery = "SELECT payment_id, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(payment_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_payment_id, firstName, lastName, middleName,
-                        documentType, referenceNumber, amount, image_url, transaction_date
+                        documentType, referenceNumber, amount, image_url, transaction_date, studentNumber, status
                         FROM student_info
-                        WHERE documentType != 'Certified True Copy'";
+                        WHERE documentType != 'Hotdog'";
                         
 
 if (!empty($searchTerm)) {
