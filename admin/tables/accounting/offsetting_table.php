@@ -2,6 +2,7 @@
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
+            <th class="text-center"></th>
                 <th class="text-center sortable-header" data-column="offsetting_id" scope="col" data-order="desc">
                     Offsetting Code
                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -101,6 +102,7 @@
                         var offsettings = data.offsettings[i];
 
                         var row = '<tr>' +
+                        '<td><input type="checkbox" name="request-checkbox" value="' + offsettings.offsetting_id + '"></td>' +
                             '<td>'+'A0-' + offsettings.offsetting_id + '</td>' +
                             '<td>' + (new Date(offsettings.formatted_timestamp).toLocaleString('en-US', {
                             month: 'long',
@@ -195,7 +197,7 @@
             var statusId = $('#update-status').val(); // Get the selected status ID
 
             $.ajax({
-                url: 'tables/guidance/update_doc_requests.php',
+                url: 'tables/accounting/update_offsettings.php',
                 method: 'POST',
                 data: { requestIds: requestIds, statusId: statusId }, // Include the selected status ID in the data
                 success: function(response) {
@@ -203,7 +205,7 @@
                     console.log('Status updated successfully');
 
                     // Refresh the table after status update
-                    handlePagination(1, '', 'request_id', 'desc');
+                    handlePagination(1, '', 'offsetting_id', 'desc');
                 },
                 error: function() {
                     // Handle the error response
