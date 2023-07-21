@@ -7,7 +7,7 @@ session_start();
 $page = isset($_POST['page']) ? $_POST['page'] : 1;
 
 // Define the number of records per page
-$recordsPerPage = 10;
+$recordsPerPage = 20;
 
 // Calculate the starting record for the requested page
 $startingRecord = ($page - 1) * $recordsPerPage;

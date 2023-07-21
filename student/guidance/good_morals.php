@@ -319,7 +319,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>You have already recently requested. Please try again within the next 20 minutes.</p>
+                                        <p>You have already recently requested. Please try again within the next 20 minutes or delete your previous request on the <b>My Transactions</b> page.</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
