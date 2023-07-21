@@ -280,7 +280,7 @@ function academicStatus($status) {
                     Application successfully submitted!
                 </div>
                 <div class="modal-footer">
-                <a href="../survey.php" class="btn btn-primary">Okay</a>
+                <a href="survey.php" class="btn btn-primary">Okay</a>
                 </div>
                         </div>
                     </div>
