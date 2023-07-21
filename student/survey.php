@@ -72,25 +72,28 @@
             </div>
 
             <div class="form-check">
-    <input class="form-check-input" type="radio" name="radioGroup" id="radio1" value="option1" checked>
+            
+        <!-- The form action is changed from survey.php to conn.php, it is to send the entered data on the database. -->
+            <form action="conn.php" method="post">
+    <input class="form-check-input" type="radio" name="rating" id="radio1" value="Excellent" checked>
     <label class="form-check-label" for="radio1">
       Excellent
     </label>
   </div>
   <div class="form-check">
-    <input class="form-check-input" type="radio" name="radioGroup" id="radio2" value="option2">
+    <input class="form-check-input" type="radio" name="rating" id="radio2" value="Good">
     <label class="form-check-label" for="radio2">
       Good
     </label>
   </div>
   <div class="form-check">
-    <input class="form-check-input" type="radio" name="radioGroup" id="radio3" value="option3">
+    <input class="form-check-input" type="radio" name="rating" id="radio3" value="Average">
     <label class="form-check-label" for="radio3">
       Average
     </label>
   </div>
   <div class="form-check">
-    <input class="form-check-input" type="radio" name="radioGroup" id="radio4" value="option4">
+    <input class="form-check-input" type="radio" name="rating" id="radio4" value="Poor">
     <label class="form-check-label" for="radio4">
       Poor
     </label>
@@ -99,12 +102,14 @@
                     <br/><h5>Do you have suggestions or complaints?</h5>
                 </div>
         <div class="form-group">
-    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+
+    <textarea class="form-control" id="exampleTextarea" name="suggestions"  rows="3"></textarea>
   </div><br/>
-  <a href="transactions.php" class="btn btn-primary">Submit</a>
+  <button type="submit" class="btn btn-primary">Submit</button>
         </div>
         <div class="push"></div>
     </div>
+     </form>
     <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
         <div>
             <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
