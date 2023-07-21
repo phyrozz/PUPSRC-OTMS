@@ -123,7 +123,7 @@
                   include 'tables/registrar/student_records.php';
                 }
                 elseif ($table === 'feedback') {
-                  include 'tables/registrar/feedback.php';
+                  include 'tables/registrar/feedbacks_table.php';
                 }
             ?>
           </div>
