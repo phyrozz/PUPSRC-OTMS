@@ -553,7 +553,7 @@
   <?php
 
   if(isset($_POST['feedbackSubmit'])) {
-    $query = "INSERT INTO registrar_feedbacks (user_id, feedback)
+    $query = "INSERT INTO registrar_feedbacks (user_id, feedback_text)
     VALUES (?, ?)";
 
     $stmt = $connection->prepare($query);
@@ -565,7 +565,7 @@
   $(document).ready(function() {
     $("#successModal").modal("show");
     document.querySelector('#dismiss-button').addEventListener('click', (e) => {
-      window.location.replace('http://localhost/client/registrar/help.php');
+      window.location.replace('http://192.168.84.183/client/registrar/help.php');
     })
   })
   </script>

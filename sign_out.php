@@ -5,6 +5,6 @@
 
     $isLoggedIn = false;
 
-    header("Location: http://localhost/index.php");
+    header("Location: http://192.168.84.183/index.php");
     exit();
 ?>

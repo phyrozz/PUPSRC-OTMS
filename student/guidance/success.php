@@ -25,7 +25,7 @@
             if(!isset($_SESSION['success'])) {
                 ?>
                 <script type="text/javascript">
-                    window.location.href="http://localhost/student/guidance.php";
+                    window.location.href="http://192.168.84.183/student/guidance.php";
                 </script>
                 <?php
                 exit;

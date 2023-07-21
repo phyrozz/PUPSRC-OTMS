@@ -13,6 +13,7 @@
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/PHPMailer/PHPMailer/badge)](https://api.securityscorecards.dev/projects/github.com/PHPMailer/PHPMailer)
 
 ## Features
+
 - Probably the world's most popular code for sending email from PHP!
 - Used by many open-source projects: WordPress, Drupal, 1CRM, SugarCRM, Yii, Joomla! and many more
 - Integrated SMTP support – send without a local mail server
@@ -30,20 +31,23 @@
 - Much more!
 
 ## Why you might need it
+
 Many PHP developers need to send email from their code. The only PHP function that supports this directly is [`mail()`](https://www.php.net/manual/en/function.mail.php). However, it does not provide any assistance for making use of popular features such as encryption, authentication, HTML messages, and attachments.
 
 Formatting email correctly is surprisingly difficult. There are myriad overlapping (and conflicting) standards, requiring tight adherence to horribly complicated formatting and encoding rules – the vast majority of code that you'll find online that uses the `mail()` function directly is just plain wrong, if not unsafe!
 
-The PHP `mail()` function usually sends via a local mail server, typically fronted by a `sendmail` binary on Linux, BSD, and macOS platforms, however, Windows usually doesn't include a local mail server; PHPMailer's integrated SMTP client allows email sending on all platforms without needing a local mail server. Be aware though, that the `mail()` function should be avoided when possible; it's both faster and [safer](https://exploitbox.io/paper/Pwning-PHP-Mail-Function-For-Fun-And-RCE.html) to use SMTP to localhost.
+The PHP `mail()` function usually sends via a local mail server, typically fronted by a `sendmail` binary on Linux, BSD, and macOS platforms, however, Windows usually doesn't include a local mail server; PHPMailer's integrated SMTP client allows email sending on all platforms without needing a local mail server. Be aware though, that the `mail()` function should be avoided when possible; it's both faster and [safer](https://exploitbox.io/paper/Pwning-PHP-Mail-Function-For-Fun-And-RCE.html) to use SMTP to 192.168.84.183.
 
-*Please* don't be tempted to do it yourself – if you don't use PHPMailer, there are many other excellent libraries that
+_Please_ don't be tempted to do it yourself – if you don't use PHPMailer, there are many other excellent libraries that
 you should look at before rolling your own. Try [SwiftMailer](https://swiftmailer.symfony.com/)
 , [Laminas/Mail](https://docs.laminas.dev/laminas-mail/), [ZetaComponents](https://github.com/zetacomponents/Mail), etc.
 
 ## License
+
 This software is distributed under the [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html) license, along with the [GPL Cooperation Commitment](https://gplcc.github.io/gplcc/). Please read [LICENSE](https://github.com/PHPMailer/PHPMailer/blob/master/LICENSE) for information on the software availability and distribution.
 
 ## Installation & loading
+
 PHPMailer is available on [Packagist](https://packagist.org/packages/phpmailer/phpmailer) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install PHPMailer. Just add this line to your `composer.json` file:
 
 ```json
@@ -76,13 +80,16 @@ require 'path/to/PHPMailer/src/SMTP.php';
 If you're not using the `SMTP` class explicitly (you're probably not), you don't need a `use` line for the SMTP class. Even if you're not using exceptions, you do still need to load the `Exception` class as it is used internally.
 
 ## Legacy versions
+
 PHPMailer 5.2 (which is compatible with PHP 5.0 — 7.0) is no longer supported, even for security updates. You will find the latest version of 5.2 in the [5.2-stable branch](https://github.com/PHPMailer/PHPMailer/tree/5.2-stable). If you're using PHP 5.5 or later (which you should be), switch to the 6.x releases.
 
 ### Upgrading from 5.2
+
 The biggest changes are that source files are now in the `src/` folder, and PHPMailer now declares the namespace `PHPMailer\PHPMailer`. This has several important effects – [read the upgrade guide](https://github.com/PHPMailer/PHPMailer/tree/master/UPGRADING.md) for more details.
 
 ### Minimal installation
-While installing the entire package manually or with Composer is simple, convenient, and reliable, you may want to include only vital files in your project. At the very least you will need [src/PHPMailer.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/PHPMailer.php). If you're using SMTP, you'll need [src/SMTP.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/SMTP.php), and if you're using POP-before SMTP (*very* unlikely!), you'll need [src/POP3.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/POP3.php). You can skip the [language](https://github.com/PHPMailer/PHPMailer/tree/master/language/) folder if you're not showing errors to users and can make do with English-only errors. If you're using XOAUTH2 you will need [src/OAuth.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/OAuth.php) as well as the Composer dependencies for the services you wish to authenticate with. Really, it's much easier to use Composer!
+
+While installing the entire package manually or with Composer is simple, convenient, and reliable, you may want to include only vital files in your project. At the very least you will need [src/PHPMailer.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/PHPMailer.php). If you're using SMTP, you'll need [src/SMTP.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/SMTP.php), and if you're using POP-before SMTP (_very_ unlikely!), you'll need [src/POP3.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/POP3.php). You can skip the [language](https://github.com/PHPMailer/PHPMailer/tree/master/language/) folder if you're not showing errors to users and can make do with English-only errors. If you're using XOAUTH2 you will need [src/OAuth.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/OAuth.php) as well as the Composer dependencies for the services you wish to authenticate with. Really, it's much easier to use Composer!
 
 ## A Simple Example
 
@@ -143,6 +150,7 @@ If you are re-using the instance (e.g. when sending to a mailing list), you may 
 That's it. You should now be ready to use PHPMailer!
 
 ## Localization
+
 PHPMailer defaults to English, but in the [language](https://github.com/PHPMailer/PHPMailer/tree/master/language/) folder, you'll find many translations for PHPMailer error messages that you may encounter. Their filenames contain [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code for the translations, for example `fr` for French. To specify a language, you need to tell PHPMailer which one to use, like this:
 
 ```php
@@ -153,6 +161,7 @@ $mail->setLanguage('fr', '/optional/path/to/language/directory/');
 We welcome corrections and new languages – if you're looking for corrections, run the [PHPMailerLangTest.php](https://github.com/PHPMailer/PHPMailer/tree/master/test/PHPMailerLangTest.php) script in the tests folder and it will show any missing translations.
 
 ## Documentation
+
 Start reading at the [GitHub wiki](https://github.com/PHPMailer/PHPMailer/wiki). If you're having trouble, head for [the troubleshooting guide](https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting) as it's frequently updated.
 
 Examples of how to use PHPMailer for common scenarios can be found in the [examples](https://github.com/PHPMailer/PHPMailer/tree/master/examples) folder. If you're looking for a good starting point, we recommend you start with [the Gmail example](https://github.com/PHPMailer/PHPMailer/tree/master/examples/gmail.phps).
@@ -166,6 +175,7 @@ You can generate complete API-level documentation by running `phpdoc` in the top
 If the documentation doesn't cover what you need, search the [many questions on Stack Overflow](http://stackoverflow.com/questions/tagged/phpmailer), and before you ask a question about "SMTP Error: Could not connect to SMTP host.", [read the troubleshooting guide](https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting).
 
 ## Tests
+
 [PHPMailer tests](https://github.com/PHPMailer/PHPMailer/tree/master/test/) use PHPUnit 9, with [a polyfill](https://github.com/Yoast/PHPUnit-Polyfills) to let 9-style tests run on older PHPUnit and PHP versions.
 
 [![Test status](https://github.com/PHPMailer/PHPMailer/workflows/Tests/badge.svg)](https://github.com/PHPMailer/PHPMailer/actions)
@@ -173,11 +183,13 @@ If the documentation doesn't cover what you need, search the [many questions on 
 If this isn't passing, is there something you can do to help?
 
 ## Security
+
 Please disclose any vulnerabilities found responsibly – report security issues to the maintainers privately.
 
-See [SECURITY](https://github.com/PHPMailer/PHPMailer/tree/master/SECURITY.md) and [PHPMailer's security advisories on GitHub](https://github.com/PHPMailer/PHPMailer/security). 
+See [SECURITY](https://github.com/PHPMailer/PHPMailer/tree/master/SECURITY.md) and [PHPMailer's security advisories on GitHub](https://github.com/PHPMailer/PHPMailer/security).
 
 ## Contributing
+
 Please submit bug reports, suggestions, and pull requests to the [GitHub issue tracker](https://github.com/PHPMailer/PHPMailer/issues).
 
 We're particularly interested in fixing edge cases, expanding test coverage, and updating translations.
@@ -190,9 +202,10 @@ If you have git clones from prior to the move to the PHPMailer GitHub organisati
 git remote set-url upstream https://github.com/PHPMailer/PHPMailer.git
 ```
 
-Please *don't* use the SourceForge or Google Code projects any more; they are obsolete and no longer maintained.
+Please _don't_ use the SourceForge or Google Code projects any more; they are obsolete and no longer maintained.
 
 ## Sponsorship
+
 Development time and resources for PHPMailer are provided by [Smartmessages.net](https://info.smartmessages.net/), the world's only privacy-first email marketing system.
 
 <a href="https://info.smartmessages.net/"><img src="https://www.smartmessages.net/img/smartmessages-logo.svg" width="550" alt="Smartmessages.net privacy-first email marketing logo"></a>
@@ -209,9 +222,11 @@ improve code health, while paying the maintainers of the exact packages you
 use. [Learn more.](https://tidelift.com/subscription/pkg/packagist-phpmailer-phpmailer?utm_source=packagist-phpmailer-phpmailer&utm_medium=referral&utm_campaign=enterprise&utm_term=repo)
 
 ## Changelog
+
 See [changelog](changelog.md).
 
 ## History
+
 - PHPMailer was originally written in 2001 by Brent R. Matzelle as a [SourceForge project](http://sourceforge.net/projects/phpmailer/).
 - [Marcus Bointon](https://github.com/Synchro) (`coolbru` on SF) and Andy Prevost (`codeworxtech`) took over the project in 2004.
 - Became an Apache incubator project on Google Code in 2010, managed by Jim Jagielski.
@@ -220,6 +235,7 @@ See [changelog](changelog.md).
 - PHPMailer moves to [the PHPMailer organisation](https://github.com/PHPMailer) on GitHub in 2013.
 
 ### What's changed since moving from SourceForge?
+
 - Official successor to the SourceForge and Google Code projects.
 - Test suite.
 - Continuous integration with GitHub Actions.

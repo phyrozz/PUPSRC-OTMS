@@ -926,20 +926,20 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`services_id`, `service_name`, `service_description`, `office_id`, `url`) VALUES
-(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 2, 'http://localhost/student/registrar/create_request.php'),
-(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://localhost/student/guidance/counseling.php'),
-(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://localhost/student/guidance/good_morals.php'),
-(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://localhost/student/guidance/clearance.php'),
-(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://localhost/student/academic/subject_overload.php'),
-(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://localhost/student/academic/grade_accreditation.php'),
-(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://localhost/student/academic/cross_enrollment.php'),
-(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://localhost/student/academic/shifting.php'),
-(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://localhost/student/academic/manual_enrollment.php'),
-(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://localhost/student/academic/servicesinsistools.php'),
-(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://localhost/student/accounting/payment1.php'),
-(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://localhost/student/accounting/offsetting1.php'),
-(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://localhost/student/administrative/view-equipment.php'),
-(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://localhost/student/administrative/view-facility.php');
+(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 2, 'http://192.168.84.183/student/registrar/create_request.php'),
+(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://192.168.84.183/student/guidance/counseling.php'),
+(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://192.168.84.183/student/guidance/good_morals.php'),
+(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://192.168.84.183/student/guidance/clearance.php'),
+(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://192.168.84.183/student/academic/subject_overload.php'),
+(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://192.168.84.183/student/academic/grade_accreditation.php'),
+(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://192.168.84.183/student/academic/cross_enrollment.php'),
+(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://192.168.84.183/student/academic/shifting.php'),
+(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://192.168.84.183/student/academic/manual_enrollment.php'),
+(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://192.168.84.183/student/academic/servicesinsistools.php'),
+(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://192.168.84.183/student/accounting/payment1.php'),
+(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://192.168.84.183/student/accounting/offsetting1.php'),
+(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://192.168.84.183/student/administrative/view-equipment.php'),
+(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://192.168.84.183/student/administrative/view-facility.php');
 
 -- --------------------------------------------------------
 
@@ -1756,6 +1756,38 @@ ALTER TABLE `user_details`
   ADD CONSTRAINT `user_details_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE;
 COMMIT;
 
+
+--
+-- Table structure for table `registrar_feedbacks`
+--
+
+CREATE TABLE `registrar_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `feedback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `registrar_feedbacks`
+--
+ALTER TABLE `registrar_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `registrar_feedbacks`
+--
+ALTER TABLE `registrar_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
+
 -- Drop the existing table if it exists
 DROP TABLE IF EXISTS `acad_survey`;
 
@@ -1772,6 +1804,7 @@ INSERT INTO `acad_survey` (`rating`, `suggestions`) VALUES
 ('Good', 'This was a good experience.'),
 ('Average', 'This was an average experience.'),
 ('Poor', 'This was a poor experience.');
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

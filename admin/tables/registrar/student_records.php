@@ -15,25 +15,19 @@ $statuses = array(
   <table id="transactions-table" class="table table-hover">
     <thead>
       <tr class="table-active">
-        <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col"
-          data-order="desc">
+        <th class="doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
           Course
-          <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
-        <th class="text-center doc-request-id-header sortable-header" data-column="scheduled_datetime" scope="col"
+        <th class="doc-request-id-header sortable-header" data-column="scheduled_datetime" scope="col"
           data-order="desc">
           Year
-          <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
-        <th class="text-center doc-request-requestor-header sortable-header" data-column="last_name" scope="col"
-          data-order="desc">
+        <th class="doc-request-requestor-header sortable-header" data-column="last_name" scope="col" data-order="desc">
           Student Name
-          <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
-        <th class="text-center doc-request-shelf-location-header sortable-header" data-column="shelf-location"
-          scope="col" data-order="desc">
+        <th class="doc-request-shelf-location-header sortable-header" data-column="shelf-location" scope="col"
+          data-order="desc">
           Shelf Location
-          <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
       </tr>
     </thead>

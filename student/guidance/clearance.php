@@ -353,7 +353,7 @@
     if (isset($_SESSION['success'])) {
         ?>
         <script>
-            // window.location.href="http://localhost/student/guidance/clearance.php";
+            // window.location.href="http://192.168.84.183/student/guidance/clearance.php";
             $(document).ready(function() {
                 $("#successModal").modal("show");
             })

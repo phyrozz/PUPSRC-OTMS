@@ -5399,7 +5399,7 @@ $Id: ChangeLog,v 1.257 2010/09/19 13:15:07 Stevan_White Exp $
 
 	* sfd/FreeMono.sfd - added U+0589.
 
-2005-11-06  Primoz Peterlin  <peterlin@localhost.localdomain>
+2005-11-06  Primoz Peterlin  <peterlin@192.168.84.183.localdomain>
 
 	* sfd/FreeSans.sfd - added U+0278, U+03D5, U+2248. Corrected
 	U+2071, U+222E, U+2242, U+2243 in response to bug reports
@@ -5416,7 +5416,7 @@ $Id: ChangeLog,v 1.257 2010/09/19 13:15:07 Stevan_White Exp $
 	symbol) in order to conform to Unicode standard. Simplified glyph
 	shapes in ASCII range. Started adding "above" and "below" anchors.
 	
-2005-11-05  Primoz Peterlin  <peterlin@localhost.localdomain>
+2005-11-05  Primoz Peterlin  <peterlin@192.168.84.183.localdomain>
 
 	* sfd/FreeSerif.sfd - accented letters in Latin Extended-A
 	replaced by references wherever possible.
@@ -5426,7 +5426,7 @@ $Id: ChangeLog,v 1.257 2010/09/19 13:15:07 Stevan_White Exp $
 	U+01B0, U+026E, U+0270, U+0278, U+0280, U+0281, U+028B, U+0299,
 	U+029C, U+029F.
 	
-2005-11-03  Primoz Peterlin  <peterlin@localhost.localdomain>
+2005-11-03  Primoz Peterlin  <peterlin@192.168.84.183.localdomain>
 
 	* sfd/FreeSansBold.sfd - added U+0180, U+0184, U+0185, U+0192,
 	U+019B, U+01A0-01A2, U+01AF, U+01B0, U+01EE, U+01EF, U+0292,
@@ -5450,7 +5450,7 @@ $Id: ChangeLog,v 1.257 2010/09/19 13:15:07 Stevan_White Exp $
 	U+03D5 (Greek phi symbol) in order to conform to Unicode standard.
 	Added U+04C5, U+04C6, U+04C9, U+04CA, U+04D, U+04CE.
 	
-2005-11-01  Primoz Peterlin  <peterlin@localhost.localdomain>
+2005-11-01  Primoz Peterlin  <peterlin@192.168.84.183.localdomain>
 
 	* sfd/FreeSansBold.sfd - modified U+019C.
 
@@ -5458,7 +5458,7 @@ $Id: ChangeLog,v 1.257 2010/09/19 13:15:07 Stevan_White Exp $
 	U+01B7, U+01B8, U+0275, U+0278, U+0298, U+2012, U+2015,
 	U+2070-207F, U+2080-208E, U+2153-217F, U+2213, U+2215.
 
-2005-10-31  Primoz Peterlin  <peterlin@localhost.localdomain>
+2005-10-31  Primoz Peterlin  <peterlin@192.168.84.183.localdomain>
 
 	* sfd/FreeSerif.sfd - added U+0199, U+01AB, U+0265, U+0282,
 	U+0288, U+028C-028E, U+0290, U+029E, U+02A0.
