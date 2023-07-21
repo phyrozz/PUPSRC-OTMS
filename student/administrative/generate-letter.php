@@ -249,12 +249,12 @@ $html = <<<EOD
         <p>Greetings in pursuit of wisdom!</p>
 
         <p class="indent">
-            We, the students from <span id="course">$course</span> <span id="year-level">$section</span>, will be conducting a Seminar entitled "<span id="reason">$purpose</span>" to be held on <span id="start-date">$startDate</span>, from <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> at PUP-Santa Rosa <span id="facility">$facilityName</span>, as a requirement for our subject HRMA 30103 Seminar-Workshop in Human Resource Management Trends and Issues.
-        </p>
+            We, the students from <span id="course">$course</span> <span id="year-level">$section</span>, will be utilizing <span id="facility">$facilityName</span> at PUP Sta. Rosa 
+            from <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span>,
+             as a requirement for our subject.
+            </p>
 
-        <p class="indent">
-            This activity can be a good way for students to acquire new knowledge, enabling them to better develop the necessary skills and knowledge to become literate in the field of managing Human Capital.
-        </p>
+    
 
         <p>Hoping for your kind consideration.</p>
 
