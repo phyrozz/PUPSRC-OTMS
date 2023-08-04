@@ -57,6 +57,9 @@ $statuses = array(
                 <option value="6">Rejected</option>
             </select>
         </div>
+        <div>
+            <a href="#" id="status-info-btn">What do these statuses mean?</a>
+        </div>
         <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
     </div> 
     <nav aria-label="Page navigation">
@@ -84,6 +87,33 @@ $statuses = array(
     </div>
 </div>
 <!-- End of view comment modal -->
+<!-- View user status info modal -->
+<div id="statusInfoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="statusInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusInfoModalLabel">What do these statuses mean?</h5>
+            </div>
+            <div class="modal-body">
+                <div id="reminder-container" class="alert alert-info mt-3" role="alert">
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The appointment is under review by the office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The appointment is rejected
+                        by the office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                            evaluation</span> - Additional requirements or appointment purpose is under review by the office.</small>
+                    </p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Approved</span> -
+                        The appointment is approved and the requestor must proceed to the Guidance Office.</small></p>
+                    <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view status info modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -283,6 +313,10 @@ $statuses = array(
                 // Show the comment modal
                 $('#viewCommentModal').modal('show');
             }
+        });
+
+        $('#status-info-btn').on('click', function() {
+            $('#statusInfoModal').modal('show');
         });
     });
 

@@ -1,6 +1,6 @@
 <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
     <div>
-        <small>PUP Santa Rosa - Online Transaction Management System Beta 0.3.1</small>
+        <small>PUP Santa Rosa - Online Transaction Management System Beta 0.3.2</small>
     </div>
     <div>
         <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>

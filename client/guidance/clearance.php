@@ -246,16 +246,13 @@
                                         <p>Your request has been submitted successfully!</p>
                                         <h5>What should I do next?</h5>
                                         <ol>
-                                            <li>Print the <samp>.pdf</samp> copy of your request letter by clicking on the <b>Print Letter</b> button.</li>
-                                            <li>Proceed to the Director's Office for the request letter to be signed by the Campus Director.</li>
-                                            <li>Prepare other requirements needed for the request (Refer to the <b>Help</b> page).</li>
-                                            <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the request letter and other requirements.</li>
+                                            <li>Prepare the requirements needed for the request (Refer to the <b>Help</b> page).</li>
+                                            <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the requirements.</li>
                                             <li>Wait for the request to be approved by constantly checking its status on the <b>My Transactions</b> page.</li>
                                         </ol>
-                                        <a href="./generate_pdf-c.php" id="print-letter-btn" target="_blank" class="btn btn-primary"><i class="fa-solid fa-print"></i> Print Letter</a>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="../transactions.php" id="redirect-btn" class="btn disabled"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
+                                        <a href="../transactions.php" id="redirect-btn" class="btn btn-primary"><i class="fa-solid fa-file-invoice"></i> Go to My Transactions</a>
                                     </div>
                                 </div>
                             </div>
@@ -361,14 +358,6 @@
 
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
-
-        // Add event listener to the Print Letter button on success modal in order to enable the state of the Go to My Transactions button
-        document.getElementById('print-letter-btn').addEventListener('click', () => {
-            redirectBtn = document.getElementById('redirect-btn');
-
-            redirectBtn.classList.add('btn-primary');
-            redirectBtn.classList.remove('disabled');
-        });
     </script>
     <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
     <script>

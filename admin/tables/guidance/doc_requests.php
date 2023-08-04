@@ -70,6 +70,9 @@ $statuses = array(
                 <option value="6">Rejected</option>
             </select>
         </div>
+        <div>
+            <a href="#" id="status-info-btn">What do these statuses mean?</a>
+        </div>
         <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
     </div>    
     <nav aria-label="Page navigation">
@@ -96,6 +99,39 @@ $statuses = array(
     </div>
 </div>
 <!-- End of view user details modal -->
+<!-- View user status info modal -->
+<div id="statusInfoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="statusInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusInfoModalLabel">What do these statuses mean?</h5>
+            </div>
+            <div class="modal-body">
+                <div id="reminder-container" class="alert alert-info mt-3" role="alert">
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
+                        the deficiency/ies to necessary office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
+                        by the admin.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
+                            receiving</span> - The request is currently in Receiving window and waiting for submission of
+                        requirements.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                            evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small>
+                    </p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for
+                            pickup</span> - The requested document/s is/are already available for pickup at the releasing section
+                        of student records.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> -
+                        The requested document/s was/were claimed.</small></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view status info modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -339,6 +375,10 @@ $statuses = array(
 
         // Checkbox change listener using event delegation
         $(document).on('change', 'input[name="request-checkbox"]', handleCheckboxChange);
+
+        $('#status-info-btn').on('click', function() {
+            $('#statusInfoModal').modal('show');
+        });
     });
 
     function handleCheckboxChange() {
