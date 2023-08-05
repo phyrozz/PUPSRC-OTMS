@@ -4,7 +4,7 @@
 
 ## PUPSRC-OTMS: The Polytechnic University of the Philippines Santa Rosa Campus - Online Transaction Management System
 
-A CRUD Transaction Management System for on-campus transactions on **PUP Santa Rosa**. Built on Vanilla WAMP Stack and powered by Bootstrap 5.
+A CRUD Transaction Management System for on-campus transactions in **PUP Santa Rosa**. Built on Vanilla WAMP Stack and powered by Bootstrap 5.
 
 ### Transactions Offered:
 - Document Requests (Registrar and Guidance Office)
