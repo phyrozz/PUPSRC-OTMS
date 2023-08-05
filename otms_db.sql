@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2023 at 07:35 AM
+-- Generation Time: Aug 04, 2023 at 06:45 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,23 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `academic_feedbacks`
+-- Table structure for table `academic_statuses`
 --
 
-CREATE TABLE `academic_feedbacks` (
-  `feedback_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `feedback_text` text NOT NULL
+CREATE TABLE `academic_statuses` (
+  `academic_statu_id` int(11) NOT NULL,
+  `status_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `academic_feedbacks`
+-- Dumping data for table `academic_statuses`
 --
 
-INSERT INTO `academic_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
-(1, 47, 'erwin@gmail.com', 'this is first feedback'),
-(2, 47, 'erwin@gmail.com', 'second feedback');
+INSERT INTO `academic_statuses` (`academic_statu_id`, `status_name`) VALUES
+(1, 'Pending'),
+(2, 'Missing'),
+(3, 'Under Verification'),
+(4, 'Verified'),
+(5, 'None');
 
 -- --------------------------------------------------------
 
@@ -66,8 +67,7 @@ INSERT INTO `acad_cross_enrollment` (`so_id`, `transaction_id`, `user_id`, `appl
 (3, 'AO-CE-1689855418', 34, NULL, 1),
 (4, 'AO-CE-1689855418', 35, NULL, 1),
 (5, 'AO-CE-1689855418', 39, NULL, 1),
-(6, 'AO-CE-1689855418', 43, NULL, 1),
-(7, 'AO-CE-1689911577', 47, NULL, 1);
+(6, 'AO-CE-1689855418', 43, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -95,8 +95,7 @@ INSERT INTO `acad_grade_accreditation` (`ga_id`, `transaction_id`, `user_id`, `c
 (3, 'AO-GA-1689855627', 34, NULL, NULL, 1, 1),
 (4, 'AO-GA-1689855627', 35, NULL, NULL, 1, 1),
 (5, 'AO-GA-1689855627', 39, NULL, NULL, 1, 1),
-(6, 'AO-GA-1689855627', 43, NULL, NULL, 1, 1),
-(7, 'AO-GA-1689911577', 47, NULL, NULL, 1, 1);
+(6, 'AO-GA-1689855627', 43, NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -122,8 +121,7 @@ INSERT INTO `acad_manual_enrollment` (`me_id`, `transaction_id`, `user_id`, `r_z
 (3, 'AO-ME-1689855662', 34, NULL, 1),
 (4, 'AO-ME-1689855662', 35, NULL, 1),
 (5, 'AO-ME-1689855662', 39, NULL, 1),
-(6, 'AO-ME-1689855662', 43, NULL, 1),
-(7, 'AO-ME-1689911577', 47, NULL, 1);
+(6, 'AO-ME-1689855662', 43, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -153,8 +151,7 @@ INSERT INTO `acad_shifting` (`s_id`, `transaction_id`, `user_id`, `request_lette
 (3, 'AO-S-1689855716', 34, NULL, NULL, NULL, 1, 1, 1),
 (4, 'AO-S-1689855716', 35, NULL, NULL, NULL, 1, 1, 1),
 (5, 'AO-S-1689855716', 39, NULL, NULL, NULL, 1, 1, 1),
-(6, 'AO-S-1689855716', 43, NULL, NULL, NULL, 1, 1, 1),
-(7, 'AO-S-1689911577', 47, NULL, NULL, NULL, 1, 1, 1);
+(6, 'AO-S-1689855716', 43, NULL, NULL, NULL, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -175,7 +172,8 @@ INSERT INTO `acad_status` (`academic_status_id`, `status_name`) VALUES
 (1, 'Missing'),
 (2, 'Pending'),
 (3, 'Under Verification'),
-(4, 'Verified');
+(4, 'Verified'),
+(5, 'Rejected');
 
 -- --------------------------------------------------------
 
@@ -205,29 +203,7 @@ INSERT INTO `acad_subject_overload` (`so_id`, `transaction_id`, `user_id`, `over
 (3, 'AO-SO-1689855754', 34, NULL, NULL, NULL, 1, 1, 1),
 (4, 'AO-SO-1689855754', 35, NULL, NULL, NULL, 1, 1, 1),
 (5, 'AO-SO-1689855754', 39, NULL, NULL, NULL, 1, 1, 1),
-(6, 'AO-SO-1689855754', 43, 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_student_guidance_help.php.png', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_ACEFORM.pdf', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_admin_guidance.php_docreq.png', 2, 2, 2),
-(7, 'AO-SO-1689911577', 47, 'AO_SO_2020-00238-SR-0_Nuque_Christian Erwin_Screenshot 2023-07-21 103348.png', 'AO_SO_2020-00238-SR-0_Nuque_Christian Erwin_ACEFORM.pdf', 'AO_SO_2020-00238-SR-0_Nuque_Christian Erwin_Screenshot 2023-07-21 014751.png', 2, 2, 2);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `acad_survey`
---
-
-CREATE TABLE `acad_survey` (
-  `survey_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `rating` text NOT NULL,
-  `suggestions` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `acad_survey`
---
-
-INSERT INTO `acad_survey` (`survey_id`, `user_id`, `rating`, `suggestions`) VALUES
-(1, 47, 'Average', 'average'),
-(2, 47, 'Poor', 'very poor');
+(6, 'AO-SO-1689855754', 43, 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_student_guidance_help.php.png', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_ACEFORM.pdf', 'AO_SO_2020-00001-SR-0_Dela Cruz_Juan_localhost_admin_guidance.php_docreq.png', 5, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -239,16 +215,17 @@ CREATE TABLE `accounting_feedbacks` (
   `feedback_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `feedback_text` text NOT NULL
+  `feedback_text` text NOT NULL,
+  `submitted_on` varchar(50) NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `accounting_feedbacks`
 --
 
-INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
-(1, 39, 'sample@gmail.com', 'try lang hehe'),
-(2, 42, 'sample@gmail.com', 'hehehe ');
+INSERT INTO `accounting_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`, `submitted_on`) VALUES
+(1, 39, 'sample@gmail.com', 'try lang hehe', '2023-07-22 06:39:09'),
+(2, 42, 'sample@gmail.com', 'hehehe ', '2023-07-22 06:39:09');
 
 -- --------------------------------------------------------
 
@@ -260,15 +237,17 @@ CREATE TABLE `administrative_feedbacks` (
   `feedback_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `feedback_text` text NOT NULL
+  `feedback_text` text NOT NULL,
+  `submitted_on` varchar(50) NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `administrative_feedbacks`
 --
 
-INSERT INTO `administrative_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`) VALUES
-(8, 28, 'joshuamalabanan70@gmail.com', 'test lang po');
+INSERT INTO `administrative_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`, `submitted_on`) VALUES
+(8, 28, 'joshuamalabanan70@gmail.com', 'test lang po', '2023-07-22 06:02:40'),
+(9, 43, 'juandelacruz123@gmail.com', 'hello', '2023-07-22 06:02:40');
 
 -- --------------------------------------------------------
 
@@ -346,7 +325,19 @@ INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, 
 ('GC-1689385362', 'Academic Performance', '', 'DR-1689385362'),
 ('GC-1689385407', 'Other', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula faucibus accumsan. Vestibulum aliquet, nisl a dapibus sagittis, lectus diam condimentum nulla, at rutrum elit elit quis nibh. Maecenas dictum lectus sit amet fermentum molestie. Vestibulum ac enim ex. Nam pellentesque convallis odio, tempus ultricies nulla sodales a. In luctus porta turpis vitae congue. Quisque sollicitudin pulvinar tortor, eu viverra dolor tincidunt nec. Donec accumsan eros ex, ut imperdiet metus egestas at.', 'DR-1689385407'),
 ('GC-1689385434', 'Report Issue', '', 'DR-1689385434'),
-('GC-1689399812', 'Other', 'test testing', 'DR-1689399812');
+('GC-1689399812', 'Other', 'test testing', 'DR-1689399812'),
+('GC-1689949745', 'Goal Setting', '', 'DR-1689949745'),
+('GC-1689949814', 'Academic Guidance', '', 'DR-1689949814'),
+('GC-1689949956', 'Academic Guidance', '', 'DR-1689949956'),
+('GC-1689950398', 'Academic Performance', '', 'DR-1689950398'),
+('GC-1689950749', 'Academic Performance', '', 'DR-1689950749'),
+('GC-1689950866', 'Academic Performance', '', 'DR-1689950866'),
+('GC-1689951020', 'Other', 'testing', 'DR-1689951020'),
+('GC-1689958408', 'Academic Performance', '', 'DR-1689958408'),
+('GC-1689960499', 'Career Path Guidance', '', 'DR-1689960499'),
+('GC-1689962199', 'Career Path Guidance', '', 'DR-1689962199'),
+('GC-1689979780', 'Academic Guidance', '', 'DR-1689979780'),
+('GC-1691162141', 'Academic Guidance', '', 'DR-1691162141');
 
 -- --------------------------------------------------------
 
@@ -401,17 +392,43 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `purpose`, `amount_to_pay`, `attached_files`, `request_letter`) VALUES
-('DR-1689378797', 'Request Clearance', '2023-07-14 16:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
-('DR-1689378809', 'Request Good Moral Document', '2023-07-24 16:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
-('DR-1689385362', 'Guidance Counseling', '2023-07-15 06:30:00', 5, 43, 7, NULL, 0.00, NULL, NULL),
+('DR-1689385362', 'Guidance Counseling', '2023-07-15 06:30:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
 ('DR-1689385407', 'Guidance Counseling', '2023-07-20 04:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
-('DR-1689385434', 'Guidance Counseling', '2023-07-18 01:30:00', 5, 43, 3, NULL, 0.00, NULL, NULL),
+('DR-1689385434', 'Guidance Counseling', '2023-07-18 01:30:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
 ('DR-1689399812', 'Guidance Counseling', '2023-07-19 02:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
 ('DR-1689401168', 'Request Good Moral Document', '2023-07-17 16:00:00', 5, 42, 1, NULL, 0.00, NULL, NULL),
 ('DR-1689401368', 'Request Clearance', '2023-07-19 16:00:00', 5, 42, 1, NULL, 0.00, NULL, NULL),
 ('DR-1689759920', 'Certification, Verification, Authentication (CAV/Apostile)', '2023-07-19 16:00:00', 3, 42, 1, NULL, 0.00, NULL, NULL),
 ('DR-1689917195', 'Request Good Moral Document', '2023-07-23 16:00:00', 5, 42, 1, 'Job Application', 0.00, NULL, NULL),
-('DR-1689917264', 'Request Clearance', '2023-07-25 16:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL);
+('DR-1689917264', 'Request Clearance', '2023-07-25 16:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689949745', 'Guidance Counseling', '2023-07-22 03:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689949814', 'Guidance Counseling', '2023-07-26 05:30:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689949956', 'Guidance Counseling', '2023-07-21 00:30:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689950043', 'Request Good Moral Document', '2023-07-20 16:00:00', 5, 39, 1, 'School Requirement', 0.00, '../../assets/uploads/supporting_docs/64ba975b50f42-localhost_student_transactions.php.png', NULL),
+('DR-1689950398', 'Guidance Counseling', '2023-07-22 00:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689950749', 'Guidance Counseling', '2023-07-21 07:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689950866', 'Guidance Counseling', '2023-07-21 06:30:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689951020', 'Guidance Counseling', '2023-07-22 00:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689957148', 'Request Clearance', '2023-07-23 16:00:00', 5, 43, 1, NULL, 0.00, '../../assets/uploads/supporting_docs/64bab31c39a04-localhost_student_transactions.php.png', NULL),
+('DR-1689957221', 'Request Clearance', '2023-07-25 16:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689957840', 'Request Good Moral Document', '2023-07-25 16:00:00', 5, 43, 1, 'Job Application', 0.00, '../../assets/uploads/supporting_docs/64bab5d08da2e-localhost_student_transactions.php.png', NULL),
+('DR-1689957911', 'Request Good Moral Document', '2023-07-23 16:00:00', 5, 39, 1, 'Immigration or Visa Applications', 0.00, NULL, NULL),
+('DR-1689957953', 'Request Clearance', '2023-07-21 16:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689958408', 'Guidance Counseling', '2023-07-22 00:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689959682', 'Request Clearance', '2023-07-26 16:00:00', 5, 42, 1, NULL, 0.00, NULL, NULL),
+('DR-1689959699', 'Request Good Moral Document', '2023-07-30 16:00:00', 5, 42, 1, NULL, 0.00, NULL, NULL),
+('DR-1689959836', 'Certified True Copy', '2023-07-24 16:00:00', 3, 42, 1, NULL, 0.00, NULL, NULL),
+('DR-1689960499', 'Guidance Counseling', '2023-07-25 08:30:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689961122', 'Course/Subject \r\nDescription)\r\n', '2023-07-23 16:00:00', 3, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689961131', 'Course/Subject \r\nDescription)\r\n', '2023-07-23 16:00:00', 3, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689961165', 'Processing of Request for Correction of Name in Conformity with the PSA Certificate', '2023-07-21 16:00:00', 3, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689961192', 'Leave of Absence', '2023-07-21 16:00:00', 3, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1689961234', 'Request Good Moral Document', '2023-07-21 16:00:00', 5, 43, 1, 'Adoption', 0.00, '../../assets/uploads/supporting_docs/64bac3121ecb7-localhost_student_transactions.php.png', NULL),
+('DR-1689961832', 'Request Good Moral Document', '2023-07-23 16:00:00', 5, 42, 1, 'Government Services', 0.00, '../../assets/uploads/supporting_docs/64bac56803bf0-localhost_student_transactions.php.png', NULL),
+('DR-1689962199', 'Guidance Counseling', '2023-07-22 08:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1689979780', 'Guidance Counseling', '2023-07-27 07:00:00', 5, 39, 1, NULL, 0.00, NULL, NULL),
+('DR-1691162100', 'Request Clearance', '2023-08-03 16:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL),
+('DR-1691162141', 'Guidance Counseling', '2023-08-05 05:00:00', 5, 43, 1, NULL, 0.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -684,7 +701,8 @@ INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offse
 (4, 43, 100.00, 'Miscellaneous Fee', '2023-07-15 03:45:09', 1),
 (5, 43, 100.50, 'miscellaneous', '2023-07-15 05:33:13', 1),
 (6, 39, 100.00, 'Miscellaneous Fee', '2023-07-18 14:30:44', 1),
-(7, 39, 250.00, 'Tuition Fee', '2023-07-18 14:30:53', 1);
+(7, 39, 250.00, 'Tuition Fee', '2023-07-18 14:30:53', 1),
+(8, 43, 129.00, 'Tuition Fee', '2023-07-21 17:47:47', 1);
 
 -- --------------------------------------------------------
 
@@ -723,6 +741,28 @@ CREATE TABLE `personal_details` (
   `barangay` varchar(100) NOT NULL,
   `zip_code` varchar(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `registrar_feedbacks`
+--
+
+CREATE TABLE `registrar_feedbacks` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `feedback_text` text NOT NULL,
+  `createdAt` varchar(50) NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `registrar_feedbacks`
+--
+
+INSERT INTO `registrar_feedbacks` (`feedback_id`, `user_id`, `email`, `feedback_text`, `createdAt`) VALUES
+(1, 43, NULL, 'testing :)', '2023-07-22 07:03:24'),
+(2, 42, NULL, 'testing for client', '2023-07-22 07:03:50');
 
 -- --------------------------------------------------------
 
@@ -926,20 +966,20 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`services_id`, `service_name`, `service_description`, `office_id`, `url`) VALUES
-(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 2, 'http://192.168.100.4/student/registrar/create_request.php'),
-(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://192.168.100.4/student/guidance/counseling.php'),
-(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://192.168.100.4/student/guidance/good_morals.php'),
-(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://192.168.100.4/student/guidance/clearance.php'),
-(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://192.168.100.4/student/academic/subject_overload.php'),
-(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://192.168.100.4/student/academic/grade_accreditation.php'),
-(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://192.168.100.4/student/academic/cross_enrollment.php'),
-(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://192.168.100.4/student/academic/shifting.php'),
-(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://192.168.100.4/student/academic/manual_enrollment.php'),
-(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://192.168.100.4/student/academic/servicesinsistools.php'),
-(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://192.168.100.4/student/accounting/payment1.php'),
-(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://192.168.100.4/student/accounting/offsetting1.php'),
-(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://192.168.100.4/student/administrative/view-equipment.php'),
-(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://192.168.100.4/student/administrative/view-facility.php');
+(1, 'Create Request', 'Seeks the registrar office\'s help in requesting related to academic records', 2, 'http://localhost/student/registrar/create_request.php'),
+(2, 'Schedule Counseling', 'Schedule an appointment for counseling with the guidance counselor of the campus.', 5, 'http://localhost/student/guidance/counseling.php'),
+(3, 'Request Good Moral Document', 'Request for a good moral document for requirement purposes.', 5, 'http://localhost/student/guidance/good_morals.php'),
+(4, 'Request Clearance', 'Request and check the status of your academic clearance.', 5, 'http://localhost/student/guidance/clearance.php'),
+(5, 'Subject Overload', 'Add additional subject/s more than the prescribed number of units.', 4, 'http://localhost/student/academic/subject_overload.php'),
+(6, 'Grade Accreditation', 'For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark.', 4, 'http://localhost/student/academic/grade_accreditation.php'),
+(7, 'Cross-Enrollment', 'Enrollment of subject/s at another college or university.', 4, 'http://localhost/student/academic/cross_enrollment.php'),
+(8, 'Shifting', 'Shift to another program offered in PUP Santa Rosa.', 4, 'http://localhost/student/academic/shifting.php'),
+(9, 'Manual Enrollment', 'Failed to enroll during the online registration period set by the University.', 4, 'http://localhost/student/academic/manual_enrollment.php'),
+(10, 'Services in SIS Tools', '(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester.', 4, 'http://localhost/student/academic/servicesinsistools.php'),
+(11, 'Payments', 'Simplify your payments for campus documents', 2, 'http://localhost/student/accounting/payment1.php'),
+(12, 'Offsetting', 'Balance your campus accounts.', 2, 'http://localhost/student/accounting/offsetting1.php'),
+(13, 'Request of School Equipment', 'Request of equipment inside the campus.', 1, 'http://localhost/student/administrative/view-equipment.php'),
+(14, 'School Facility Appointment', 'Request of Facilities for campus event purposes.', 1, 'http://localhost/student/administrative/view-facility.php');
 
 -- --------------------------------------------------------
 
@@ -983,32 +1023,34 @@ CREATE TABLE `student_info` (
   `amount` decimal(10,2) NOT NULL,
   `referenceNumber` varchar(20) NOT NULL,
   `image_url` text NOT NULL,
-  `transaction_date` datetime NOT NULL DEFAULT current_timestamp()
+  `transaction_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` varchar(32) NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `student_info`
 --
 
-INSERT INTO `student_info` (`payment_id`, `course`, `documentType`, `user_id`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `transaction_date`) VALUES
-(24, 'Bachelor of Science in Information Technology', 'Certified True Copy', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 250.00, '23123565674564564458', 'uploads/payment_24_Juan_Dela Cruz.jpg', '2023-07-12 23:31:16'),
-(25, 'Bachelor of Science in Information Technology', 'Certified True Copy', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 150.00, '21327694959680580962', 'uploads/payment_25_Joshua_Malabanan.jpg', '2023-07-13 11:09:19'),
-(26, 'Bachelor of Science in Information Technology', 'Late Reporting of Grade', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 50.00, '21342547095384634024', 'uploads/payment_26_Joshua_Malabanan.jpg', '2023-07-13 11:14:29'),
-(27, 'Bachelor of Science in Information Technology', 'Late Reporting of Grade', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 125.00, '43568906234523534645', 'uploads/payment_27_Joshua_Malabanan.jpg', '2023-07-13 11:14:58'),
-(28, 'Bachelor of Science in Information Technology', 'Academic Verification Service', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 50.00, '34445767463454525342', 'uploads/payment_28_Juan_Dela Cruz.jpg', '2023-07-13 11:34:20'),
-(29, 'Bachelor of Science in Information Technology', 'Application for Graduation SIS and Non-SIS', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 100.00, '45365732452342353453', 'uploads/payment_29_Juan_Dela Cruz.jpeg', '2023-07-13 11:34:38'),
-(30, 'Bachelor of Science in Information Technology', 'Certificate of Attendance', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 125.00, '43654674767456363636', 'uploads/payment_30_Juan_Dela Cruz.jpg', '2023-07-13 11:35:02'),
-(31, 'Bachelor in Secondary Education Major in English', 'Academic Verification Service', 42, 'Pedro', NULL, 'Dela Cruz', NULL, 100.00, '23256576763453453453', 'uploads/payment_31_Pedro_Dela Cruz.png', '2023-07-19 17:54:51'),
-(35, 'Bachelor in Secondary Education Major in Filipino', 'Certificate of General Weighted Average (GWA)', 42, 'Pedro', '', 'Dela Cruz', NULL, 100.00, '23425345234323453453', 'uploads/payment_35_Pedro_Dela Cruz.png', '2023-07-19 18:10:46'),
-(36, 'Bachelor of Science in Information Technology', 'Completion of Incomplete Grade', 42, 'Pedro', '', 'Dela Cruz', NULL, 200.00, '45235587863634625124', 'uploads/payment_36_Pedro_Dela Cruz.png', '2023-07-19 18:14:46'),
-(37, 'Bachelor of Science in Information Technology', 'Completion of Incomplete Grade', 42, 'Pedro', '', 'Dela Cruz', NULL, 200.00, '45235587863634625124', 'uploads/payment_37_Pedro_Dela Cruz.png', '2023-07-19 18:16:07'),
-(38, 'Bachelor of Science in Business Administration Major in Human Resource Management', 'Transcript of Records (Copy for Another School)', 42, 'Pedro', '', 'Dela Cruz', NULL, 100.00, '43545433412643562342', 'uploads/payment_38_Pedro_Dela Cruz.png', '2023-07-19 18:17:04'),
-(39, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 122.00, '32143432432565436234', 'uploads/payment_39_Joshua_Malabanan.png', '2023-07-19 18:18:25'),
-(40, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 122.00, '32143432432565436234', 'uploads/payment_40_Joshua_Malabanan.png', '2023-07-19 18:20:33'),
-(41, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 122.00, '32143432432565436234', 'uploads/payment_41_Joshua_Malabanan.png', '2023-07-19 18:20:33'),
-(42, 'Bachelor of Science in Information Technology', 'Certificate of Graduation', 42, 'Pedro', '', 'Dela Cruz', NULL, 100.00, '32158855324214754762', 'uploads/payment_42_Pedro_Dela Cruz.png', '2023-07-19 18:21:12'),
-(44, 'Bachelor of Science in Information Technology', 'Non Issuance of Special Order', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 100.00, '45324423432654351245', 'uploads/payment_44_Juan_Dela Cruz.png', '2023-07-19 18:24:29'),
-(45, 'Bachelor of Science in Management Accounting', 'Certificate of Attendance', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 100.00, '43546524236547634534', 'uploads/payment_45_Juan_Dela Cruz.png', '2023-07-19 18:28:06');
+INSERT INTO `student_info` (`payment_id`, `course`, `documentType`, `user_id`, `firstName`, `middleName`, `lastName`, `studentNumber`, `amount`, `referenceNumber`, `image_url`, `transaction_date`, `status`) VALUES
+(24, 'Bachelor of Science in Information Technology', 'Certified True Copy', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 250.00, '23123565674564564458', 'uploads/payment_24_Juan_Dela Cruz.jpg', '2023-07-12 23:31:16', 'Pending'),
+(25, 'Bachelor of Science in Information Technology', 'Certified True Copy', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 150.00, '21327694959680580962', 'uploads/payment_25_Joshua_Malabanan.jpg', '2023-07-13 11:09:19', 'Pending'),
+(26, 'Bachelor of Science in Information Technology', 'Late Reporting of Grade', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 50.00, '21342547095384634024', 'uploads/payment_26_Joshua_Malabanan.jpg', '2023-07-13 11:14:29', 'Pending'),
+(27, 'Bachelor of Science in Information Technology', 'Late Reporting of Grade', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 125.00, '43568906234523534645', 'uploads/payment_27_Joshua_Malabanan.jpg', '2023-07-13 11:14:58', 'Pending'),
+(28, 'Bachelor of Science in Information Technology', 'Academic Verification Service', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 50.00, '34445767463454525342', 'uploads/payment_28_Juan_Dela Cruz.jpg', '2023-07-13 11:34:20', 'Pending'),
+(29, 'Bachelor of Science in Information Technology', 'Application for Graduation SIS and Non-SIS', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 100.00, '45365732452342353453', 'uploads/payment_29_Juan_Dela Cruz.jpeg', '2023-07-13 11:34:38', 'Pending'),
+(30, 'Bachelor of Science in Information Technology', 'Certificate of Attendance', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 125.00, '43654674767456363636', 'uploads/payment_30_Juan_Dela Cruz.jpg', '2023-07-13 11:35:02', 'Pending'),
+(31, 'Bachelor in Secondary Education Major in English', 'Academic Verification Service', 42, 'Pedro', NULL, 'Dela Cruz', NULL, 100.00, '23256576763453453453', 'uploads/payment_31_Pedro_Dela Cruz.png', '2023-07-19 17:54:51', 'Pending'),
+(35, 'Bachelor in Secondary Education Major in Filipino', 'Certificate of General Weighted Average (GWA)', 42, 'Pedro', '', 'Dela Cruz', NULL, 100.00, '23425345234323453453', 'uploads/payment_35_Pedro_Dela Cruz.png', '2023-07-19 18:10:46', 'Pending'),
+(36, 'Bachelor of Science in Information Technology', 'Completion of Incomplete Grade', 42, 'Pedro', '', 'Dela Cruz', NULL, 200.00, '45235587863634625124', 'uploads/payment_36_Pedro_Dela Cruz.png', '2023-07-19 18:14:46', 'Pending'),
+(37, 'Bachelor of Science in Information Technology', 'Completion of Incomplete Grade', 42, 'Pedro', '', 'Dela Cruz', NULL, 200.00, '45235587863634625124', 'uploads/payment_37_Pedro_Dela Cruz.png', '2023-07-19 18:16:07', 'Pending'),
+(38, 'Bachelor of Science in Business Administration Major in Human Resource Management', 'Transcript of Records (Copy for Another School)', 42, 'Pedro', '', 'Dela Cruz', NULL, 100.00, '43545433412643562342', 'uploads/payment_38_Pedro_Dela Cruz.png', '2023-07-19 18:17:04', 'Pending'),
+(39, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 122.00, '32143432432565436234', 'uploads/payment_39_Joshua_Malabanan.png', '2023-07-19 18:18:25', 'Pending'),
+(40, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 122.00, '32143432432565436234', 'uploads/payment_40_Joshua_Malabanan.png', '2023-07-19 18:20:33', 'Pending'),
+(41, 'Bachelor of Science in Information Technology', 'Informative Copy of Grades', 39, 'Joshua', 'Gonzales', 'Malabanan', '2020-00201-SR-0', 122.00, '32143432432565436234', 'uploads/payment_41_Joshua_Malabanan.png', '2023-07-19 18:20:33', 'Pending'),
+(42, 'Bachelor of Science in Information Technology', 'Certificate of Graduation', 42, 'Pedro', '', 'Dela Cruz', NULL, 100.00, '32158855324214754762', 'uploads/payment_42_Pedro_Dela Cruz.png', '2023-07-19 18:21:12', 'Processed'),
+(44, 'Bachelor of Science in Information Technology', 'Non Issuance of Special Order', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 100.00, '45324423432654351245', 'uploads/payment_44_Juan_Dela Cruz.png', '2023-07-19 18:24:29', 'Processed'),
+(45, 'Bachelor of Science in Management Accounting', 'Certificate of Attendance', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 100.00, '43546524236547634534', 'uploads/payment_45_Juan_Dela Cruz.png', '2023-07-19 18:28:06', 'Processed'),
+(46, 'Bachelor of Science in Information Technology', 'Certificate of Attendance', 43, 'Juan', 'Penduko', 'Dela Cruz', '2020-00001-SR-0', 299.00, '32423525321433255435', 'uploads/payment_46_Juan_Dela Cruz.png', '2023-07-22 01:49:10', 'Processed');
 
 -- --------------------------------------------------------
 
@@ -1052,9 +1094,8 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (34, '2020-02000-SR-0', 'Capybara', 'Miki', 'S.', 'Jr', '09645231215', 'mixelsynth@gmail.com', '2023-06-24', '$2y$10$gZQbuR7zYWdQp42zrji0eO/M0BST6N.463mNY5vaeYn3FAntH/SDm', 1),
 (35, '2020-00189-SR-0', 'Lampiño', 'Tracia Jean', 'Deligencia', '', '0905-444-1943', 'traciajeanlampino@gmail.com', '2023-06-24', '$2y$10$KYONfSPJz/jnKfzrzsp66.apOjMMkg1spdDIfrykYj9iexKjV.vT2', 1),
 (39, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$a4rycTCNbnsZ6.auPYz.kuodEWiw7lq82K/3QBP.V5IYZu3ukC5Ta', 1),
-(42, '', 'Dela Cruz', 'Pedro', '', '', '0900-000-0000', 'pendropenduko@yahoo.com', '1997-01-22', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
-(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', 'Jr.', '0900-000-0010', 'juandelacruz123@gmail.com', '1995-01-12', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1),
-(47, '2020-00238-SR-0', 'Nuque', 'Christian Erwin', 'Bruce', '', '0911-222-3333', 'erwin@gmail.com', '2002-07-10', '$2y$10$BbGLUD4QTqwfwg8F4yFR7uoEoZ7ZfCh6cSdxoCrD.j.CAPJ3/dky2', 1);
+(42, '', 'Dela Cruz', 'Pedro', '', '', '0900-000-0000', 'pendropenduko@yahoo.com', '1998-01-22', '$2y$10$u02jd1J3b3a/Pi.O4qI15u2PYQXsr9BcZ7PtXGdpAlLIbMcg6unUa', 2),
+(43, '2020-00001-SR-0', 'Dela Cruz', 'Juan', 'Penduko', 'Jr.', '0900-000-0010', 'juandelacruz123@gmail.com', '1995-01-12', '$2y$10$LUeRAoE.8RoAVEfnrMpcaerRKhyzU6oM0fBc5kROxJ6cYfoLMH5Hu', 1);
 
 -- --------------------------------------------------------
 
@@ -1082,8 +1123,7 @@ CREATE TABLE `user_details` (
 INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`, `city`, `barangay`, `zip_code`, `course_id`, `year_and_section`, `user_id`) VALUES
 (1, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, '3-1', 39),
 (3, 1, 'Concepcion Aguila St.', 'NATIONAL CAPITAL REGION - MANILA', 'QUIAPO', '306', '1001', 12, NULL, 42),
-(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 8, '3-1', 43),
-(8, 1, 'market market', 'LAGUNA', 'SANTA ROSA CITY', 'this is the barangay', '4026', 8, NULL, 47);
+(4, 1, '123 Gonzales Street', 'LAGUNA', 'CITY OF BIÑAN', 'Santo Domingo', '4024', 8, '3-1', 43);
 
 -- --------------------------------------------------------
 
@@ -1110,23 +1150,10 @@ INSERT INTO `user_roles` (`user_role_id`, `role`) VALUES
 --
 
 --
--- Indexes for table `academic_feedbacks`
+-- Indexes for table `academic_statuses`
 --
-ALTER TABLE `academic_feedbacks`
-  ADD PRIMARY KEY (`feedback_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `academic_transactions`
---
-ALTER TABLE `academic_transactions`
-  ADD PRIMARY KEY (`transaction_id`),
-  ADD KEY `cross_enrollment` (`cross_enrollment`),
-  ADD KEY `grade_accreditation` (`grade_accreditation`),
-  ADD KEY `manual_enrollment` (`manual_enrollment`),
-  ADD KEY `shifting` (`shifting`),
-  ADD KEY `subject_overload` (`subject_overload`),
-  ADD KEY `user_id` (`user_id`);
+ALTER TABLE `academic_statuses`
+  ADD PRIMARY KEY (`academic_statu_id`);
 
 --
 -- Indexes for table `acad_cross_enrollment`
@@ -1178,13 +1205,6 @@ ALTER TABLE `acad_subject_overload`
   ADD KEY `ace_form_status` (`ace_form_status`),
   ADD KEY `cert_of_registration_status` (`cert_of_registration_status`),
   ADD KEY `overload_letter_status` (`overload_letter_status`);
-
---
--- Indexes for table `acad_survey`
---
-ALTER TABLE `acad_survey`
-  ADD PRIMARY KEY (`survey_id`),
-  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `accounting_feedbacks`
@@ -1312,6 +1332,13 @@ ALTER TABLE `personal_details`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `registrar_feedbacks`
+--
+ALTER TABLE `registrar_feedbacks`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `reg_faq`
 --
 ALTER TABLE `reg_faq`
@@ -1407,64 +1434,52 @@ ALTER TABLE `user_roles`
 --
 
 --
--- AUTO_INCREMENT for table `academic_feedbacks`
+-- AUTO_INCREMENT for table `academic_statuses`
 --
-ALTER TABLE `academic_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `academic_transactions`
---
-ALTER TABLE `academic_transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `academic_statuses`
+  MODIFY `academic_statu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `acad_cross_enrollment`
 --
 ALTER TABLE `acad_cross_enrollment`
-  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `acad_grade_accreditation`
 --
 ALTER TABLE `acad_grade_accreditation`
-  MODIFY `ga_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ga_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `acad_manual_enrollment`
 --
 ALTER TABLE `acad_manual_enrollment`
-  MODIFY `me_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `me_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `acad_shifting`
 --
 ALTER TABLE `acad_shifting`
-  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `acad_status`
 --
 ALTER TABLE `acad_status`
-  MODIFY `academic_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `academic_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `acad_subject_overload`
 --
 ALTER TABLE `acad_subject_overload`
-  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `acad_survey`
---
-ALTER TABLE `acad_survey`
-  MODIFY `survey_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `so_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `administrative_feedbacks`
 --
 ALTER TABLE `administrative_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `admins`
@@ -1524,7 +1539,7 @@ ALTER TABLE `office`
 -- AUTO_INCREMENT for table `offsettingtb`
 --
 ALTER TABLE `offsettingtb`
-  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `password_reset_tokens`
@@ -1537,6 +1552,12 @@ ALTER TABLE `password_reset_tokens`
 --
 ALTER TABLE `personal_details`
   MODIFY `personal_detail_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `registrar_feedbacks`
+--
+ALTER TABLE `registrar_feedbacks`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `reg_services`
@@ -1572,7 +1593,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `student_record`
@@ -1584,13 +1605,13 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -1714,6 +1735,12 @@ ALTER TABLE `personal_details`
   ADD CONSTRAINT `personal_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `registrar_feedbacks`
+--
+ALTER TABLE `registrar_feedbacks`
+  ADD CONSTRAINT `registrar_feedbacks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `reg_transaction`
 --
 ALTER TABLE `reg_transaction`
@@ -1755,56 +1782,6 @@ ALTER TABLE `user_details`
   ADD CONSTRAINT `user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `user_details_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE;
 COMMIT;
-
-
---
--- Table structure for table `registrar_feedbacks`
---
-
-CREATE TABLE `registrar_feedbacks` (
-  `feedback_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `feedback_text` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `registrar_feedbacks`
---
-ALTER TABLE `registrar_feedbacks`
-  ADD PRIMARY KEY (`feedback_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `registrar_feedbacks`
---
-ALTER TABLE `registrar_feedbacks`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
-
--- Drop the existing table if it exists
-DROP TABLE IF EXISTS `acad_survey`;
-
--- Create the `acad_survey` table with an auto-incremented `id` column as the primary key
-CREATE TABLE `acad_survey` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `rating` VARCHAR(10) NOT NULL,
-  `suggestions` TEXT NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Insert sample data into the `acad_survey` table. This is the default datas.
-INSERT INTO `acad_survey` (`rating`, `suggestions`) VALUES
-('Excellent', 'This was an excellent experience!'),
-('Good', 'This was a good experience.'),
-('Average', 'This was an average experience.'),
-('Poor', 'This was a poor experience.');
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -133,12 +133,14 @@
                             <input id="disabledFieldsOrNot" type="checkbox" data-toggle="switchbutton" data-width="75">
                             <div id="disabledSwitchValue" class="pt-3"></div>
                         </div>
+                        <div class="m-0 pb-3">
+                            <button id="delete-transactions-btn" class="btn btn-outline-primary">Delete All Rejected Transactions</button>
+                        </div>
                         <hr />
                         <div class="m-0">
                             <h5 class="mb-4">Dangerous Settings</h5>
                             <div class="d-flex align-items-center gap-4">
-                                <a href="#" class="btn btn-primary">Delete Account</a>
-                                <a href="#" class="btn btn-primary">Delete All Transactions</a>
+                                <button id="delete-account-btn" class="btn btn-primary">Delete Account</button>
                             </div>
                         </div>
                     </div>
@@ -199,6 +201,86 @@
                 </div>
             </div>
         </div>
+        <!-- Delete Transactions success Modal -->
+        <div class="modal fade" id="deleteTransactionSuccessModal" tabindex="-1" aria-labelledby="deleteTransactionSuccessModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteTransactionSuccessModalLabel">Success</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Transactions deleted successfully.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Delete Transactions success Modal -->
+        <!-- Delete Transactions failed Modal -->
+        <div class="modal fade" id="deleteTransactionFailedModal" tabindex="-1" aria-labelledby="deleteTransactionFailedModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteTransactionFailedModalLabel">Error</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Unable to delete transactions. Please try again later.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Delete Transactions failed Modal -->
+        <!-- Delete Account confirm Modal -->
+        <div class="modal fade" id="deleteAccountConfirmModal" tabindex="-1" aria-labelledby="deleteAccountConfirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountConfirmModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Are you sure you want to delete your account?</h5>
+                        <p>To help confirm that you actually want to delete your account, please enter your account's email address:</p>
+                        <div class="mb-3">
+                          <label for="emailConfirm" class="form-label">Confirm email:</label>
+                          <input type="email"
+                            class="form-control" name="emailConfirm" id="emailConfirm" aria-describedby="emailConfirmHelp" placeholder="">
+                          <small id="emailConfirmHelp" class="form-text text-muted"></small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="confirm-delete-acc-btn" type="button" class="btn disabled" disabled>Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Delete Account confirm Modal -->
+        <!-- Delete Account failed Modal -->
+        <div class="modal fade" id="deleteAccountFailedModal" tabindex="-1" aria-labelledby="deleteAccountFailedModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountFailedModalLabel">Error</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Unable to delete your account. Please try again.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Delete Account failed Modal -->
         <div class="push"></div>
     </div>
     <?php include '../footer.php'; ?>
@@ -304,6 +386,62 @@
                 });
 
                 location.reload(0);
+            });
+        });
+
+        $('#delete-transactions-btn').click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '../delete_transactions.php',
+                success: function(response) {
+                    console.log(response);
+                    $('#deleteTransactionSuccessModal').modal('show');
+                },
+                error: function(error) {
+                    console.log(error);
+                    $('#deleteTransactionFailedModal').modal('show');
+                }
+            });
+        });
+
+        $('#delete-account-btn').click(function() {
+            $('#deleteAccountConfirmModal').modal('show');
+        });
+
+        var userEmailAddress = "<?php echo $userData[0]['email']; ?>";
+
+        $("#emailConfirm").on("input", function () {
+            var enteredEmail = $(this).val();
+            if (enteredEmail === userEmailAddress) {
+                $("#confirm-delete-acc-btn").removeClass("disabled").removeAttr("disabled");
+                $("#confirm-delete-acc-btn").addClass("btn-secondary");
+            } else {
+                $("#confirm-delete-acc-btn").addClass("disabled").attr("disabled", "disabled");
+                $("#confirm-delete-acc-btn").removeClass("btn-secondary");
+            }
+        });
+
+        $('#confirm-delete-acc-btn').click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '../delete_acc.php',
+                success: function(response) {
+                    console.log(response);
+                    $.ajax({
+                        type: 'POST',
+                        url: '../sign_out.php',
+                        success: function(logoutResponse) {
+                            window.location.href = '../index.php';
+                        },
+                        error: function(logoutError) {
+                            console.log(logoutError);
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                    $('#deleteAccountFailedModal').modal('show');
+                }
             });
         });
 

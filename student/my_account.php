@@ -145,13 +145,8 @@
                             <input id="disabledFieldsOrNot" type="checkbox" data-toggle="switchbutton" data-width="75">
                             <div id="disabledSwitchValue" class="pt-3"></div>
                         </div>
-                        <hr />
-                        <div class="m-0">
-                            <h5 class="mb-4">Dangerous Settings</h5>
-                            <div class="d-flex align-items-center gap-4">
-                                <a href="#" class="btn btn-primary">Delete Account</a>
-                                <a href="#" class="btn btn-primary">Delete All Transactions</a>
-                            </div>
+                        <div class="m-0 pb-3">
+                            <button id="delete-transactions-btn" class="btn btn-outline-primary">Delete All Rejected Transactions</button>
                         </div>
                     </div>
                 </div>
@@ -235,6 +230,42 @@
                 </div>
             </div>
         </div>
+        <!-- Delete Transactions success Modal -->
+        <div class="modal fade" id="deleteTransactionSuccessModal" tabindex="-1" aria-labelledby="deleteTransactionSuccessModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteTransactionSuccessModalLabel">Success</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Transactions deleted successfully.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Delete Transactions success Modal -->
+        <!-- Delete Transactions failed Modal -->
+        <div class="modal fade" id="deleteTransactionFailedModal" tabindex="-1" aria-labelledby="deleteTransactionFailedModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteTransactionFailedModalLabel">Error</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Unable to delete transactions. Please try again later.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Delete Transactions failed Modal -->
         <div class="push"></div>
     </div>
     <?php include '../footer.php'; ?>
@@ -356,6 +387,19 @@
                 });
 
                 location.reload(0);
+            });
+        });
+
+        $('#delete-transactions-btn').click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '../delete_transactions.php',
+                success: function(response) {
+                    $('#deleteTransactionSuccessModal').modal('show');
+                },
+                error: function(error) {
+                    $('#deleteTransactionFailedModal').modal('show');
+                }
             });
         });
 
