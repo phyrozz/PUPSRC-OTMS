@@ -9,5 +9,9 @@
         "bold": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_bold_5274829362372d87a070be472dceb953",
         "800": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/fira_sans_800_b7a88c435144a357360ce9d7aa642e1f",
         "900": "fira_sans_900_fa941916fc999cb4813b0cc546f7afa7"
+    },
+    "poppins": {
+        "normal": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_normal_442dffd12abdf0df26c14405d3f49bfa",
+        "bold": "poppins_bold_2d1c4b360c3ac297e98fc2cfd808a2cc"
     }
 }

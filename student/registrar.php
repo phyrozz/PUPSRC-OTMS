@@ -33,7 +33,7 @@
                 <i class="fa-regular fa-circle-question"></i>
                 Help
             </a>
-            <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
+            <a href="transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
             <?php
             $breadcrumbItems = [
                 ['text' => 'Registrar Office', 'active' => true],
@@ -49,7 +49,7 @@
                 <h2>Create Request</h2>
                 <p>Seeks the registrar office's help in requesting related to academic records</p>
             </a>
-            <a href="registrar/your_transaction.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
+            <a href="transactions.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Registrar Transactions History</h2>
                 <p>Status of current request with the registrar office</p>
             </a>
