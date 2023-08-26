@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="bg.css">
-    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <?php
@@ -20,16 +20,16 @@
 
         if (!empty($_SESSION['user_id'])) {
             if ($_SESSION['user_role'] == 1) {
-                header("Location: http://192.168.100.4/student/home.php");
+                header("Location: /student/home.php");
             }
             else if ($_SESSION['user_role'] == 2) {
-                header("Location: http://192.168.100.4/client/home.php");
+                header("Location: /client/home.php");
             }
             // else if (!empty($_SESSION['admin_id'])) {
-            //     header("Location: http://192.168.100.4/admin/redirect.php");
+            //     header("Location: /admin/redirect.php");
             // }
             else {
-                header("Location: http://192.168.100.4/admin/redirect.php");
+                header("Location: /admin/redirect.php");
             }
             exit;
         }

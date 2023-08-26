@@ -33,7 +33,7 @@ if ($result->num_rows === 1) {
         }
     }
 } else {
-    header('Location: http://192.168.100.4/index.php');
+    header('Location: /index.php');
 }
 
 $stmt->close();
@@ -53,7 +53,7 @@ $connection->close();
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../bg.css">
-    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -74,7 +74,7 @@ $connection->close();
                             <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" minlength="8" maxlength="80" required>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <a class="btn btn-outline-primary px-4" href="http://192.168.100.4/login/forgot_password.php">
+                            <a class="btn btn-outline-primary px-4" href="/login/forgot_password.php">
                                 <i class="fa-solid fa-arrow-left"></i> Back
                             </a>
                             <button id="resetBtn" name="resetBtn" type="submit" class="btn btn-primary w-25">Reset Password</button>
@@ -96,7 +96,7 @@ $connection->close();
                     <p>Password has been successfully reset!</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="http://192.168.100.4/index.php" class="btn btn-primary">Return to Login</a>
+                    <a href="/index.php" class="btn btn-primary">Return to Login</a>
                 </div>
             </div>
         </div>

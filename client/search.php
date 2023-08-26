@@ -61,7 +61,7 @@ $result = $connection->query($sql);
         while ($row = $result->fetch_assoc()) {
             // Display each search result
             echo '<div class="search-result card m-2">';
-            echo '<a href="/student/'. $row['url'] .'">';
+            echo '<a href="/client/'. $row['url'] .'">';
             echo '<div class="card-header">'. highlightText($row['office_name'], $query) .'</div>';
             echo '<div class="card-body">';
             echo '<h5 class="card-title">' . highlightText($row['service_name'], $query) . '</h3>';

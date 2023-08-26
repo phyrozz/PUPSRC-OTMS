@@ -17,7 +17,7 @@
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <script src="http://192.168.100.4/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -29,7 +29,7 @@
 
             // Avoid admin user from accessing other office pages
             if ($_SESSION['office_name'] != "Guidance Office") {
-                header("Location: http://192.168.100.4/admin/redirect.php");
+                header("Location: /admin/redirect.php");
             }
 
             $table = 'document_request';
