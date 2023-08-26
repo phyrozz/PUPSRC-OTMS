@@ -23,8 +23,8 @@
           <a class="nav-link dropdown-toggle" href="#" id="officeServicesDropdown" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
             <?php
-                            echo $office_name;
-                        ?>
+                echo $office_name;
+            ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
             <li><a class="dropdown-item" href="/client/registrar.php">Registrar</a></li>
@@ -87,8 +87,8 @@
                 <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"] . " " . $_SESSION["extension_name"]; ?>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-                <li><a class="dropdown-item" href="/student/transactions.php">My Transactions</a></li>
-                <li><a class="dropdown-item" href="/student/my_account.php">Account Settings</a></li>
+                <li><a class="dropdown-item" href="/client/transactions.php">My Transactions</a></li>
+                <li><a class="dropdown-item" href="/client/my_account.php">Account Settings</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
             </ul>

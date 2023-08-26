@@ -33,7 +33,7 @@
         include "../breadcrumb.php";
 
         $query = "SELECT last_name, first_name, middle_name, extension_name, contact_no, email, birth_date FROM users WHERE user_id = ?";
-        $userDetailsQuery = "SELECT sex, home_address, province, city, barangay, zip_code FROM user_details WHERE user_id = ?";
+        $userDetailsQuery = "SELECT sex, home_address, province, city, barangay, zip_code, avatar_url FROM user_details WHERE user_id = ?";
 
         // Fetch user table
         $stmt = $connection->prepare($query);
@@ -73,8 +73,16 @@
                                 <button id="editButton" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary position-absolute end-0 mx-5 w-auto"><i class="fa-solid fa-pen-to-square"></i></button>
                                 <h4 class="pb-3 text-md-start text-center">Account Details</h4>
                                 <div class="col-md-3">
-                                    <div class="d-flex align-items-center justify-content-center user-avatar-container pb-4">
-                                        <img src="../assets/avatar.png" alt="User Avatar" class="img-fluid rounded-4 user-avatar">
+                                    <div class="d-flex align-items-center justify-content-center user-avatar-container mb-4" id="avatar-container">
+                                        <div class="avatar-wrapper">
+                                            <div class="avatar-overlay">
+                                                <span class="overlay-text">Upload Profile Picture</span>
+                                                <input type="file" id="profile-picture" name="profile_picture" class="d-none" accept="image/*">
+                                            </div>
+                                            <a href="#" target="_blank">
+                                                <img src="<?php echo is_null($userDetailsData[0]['avatar_url']) ? "../assets/avatar.png" : "/" . $userDetailsData[0]['avatar_url']; ?>" alt="User Avatar" class="img-fluid rounded-4 user-avatar">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-9 px-3">
@@ -291,6 +299,40 @@
         $(document).ready(function() {
             document.getElementById('darkModeSwitch').switchButton();
             document.getElementById('disabledFieldsOrNot').switchButton();
+
+            // Variables for the change profile picture feature
+            const avatarContainer = document.getElementById("avatar-container");
+            const profilePictureInput = document.getElementById("profile-picture");
+
+            // Listen for changes in the file input
+            profilePictureInput.addEventListener("change", function(event) {
+                const selectedFile = event.target.files[0];
+
+                if (selectedFile) {
+                    const formData = new FormData();
+                    formData.append("profile_picture", selectedFile);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/upload_profile_picture.php",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            console.log("Image uploaded successfully");
+                            location.reload();
+                        },
+                        error: function(error) {
+                            console.error("Error uploading image:", error);
+                        }
+                    });
+                }
+            });
+
+            // Open the file dialog when the avatar container is clicked
+            avatarContainer.addEventListener("click", function() {
+                profilePictureInput.click();
+            });
 
             // Hide additional details initially
             $('#birthDateDetails').hide();
