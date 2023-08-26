@@ -56,7 +56,7 @@ $dbname = "otms_db";
 
                 
                 <div class="col-12 payment-summary">
-                    <h1> Payment Summary </h1>
+                    <h1> Payment Voucher </h1>
                     <?php
                     include '../../conn.php';
                     include '../functions.php';
@@ -70,7 +70,7 @@ $dbname = "otms_db";
                      date_default_timezone_set('Asia/Manila');
 
                     // Retrieve the latest payment data from the database
-                    $paymentQuery = "SELECT payment_id, firstName, middleName, lastName, studentNumber, course, documentType, amount, referenceNumber
+                    $paymentQuery = "SELECT payment_id, firstName, middleName, lastName, studentNumber, course, documentType /*amount, referenceNumber */
                                     FROM student_info
                                     WHERE studentNumber = '" . $_SESSION['student_no'] . "'
                                     ORDER BY payment_id DESC
@@ -112,14 +112,14 @@ $dbname = "otms_db";
                                 <th>Document Type</th>
                                 <td><?php echo $paymentData['documentType']; ?></td>
                             </tr>
-                            <tr>
+                            <!--<tr>
                                 <th>Amount</th>
                                 <td><?php echo $paymentData['amount']; ?></td>
                             </tr>
                             <tr>
                                 <th>Reference Number</th>
                                 <td><?php echo $paymentData['referenceNumber']; ?></td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <th>Date</th>
                                 <td><?php echo date('Y-m-d'); ?></td>

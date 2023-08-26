@@ -56,10 +56,10 @@ $dbname = "otms_db";
 
                 
                 <div class="col-12 payment-summary">
-                    <h1> Payment Summary </h1>
+                    <h1> Payment Voucher </h1>
                     <?php
                     include '../../conn.php';
-                
+            
 
                     // Check if a session has already been started
                     if (session_status() == PHP_SESSION_NONE) {
@@ -70,7 +70,7 @@ $dbname = "otms_db";
                      date_default_timezone_set('Asia/Manila');
 
                     // Retrieve the latest payment data from the database
-                    $paymentQuery = "SELECT payment_id, firstName, middleName, lastName, course, documentType, amount, referenceNumber
+                    $paymentQuery = "SELECT payment_id, firstName, middleName, lastName, course, documentType /*amount, referenceNumber */
                                     FROM student_info
                                     WHERE firstName = '" . $_SESSION['first_name'] . "'
                                     ORDER BY payment_id DESC
@@ -86,7 +86,7 @@ $dbname = "otms_db";
                         <tbody>
                             <tr>
                                 <th>Payment Code</th>
-                                <td>AO-<?php echo $paymentData['payment_id']; ?></td>
+                                <td> AO-<?php echo $paymentData['payment_id']; ?></td>
                             </tr>
                             <tr>
                                 <th>First Name</th>
@@ -100,6 +100,7 @@ $dbname = "otms_db";
                                 <th>Last Name</th>
                                 <td><?php echo $paymentData['lastName']; ?></td>
                             </tr>
+                    
                             <tr>
                                 <th>Course</th>
                                 <td><?php echo $paymentData['course']; ?></td>
@@ -108,14 +109,14 @@ $dbname = "otms_db";
                                 <th>Document Type</th>
                                 <td><?php echo $paymentData['documentType']; ?></td>
                             </tr>
-                            <tr>
+                            <!--<tr>
                                 <th>Amount</th>
                                 <td><?php echo $paymentData['amount']; ?></td>
                             </tr>
                             <tr>
                                 <th>Reference Number</th>
                                 <td><?php echo $paymentData['referenceNumber']; ?></td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <th>Date</th>
                                 <td><?php echo date('Y-m-d'); ?></td>
@@ -130,8 +131,6 @@ $dbname = "otms_db";
                     ?>
                 </div>
 
-
-
                 <div class="col-12">
                     <a class="btn btn-primary next-button" href="../accounting.php" type="submit">Accounting Office</a>
                 </div>
@@ -139,8 +138,8 @@ $dbname = "otms_db";
             </form>
         </div>
         <script src="#"></script>
-        <script src="../../loading.js"></script>
-	<script src="../../saved_settings.js"></script>
     </div>
+    <script src="../../loading.js"></script>
+    <script src="../../saved_settings.js"></script>
 </body>
 </html>

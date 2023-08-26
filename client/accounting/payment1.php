@@ -1,7 +1,9 @@
 <!-- INSERT PHP SECTION -->
 <?php
-$office_name = 'Accounting Office';
-include '../navbar.php';
+session_start();
+ini_set('error_reporting', 0);
+ini_set('display_errors', 0);
+$office_name = "Accounting Office";
 include '../../conn.php';
 
 if (isset($_POST['submit'])) {
@@ -11,12 +13,27 @@ if (isset($_POST['submit'])) {
     $firstName = $_POST['firstName'];
     $middleName = $_POST['middleName'];
     $lastName = $_POST['lastName'];
-    $amount = $_POST['amount'];
-    $referenceNumber = $_POST['referenceNumber'];
+    //$amount = $_POST['amount'];
+    //$referenceNumber = $_POST['referenceNumber'];
     $userId = $_SESSION['user_id'];
 
+    // Insert the data into the database
+    $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName) 
+            VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName')";
+
+    if ($connection->query($sql) === TRUE) {
+        // Get the last inserted ID
+        $lastInsertedId = $connection->insert_id;
+    
+        $_SESSION['payment_id'] = $lastInsertedId;
+        header("Location: payment2.php");
+        exit();
+    } else {
+        echo "Error inserting data: " . $connection->error;
+    }
+
     // Handle file upload
-    if (isset($_FILES['receiptImage'])) {
+    /*if (isset($_FILES['receiptImage'])) {
         $file = $_FILES['receiptImage'];
         $fileName = $file['name'];
         $fileTmpName = $file['tmp_name'];
@@ -27,8 +44,8 @@ if (isset($_POST['submit'])) {
         // Check if the file is uploaded successfully
         if ($fileError === UPLOAD_ERR_OK) {
             // Insert the data into the database
-            $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, amount, referenceNumber) 
-                    VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$amount', '$referenceNumber')";
+            $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber, amount, referenceNumber) 
+                    VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber', '$amount', '$referenceNumber')";
 
             if ($connection->query($sql) === TRUE) {
                 // Get the last inserted ID
@@ -60,10 +77,12 @@ if (isset($_POST['submit'])) {
         }
     } else {
         echo "No file uploaded.";
-    }
+    } */
 
     $connection->close();
 }
+
+include '../navbar.php';
 ?>
 
 
@@ -129,29 +148,29 @@ if (isset($_POST['submit'])) {
   <form action="" id="" method="post" class="row g-3 needs-validation" autocomplete="off" enctype="multipart/form-data" onsubmit="validateForm(event)">
     <div class="col-12 col-md-6">
       
-      <h4>1. Scan QR Code</h4>
-      <h4>2. Upload Screenshot of Payment</h4>
-      <h4>3. Input Student Details</h4>
-      <p style="color: red;">Note: CASH PAYMENT receipts must also be uploaded.</p>
+      <h4>1. Select Options</h4>
+      <h4>2. Confirm Details</h4>
+      <h4>3. Submit and Save a Copy of Payment Voucher</h4>
+      <p style="color: red;">Note: Ensure all information are correct before submitting</p>
 
-    <div class="box">
-      <div class="upload-container">
-        <label for="receiptImage" class="form-label">Upload Receipt Here</label>
-        <input type="file" class="form-control upload-button" id="receiptImage" name="receiptImage" accept="image/*" required>
-        <div class="invalid-feedback">
-          Please upload a valid image file.
+      <!-- <div class="box">
+        <div class="upload-container">
+          <label for="receiptImage" class="form-label">Upload Receipt Here</label>
+          <input type="file" class="form-control upload-button" id="receiptImage" name="receiptImage" accept="image/*" required>
+          <div class="invalid-feedback">
+            Please upload a valid image file.
+          </div>
         </div>
-      </div>
-    </div>
-    </div>
+      </div> -->
+    </div> 
 
-    <div class="col-12 col-md-6 qr-text">
+    <!-- <div class="col-12 col-md-6 qr-text">
       <div class="qr-details">
         <p>GCash_Receiver_Name</p>
         <p>012-345-6789</p>
       </div>
       <img src="images/qr.png" alt="QR Code" class="qr-image">
-    </div>
+    </div> -->
 
 
     <div class="col-12 ">
@@ -244,7 +263,7 @@ if (isset($_POST['submit'])) {
       </div>
     </div>
 
-    <div class="col-12 col-md-6">
+    <!-- <div class="col-12 col-md-6">
       <div class="form-groups">
         <label for="amount" class="form-label">Amount <code>*</code></label>
         <input type="text" class="form-control" id="amount" name="amount" value="" required oninput="validateAmount(this)">
@@ -252,9 +271,9 @@ if (isset($_POST['submit'])) {
           Please provide a valid amount.
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="col-12 col-md-6">
+    <!-- <div class="col-12 col-md-6">
       <div class="form-groups">
         <label for="referenceNumber" class="form-label">Reference Number <code>*</code></label>
         <input type="text" class="form-control" id="referenceNumber" name="referenceNumber" value="" required oninput="validateReferenceNumber(this)" maxlength="20" >
@@ -262,7 +281,7 @@ if (isset($_POST['submit'])) {
           Please provide the reference number.
         </div>
       </div>
-    </div>
+    </div> -->
 
     
     <div class="d-flex justify-content-between">
@@ -509,6 +528,7 @@ function validateForm(event) {
 
 
 </script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="#"></script>
 <script src="../../loading.js"></script>
