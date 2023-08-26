@@ -113,7 +113,8 @@
 
                         // Define the options for the status dropdown
                         var statusOptions = '<option value="Pending" ' + (payments.status === 'Pending' ? 'selected' : '') + '>Pending</option>' +
-                       '<option value="Processed" ' + (payments.status === 'Processed' ? 'selected' : '') + '>Processed</option>';
+                       '<option value="Processed" ' + (payments.status === 'Processed' ? 'selected' : '') + '>Processed</option>'+
+                       '<option value="Rejected" ' + (payments.status === 'Rejected' ? 'selected' : '') + '>Rejected</option>';
 
                         var row = '<tr>' +
                             '<td>' + 'A0-' + payments.payment_id + '</td>' +
