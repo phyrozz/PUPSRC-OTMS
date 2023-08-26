@@ -277,7 +277,7 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
           tableBody.innerHTML += row;
         }
       } else {
-        var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
+        var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="9">No Transactions</td></tr>';
         tableBody.innerHTML = noRecordsRow;
       }
 

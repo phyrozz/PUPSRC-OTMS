@@ -43,7 +43,7 @@
               $table = $_POST['table-select'];
             }
 
-            $query = "SELECT services FROM reg_services WHERE services_id > 22";
+            $query = "SELECT services FROM reg_services";
             $stmt = $connection->prepare($query);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -73,13 +73,7 @@
                 <div id="filterByStatusSection" class="input-group">
                   <label class="input-group-text" for="filterByStatus">Filter by Status:</label>
                   <select name="filterByStatus" id="filterByStatus" class="form-select">
-                    <!-- <option value="all">All</option>    
-                                        <option value="1">Pending</option>
-                                        <option value="2">For Receiving</option>
-                                        <option value="3">For Evaluation</option>
-                                        <option value="4">Ready for Pickup</option>
-                                        <option value="5">Released</option>
-                                        <option value="6">Rejected</option> -->
+                     <!-- Select options are dynamically displayed depending on the table -->
                   </select>
                 </div>
               </div>
@@ -88,16 +82,15 @@
                   <label class="input-group-text" for="filterByDocType">Filter by Document Type:</label>
                   <select name="filterByDocType" id="filterByDocType" class="form-select">
                     <option value="all">All</option>
-                    <!-- <option value="goodMoral">Good Moral Document</option> -->
-                    <!-- <option value="clearance">Clearance</option> -->
                     <?php foreach ($data as $row) {
                       echo '<option value="' . $row['services'] . '">' . $row['services'] . '</option>';
                     }
                     ?>
                   </select>
                 </div>
-                <button type="button" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i
+                <button type="submit" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i
                     class="fa-solid fa-filter"></i> Filter</button>
+                <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank">Generate Report</a>
               </div>
             </div>
             <div class="mt-2">
@@ -173,6 +166,25 @@
       // Call the handlePagination function with the updated sort parameters
       handlePagination(1, '', column, order);
     });
+
+  $(document).ready(function() {
+    $("#generate-report-link").on('click', function() {
+      var selectedStatus = $("#filterByStatus").val();
+      var selectedDocType = $("#filterByDocType").val();
+      var searchValue = $("#search-input").val(); // Get the value of the search input
+
+      // Encode the selected values and search query to be URL-safe
+      var encodedStatus = encodeURIComponent(selectedStatus);
+      var encodedDocType = encodeURIComponent(selectedDocType);
+      var encodedSearchValue = encodeURIComponent(searchValue);
+
+      // Construct the URL with the updated parameters
+      var link = "tables/registrar/generate_registrar_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+      
+      // Update the href attribute of the link
+      $(this).attr("href", link);
+    });
+  });
 
     // Function to show or hide the "Filter by Document Type" section
     function toggleFilterByDocTypeSection() {

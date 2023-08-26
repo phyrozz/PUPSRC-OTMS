@@ -99,8 +99,8 @@
                 you may visit <a href="https://www.pup.edu.ph/privacy/"
                   target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
             <div class="d-flex flex-column">
-              <a class="btn btn-outline-primary mb-2" href="your_transaction.php">
-                <i class="fa-regular fa-clipboard"></i> Registrar Transactions
+              <a class="btn btn-outline-primary mb-2" href="../transactions.php">
+                <i class="fa-regular fa-clipboard"></i> My Transactions
               </a>
               <!-- <a class="btn btn-outline-primary mb-2">
                             <i class="fa-regular fa-flag"></i> Generate Inquiry
@@ -179,7 +179,7 @@
               <div class="form-group required col-md-12">
                 <label for="date" class="form-label">Date</label>
                 <input type="date" class="form-control is-invalid" name="date" id="dateInput"
-                  min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"
+                  min="<?php echo date('Y-m-d'); ?>"
                   max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" required>
               </div>
               <div class="alert alert-info" role="alert">
