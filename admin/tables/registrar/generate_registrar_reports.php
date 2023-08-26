@@ -173,7 +173,7 @@ $NameModified = strtolower(str_replace(' ', '', $formattedDate));
 $fileName = 'registrar_report'. '_'.  $NameModified . '_' . uniqid(). '.pdf';
 
 // Save the PDF to a directory in your file system
-$directoryPath = 'registrar_reports_folder/'; 
+$directoryPath = '../../generate_report/'; 
 $filePath = $directoryPath . $fileName;
 file_put_contents($filePath, $dompdf->output());
 
