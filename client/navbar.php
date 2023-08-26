@@ -110,7 +110,7 @@
 
         // Make an AJAX request to fetch autocomplete results
         $.ajax({
-        url: '/autocomplete.php',
+        url: '/client/autocomplete.php',
         method: 'POST',
         data: { query: query },
         success: function(response) {

@@ -539,6 +539,55 @@ a .autocomplete-item:hover {
     }
 }
 
+/* Change Profile Picture div styles on Account Settings */
+.avatar-wrapper {
+    position: relative;
+    width: 250px; /* Desired width */
+    height: 250px; /* Desired height */
+    overflow: hidden;
+    border-radius: 10%; /* For circular avatar */
+}
+
+.avatar-overlay {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    transition: opacity 0.3s ease;
+    z-index: 1; /* Ensure overlay is above the image */
+}
+
+.avatar-wrapper:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.overlay-text {
+    margin-bottom: 1rem;
+}
+
+.upload-label {
+    cursor: pointer;
+}
+
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
         position: static;

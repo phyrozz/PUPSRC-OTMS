@@ -5,7 +5,7 @@ include "../conn.php";
 
 $sql = "SELECT * FROM services 
         INNER JOIN offices ON services.office_id=offices.office_id
-        WHERE service_name LIKE '%$query%' OR office_name LIKE '%$query%' OR service_description LIKE '%$query%'";
+        WHERE services.isStudent = 0 AND (service_name LIKE '%$query%' OR office_name LIKE '%$query%' OR service_description LIKE '%$query%')";
 
 $result = $connection->query($sql);
 ?>

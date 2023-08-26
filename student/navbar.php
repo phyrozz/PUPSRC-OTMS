@@ -118,7 +118,7 @@ $isLoggedIn = true;
 
         // Make an AJAX request to fetch autocomplete results
         $.ajax({
-        url: '/autocomplete.php',
+        url: '/student/autocomplete.php',
         method: 'POST',
         data: { query: query },
         success: function(response) {

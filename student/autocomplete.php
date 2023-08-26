@@ -1,7 +1,7 @@
 <?php
 $query = $_POST['query'];
 
-include "conn.php";
+include "../conn.php";
 
 $sql = "SELECT * FROM services 
         INNER JOIN offices ON services.office_id=offices.office_id
@@ -12,7 +12,7 @@ $result = $connection->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         // Display each autocomplete result
-        echo '<a href="'. $row['url'] .'"><div class="autocomplete-item">' . highlightText($row['service_name'], $query) . '</div></a>';
+        echo '<a href="/student/'. $row['url'] .'"><div class="autocomplete-item">' . highlightText($row['service_name'], $query) . '</div></a>';
     }
 }
 
