@@ -72,7 +72,6 @@
                                         <option value="Certificate of Medium of Instruction">Certificate of Medium of Instruction</option>
                                         <option value="Certificate of General Weighted Average (GWA)">Certificate of General Weighted Average (GWA)</option>
                                         <option value="Non Issuance of Special Order">Non Issuance of Special Order </option>
-                                        <option value="Course/Subject Description">Course/Subject Description</option>
                                         <option value="Certificate of Transfer Credential/Honorable Dismissal">Certificate of Transfer Credential/Honorable Dismissal</option>
                                         <option value="Transcript of Records (Second and succeeding copies)">Transcript of Records (Second and succeeding copies)</option>
                                         <option value="Transcript of Records (Copy for Another School)">Transcript of Records (Copy for Another School)</option>

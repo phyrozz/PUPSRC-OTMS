@@ -10,26 +10,16 @@
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
             <th class="text-center doc-request-office-header sortable-header" data-column="course" scope="col" data-order="desc">
-                Course
+                Role
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
             <th class="text-center doc-request-description-header sortable-header" data-column="documentType" scope="col" data-order="desc">
                 Document Type
                 <i class="sort-icon fa-solid fa-caret-down"></i>
             </th>
-            <th class="text-center doc-request-amount-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
-                Reference Number
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-status-header sortable-header" data-column="amount" scope="col" data-order="desc">
-                Amount
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
+            
             <th class="text-center doc-request-status-header" data-column="status" scope="col" data-order="desc">
                 Status
-            </th>
-            <th class="text-center doc-request-status-header" scope="col">
-                Attached Image
             </th>
         </tr>
     </thead>
@@ -102,15 +92,16 @@
                             '<td>' + payments.course + '</td>' +
                             '<td>' + payments.documentType + '</td>' +
                             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-                            '<td>' + payments.referenceNumber + '</td>' +
+                            //'<td>' + payments.referenceNumber + '</td>' +
                             // '<td class="text-center">' +
                             // scheduleButton +
                             // '</td>' +
-                            '<td>₱' + payments.amount + '</td>' +
+                            //'<td>₱' + payments.amount + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(payments.status) + '">' + payments.status + '</span>' +
                             '</td>' +
-                            '<td class="text-center"><a href="accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
+                            '</tr>';
+                            //'<td class="text-center"><a href="accounting/' + payments.image_url + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {

@@ -70,7 +70,7 @@
                             <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
                                 <select id="transactionTableSelect" class="form-select" name="table-select">
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
-                                    <!--<option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>-->
+                                    <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                     <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                 </select>

@@ -66,8 +66,8 @@
                     Requests</option>
                   <option value="scheduled_appointments"
                     <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
-                  <!--<option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>-->
-                  <!--<option value="offsettings" <?php if ($table === 'offsettings') echo 'selected'; ?>>Offsettings</option>-->
+                  <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
+                  <option value="offsettings" <?php if ($table === 'offsettings') echo 'selected'; ?>>Offsettings</option>
                   <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>
                     Request of Equipment</option>
                   <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>
@@ -97,10 +97,10 @@
                                 include 'transaction_tables/document_request_table.php';
                             } elseif ($table === 'scheduled_appointments') {
                                 include 'transaction_tables/scheduled_appointments_table.php';
-                            //} elseif ($table === 'payments') {
-                                //include 'transaction_tables/payments_table.php';
-                            //} elseif ($table === 'offsettings') {
-                                //include 'transaction_tables/offsetting_table.php';
+                            } elseif ($table === 'payments') {
+                                include 'transaction_tables/payments_table.php';
+                            } elseif ($table === 'offsettings') {
+                                include 'transaction_tables/offsetting_table.php';
                             } elseif ($table === 'request_equipment') {
                                 include 'transaction_tables/request_equipment_table.php';
                             } elseif ($table === 'appointment_facility') {

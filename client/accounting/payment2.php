@@ -102,7 +102,7 @@ $dbname = "otms_db";
                             </tr>
                     
                             <tr>
-                                <th>Course</th>
+                                <th>Role</th>
                                 <td><?php echo $paymentData['course']; ?></td>
                             </tr>
                             <tr>
