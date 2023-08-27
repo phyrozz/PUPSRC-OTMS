@@ -25,7 +25,7 @@ $documentRequestsQuery = "SELECT request_id, request_description, CONCAT(DATE_FO
                         INNER JOIN user_roles ON users.user_role = user_roles.user_role_id
                         INNER JOIN offices ON doc_requests.office_id = offices.office_id
                         INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                        WHERE request_description != 'Guidance Counseling'";
+                        WHERE request_description != 'Guidance Counseling' AND doc_requests.office_id = 5";
 
 if (!empty($searchTerm)) {
     $documentRequestsQuery .= " AND (request_id LIKE '%$searchTerm%'
@@ -94,7 +94,7 @@ if ($result) {
                           INNER JOIN user_roles ON users.user_role = user_roles.user_role_id
                           INNER JOIN offices ON doc_requests.office_id = offices.office_id
                           INNER JOIN statuses ON doc_requests.status_id = statuses.status_id
-                          WHERE request_description != 'Guidance Counseling'";
+                          WHERE request_description != 'Guidance Counseling' AND doc_requests.office_id = 5";
 
     if (!empty($searchTerm)) {
         $totalRecordsQuery .= " AND (request_id LIKE '%$searchTerm%'
