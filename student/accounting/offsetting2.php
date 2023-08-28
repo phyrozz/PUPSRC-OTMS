@@ -5,7 +5,7 @@ if (!isset($_SESSION['page1_visited'])) {
     exit();
 }
 $office_name = "Accounting Office";
-include 'conn.php';
+include '../../conn.php';
 if (isset($_POST['submit'])) {
     $_SESSION['page2_visited'] = true;
     $user_id = $_SESSION['user_id'];
