@@ -19,7 +19,7 @@ $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the document requests
 $paymentsQuery = "SELECT payment_id, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(payment_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_payment_id, firstName, lastName, middleName,
-                        documentType, referenceNumber, amount, image_url, transaction_date, studentNumber, status
+                        documentType, referenceNumber, course, amount, image_url, transaction_date, studentNumber, status
                         FROM student_info
                         WHERE documentType != 'Hotdog'";
                         
@@ -60,7 +60,7 @@ if ($result) {
     // Count the total number of records
     $totalRecordsQuery = "SELECT COUNT(*) AS total_records
                         FROM student_info
-                        WHERE documentType != 'Certified True Copy'";
+                        WHERE documentType != 'Hotdog'";
     if (!empty($searchTerm)) {
         $totalRecordsQuery .= " AND (payment_id LIKE '%$searchTerm%'
                             OR firstName LIKE '%$searchTerm%'
