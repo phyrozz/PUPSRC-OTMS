@@ -166,13 +166,12 @@
                     <option hidden value="">Select options here</option>
                     <!-- connect to db -->
                     <?php
-                                    while ($dropdown = mysqli_fetch_assoc($result_services)){
-                                        if ($dropdown['services_id'] === '23') {
-                                            break; // Stop the loop when services_id is 23
-                                        }
-                                        echo '<option value="' . $dropdown['services'] . '" >' . $dropdown['services'] . '</option>';
-                                    }
-                                    ?>
+                        while ($dropdown = mysqli_fetch_assoc($result_services)){
+                            if ($dropdown['services_id'] < '15' || ($dropdown['services_id'] >= '18' && $dropdown['services_id'] < 23)) {
+                              echo '<option value="' . $dropdown['services'] . '" >' . $dropdown['services'] . '</option>';
+                            }                          
+                        }
+                    ?>
                   </div>
                 </select>
               </div>

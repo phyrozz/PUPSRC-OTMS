@@ -43,7 +43,7 @@
               $table = $_POST['table-select'];
             }
 
-            $query = "SELECT services FROM reg_services";
+            $query = "SELECT services, services_id FROM reg_services";
             $stmt = $connection->prepare($query);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -83,7 +83,9 @@
                   <select name="filterByDocType" id="filterByDocType" class="form-select">
                     <option value="all">All</option>
                     <?php foreach ($data as $row) {
-                      echo '<option value="' . $row['services'] . '">' . $row['services'] . '</option>';
+                      if ($row['services_id'] < '23' || $row['services_id'] == '35') {
+                        echo '<option value="' . $row['services'] . '">' . $row['services'] . '</option>';
+                      }
                     }
                     ?>
                   </select>
@@ -238,6 +240,18 @@
       option.value = key;
       option.textContent = statuses[key];
       filterByStatusSelect.appendChild(option);
+    }
+  }
+
+  var selectElement = document.getElementById("filterByDocType");
+  var options = selectElement.options;
+  // for minimizing dropdown width
+  for (var i = 0; i < options.length; i++) {
+    var option = options[i];
+    var optionText = option.text;
+
+    if (optionText.length > 60) {
+      option.text = optionText.substring(0, 100) + '...';
     }
   }
   </script>
