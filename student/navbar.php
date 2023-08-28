@@ -101,11 +101,105 @@ $isLoggedIn = true;
                         <li><a class="dropdown-item" href="/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown order-1 order-lg-2">
+                    <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-bell"></i>
+                        <span class="badge badge-danger" id="notificationCount">0</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationList">
+                        <!-- Notifications will be populated here -->
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 <script>
+    $(document).ready(function() {
+        function getNotifCount() {
+            $.ajax({
+                type: 'GET',
+                url: 'fetch_notifications.php',
+                dataType: 'json',
+                success: function(response) {
+                    // Update notification count and badge
+                    $('#notificationCount').text(response.unreadCount);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        getNotifCount();
+
+        // Fetch and update notifications when the notification icon is clicked
+        $('#notificationDropdown').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: 'fetch_notifications.php',
+                dataType: 'json',
+                success: function(response) {
+                    // Populate the dropdown with notifications
+                    var notificationList = $('#notificationList');
+                    notificationList.empty();
+
+                    if (response.unreadCount > 0) {
+                        response.notifications.forEach(function(notification) {
+                            var notificationItem = $('<li class="dropdown-item" data-notification-id="' + notification.notification_id + '">' + 
+                                '<a href="#">' + 
+                                    '<div class="">' + 
+                                        '<p class="notification-item m-0"><i><small>' + notification.office_name + '</small></i></p>' + 
+                                        '<p class="notification-item m-0"><b>' + notification.title + '</b></p>' + 
+                                        '<p class="notification-item">' + notification.description + '</p>' + 
+                                    '</div>' + 
+                                '</a>' + 
+                            '</li>');
+                            notificationList.append(notificationItem);
+                        });
+                    } else {
+                        notificationList.html('<div class="mx-5 my-3 text-center">'+
+                        '<p><b>You\'re all set!</b></p>'+
+                        '<p><small>No new notifications</small></p>'+
+                        '</div>');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // Handle marking notifications as read
+        $('#notificationList').on('click', '.dropdown-item', function() {
+            var notificationItem = $(this);
+            var notificationId = notificationItem.data('notification-id');
+
+            $.ajax({
+                type: 'POST',
+                url: 'mark_notif.php',
+                data: { notificationId: notificationId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Update UI to mark the notification as read
+                        notificationItem.removeClass('unread');
+                        // You might also want to remove the notification from the dropdown
+                        notificationItem.remove();
+                        
+                        // Update notification count and badge
+                        $('#notificationCount').text(response.unreadCount);
+                    } else {
+                        console.log('Failed to mark notification as read.');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
     function handleSearchAutocomplete(input) {
         var query = input.value.trim();
         var autocompleteList = document.getElementById('autocomplete-list');

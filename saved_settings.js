@@ -38,6 +38,7 @@ function enableDarkMode() {
     $('.modal-footer').addClass('bg-dark');
     $('.dropdown-menu').addClass('bg-dark');
     $('.dropdown-item').addClass('dark-mode');
+    $('.notification-item').addClass('dark-mode');
     $('.footer').addClass('bg-dark');
     $('.breadcrumb-item').removeClass('text-dark').addClass('text-light');
     $('.breadcrumb-separator').removeClass('text-dark').addClass('text-light');
@@ -71,6 +72,7 @@ function disableDarkMode() {
     $('.modal-footer').removeClass('bg-dark');
     $('.dropdown-menu').removeClass('bg-dark');
     $('.dropdown-item').removeClass('dark-mode');
+    $('.notification-item').removeClass('dark-mode');
     $('.footer').removeClass('bg-dark');
     $('.breadcrumb-item').addClass('text-dark');
     $('.breadcrumb-separator').addClass('text-dark');
