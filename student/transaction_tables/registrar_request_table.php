@@ -318,9 +318,12 @@
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
-                            '</td>' +
-                            '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + request.request_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' +
-                            '</tr>';
+                            '</td>';
+                            
+                        // Don't allow edit button to appear when status is not pending
+                        request.status_name == "Pending" 
+                        ? row += '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' + '</tr>' 
+                        : row += '<td></td></tr>'
                         tableBody.innerHTML += row;
                     }
                 }  else {

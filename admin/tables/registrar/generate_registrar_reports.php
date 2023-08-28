@@ -3,12 +3,7 @@ require '../../../vendor/autoload.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "otms_db";
-
-    $connection = new mysqli($servername, $username, $password, $database);
+include "../../../conn.php";
     
     $status = $_GET['status'];
     $doc_type = $_GET['doc_type'];
@@ -81,7 +76,8 @@ $html = '
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regsitrar Office | Generate Reports</title>
+    <title>Registrar Office | Generate Reports</title>
+    <p>Generated on: ' . date('F j, Y | g:i A') . '</p>
     <!--Google Fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -141,7 +137,7 @@ $html = '
                     <td>'.$row['request_id'].'</td>
                     <td>'.$format_date.'</td>
                     <td>'.date('F j, Y', strtotime($row['scheduled_datetime'])).'</td>
-                    <td>'.$row['last_name'].','.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
+                    <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['role'].'</td>
                     <td>'.$row['request_description'].'</td>
                     <td>'.$row['amount_to_pay'].'</td>
@@ -173,7 +169,7 @@ $NameModified = strtolower(str_replace(' ', '', $formattedDate));
 $fileName = 'registrar_report'. '_'.  $NameModified . '_' . uniqid(). '.pdf';
 
 // Save the PDF to a directory in your file system
-$directoryPath = '../../generate_report/'; 
+$directoryPath = '../../generate_report/registrar/'; 
 $filePath = $directoryPath . $fileName;
 file_put_contents($filePath, $dompdf->output());
 

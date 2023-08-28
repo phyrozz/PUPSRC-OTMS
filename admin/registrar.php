@@ -90,7 +90,7 @@
                 </div>
                 <button type="submit" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i
                     class="fa-solid fa-filter"></i> Filter</button>
-                <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank">Generate Report</a>
+                <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i>Generate Registrar Report</a>
               </div>
             </div>
             <div class="mt-2">
@@ -122,17 +122,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <button class="btn btn-primary" disabled>Previous</button>
-                    <button class="btn btn-primary" disabled>Next</button>
-                </div>
-            </div>
-             -->
+     
     </div>
     <div class="push"></div>
   </div>
