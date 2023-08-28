@@ -72,15 +72,18 @@
                                 </div>
                             </div>
                             <div>
-                                <!-- <div id="filterByDocTypeSection" class="input-group">
-                                    <label class="input-group-text" for="filterByDocType">Filter by Document Type:</label>
-                                    <select name="filterByDocType" id="filterByDocType" class="form-select">
-                                        <option value="all">All</option>
-                                        <option value="goodMoral">Good Moral Document</option>
-                                        <option value="clearance">Clearance</option>
-                                    </select>
-                                </div> -->
+
+                            <div>
                                 <button type="button" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i class="fa-solid fa-filter"></i> Filter</button>
+                                
+                                <?php if ($table === 'request_equipment') { ?>
+                                    <a href="tables/administrative/request_equipment_reports.php" id="generate-report-equipment" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Equipment Report</a>
+                                <?php } ?>
+                                <!-- Generate Report button for Facility -->
+                                <?php if ($table === 'appointment_facility') { ?>
+                                    <a href="tables/administrative/appointment_facility_reports.php" id="generate-report-facility" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Facility Report</a>
+                                <?php } ?>
+                            </div>
                             </div>
                         </div>
                         <div class="mt-2">
@@ -154,31 +157,46 @@
                 handlePagination(1, '', column, order);
             });
 
-            // // Function to show or hide the "Filter by Document Type" section
-            // function toggleFilterByDocTypeSection() {
-            //     var selectedTable = $("#transactionTableSelect").val();
 
-            //     if (selectedTable === "document_request") {
-            //         $("#filterByDocTypeSection").show();
-            //     } else {
-            //         $("#filterByDocTypeSection").hide();
-            //     }
-            // }
-
-            // // Call the toggle function initially
-            // toggleFilterByDocTypeSection();
-
-            // // Event listener for the table select dropdown change
-            // $("#tableSubmitSelect").on('click', function() {
-            //     toggleFilterByDocTypeSection();
-            // });
-
-            // $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
-            //     $(this).next('ul').toggle();
-            //     e.stopPropagation();
-            //     e.preventDefault();
-            // });
         });
+
+
+        $(document).ready(function() {
+            // Handle "Generate Report" button click for equipment table
+            $("#generate-report-equipment").on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var searchValue = $("#search-input").val();
+                var table = $(this).data('table'); // Get the data-table attribute
+                
+                // Encode the selected values and search query to be URL-safe
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
+                // Construct the URL for equipment report generation
+                var link = "tables/administrative/request_equipment_reports.php?status=" + encodedStatus + "&search=" + encodedSearchValue;
+
+                // Redirect to the equipment report generation page
+                $(this).attr("href", link);
+            });
+
+            // Handle "Generate Report" button click for facility table
+            $("#generate-report-facility").on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var searchValue = $("#search-input").val();
+                var table = $(this).data('table'); // Get the data-table attribute
+
+                // Encode the selected values and search query to be URL-safe
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
+                // Construct the URL for facility report generation
+                var link = "tables/administrative/appointment_facility_reports.php?status=" + encodedStatus + "&search=" + encodedSearchValue;
+
+                // Redirect to the facility report generation page
+                $(this).attr("href", link);
+            });
+        });
+
 
         function checkViewport() {
             if (window.innerWidth < 768) {
@@ -191,6 +209,8 @@
         // Check viewport initially and on window resize
         window.addEventListener('DOMContentLoaded', checkViewport);
         window.addEventListener('resize', checkViewport);
+
+        
     </script>
     <script src="../loading.js"></script>
 </body>
