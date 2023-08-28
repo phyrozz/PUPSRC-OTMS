@@ -311,9 +311,13 @@
                                         <h5 class="modal-title" id="successModalLabel">Success</h5>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Your appointment request has been submitted successfully!</p>
-                                        <p>You can check the status of your appointment request on the <b>My Transactions</b> page.</p>
-                                        <p><b>You must print this letter and submit it to the Administrative Office before your appointment.</b></p>
+                                        <p>Your appointment has been submitted successfully!</p>
+                                        <h5>What should I do next?</h5>
+                                        <ol>
+                                            <li>Please download the letter needed for the appointment (Refer to the <b>Help</b> page).</li>
+                                            <li>Proceed to the <b>Student Services</b> office (Room 210) to submit the requirements.</li>
+                                            <li>Wait for the request to be approved by constantly checking its status on the <b>My Transactions</b> page.</li>
+                                        </ol>
                                         <button type="button" class="btn btn-primary" onclick="redirectToAnotherPage()">Show Letter</button>
                                     </div>
                                     <div class="modal-footer">
