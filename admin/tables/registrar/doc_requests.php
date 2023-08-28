@@ -55,6 +55,7 @@ $statuses = array(
           Status
           <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
+        <th></th>
       </tr>
     </thead>
     <tbody id="table-body">
@@ -101,6 +102,45 @@ $statuses = array(
     </div>
   </nav>
 </div>
+<!-- View edit modal -->
+<div id="viewEditModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewEditModalLabel">Edit request</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view edit modal -->
+<!-- Create reason for rejected status modal -->
+<div id="createReasonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createReasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReasonModalLabel">Create Reason</h5>
+            </div>
+            <div class="modal-body">
+                <form id="createReasonForm">
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Reason:</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submitReasonBtn">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of create reason for rejected status modal -->
 <script>
 function getStatusBadgeClass(status) {
   switch (status) {
@@ -193,6 +233,10 @@ function populateUserInfoModal(userId) {
   });
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
 function populateFeedbackTextModal(feedbackText) {
   var modalTitle = document.getElementById('viewFeedbackTextModalLabel');
   var modalBody = document.querySelector('#viewFeedbackTextModal .modal-body');
@@ -241,12 +285,6 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
           var request = data.document_requests[i];
           var scheduleButton = '';
 
-          // // Add schedule button if the status is "Pending"
-          // if (request.status_name === 'Pending') {
-          //     var schedulePageRedirect = getSchedulePageRedirect(request.request_description);
-          //     scheduleButton = '<a href="' + schedulePageRedirect + '" class="btn btn-primary">Schedule Now</a>';
-          // }
-
           // Convert the timestamp int value of request_id into a formatted datetime for the Date Requested column
           var timestamp = request.request_id;
           parsedTimestamp = parseInt(timestamp.substring(3));
@@ -272,9 +310,13 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
             '<td>' + '₱' + request.amount_to_pay + '</td>' +
             '<td class="text-center">' +
             '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request
-            .status_name + '</span>' + '</td>' +
-            '</tr>';
-          tableBody.innerHTML += row;
+            .status_name + '</span>' + '</td>';
+            
+            // Don't allow edit button to appear when status is not pending
+            request.status_name == "Rejected" 
+            ? row += '<td><a href="#" class="btn btn-primary btn-sm create-reason" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Create Reason <i class="fa-solid fa-pen-to-square"></i></a></td>' + '</tr>' 
+            : row += '<td></td></tr>'
+            tableBody.innerHTML += row;
         }
       } else {
         var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="9">No Transactions</td></tr>';
@@ -353,6 +395,74 @@ $(document).ready(function() {
   $('#filterButton').on('click', function() {
     var searchTerm = $('#search-input').val();
     handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+  });
+
+  // Create Reason button click listener
+  $(document).on('click', '.create-reason', function(event) {
+        var requestId = event.target.getAttribute('data-request-id');
+        
+        // Set the request ID and office in the modal
+        $('#createReasonModal').data('request-id', requestId);
+        
+        // Show the modal
+        $('#createReasonModal').modal('show');
+    });
+
+  // Submit Reason button click listener
+  $('#submitReasonBtn').on('click', function() {
+        var requestId = $('#createReasonModal').data('request-id');
+        var reason = $('#reason').val();
+        
+        // Make an AJAX request to update the purpose in the database
+        $.ajax({
+            url: 'tables/registrar/update_create_reason_for_rejected.php', // Your PHP script to handle the update
+            method: 'POST',
+            data: {
+                request_id: requestId,
+                reason: reason
+            },
+            success: function(response) {
+                // Handle success response
+                
+                // Close the modal
+                $('#createReasonModal').modal('hide');
+                
+                // Refresh the table
+                handlePagination(1, '', 'request_id', 'desc');
+            },
+            error: function() {
+                // Handle error
+                console.log('Error occurred while updating reason.');
+            }
+        });
+    });
+
+    $(document).on('click', '.create-reason', function(event) {
+      var requestId = event.target.getAttribute('data-request-id');
+      var office = event.target.getAttribute('data-office');
+      
+      // Set the request ID and office in the modal
+      $('#createReasonModal').data('request-id', requestId);
+      
+      // Fetch the existing purpose and populate the textarea
+      $.ajax({
+          url: 'tables/registrar/fetch_reason_for_rejected.php', // Your PHP script to fetch the existing purpose
+          method: 'POST',
+          data: {
+              request_id: requestId
+          },
+          success: function(response) {
+              // Update the textarea with the existing purpose
+              $('#reason').val(response);
+              
+              // Show the modal
+              $('#createReasonModal').modal('show');
+          },
+          error: function() {
+              // Handle error
+              console.log('Error occurred while fetching existing purpose.');
+          }
+      });
   });
 
   // Update status button listener
