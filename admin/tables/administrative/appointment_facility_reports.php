@@ -10,6 +10,10 @@ include "../../../conn.php";
     $status = $_GET['status'];
     $search = $_GET['search'];
     $formattedDate = date('Y-m-d'); //date today
+    date_default_timezone_set('Asia/Manila');
+
+    // Generate the current date and time in Philippines' time
+    $currentDateTime = date('F j, Y \a\t g:i A');
 
     $appointment_facility_reports = "SELECT appointment_id, course, section, start_date_time_sched, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(appointment_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_appointment_id, end_date_time_sched, status_name, purpose, facility_name, facility_number,
                  users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role
@@ -72,12 +76,13 @@ $html = '
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrative Office | Generate Reports</title>
-    <p>Generated on: ' . date('F j, Y | g:i A') . '</p>
+    <p>Generated on: ' . $currentDateTime . '</p>
     <!--Google Fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
