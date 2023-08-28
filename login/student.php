@@ -322,6 +322,42 @@
         </div>
     </div>
     <!-- End of create account failed modal -->
+    <!-- Invalid password modal -->
+    <div id="invalidPasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="invalidPasswordModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="invalidPasswordModalLabel">Oops...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Invalid password. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of invalid password modal -->
+    <!-- Password does not match modal -->
+    <div id="passDoesNotMatchModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="passDoesNotMatchModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passDoesNotMatchModalLabel">Oops...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Passwords do not match. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of password does not match modal -->
     <?php 
     if (isset($_SESSION['account_created']) && $_SESSION['account_created']) {
         echo "
@@ -350,10 +386,30 @@
         </script>
         ";
     }
+    if (isset($_SESSION['invalid_password']) && $_SESSION['invalid_password']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#invalidPasswordModal').modal('show');
+        });
+        </script>
+        ";
+    }
+    if (isset($_SESSION['pass_does_not_match']) && $_SESSION['pass_does_not_match']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#passDoesNotMatchModal').modal('show');
+        });
+        </script>
+        ";
+    }
 
     unset($_SESSION['account_created']);
     unset($_SESSION['account_exists']);
     unset($_SESSION['account_failed']);
+    unset($_SESSION['invalid_password']);
+    unset($_SESSION['pass_does_not_match']);
     ?>
     <!-- End of success alert modal -->
 
@@ -373,7 +429,12 @@
         var confirmPasswordInput = document.getElementById("ConfirmPassword");
         var submitButton = document.getElementById("submitBtn");
 
-        const passwordPattern = /^(?=.*\d).{8,}$/;
+        // Password rules:
+        // Must have at least one letter (small or capital)
+        // Must have at least one number
+        // Must have at least one special character (!, @, #, $, %, ^, &, *, (, ), _, +, {, })
+        // Must be at least 8 characters long
+        const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/;
 
         // Validation event listeners
         studentNoInput.addEventListener('input', () => {
@@ -496,23 +557,35 @@
             if (password === '') {
                 passwordChecklist.innerHTML += '<li class="text-danger">Password is required</li>';
             } else if (password.length >= 8) {
-                passwordChecklist.innerHTML += '<li class="text-success">At least 8 characters &#10004;</li>';
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; At least 8 characters</li>';
             } else {
-                passwordChecklist.innerHTML += '<li class="text-danger">At least 8 characters &#10006;</li>';
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; At least 8 characters</li>';
             }
 
-            if (passwordPattern.test(password)) {
-                passwordChecklist.innerHTML += '<li class="text-success">Contains a number &#10004;</li>';
+            if (/[A-Za-z]/.test(password)) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one letter</li>';
             } else {
-                passwordChecklist.innerHTML += '<li class="text-danger">Contains a number &#10006;</li>';
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one letter</li>';
+            }
+
+            if (/\d/.test(password)) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one number</li>';
+            } else {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one number</li>';
+            }
+
+            if (/[^A-Za-z\d]/.test(password)) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one special character</li>';
+            } else {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one special character</li>';
             }
 
             if (confirmPassword === '') {
-                passwordChecklist.innerHTML += '<li class="text-danger">Confirm password is required</li>';
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Confirm password is required</li>';
             } else if (isPasswordMatch) {
-                passwordChecklist.innerHTML += '<li class="text-success">Passwords match &#10004;</li>';
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Passwords match</li>';
             } else {
-                passwordChecklist.innerHTML += '<li class="text-danger">Passwords do not match &#10006;</li>';
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Passwords do not match</li>';
             }
         }
 
