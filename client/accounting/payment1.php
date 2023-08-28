@@ -177,24 +177,15 @@ include '../navbar.php';
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="course" class="form-label">Course <code>*</code></label>
+            <label for="course" class="form-label">Role <code>*</code></label>
             <select class="form-select" id="" name="course" required>
-              <option value="" disabled selected hidden>Select Course</option>
-              <option value="Bachelor of Science in Electronics Engineering">Bachelor of Science in Electronics Engineering</option>
-              <option value="Bachelor of Science in Business Administration Major in Human Resource Management">Bachelor of Science in Business Administration Major in Human Resource Management</option>
-              <option value="Bachelor of Science in Business Administration Major in Marketing Management">Bachelor of Science in Business Administration Major in Marketing Management</option>
-              <option value="Bachelor in Secondary Education Major in English">Bachelor in Secondary Education Major in English</option>
-              <option value="Bachelor in Secondary Education Major in Filipino">Bachelor in Secondary Education Major in Filipino</option>
-              <option value="Bachelor in Secondary Education Major in Mathematics">Bachelor in Secondary Education Major in Mathematics</option>
-              <option value="Bachelor of Science in Industrial Engineering">Bachelor of Science in Industrial Engineering</option>
-              <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
-              <option value="Bachelor of Science in Psychology">Bachelor of Science in Psychology</option>
-              <option value="Bachelor in Technology And Livelihood Education Major in Home Economics">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
-              <option value="Bachelor of Science in Management Accounting">Bachelor of Science in Management Accounting</option>
+              <option value="" disabled selected hidden>Select Role</option>
+              <option value="Client">Client</option>
+              <option value="Alumni">Alumni</option>
               <!-- Add more options as needed -->
             </select>
             <div class="invalid-feedback">
-              Please select a course.
+              Please select an role.
             </div>
           </div>
         </div>

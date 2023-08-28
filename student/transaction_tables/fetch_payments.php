@@ -19,7 +19,7 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'payment_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 
 // Retrieve the document requests
-$paymentsQuery = "SELECT payment_id, course, documentType, referenceNumber, amount, image_url, transaction_date, status
+$paymentsQuery = "SELECT payment_id, course, documentType, transaction_date, status
                         FROM student_info
                         WHERE studentNumber = '" . $_SESSION['student_no'] . "'";
 

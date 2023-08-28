@@ -14,25 +14,29 @@
                     Name
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center doc-request-office-header sortable-header" data-column="course" scope="col" data-order="desc">
+                Course/Role
+                <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
                 <th class="text-center doc-request-student-or-client-header sortable-header" data-column="documentType" scope="col" data-order="desc">
                     Document Type
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-description-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
+                <!--<th class="text-center doc-request-description-header sortable-header" data-column="referenceNumber" scope="col" data-order="desc">
                     Reference Number
                     <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-amount-header sortable-header" data-column="amount" scope="col" data-order="desc">
+                </th>-->
+                <!--<th class="text-center doc-request-amount-header sortable-header" data-column="amount" scope="col" data-order="desc">
                     Amount
                     <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
+                </th>-->
                 <th class="text-center doc-request-status-header sortable-header" data-column="status" scope="col" data-order="desc">
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center doc-request-status-header sortable-header" data-column="image_url" scope="col" data-order="desc">
+                <!--<th class="text-center doc-request-status-header sortable-header" data-column="image_url" scope="col" data-order="desc">
                     Receipt
-                </th>
+                </th>-->
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -128,15 +132,17 @@
                             }))
                             + '</td>' +
                             '<td>' + payments.lastName + ", " + payments.firstName + " " + payments.middleName + '</td>' +
+                            '<td>' + payments.course + '</td>' +
                             '<td>' + payments.documentType + '</td>' +
-                            '<td>' + payments.referenceNumber + '</td>' +
-                            '<td>' + '₱' + payments.amount + '</td>' +
+                            //'<td>' + payments.referenceNumber + '</td>' +
+                            //'<td>' + '₱' + payments.amount + '</td>' +
                             '<td>' +
                                     '<select class="form-select status-dropdown" onchange="updateStatus(this, ' + payments.payment_id + ')">' +
                                      statusOptions +
                                     '</select>' +
                             '</td>' +
-                            '<td class="text-center"><a href="' + imageUrl + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
+                            '</tr>';
+                            //'<td class="text-center"><a href="' + imageUrl + '" target="_blank" class="btn btn-sm btn-primary">See Image</a></td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }

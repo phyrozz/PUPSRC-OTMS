@@ -209,19 +209,6 @@ $html = <<<EOD
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="image-container">
-            <img src="pup-logo.png" alt="pup-logo">
-        </div>
-        <div class="text">
-            <p style="font-size: 13px; margin-bottom: 0;">Republic of the Philippines</p>
-            <strong>POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</strong><br>
-            OFFICE OF THE VICE PRESIDENT FOR BRANCHES AND CAMPUSES<br>
-            <strong>SANTA ROSA CAMPUS</strong>
-        </div>
-        <div class="clearfix"></div>
-        <hr>
-    </div>
 
 <div class="container-margin">
 
@@ -276,27 +263,13 @@ $html = <<<EOD
         <p>
             Noted by:<br><br><br>
             <strong>Dr. Leny V. Salmingo</strong><br>
-            Subject Facilitator<br>
-            This Campus
+            Campus Directress<br>
+            PUP Sta. Rosa
         </p>
     </div>
 
     <br><br>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-text">   
-            <p style="font-size: 12px;">PUP LCA Boulevard, Brgy. Tagapo, City of Santa Rosa, Laguna<br>
-                Direct Line: 0961-8023780<br>
-                Website: <a href="https://pupsrc101.school.blog/">https://pupsrc101.school.blog/</a> | Email: starosa@pup.edu<br>
-            </p>
-            </div>
-            <div class="footer-image">
-                <img src="iso-cert.png" alt="iso-img">
-            </div>
-        </div>
-        <p style="font-size: 18px;">THE COUNTRY’S 1st POLYTECHNICU</p>
-    </footer>
 </div>
 </body>
 </html>
