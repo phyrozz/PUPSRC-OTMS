@@ -72,6 +72,12 @@
                                     </select>
                                 </div>
                                 <button type="button" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i class="fa-solid fa-filter"></i> Filter</button>
+                                <?php if ($table === 'document_request') { ?>
+                                    <a href="tables/guidance/doc_request_reports.php" id="generate-doc-requests" name="generate-doc-requests" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Document Request Report</a>
+                                <?php } ?>
+                                <?php if ($table === 'scheduled_appointments') { ?>
+                                    <a href="tables/guidance/counseling_reports.php" id="generate-counseling" name="generate-counseling" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Counseling Schedule Report</a>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class="mt-2">
@@ -117,6 +123,39 @@
     </script>
     <script>
         $(document).ready(function() {
+            $("#generate-doc-requests").on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var selectedDocType = $("#filterByDocType").val();
+                var searchValue = $("#search-input").val(); // Get the value of the search input
+
+                // Encode the selected values and search query to be URL-safe
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedDocType = encodeURIComponent(selectedDocType);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
+                // Construct the URL with the updated parameters
+                var link = "tables/guidance/doc_request_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+                
+                // Update the href attribute of the link
+                $(this).attr("href", link);
+            });
+            $("#generate-counseling").on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var selectedDocType = $("#filterByDocType").val();
+                var searchValue = $("#search-input").val(); // Get the value of the search input
+
+                // Encode the selected values and search query to be URL-safe
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedDocType = encodeURIComponent(selectedDocType);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
+                // Construct the URL with the updated parameters
+                var link = "tables/guidance/counseling_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+                
+                // Update the href attribute of the link
+                $(this).attr("href", link);
+            });
+
             $('.sortable-header').on('click', function() {
                 var column = $(this).data('column');
                 var order = $(this).data('order');
