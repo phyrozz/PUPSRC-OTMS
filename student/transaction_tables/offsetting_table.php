@@ -62,16 +62,12 @@
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
-            case 'Released':
+            case 'Approved':
                 return 'bg-success';
             case 'Rejected':
                 return 'bg-danger';
-            case 'For Receiving':
-                return 'bg-warning text-dark';
             case 'For Evaluation':
                 return 'bg-primary';
-            case 'Ready for Pickup':
-                return 'bg-info';
             default:
                 return 'bg-dark';
         }
