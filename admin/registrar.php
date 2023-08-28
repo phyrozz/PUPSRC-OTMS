@@ -43,7 +43,7 @@
               $table = $_POST['table-select'];
             }
 
-            $query = "SELECT services FROM reg_services";
+            $query = "SELECT services, services_id FROM reg_services";
             $stmt = $connection->prepare($query);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -83,14 +83,16 @@
                   <select name="filterByDocType" id="filterByDocType" class="form-select">
                     <option value="all">All</option>
                     <?php foreach ($data as $row) {
-                      echo '<option value="' . $row['services'] . '">' . $row['services'] . '</option>';
+                      if ($row['services_id'] < '23' || $row['services_id'] == '35') {
+                        echo '<option value="' . $row['services'] . '">' . $row['services'] . '</option>';
+                      }
                     }
                     ?>
                   </select>
                 </div>
                 <button type="submit" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i
                     class="fa-solid fa-filter"></i> Filter</button>
-                <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank">Generate Report</a>
+                <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i>Generate Registrar Report</a>
               </div>
             </div>
             <div class="mt-2">
@@ -122,17 +124,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <button class="btn btn-primary" disabled>Previous</button>
-                    <button class="btn btn-primary" disabled>Next</button>
-                </div>
-            </div>
-             -->
+     
     </div>
     <div class="push"></div>
   </div>
@@ -248,6 +240,18 @@
       option.value = key;
       option.textContent = statuses[key];
       filterByStatusSelect.appendChild(option);
+    }
+  }
+
+  var selectElement = document.getElementById("filterByDocType");
+  var options = selectElement.options;
+  // for minimizing dropdown width
+  for (var i = 0; i < options.length; i++) {
+    var option = options[i];
+    var optionText = option.text;
+
+    if (optionText.length > 60) {
+      option.text = optionText.substring(0, 100) + '...';
     }
   }
   </script>

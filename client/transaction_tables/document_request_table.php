@@ -62,6 +62,23 @@
     </div>
 </div>
 <!-- End of view edit modal -->
+<!-- Reason Modal -->
+<div id="reasonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reasonModalLabel">Reason for Rejection</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Reason content will be populated here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Reason Modal -->
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 <script>
     function getStatusBadgeClass(status) {
@@ -296,6 +313,45 @@
         });
     }
 
+    //------------------------------------------------------------------------
+    // Event listener for view reason buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('view-reason')) {
+            var requestId = event.target.getAttribute('data-request-id');
+            populateReasonModal(requestId);
+        }
+    });
+
+    // Function to populate the reason modal with the reason data
+    function populateReasonModal(requestId) {
+        $.ajax({
+            url: 'transaction_tables/get_registrar_reason_rejected.php', // Replace with the actual URL to fetch reason from the database
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function(response) {
+                var reasonData = JSON.parse(response); // Parse the JSON response
+                var reason = reasonData.purpose; // Extract the reason text
+                
+                var modalTitle = document.getElementById('reasonModalLabel');
+                var modalBody = document.querySelector('#reasonModal .modal-body');
+
+                modalTitle.innerText = 'Reason for Rejection';
+
+                if (reason !== null) {
+                    modalBody.innerHTML = '<p>' + reason + '</p>';
+                } else {
+                    modalBody.innerHTML = '<p>No reason provided yet.</p>';
+                }
+
+                $("#reasonModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching reason.');
+            }
+        });
+    }
+    //------------------------------------------------------------------------
+
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
@@ -344,12 +400,18 @@
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +
-                            '</td>';
+                            '</td>' +
+                            '<td class="text-center">';
 
-                        // Don't allow edit button to appear when status is not pending
-                        request.status_name == "Pending" 
-                        ? row += '<td><a href="#" class="btn btn-primary btn-sm edit-request" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Edit <i class="fa-solid fa-pen-to-square"></i></a></td>' + '</tr>' 
-                        : row += '<td></td></tr>'
+                        // Don't allow edit button to appear when status is not pending and view reason for rejected (Registrar Office)
+                        if (request.status_name === "Pending") {
+                            row += '<a href="#" class="btn btn-primary btn-sm edit-request" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Edit <i class="fa-solid fa-pen-to-square"></i></a>'
+                            }
+                        else if (request.status_name === "Rejected" && request.office_name === "Registrar Office") {
+                            row += '<a href="#" class="btn btn-primary btn-sm view-reason" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Reason <i class="fa-solid fa-eye"></i></a>'
+                        }
+                             
+                        row += '</td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
