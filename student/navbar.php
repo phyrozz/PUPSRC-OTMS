@@ -89,7 +89,7 @@ $isLoggedIn = true;
                     </div>
                     <div id="autocomplete-list" class="autocomplete-list"></div>
                 </div>
-                <li class="nav-item dropdown order-1 order-lg-2">
+                <li class="nav-item dropdown order-1 order-lg-3">
                     <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-user-circle me-1"></i>
                         <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"] . " " . $_SESSION["extension_name"]; ?>

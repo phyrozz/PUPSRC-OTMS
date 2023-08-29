@@ -66,7 +66,6 @@
                 <option value="First Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'First Floor') echo 'selected'; ?>>First Floor</option>
                 <option value="Second Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'Second Floor') echo 'selected'; ?>>Second Floor</option>
                 <option value="Third Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'Third Floor') echo 'selected'; ?>>Third Floor</option>
-                <option value="Fourth Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'Fourth Floor') echo 'selected'; ?>>Fourth Floor</option>
             </select>
             <button class="btn btn-primary" onclick="filterResults()">Filter</button>
         </div>
