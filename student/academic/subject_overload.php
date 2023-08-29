@@ -182,7 +182,7 @@ function academicStatus($status) {
                         <div class="col-sm-2">
                             Status
                         </div>
-                        <div class="col-sm-2"> <!-- Added column -->
+                        <div class="col-sm-4"> <!-- Added column -->
                             Note
                         </div>
                         <div class="col-sm-2">

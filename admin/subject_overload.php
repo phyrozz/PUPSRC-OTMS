@@ -134,6 +134,7 @@
                                 <th class="text-center" scope="col" style="background-color: #f2f2f2;">Status</th>
                                 <th class="text-center" scope="col" style="background-color: #f2f2f2;">COR</th>
                                 <th class="text-center" scope="col" style="background-color: #f2f2f2;">Status</th>
+                                <th class="text-center" scope="col" style="background-color: #f2f2f2;">Note</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -147,7 +148,9 @@
                                         2 => "Pending",
                                         3 => "Under Verification",
                                         4 => "Verified",
-                                        5 => "Rejected"
+                                        5 => "Rejected",
+                                        6 => "To Be Evaluated",
+                                        7 => "Need F to F Evaluation"
                                     );
 
                                     // Generate the options
