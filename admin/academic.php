@@ -62,6 +62,7 @@
                                 <th class="text-center" scope="col">Application</th>
                                 <th class="text-center" scope="col">View attachment</th> <!-- Added column -->
                                 <th class="text-center" scope="col">PDF forms</th> <!-- Added column -->
+                                <th class="text-center" scope="col">Note</th> <!-- Added column -->
                                 <th class="text-center" scope="col">Status</th>
                             </tr>
                         </thead>
@@ -72,12 +73,15 @@
                                 <td></td>
                                 <td></td> <!-- Added column -->
                                 <td></td> <!-- Added column -->
+                                <td></td> <!-- Added column -->
                                 <td class="text-center">
                                     <select class="form-select" id="status">
                                         <option value="1">Pending</option>
                                         <option value="2">Missing</option>
                                         <option value="3">Under Verification</option>
-                                        <option value="4">Verified</option>
+                                        <option value="4">To Be Evaluated</option> <!-- Added column -->
+                                        <option value="5">Need F to F Evaluation</option> <!-- Added column -->
+                                        <option value="6">Verified</option>
                                     </select>
                                 </td>         
                             </tr>
@@ -87,12 +91,15 @@
                                 <td></td>
                                 <td></td> <!-- Added column -->
                                 <td></td> <!-- Added column -->
+                                <td></td> <!-- Added column -->
                                 <td class="text-center">
                                     <select class="form-select" id="status">
                                         <option value="1">Pending</option>
                                         <option value="2">Missing</option>
                                         <option value="3">Under Verification</option>
-                                        <option value="4">Verified</option>
+                                        <option value="4">To Be Evaluated</option> <!-- Added column -->
+                                        <option value="5">Need F to F Evaluation</option> <!-- Added column -->
+                                        <option value="6">Verified</option>
                                     </select>
                                 </td>
                             </tr>
@@ -102,12 +109,15 @@
                                 <td></td>
                                 <td></td> <!-- Added column -->
                                 <td></td> <!-- Added column -->
+                                <td></td> <!-- Added column -->
                                 <td class="text-center">
                                     <select class="form-select" id="status">
                                         <option value="1">Pending</option>
                                         <option value="2">Missing</option>
                                         <option value="3">Under Verification</option>
-                                        <option value="4">Verified</option>
+                                        <option value="4">To Be Evaluated</option> <!-- Added column -->
+                                        <option value="5">Need F to F Evaluation</option> <!-- Added column -->
+                                        <option value="6">Verified</option>
                                     </select>
                                 </td>
                             </tr>
@@ -117,12 +127,15 @@
                                 <td></td>
                                 <td></td> <!-- Added column -->
                                 <td></td> <!-- Added column -->
+                                <td></td> <!-- Added column -->
                                 <td class="text-center">
                                     <select class="form-select" id="status">
                                         <option value="1">Pending</option>
                                         <option value="2">Missing</option>
                                         <option value="3">Under Verification</option>
-                                        <option value="4">Verified</option>
+                                        <option value="4">To Be Evaluated</option> <!-- Added column -->
+                                        <option value="5">Need F to F Evaluation</option> <!-- Added column -->
+                                        <option value="6">Verified</option>
                                     </select>
                                 </td>
                             </tr>
@@ -132,12 +145,15 @@
                                 <td></td>
                                 <td></td> <!-- Added column -->
                                 <td></td> <!-- Added column -->
+                                <td></td> <!-- Added column -->
                                 <td class="text-center">
                                     <select class="form-select" id="status">
                                         <option value="1">Pending</option>
                                         <option value="2">Missing</option>
                                         <option value="3">Under Verification</option>
-                                        <option value="4">Verified</option>
+                                        <option value="4">To Be Evaluated</option> <!-- Added column -->
+                                        <option value="5">Need F to F Evaluation</option> <!-- Added column -->
+                                        <option value="6">Verified</option>
                                     </select>
                                 </td>
                             </tr>
@@ -197,6 +213,7 @@
                         <th class="text-center" scope="col">Application</th>
                         <th class="text-center" scope="col">View attachment</th> <!-- Added column -->
                         <th class="text-center" scope="col">PDF forms</th> <!-- Added column -->
+                        <th class="text-center" scope="col">Note</th> <!-- Added column -->
                         <th class="text-center" scope="col">Status</th>
                     </tr>
                 </thead>
@@ -207,12 +224,14 @@
                         <td></td>
                         <td></td> <!-- Added column -->
                         <td></td> <!-- Added column -->
+                        <td></td> <!-- Added column -->
                         <td class="text-center">
                             <select class="form-select" id="status">
                                 <option value="1">Pending</option>
                                 <option value="2">Missing</option>
                                 <option value="3">Under Verification</option>
-                                <option value="4">Verified</option>
+                                <option value="4">To Be Evaluated</option> <!-- Added column -->
+                                <option value="5">Verified</option>
                             </select>
                         </td>         
                     </tr>
@@ -222,12 +241,14 @@
                         <td></td>
                         <td></td> <!-- Added column -->
                         <td></td> <!-- Added column -->
+                        <td></td> <!-- Added column -->
                         <td class="text-center">
                             <select class="form-select" id="status">
                                 <option value="1">Pending</option>
                                 <option value="2">Missing</option>
                                 <option value="3">Under Verification</option>
-                                <option value="4">Verified</option>
+                                <option value="4">To Be Evaluated</option> <!-- Added column -->
+                                <option value="5">Verified</option>
                             </select>
                         </td>
                     </tr>

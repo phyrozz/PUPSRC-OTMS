@@ -151,6 +151,9 @@
                         <div class="col-sm-2">
                             Status
                         </div>
+                        <div class="col-sm-2"> <!-- Added column -->
+                            Note
+                        </div>
                         <div class="col-sm-2">
                             Attachment
                         </div>
