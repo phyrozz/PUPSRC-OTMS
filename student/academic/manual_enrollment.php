@@ -73,14 +73,19 @@
         </button>';
             break;
         case 5:
-            return '<button type="button" class="btn btn-success" id="status_button" disabled>
-            <i class="fa-solid fa-circle-check"></i> To Be Evaluated
-            </button>';
-            break;    
+            return '<button type="button" class="btn btn-danger" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Rejected
+        </button>';
+            break;
         case 6:
-            return '<button type="button" class="btn btn-success" id="status_button" disabled>
+            return '<button type="button" class="btn btn-warning" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> To Be Evaluated
+        </button>';
+            break;
+        case 7:
+            return '<button type="button" class="btn btn-info" id="status_button" disabled>
             <i class="fa-solid fa-circle-check"></i> Need F to F Evaluation
-            </button>';
+        </button>';
             break;
     }
 }

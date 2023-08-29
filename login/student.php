@@ -79,7 +79,7 @@
                             <p class="mb-0"><small>By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></small></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <a class="btn btn-outline-primary px-4" href="../index.php">
+                            <a class="btn btn-outline-primary px-4" href="../index.php" type="button">
                                 <i class="fa-solid fa-arrow-left"></i> Back
                             </a>
                             <input id="submitBtn" value="Login" type="submit" class="btn btn-primary w-25" />
@@ -116,25 +116,25 @@
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Last Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">First Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Middle Name</label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control">
+                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Extension Name <font class="small">(Jr./Sr./III Etc..)</font></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="11" size="11" autocomplete="on" class="form-control">
+                                        <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="11" size="11" autocomplete="on" class="form-control">
                                     </div>
                                 </div>                           
                                 </div>

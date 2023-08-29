@@ -141,12 +141,10 @@ else if (isset($_POST['clientSignup'])) {
         $userRole = 2;
 
         // Check if the passwords match
-        if ($newPassword == $confirmPassword) {
+        if ($password == $confirmPassword) {
             // Validate the new password
-            if (preg_match('/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/', $newPassword)) {
+            if (preg_match('/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/', $password)) {
                 // Hash the new password
-                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 $query = "INSERT INTO users (last_name, first_name, middle_name, extension_name, contact_no, email, birth_date, password, user_role)
