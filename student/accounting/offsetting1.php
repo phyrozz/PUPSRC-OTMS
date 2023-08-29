@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $birth_date = $_POST["birth_date"];
     $sql = "SELECT * FROM users WHERE first_name = '$first_name' && last_name = '$last_name' && student_no = '$student_no' &&  birth_date = '$birth_date'";
     
-    $result = $conn->query($sql);
+    $result = $connection->query($sql);
 
     if ($result->num_rows == 1) {
        $row = mysqli_fetch_array($result);
@@ -128,7 +128,7 @@ background-color: #e9ecef;
     <div class="fetch-data">
         <?php
         $user_id = $_SESSION["user_id"];
-                    $select = mysqli_query($conn, "SELECT * FROM users WHERE user_id = '$user_id'") or die ('query failed');
+                    $select = mysqli_query($connection, "SELECT * FROM users WHERE user_id = '$user_id'") or die ('query failed');
                     if(mysqli_num_rows($select) > 0){
                         $fetch = mysqli_fetch_assoc($select);
                     }

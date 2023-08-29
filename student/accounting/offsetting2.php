@@ -10,7 +10,7 @@ if (isset($_POST['submit'])) {
     $_SESSION['page2_visited'] = true;
     $user_id = $_SESSION['user_id'];
     $checkFormQuery = "SELECT COUNT(*) as submission_count FROM offsettingtb WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
-    $stmt = mysqli_stmt_init($conn);
+    $stmt = mysqli_stmt_init($connection);
     if (!mysqli_stmt_prepare($stmt, $checkFormQuery)) {
         echo "Error";
     } else {
@@ -37,14 +37,14 @@ if (isset($_POST['submit'])) {
             $offsetType = $_POST['offsetType'];
 
             $insert = "INSERT INTO offsettingtb (user_id, amountToOffset, offsetType) VALUES (?,?,?)";
-            $stmt = mysqli_stmt_init($conn);
+            $stmt = mysqli_stmt_init($connection);
             if (!mysqli_stmt_prepare($stmt, $insert)) {
                 echo "Error";
             } else {
                 mysqli_stmt_bind_param($stmt, 'sds', $user_id, $amountToOffset, $offsetType);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        mysqli_close($conn);     
+        mysqli_close($connection);     
         echo "<script>
             window.location.href = 'offsetting3.php';
         </script>";
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
     }
 }
 
-mysqli_close($conn);
+mysqli_close($connection);
 ?>
 
 <style>
