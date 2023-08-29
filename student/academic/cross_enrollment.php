@@ -111,7 +111,7 @@
                     <div class="row">
                         <div class="col-sm-6">Requirements</div>
                         <div class="col-sm-2">Status</div>
-                        <div class="col-sm-2">Note</div><!-- Added column -->
+                        <div class="col-sm-4">Note</div><!-- Added column -->
                         <div class="col-sm-2">Attachment</div>
                         <div class="col-sm-2">Action</div>
                     </div>
