@@ -1004,6 +1004,8 @@ INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
 (5, 'Released'),
 (6, 'Rejected'),
 (7, 'Approved');
+(8, 'To Be Evaluated');
+(9, 'Need F to F Evaluation');
 
 -- --------------------------------------------------------
 
