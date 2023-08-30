@@ -44,7 +44,7 @@
             <?php switch ($office_name) { 
                             case 'Guidance Office':
                                 echo '
-								<li><a class="dropdown-item" href="/client/guidance/good_morals.php">Request Good Moral Document</a></li>
+								<li><a class="dropdown-item" href="/client/guidance/good_morals.php">Request Good Moral Certificate</a></li>
                                 <li><a class="dropdown-item" href="/client/guidance/clearance.php">Request Clearance</a></li>
 								';
                                 break;

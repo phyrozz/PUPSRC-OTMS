@@ -107,7 +107,7 @@
             echo generateBreadcrumb($breadcrumbItems, true);
             ?>
         </div>
-        <div class="container-fluid text-center p-4">
+        <div class="container-fluid text-center mt-4 p-4">
             <h1>Schedule for Counseling</h1>
         </div>
         <div class="container-fluid">
@@ -219,14 +219,6 @@
                                     <option value="15:00:00">3:00 PM</option>
                                     <option value="15:30:00">3:30 PM</option>
                                     <option value="16:00:00">4:00 PM</option>
-                                    <option value="16:30:00">4:30 PM</option>
-                                    <option value="17:00:00">5:00 PM</option>
-                                    <option value="17:30:00">5:30 PM</option>
-                                    <option value="18:00:00">6:00 PM</option>
-                                    <option value="18:30:00">6:30 PM</option>
-                                    <option value="19:00:00">7:00 PM</option>
-                                    <option value="19:30:00">7:30 PM</option>
-                                    <option value="20:00:00">8:00 PM</option>
                                 </select>
                                 <div class="invalid-feedback" id="timeSelectMessage">Please choose a time.</div>
                             </div>

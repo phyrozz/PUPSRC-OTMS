@@ -1,37 +1,3 @@
-<?php
-include "../../conn.php";
-
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
-$query = "SELECT last_name, first_name, extension_name, email FROM users
-            WHERE user_id = ?";
-    $stmt = $connection->prepare($query);
-    $stmt->bind_param("i", $_SESSION['user_id']);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $userData = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-
-    if(isset($_POST['surveySubmit'])) {
-        $query = "INSERT INTO acad_survey (user_id, rating, suggestions)
-        VALUES (?, ?, ?)";
-
-        $stmt = $connection->prepare($query);
-        $stmt->bind_param("iss", $_SESSION['user_id'], $_POST["rating"], $_POST["suggestions"]);
-        if ($stmt->execute()) {
-            // Success! Redirect to "../ytransactions.php"
-        header("Location: ../transactions.php");
-        exit; // Make sure to exit after the redirect
-    } else {
-            var_dump($stmt->error);
-        }
-        $stmt->close();
-        $connection->close();
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,10 +34,39 @@ $query = "SELECT last_name, first_name, extension_name, email FROM users
         $office_name = "Academic Office";
 
         include('../navbar.php');
-
+        include '../../conn.php';
         include '../../breadcrumb.php';
-        include "../../conn.php";
 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $query = "SELECT last_name, first_name, extension_name, email FROM users
+            WHERE user_id = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userData = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        if(isset($_POST['surveySubmit'])) {
+            $query = "INSERT INTO acad_survey (user_id, rating, suggestions)
+            VALUES (?, ?, ?)";
+
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("iss", $_SESSION['user_id'], $_POST["rating"], $_POST["suggestions"]);
+            if ($stmt->execute()) {
+                // Success! Redirect to "../ytransactions.php"
+            // header("Location: ../transactions.php");
+            echo '<script>window.location.href="../transactions.php";</script>';
+            exit; // Make sure to exit after the redirect
+        } else {
+                var_dump($stmt->error);
+            }
+            $stmt->close();
+            $connection->close();
+        }
     ?>
 
         <div class="container-fluid text-center p-4">
@@ -86,7 +81,7 @@ $query = "SELECT last_name, first_name, extension_name, email FROM users
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <button class="btn btn-outline-primary mb-2">
+                            <button class="btn btn-outline-primary mb-2" onclick="location.reload(0)">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
                         </div>

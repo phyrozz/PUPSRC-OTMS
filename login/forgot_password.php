@@ -58,14 +58,16 @@ if (isset($_POST['resetBtn'])) {
             $mail->Username = 'joshuamalabanan70@gmail.com';
             $mail->Password = 'flxeyskjtbaqvngz';
             $mail->SMTPSecure = 'ssl';
-            $mail->Port = 465;
+            $mail->Port = 465; 
             $mail->setFrom('pupsrc-otms@admin.com', 'PUPSRC-OTMS'); // Your email address and name
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'PUPSRC-OTMS Password Reset';
             $mail->addEmbeddedImage('../assets/verify_email_header.png', 'email_header');
             $mail->Body = "<img src='cid:email_header' alt='PUPSRC-OTMS Email Header' height=50>
-                        <p>Please click the following link to reset your password: <a href='/login/reset_password.php?token=$token'>Reset Password</a></p>";
+                        <p>Please click the following link to reset your password: <a href='/login/reset_password.php?token=$token'>Reset Password</a></p>
+                        <hr /><br>
+                        <p>This is an auto-generated email. Please do not reply.</p>";
             $mail->send();
 
             $_SESSION['email_exists'] = true;

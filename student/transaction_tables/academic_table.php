@@ -30,11 +30,12 @@
         </h4>
         <p class="mb-0">Always check your transaction status to follow instructions.</p>
         <p class="mb-0">You can delete or edit transactions during <span
-            class="badge rounded-pill bg-dark">Pending</span> status.</p>
+            class="badge rounded-pill bg-secondary">Pending</span> status.</p>
         <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Missing</span> - The requirement has not yet been submitted or attached.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requirement is pending for review by the office.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill bg-info" style="background-color: blue;">Under Verification</span> - The requirement has been checked by the admin and is under review.</small>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-secondary">Pending</span> - The requirement is pending for review by the office.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-info text-dark" style="background-color: blue;">Under Verification</span> - The requirement has been checked by the admin and is under review.</small>
         </p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-warning text-dark">Need F to F Evaluation</span> - The student must evaluate the requirement to the Director's Office.</small></p>
         <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Verified</span> -
             The requirement has been verified.</small></p>
         <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected

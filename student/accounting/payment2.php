@@ -133,12 +133,13 @@ $dbname = "otms_db";
                     }
                     ?>
                 </div>
-
+                <div class="container-fluid">
+                    <p>Please present this payment voucher to the cashier to complete your transaction. You may have to wait for a few days until your document request is ready for pickup. You can check the status any time on <b>My Transactions</b> page.</p>
+                </div>
                 <div class="col-12">
                     <button class="btn btn-primary next-button" type="button" onclick="takeScreenshot()"><i class="fa-solid fa-download"></i> Save</button>
                     <a class="btn btn-primary next-button" href="../accounting.php" type="submit">Accounting Office</a>
                 </div>
-
             </form>
         </div>
         <script src="#"></script>

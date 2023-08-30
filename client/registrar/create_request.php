@@ -91,7 +91,7 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
 			echo generateBreadcrumb($breadcrumbItems, true);
 		?>
     </div>
-    <div class="container-fluid text-center p-4">
+    <div class="container-fluid text-center mt-4 p-4">
       <h1>Create Request</h1>
     </div>
     <div class="container-fluid">
@@ -217,17 +217,52 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
                   </div>
                 </div>
               </div>
-
             </form>
           </div>
         </div>
       </div>
     </div>
+    <!-- Success alert modal -->
+    <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+      aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+          </div>
+          <div class="modal-body">
+            <p>Your request has been submitted successfully!</p>
+            <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
+            <h5>Reminder:</h5>
+            <p>Please generate a payment voucher and present it to the cashier in order for your request to be approved.</p>
+          </div>
+          <div class="modal-footer">
+            <a href="../accounting/payment1.php" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Generate voucher</a>
+            <a href="../transactions.php" class="btn btn-primary">My Transactions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of success alert modal -->
     <div class="push"></div>
   </div>
   <?php include '../../footer.php'; ?>
   <script src="../../loading.js"></script>
   <script src="../../saved_settings.js"></script>
+
+  <?php
+  if (isset($_SESSION['success'])) {
+  ?>
+  <script>
+    $(document).ready(function() {
+      $("#successModal").modal("show");
+    })
+  </script>
+  <?php
+    unset($_SESSION['success']);
+    exit();
+  }
+  ?>
 </body>
 
 </html>

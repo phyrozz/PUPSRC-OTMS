@@ -3,7 +3,8 @@ session_start();
 
 // Reset the attached files and their status to "Missing" and delete corresponding files
 // Only reset if the status is "Pending"
-include('../../conn.php');
+$path = $_SERVER['DOCUMENT_ROOT'];
+include($path . '/conn.php');
 
 $user_id = $_SESSION['user_id'];
 
@@ -26,36 +27,44 @@ $reqData = $result->fetch_assoc();
 $stmt->close();
 
 // Check the status of each requirement and delete files if the status is "Pending"
-if ($statusData['overload_letter_status'] == 2) {
+if ($statusData['overload_letter_status'] == 2 || $statusData['overload_letter_status'] == 5) {
     $overloadLetterPath = '../../assets/uploads/user_uploads/' . $reqData['overload_letter'];
     if (file_exists($overloadLetterPath)) {
         unlink($overloadLetterPath);
     }
+    $query = "UPDATE acad_subject_overload SET overload_letter = NULL, overload_letter_status = 1 WHERE user_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->close();
 }
 
-if ($statusData['ace_form_status'] == 2) {
+if ($statusData['ace_form_status'] == 2 || $statusData['ace_form_status'] == 5) {
     $aceFormPath = '../../assets/uploads/generated_pdf/' . $reqData['ace_form'];
     if (file_exists($aceFormPath)) {
         unlink($aceFormPath);
     }
+    $query = "UPDATE acad_subject_overload SET ace_form = NULL, ace_form_status = 1 WHERE user_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->close();
 }
 
-if ($statusData['cert_of_registration_status'] == 2) {
+if ($statusData['cert_of_registration_status'] == 2 || $statusData['cert_of_registration_status'] == 5) {
     $certOfRegPath = '../../assets/uploads/user_uploads/' . $reqData['cert_of_registration'];
     if (file_exists($certOfRegPath)) {
         unlink($certOfRegPath);
     }
+    $query = "UPDATE acad_subject_overload SET cert_of_registration = NULL, cert_of_registration_status = 1 WHERE user_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->close();
 }
-
-// Update the database entries for each requirement to reset the status and attachment
-$query = "UPDATE acad_subject_overload SET overload_letter = NULL, overload_letter_status = 1, ace_form = NULL, ace_form_status = 1, cert_of_registration = NULL, cert_of_registration_status = 1 WHERE user_id = ? AND (overload_letter_status = 2 OR ace_form_status = 2 OR cert_of_registration_status = 2)";
-$stmt = $connection->prepare($query);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->close();
 $connection->close();
 
 // Redirect back to the form page
-header("Location: subject_overload.php");
+echo '<script>history.back();</script>';
 exit();
 ?>

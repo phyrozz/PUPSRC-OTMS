@@ -25,15 +25,15 @@ $stmt->bind_param("issii", $office_id, $service, $date, $status_id, $user_id);
 
 if ($stmt->execute()) {
     // Query executed successfully
+    $_SESSION['success'] = true;
     echo "<script>
-        alert('Record inserted successfully.');
-        window.location.href = '../transactions.php';
+        window.location.href = 'create_request.php';
     </script>";
 } else {
     // Error executing the query
     echo "<script>
         alert('Error: " . $stmt->error . "');
-        window.location.href = '../transactions.php';
+        window.location.href = 'create_request.php';
     </script>";
 }
 

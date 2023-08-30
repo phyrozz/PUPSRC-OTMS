@@ -82,7 +82,7 @@
             echo generateBreadcrumb($breadcrumbItems, true);
             ?>
     </div>
-    <div class="container-fluid text-center p-4">
+    <div class="container-fluid text-center mt-4 p-4">
       <h1>Create Request</h1>
     </div>
     <div class="container-fluid">
@@ -229,8 +229,11 @@
                   <div class="modal-body">
                     <p>Your request has been submitted successfully!</p>
                     <p>You can check the status of your request on the <b>My Transactions</b> page.</p>
+                    <h5>Reminder:</h5>
+                    <p>Please generate a payment voucher and present it to the cashier in order for your request to be approved.</p>
                   </div>
                   <div class="modal-footer">
+                    <a href="../accounting/payment1.php" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Generate voucher</a>
                     <a href="../transactions.php" class="btn btn-primary">My Transactions</a>
                   </div>
                 </div>

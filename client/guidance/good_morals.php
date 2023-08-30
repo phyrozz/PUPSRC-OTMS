@@ -135,13 +135,13 @@
             <?php
             $breadcrumbItems = [
                 ['text' => 'Guidance Office', 'url' => '/student/guidance.php', 'active' => false],
-                ['text' => 'Request Good Moral Document', 'active' => true],
+                ['text' => 'Request Good Moral Certificate', 'active' => true],
             ];
 
             echo generateBreadcrumb($breadcrumbItems, true);
             ?>
         </div>
-        <div class="container-fluid text-center p-4">
+        <div class="container-fluid text-center mt-4 p-4">
             <h1>Request Document - Good Moral</h1>
         </div>
         <div class="container-fluid">

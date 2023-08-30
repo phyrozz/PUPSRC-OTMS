@@ -130,7 +130,7 @@
             echo generateBreadcrumb($breadcrumbItems, true);
             ?>
         </div>
-        <div class="container-fluid text-center p-4">
+        <div class="container-fluid text-center mt-4 p-4">
             <h1>Request Document - Clearance</h1>
         </div>
         <div class="container-fluid">

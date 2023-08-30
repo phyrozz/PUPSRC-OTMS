@@ -23,7 +23,6 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="table-body">

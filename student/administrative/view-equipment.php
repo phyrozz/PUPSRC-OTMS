@@ -46,7 +46,7 @@
             echo generateBreadcrumb($breadcrumbItems, true);
     ?>
 
-      <div class="container-fluid text-center p-4">
+      <div class="container-fluid text-center mt-4 p-4">
         <h1>View Equipment</h1>
       </div>
       <div class="container-fluid">

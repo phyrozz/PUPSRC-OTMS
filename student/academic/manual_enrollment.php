@@ -201,6 +201,7 @@
         </div>
         <div class="push"></div>
     </div>
+    </div>
 <?php include '../../footer.php'; ?>
 <script src="../../loading.js"></script>
 <script src="modal.js"></script>

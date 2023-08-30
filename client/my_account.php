@@ -168,17 +168,17 @@
                         <form id="editForm">
                             <div class="mb-3 form-group">
                                 <label for="editLastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="editLastName" name="editLastName" value="<?php echo $userData[0]['last_name']; ?>" required>
+                                <input type="text" class="form-control" id="editLastName" name="editLastName" value="<?php echo $userData[0]['last_name']; ?>" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                 <div class="invalid-feedback">Please enter your last name.</div>
                             </div>
                             <div class="mb-3 form-group">
                                 <label for="editFirstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="editFirstName" name="editFirstName" value="<?php echo $userData[0]['first_name']; ?>" required>
+                                <input type="text" class="form-control" id="editFirstName" name="editFirstName" value="<?php echo $userData[0]['first_name']; ?>" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                 <div class="invalid-feedback">Please enter your first name.</div>
                             </div>
                             <div class="mb-3 form-group">
                                 <label for="editMiddleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="editMiddleName" name="editMiddleName" value="<?php echo $userData[0]['middle_name']; ?>">
+                                <input type="text" class="form-control" id="editMiddleName" name="editMiddleName" value="<?php echo $userData[0]['middle_name']; ?>" maxlength="100" size="100" autocomplete="on" class="form-control">
                             </div>
                             <div class="mb-3 form-group">
                                 <label for="editExtensionName" class="form-label">Extension Name</label>
@@ -377,13 +377,25 @@
             // Add event listeners for input validation
             $('#editFirstName').on('input', function() {
                 var input = $(this).val();
-                var isValid = input.trim() !== '';
+                var isValid = input.trim() !== '' && /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(input);
                 $(this).toggleClass('is-invalid', !isValid);
             });
 
             $('#editLastName').on('input', function() {
                 var input = $(this).val();
-                var isValid = input.trim() !== '';
+                var isValid = input.trim() !== '' && /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(input);
+                $(this).toggleClass('is-invalid', !isValid);
+            });
+
+            $('#editMiddleName').on('input', function() {
+                var input = $(this).val();
+                var isValid = input.trim() == '' || /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(input);
+                $(this).toggleClass('is-invalid', !isValid);
+            });
+
+            $('#editExtensionName').on('input', function() {
+                var input = $(this).val();
+                var isValid = input.trim() == '' || /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(input);
                 $(this).toggleClass('is-invalid', !isValid);
             });
 
@@ -405,13 +417,15 @@
                 // Validate the form inputs before submitting
                 var isValidFirstName = $('#editFirstName').val();
                 var isValidLastName = $('#editLastName').val();
+                var isValidMiddleName = $('#editMiddleName').val();
+                var isValidExtensionName = $('#editExtensionName').val();
                 var contactNumber = $('#editContactNumber').val();
                 var birthDate = $('#editBirthDate').val();
 
                 var isValidContactNumber = validateContactNumber(contactNumber);
                 $('#editContactNumber').toggleClass('is-invalid', !isValidContactNumber);
 
-                if (!isValidContactNumber || isValidFirstName.trim() == '' || isValidLastName.trim() == '' || birthDate.trim() == '') {
+                if (!isValidContactNumber || !(isValidFirstName.trim() !== '' && /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(isValidFirstName)) || !(isValidLastName.trim() !== '' && /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(isValidLastName)) || !(isValidMiddleName.trim() == '' || /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(isValidMiddleName)) || !(isValidExtensionName.trim() == '' || /^[a-zA-ZÑñ\_\-\'\ \.]*$/.test(isValidExtensionName)) || birthDate.trim() == '') {
                     return;
                 }
 

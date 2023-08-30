@@ -34,7 +34,7 @@
             include "navbar.php";
             include "../breadcrumb.php";
 
-            $table = 'document_request';
+            $table = 'doc_requests';
             $academictable = 'subject_overload';
 
             if (isset($_POST['filter-button'])) {
@@ -60,10 +60,8 @@
             <div class="d-flex p-2">
               <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
                 <select id="transactionTableSelect" class="form-select" name="table-select">
-                  <option value="registrar_request" <?php if ($table === 'registrar_request') echo 'selected'; ?>>
-                    Registrar Requests</option>
-                  <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Guidance
-                    Requests</option>
+                  <option value="doc_requests" <?php if ($table === 'doc_requests') echo 'selected'; ?>>
+                    Document Requests</option>
                   <option value="scheduled_appointments"
                     <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
                   <option value="offsettings" <?php if ($table === 'offsettings') echo 'selected'; ?>>Offsettings</option>
@@ -92,8 +90,8 @@
           <div id="table-container">
             <?php
                             // Load the requested table
-                            if ($table === 'document_request') {
-                                include 'transaction_tables/document_request_table.php';
+                            if ($table === 'doc_requests') {
+                                include 'transaction_tables/registrar_request_table.php';
                             } elseif ($table === 'scheduled_appointments') {
                                 include 'transaction_tables/scheduled_appointments_table.php';
                             } elseif ($table === 'offsettings') {
@@ -104,8 +102,6 @@
                                 include 'transaction_tables/appointment_facility_table.php';
                             } elseif ($table === 'acad_transactions') {
                                 include 'transaction_tables/academic_table.php';
-                            } elseif ($table === 'registrar_request') {
-                                include 'transaction_tables/registrar_request_table.php';
                             }
                         ?>
           </div>
