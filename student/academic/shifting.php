@@ -178,25 +178,26 @@
                 </div>
 
                 <div class="card col-md p-0 m-1">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-sm-6">
-        Requirements
-      </div>
-      <div class="col-sm-2">
-        Status
-      </div>
-      <div class="col-sm-4"> <!-- Added column -->
-         Note
-     </div>
-      <div class="col-sm-2">
-        Attachment
-      </div>
-      <div class="col-sm-2">
-        Action
-      </div>
-    </div>
-  </div>
+                <div class="card col-md p-0 m-1">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            Requirements
+                        </div>
+                        <div class="col-sm-1">
+                            Status
+                        </div>
+                        <div class="col-sm-1"> <!-- Added column -->
+                            Note
+                        </div>
+                        <div class="col-sm-2">
+                            Attachment
+                        </div>
+                        <div class="col-sm-1">
+                            Action
+                        </div>
+                    </div>
+                </div>
   <div class="card-body">
   <div class="row">
     <div class="col-sm-6">
@@ -391,7 +392,7 @@
         }
 
         function resetForm() {
-            if (confirm("Are you sure you want to reset the form? This will delete attached files and reset their status to 'Missing'.")) {
+            if (confirm("Are you sure you want to reset the form? This will delete attached files and reset their status to 'Missing'. But this will only reset requirements if they're in PENDING status.")) {
                 $.ajax({
                     url: "resetform_s.php",
                     type: "POST",
