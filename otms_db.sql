@@ -42,6 +42,8 @@ INSERT INTO `academic_statuses` (`academic_statu_id`, `status_name`) VALUES
 (3, 'Under Verification'),
 (4, 'Verified'),
 (5, 'None');
+(6, 'To Be Evaluated');
+(7, 'Need F to F Evaluation');
 
 -- --------------------------------------------------------
 
@@ -174,6 +176,8 @@ INSERT INTO `acad_status` (`academic_status_id`, `status_name`) VALUES
 (3, 'Under Verification'),
 (4, 'Verified'),
 (5, 'Rejected');
+(6, 'To Be Evaluated');
+(7, 'Need F to F Evaluation');
 
 -- --------------------------------------------------------
 
