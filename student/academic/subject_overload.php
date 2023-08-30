@@ -136,6 +136,21 @@ function academicStatus($status) {
             <i class="fa-solid fa-circle-check"></i> Verified
         </button>';
             break;
+        case 5:
+            return '<button type="button" class="btn btn-danger" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Rejected
+        </button>';
+            break;
+        case 6:
+            return '<button type="button" class="btn btn-info" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> To Be Evaluated
+        </button>';
+            break;
+        case 7:
+            return '<button type="button" class="btn btn-warning" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Need F to F Evaluation
+        </button>';
+            break;
     }
 }
 ?>
@@ -165,8 +180,8 @@ function academicStatus($status) {
                 <div class="card-body d-flex flex-column justify-content-between">
                     <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                     <div class="d-flex flex-column">
-                        <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
-                            <i class="fa-solid fa-arrows-rotate"></i> Reset Form 
+                        <button class="btn btn-outline-primary mb-2" onclick="resetForm()">
+                            <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                         </button>
                         <a href="help-academic.php" class="btn btn-outline-primary mb-2"><i class="fa-solid fa-circle-question"></i> Help</a>
                     </div>
@@ -380,6 +395,21 @@ function academicStatus($status) {
                 // Send the AJAX request with the FormData object
                 xhr.send(formData);
             });
+        }
+
+        function resetForm() {
+            if (confirm("Are you sure you want to reset the form? This will delete attached files and reset their status to 'Missing'.")) {
+                $.ajax({
+                    url: "resetform_so.php",
+                    type: "POST",
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error resetting form: " + error);
+                    }
+                });
+            }
         }
     </script>
     <script src="../../saved_settings.js"></script>

@@ -20,7 +20,7 @@
     </div>
      
     <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="academic.css">
@@ -115,7 +115,7 @@
                 <div class="card-body d-flex flex-column justify-content-between">
                     <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity, and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                     <div class="d-flex flex-column">
-                        <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
+                        <button class="btn btn-outline-primary mb-2" onclick="resetForm()">
                             <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                         </button>
                         <a href="help-academic.php" class="btn btn-outline-primary mb-2"><i class="fa-solid fa-circle-question"></i> Help</a>
@@ -206,28 +206,40 @@
 <script src="modal.js"></script>
 <script src="upload.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
 <script>
+    // Call the function on page load to check the initial status
+    $(document).ready(function() {
+        checkRequirements();
 
-        // Call the function on page load to check the initial status
-        $(document).ready(function() {
-            checkRequirements();
+        // Function to check if all requirements are uploaded and enable/disable the submit button accordingly
+        function checkRequirements() {
+            var rzeroFormStatus = <?php echo $queryData[0]['r_zero_form_status']; ?>;
+            var submitBtn = document.getElementById("submitBtn");
 
-            // Function to check if all requirements are uploaded and enable/disable the submit button accordingly
-            function checkRequirements() {
-                var rzeroFormStatus = <?php echo $reqData[0]['r_zero_form_status']; ?>;
-                var submitBtn = document.getElementById("submitBtn");
-
-                // Enable the submit button only if all three requirements are uploaded
-                if (rzeroFormStatus == 2) {
-                    submitBtn.disabled = false;
-                } else {
-                    submitBtn.disabled = true;
-                }
+            // Enable the submit button only if all three requirements are uploaded
+            if (rzeroFormStatus == 2) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
             }
-        });
+        }
+    });
 
-    </script>
-    <script src="../../saved_settings.js"></script>
+    function resetForm() {
+        if (confirm("Are you sure you want to reset the form? This will delete attached files and reset their status to 'Missing'.")) {
+            $.ajax({
+                url: "resetform_me.php",
+                type: "POST",
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error resetting form: " + error);
+                }
+            });
+        }
+    }
+</script>
+<script src="../../saved_settings.js"></script>
 </body>
 </html>

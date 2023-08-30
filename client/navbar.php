@@ -63,8 +63,6 @@
                             case 'Accounting Office':
                                 echo '
 								<li><a class="dropdown-item"href="/client/accounting/payment1.php">Payment</a></li>
-								<li><a class="dropdown-item"href="/client/accounting/offsetting1.php">Offsetting</a></li>
-								<li><a class="dropdown-item"href="/client/transactions.php">Registrar Transaction History</a></li>
 								';
                                 break;
                             }
@@ -111,7 +109,7 @@
         function getNotifCount() {
             $.ajax({
                 type: 'GET',
-                url: 'fetch_notifications.php',
+                url: '/client/fetch_notifications.php',
                 dataType: 'json',
                 success: function(response) {
                     // Update notification count and badge
@@ -129,7 +127,7 @@
         $('#notificationDropdown').click(function() {
             $.ajax({
                 type: 'GET',
-                url: 'fetch_notifications.php',
+                url: '/client/fetch_notifications.php',
                 dataType: 'json',
                 success: function(response) {
                     // Populate the dropdown with notifications
@@ -174,7 +172,7 @@
         function handleNotificationClick(notificationId) {
             $.ajax({
                 type: 'POST',
-                url: 'mark_notif.php',
+                url: '/client/mark_notif.php',
                 data: { notificationId: notificationId },
                 dataType: 'json',
                 success: function(response) {

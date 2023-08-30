@@ -73,6 +73,21 @@
             <i class="fa-solid fa-circle-check"></i> Verified
         </button>';
             break;
+        case 5:
+            return '<button type="button" class="btn btn-danger" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Rejected
+        </button>';
+            break;
+        case 6:
+            return '<button type="button" class="btn btn-info" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> To Be Evaluated
+        </button>';
+            break;
+        case 7:
+            return '<button type="button" class="btn btn-warning" id="status_button" disabled>
+            <i class="fa-solid fa-circle-check"></i> Need F to F Evaluation
+        </button>';
+            break;
     }
 }
 ?>
@@ -99,7 +114,7 @@
                 <div class="card-body d-flex flex-column justify-content-between">
                     <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                     <div class="d-flex flex-column">
-                        <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
+                        <button class="btn btn-outline-primary mb-2" onclick="resetForm()">
                             <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                         </button>
                         <a href="help-academic.php" class="btn btn-outline-primary mb-2"><i class="fa-solid fa-circle-question"></i> Help</a>
@@ -172,15 +187,7 @@
     </div>
     <div class="push"></div>
 </div>
-<div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-    <div>
-        <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-    </div>
-    <div>
-        <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-        <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-    </div>
-</div>
+<?php include '../../footer.php'; ?>
 <script src="../../loading.js"></script>
 <script src="modal.js"></script>
 <script src="upload.js"></script>
@@ -193,7 +200,7 @@
 
             // Function to check if all requirements are uploaded and enable/disable the submit button accordingly
             function checkRequirements() {
-                var applicationFormStatus = <?php echo $reqData[0]['application_form_status']; ?>;
+                var applicationFormStatus = <?php echo $reqData[0]['application_letter_status']; ?>;
                 var submitBtn = document.getElementById("submitBtn");
 
                 // Enable the submit button only if all three requirements are uploaded
@@ -205,6 +212,20 @@
             }
         });
 
+        function resetForm() {
+            if (confirm("Are you sure you want to reset the form? This will delete attached files and reset their status to 'Missing'.")) {
+                $.ajax({
+                    url: "resetform_ce.php",
+                    type: "POST",
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error resetting form: " + error);
+                    }
+                });
+            }
+        }
     </script>
     <script src="../../saved_settings.js"></script>
 </body>

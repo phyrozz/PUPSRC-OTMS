@@ -1,5 +1,14 @@
 <?php
 session_start();
+
+if(isset($_GET["date"]) && isset($_GET["req_student_service"])) {
+  $_SESSION['date'] = $_GET['date'];
+  $_SESSION['req_student_service'] = $_GET['req_student_service'];
+} else {
+  echo "Error: Date and/or service not provided.";
+  exit;
+}
+
 include '../../conn.php';
 $user_id = $_SESSION['user_id'];
 $status_id = 1;
