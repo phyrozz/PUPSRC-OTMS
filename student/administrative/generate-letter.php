@@ -262,7 +262,7 @@ $html = <<<EOD
     <div class="footer">
         <p>
             Noted by:<br><br><br>
-            <strong>Dr. Leny V. Salmingo</strong><br>
+            <strong>Asst. Prof. Leny V. Salmingo, Ph. D.</strong><br>
             Campus Directress<br>
             PUP Sta. Rosa
         </p>
