@@ -55,7 +55,7 @@ $dbname = "otms_db";
             <form id="studentForm" method="post" class="row g-3 needs-validation" novalidate>
 
                 
-                <div class="col-12 payment-summary">
+                <div class="col-12 payment-summary" id="payment-summary">
                     <h1> Payment Voucher </h1>
                     <?php
                     include '../../conn.php';
@@ -135,6 +135,7 @@ $dbname = "otms_db";
                 </div>
 
                 <div class="col-12">
+                    <button class="btn btn-primary next-button" type="button" onclick="takeScreenshot()"><i class="fa-solid fa-download"></i> Save</button>
                     <a class="btn btn-primary next-button" href="../accounting.php" type="submit">Accounting Office</a>
                 </div>
 
@@ -143,6 +144,19 @@ $dbname = "otms_db";
         <script src="#"></script>
     </div>
     <script src="../../loading.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script>
+        var takeScreenshot = function() {
+            html2canvas(document.getElementById("payment-summary"), {
+                onrendered: function (canvas) {
+                    var a = document.createElement('a');
+                    a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                    a.download = 'payment-voucher.jpg';
+                    a.click();
+                }
+            });
+        }
+    </script>
     <script src="../../saved_settings.js"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@
                 header("Location: /admin/redirect.php");
             }
 
-            $table = 'payments';
+            $table = 'offsetting';
 
             if (isset($_POST['filter-button'])) {
                 $table = $_POST['table-select'];
@@ -48,7 +48,6 @@
                                 <form id="defaultTableValueSelect" class="d-flex input-group" action="accounting.php" method="post">
                                     <label class="input-group-text" for="table-select">Service:</label>    
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
-                                        <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                         <option value="offsetting" <?php if ($table === 'offsetting') echo 'selected'; ?>>Offsetting</option>
                                         <option value="feedbacks" <?php if ($table === 'feedbacks') echo 'selected'; ?>>Feedbacks</option>
                                     </select>
@@ -100,10 +99,10 @@
                     <div id="table-container">
                         <?php
                             // Load the requested table
-                            if ($table === 'payments') {
-                                include 'tables/accounting/payments_table.php';
-                            }
-                            elseif ($table === 'offsetting') {
+                            // if ($table === 'payments') {
+                            //     include 'tables/accounting/payments_table.php';
+                            // }
+                            if ($table === 'offsetting') {
                                 include 'tables/accounting/offsetting_table.php';
                             }
                             elseif ($table === 'feedbacks') {

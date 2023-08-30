@@ -241,7 +241,7 @@ $html = <<<EOD
             We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name)</span>, will be utilizing <span id="facility">$facilityName</span> at Pup Sta. Rosa
             on <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> for the purpose of
              "<span id="reason">$purpose</span>".
-            This reservation is part of our requirements for the scheduled activity.".
+            This reservation is part of our requirements for the scheduled activity.
         </p>
 
 

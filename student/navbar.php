@@ -119,7 +119,7 @@ $isLoggedIn = true;
         function getNotifCount() {
             $.ajax({
                 type: 'GET',
-                url: 'fetch_notifications.php',
+                url: '/student/fetch_notifications.php',
                 dataType: 'json',
                 success: function(response) {
                     // Update notification count and badge
@@ -137,7 +137,7 @@ $isLoggedIn = true;
         $('#notificationDropdown').click(function() {
             $.ajax({
                 type: 'GET',
-                url: 'fetch_notifications.php',
+                url: '/student/fetch_notifications.php',
                 dataType: 'json',
                 success: function(response) {
                     // Populate the dropdown with notifications
@@ -182,7 +182,7 @@ $isLoggedIn = true;
         function handleNotificationClick(notificationId) {
             $.ajax({
                 type: 'POST',
-                url: 'mark_notif.php',
+                url: '/student/mark_notif.php',
                 data: { notificationId: notificationId },
                 dataType: 'json',
                 success: function(response) {

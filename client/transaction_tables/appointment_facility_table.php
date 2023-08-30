@@ -56,6 +56,32 @@
         </div>
     </nav>
 </div>
+<div class="d-flex">
+    <div id="reminder-container" class="alert alert-info mt-3" role="alert">
+        <h4 class="alert-heading">
+            <i class="fa-solid fa-circle-info"></i> Reminder
+        </h4>
+        <p class="mb-0">Always check your transaction status to follow instructions.</p>
+        <p class="mb-0">You can delete or edit transactions during <span
+            class="badge rounded-pill bg-dark">Pending</span> status.</p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
+            the deficiency/ies to necessary office.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
+            by the admin.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
+                receiving</span> - The request is currently in Receiving window and waiting for submission of
+            requirements.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small>
+        </p>
+        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for
+                pickup</span> - The requested document/s is/are already available for pickup at the releasing section
+            of student records.</small></p>
+        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> -
+            The requested document/s was/were claimed.</small></p>
+        <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
+    </div>
+</div>
 <!-- View edit modal -->
 <div id="viewEditModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewEditModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -562,7 +588,7 @@
                         tableBody.innerHTML += row;
                     }
                 }  else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="10">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 

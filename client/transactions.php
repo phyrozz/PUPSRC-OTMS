@@ -51,26 +51,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="alert alert-info" role="alert">
-                        <h4 class="alert-heading">
-                        <i class="fa-solid fa-circle-info"></i> Reminder
-                        </h4>
-                        <p class="mb-0" >Always check your transaction status to follow instructions.</p>
-                        <p class="mb-0">You can delete or edit transactions during <span class="badge rounded-pill bg-dark">Pending</span> status.</p>
-                        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle the deficiency/ies to necessary office.</small></p>
-                        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected by the admin.</small></p>
-                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For receiving</span> - The request is currently in Receiving window and waiting for submission of requirements.</small></p>
-                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small></p>
-                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for pickup</span> - The requested document/s is/are already available for pickup at the releasing section of student records.</small></p>
-                        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> - The requested document/s was/were claimed.</small></p>
-                        <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
-                    </div>
                     <div class="d-flex w-100 justify-content-between p-0">
                         <div class="d-flex p-2">
                             <form id="defaultTableValueSelect" class="d-flex input-group" action="transactions.php" method="post">
                                 <select id="transactionTableSelect" class="form-select" name="table-select">
                                     <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
-                                    <option value="payments" <?php if ($table === 'payments') echo 'selected'; ?>>Payments</option>
                                     <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
                                     <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                 </select>
@@ -92,8 +77,6 @@
                             // Load the requested table
                             if ($table === 'document_request') {
                                 include 'transaction_tables/document_request_table.php';
-                            } elseif ($table === 'payments') {
-                                include 'transaction_tables/payments_table.php';
                             } elseif ($table === 'request_equipment') {
                                 include 'transaction_tables/request_equipment_table.php';
                             } elseif ($table === 'appointment_facility') {

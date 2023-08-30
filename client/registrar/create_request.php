@@ -65,9 +65,16 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
     }
 
     function submitForm() {
-      // Perform form submission action here (e.g., using AJAX)
-      // For demonstration purposes, let's redirect to submit_request.php using JavaScript
-      window.location.href = 'submit_request.php';
+      // Get the selected date and service
+      var selectedDate = document.getElementById("date").value;
+      var selectedService = document.getElementById("req_student_service").value;
+
+      // Construct the URL with query parameters
+      var redirectURL = 'submit_request.php?date=' + encodeURIComponent(selectedDate) +
+                        '&req_student_service=' + encodeURIComponent(selectedService);
+
+      // Redirect to submit_request.php with the query parameters
+      window.location.href = redirectURL;
     }
   </script>
 </head>
