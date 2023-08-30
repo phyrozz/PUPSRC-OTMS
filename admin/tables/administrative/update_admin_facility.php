@@ -1,5 +1,5 @@
 <?php
-include '../../../conn.php'; 
+include '../../../conn.php';
 
 // Get the facility data from the AJAX request
 $facilityId = $_POST['facilityId'];
@@ -8,6 +8,16 @@ $availability = $_POST['availability'];
 $facilityNumber = $_POST['facilityNumber'];
 
 try {
+    // Check if the availability is being updated to "Available"
+    if ($availability === 'Available') {
+        // Delete transactions associated with the facility
+        $deleteTransactionQuery = "DELETE FROM appointment_facility WHERE facility_id = ?";
+        $deleteTransactionStmt = $connection->prepare($deleteTransactionQuery);
+        $deleteTransactionStmt->bind_param('i', $facilityId);
+        $deleteTransactionStmt->execute();
+        $deleteTransactionStmt->close();
+    }
+
     // Prepare and execute the SQL query to update the facility data
     $query = "UPDATE facility SET facility_name = ?, availability = ?, facility_number = ? WHERE facility_id = ?";
     $stmt = $connection->prepare($query);
@@ -26,9 +36,9 @@ try {
     // Close the database connection
     $stmt->close();
     $connection->close();
-    
+
 } catch (Exception $e) {
-  // Error occurred while updating facility data
-  echo json_encode(['error' => 'Error occurred while updating facility: ' . $e->getMessage()]);
+    // Error occurred while updating facility data
+    echo json_encode(['error' => 'Error occurred while updating facility: ' . $e->getMessage()]);
 }
 ?>
