@@ -1,8 +1,8 @@
 <?php
+include '../../conn.php';
 
 $office_name = "Registrar Office";
 include "../navbar.php";
-include "../../conn.php";
 include "../../breadcrumb.php";
 
 $user_id = $_SESSION['user_id'];
@@ -13,23 +13,13 @@ FROM users
 WHERE users.user_id= $user_id
 ORDER BY users.user_id");
 
-
 $row = mysqli_fetch_array($result);
 //fetching registrar services
 $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE services_id > 22;");
-
-if(isset($_POST["submit"])){
-	$_SESSION['date'] = $_POST['date'];
-	$_SESSION['req_student_service'] = $_POST['req_student_service'];
-	header("Location: submit_request.php");
-};
-
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -61,31 +51,24 @@ if(isset($_POST["submit"])){
 	<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
   <script defer>
-  $(document).ready(function() {
-    var optional_config = {
-      'minDate': 'today',
-      'disable': [
-        function(date) {
-          return (date.getDay() === 0)
-        }
-      ]
-    };
-    $("#date").flatpickr(optional_config);
+    function validateForm() {
+      // Check if the form is valid
+      console.log(document.getElementById("appointment-form").checkValidity());
 
-  });
-
-  function validateForm() {
-    // Check if the form is valid
-    console.log(document.getElementById("appointment-form").checkValidity());
-
-    if (document.getElementById("appointment-form").checkValidity()) {
-      // Show the modal if the form is valid
-      $('#confirmSubmitModal').modal('show');
-    } else {
-      // Trigger HTML5 form validation to display error messages
-      document.getElementById("appointment-form").reportValidity();
+      if (document.getElementById("appointment-form").checkValidity()) {
+        // Show the modal if the form is valid
+        $('#confirmSubmitModal').modal('show');
+      } else {
+        // Trigger HTML5 form validation to display error messages
+        document.getElementById("appointment-form").reportValidity();
+      }
     }
-  }
+
+    function submitForm() {
+      // Perform form submission action here (e.g., using AJAX)
+      // For demonstration purposes, let's redirect to submit_request.php using JavaScript
+      window.location.href = 'submit_request.php';
+    }
   </script>
 </head>
 
@@ -221,7 +204,7 @@ if(isset($_POST["submit"])){
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button name="submit" type="submit" value="submit" class="btn btn-primary">Submit</button>
+                        <button name="submit" type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
                       </div>
                     </div>
                   </div>

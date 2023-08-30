@@ -474,7 +474,7 @@ $(document).ready(function() {
     var statusId = $('#update-status').val(); // Get the selected status ID
 
     $.ajax({
-      url: 'tables/guidance/update_doc_requests.php',
+      url: 'tables/registrar/update_doc_requests.php',
       method: 'POST',
       data: {
         requestIds: requestIds,

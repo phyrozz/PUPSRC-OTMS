@@ -588,6 +588,18 @@ a .autocomplete-item:hover {
     left: 0;
 }
 
+.notification-menu {
+    position: absolute;
+    left: -200px !important;
+    top: 45px !important;
+    min-width: 400px;
+    background-color: #fff !important;
+}
+
+.notification-button::after {
+    content: none;
+}
+
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
         position: static;

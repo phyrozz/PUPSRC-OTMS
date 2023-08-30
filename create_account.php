@@ -8,6 +8,7 @@ if (isset($_POST['studentSignup'])) {
     $lastName = $_POST['LName'];
     $firstName = $_POST['FName'];
     $middleName = $_POST['MName'];
+    $extensionName = $_POST['EName'];
 
     // Check if the email already exists
     $checkQuery = "SELECT COUNT(*) FROM users WHERE student_no = ? OR email = ? OR (first_name = ? AND last_name = ? AND middle_name = ?) AND user_role = 1";
@@ -58,7 +59,8 @@ if (isset($_POST['studentSignup'])) {
                 $stmt = $connection->prepare($query);
                 $stmt->bind_param("sssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
 
-                if ($stmt->execute()) {
+                // Check if all of the names match the following regex expression. If not, the query will not proceed to execute
+                if ($stmt->execute() && (preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $lastName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $firstName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $middleName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $extensionName))) {
                     $stmt->close();
                     $lastId = $connection->insert_id;
                     $stmt = $connection->prepare($userDetailsQuery);
@@ -112,6 +114,7 @@ else if (isset($_POST['clientSignup'])) {
     $lastName = $_POST['LName'];
     $firstName = $_POST['FName'];
     $middleName = $_POST['MName'];
+    $extensionName = $_POST['EName'];
 
     $checkQuery = "SELECT COUNT(*) FROM users WHERE email = ? OR (first_name = ? AND last_name = ? AND middle_name = ?) AND user_role = 2";
     $checkStmt = $connection->prepare($checkQuery);
@@ -154,7 +157,8 @@ else if (isset($_POST['clientSignup'])) {
                 $stmt = $connection->prepare($query);
                 $stmt->bind_param("ssssssssi", $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
 
-                if ($stmt->execute()) {
+                // Check if all of the names match the following regex expression. If not, the query will not proceed to execute
+                if ($stmt->execute() && (preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $lastName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $firstName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $middleName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $extensionName))) {
                     $stmt->close();
                     $lastId = $connection->insert_id;
                     $stmt = $connection->prepare($userDetailsQuery);

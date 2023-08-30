@@ -32,7 +32,7 @@
     $stmt->close();
 
     if(isset($_POST['academicFeedbackSubmit'])) {
-        $query = "INSERT INTO academic_feedbacks (user_id, email, feedback_text)
+        $query = "INSERT INTO acad_feedbacks (user_id, email, feedback_text)
         VALUES (?, ?, ?)";
 
         $stmt = $connection->prepare($query);
@@ -276,14 +276,10 @@
         messageTextarea.addEventListener('input', function() {
             const inputValue = messageTextarea.value;
 
-            const pattern = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9\s]*$/;
-            const isValid = pattern.test(inputValue);
-
-            if (isValid) {
+            if (inputValue.trim() != '') {
                 messageTextarea.setCustomValidity('');
                 messageTextarea.classList.remove('is-invalid');
             } else {
-                messageTextarea.setCustomValidity('Only letters and numbers are allowed.');
                 messageTextarea.classList.add('is-invalid');
             }
         });
