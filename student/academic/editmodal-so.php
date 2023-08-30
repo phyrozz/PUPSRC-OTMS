@@ -168,7 +168,7 @@ $stmt->close();
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="number" class="form-control" id="input12" name="units2">
+                <input type="number" class="form-control" id="input12" name="units2" min="0">
               </div>
             </div>
         </div>
@@ -195,7 +195,7 @@ $stmt->close();
             <div class="col-md-2">
               <div class="form-group">
                 <label for="input12">Units</label>
-                <input type="number" class="form-control" id="input12" name="units3">
+                <input type="number" class="form-control" id="input12" name="units3" min="0">
               </div>
             </div>
         </div>
