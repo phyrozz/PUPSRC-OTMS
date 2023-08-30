@@ -116,26 +116,30 @@
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Last Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
+                                    <div id="lastNameValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">First Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
+                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
+                                    <div id="firstNameValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Middle Name</label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control">
+                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control">
                                     </div>
+                                    <div id="middleNameValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Extension Name <font class="small">(Jr./Sr./III Etc..)</font></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-ZÑñ\_\-\'\ \.]*" maxlength="11" size="11" autocomplete="on" class="form-control">
+                                        <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="11" size="11" autocomplete="on" class="form-control">
                                     </div>
+                                    <div id="extensionNameValidationMessage" class="text-danger"></div>
                                 </div>                           
                                 </div>
                                 <div class="row">
@@ -416,6 +420,14 @@
     <!-- JS validation for form fields -->
     <script>
         const studentNoInput = document.getElementById('StudentNo');
+        const lastNameInput = document.getElementById('LName');
+        const firstNameInput = document.getElementById('FName');
+        const middleNameInput = document.getElementById('MName');
+        const extensionNameInput = document.getElementById('EName');
+        const lastNameValidationMessage = document.getElementById('lastNameValidationMessage');
+        const firstNameValidationMessage = document.getElementById('firstNameValidationMessage');
+        const middleNameValidationMessage = document.getElementById('middleNameValidationMessage');
+        const extensionNameValidationMessage = document.getElementById('extensionNameValidationMessage');
         const contactNoInput = document.getElementById('ContactNumber');
         const studentNoValidationMessage = document.getElementById('studentNoValidationMessage');
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
@@ -447,6 +459,58 @@
             } else {
                 studentNoValidationMessage.textContent = '';
                 studentNoInput.classList.remove('is-invalid');
+            }
+        });
+
+        lastNameInput.addEventListener('input', () => {
+            const lastName = lastNameInput.value.trim();
+            const lastNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!lastNamePattern.test(lastName)) {
+                lastNameValidationMessage.textContent = 'Invalid last name. It must not contain numbers or special characters.';
+                lastNameInput.classList.add('is-invalid');
+            } else {
+                lastNameValidationMessage.textContent = '';
+                lastNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        firstNameInput.addEventListener('input', () => {
+            const firstName = firstNameInput.value.trim();
+            const firstNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!firstNamePattern.test(firstName)) {
+                firstNameValidationMessage.textContent = 'Invalid first name. It must not contain numbers or special characters.';
+                firstNameInput.classList.add('is-invalid');
+            } else {
+                firstNameValidationMessage.textContent = '';
+                firstNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        middleNameInput.addEventListener('input', () => {
+            const middleName = middleNameInput.value.trim();
+            const middleNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!middleNamePattern.test(middleName)) {
+                middleNameValidationMessage.textContent = 'Invalid middle name. It must not contain numbers or special characters.';
+                middleNameInput.classList.add('is-invalid');
+            } else {
+                middleNameValidationMessage.textContent = '';
+                middleNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        extensionNameInput.addEventListener('input', () => {
+            const extensionName = extensionNameInput.value.trim();
+            const extensionNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!extensionNamePattern.test(extensionName)) {
+                extensionNameValidationMessage.textContent = 'Invalid extension name. It must not contain numbers or special characters.';
+                extensionNameInput.classList.add('is-invalid');
+            } else {
+                extensionNameValidationMessage.textContent = '';
+                extensionNameInput.classList.remove('is-invalid');
             }
         });
 

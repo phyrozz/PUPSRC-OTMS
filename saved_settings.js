@@ -43,6 +43,8 @@ function enableDarkMode() {
     $('.breadcrumb-item').removeClass('text-dark').addClass('text-light');
     $('.breadcrumb-separator').removeClass('text-dark').addClass('text-light');
     $('.breadcrumb-link').removeClass('text-dark').addClass('text-light');
+    $('.payment-summary').addClass('bg-dark');
+    $('.notification-item').addClass('text-light');
 
     // Store dark mode state in localStorage
     localStorage.setItem('darkMode', 'true');
@@ -77,6 +79,8 @@ function disableDarkMode() {
     $('.breadcrumb-item').addClass('text-dark');
     $('.breadcrumb-separator').addClass('text-dark');
     $('.breadcrumb-link').addClass('text-dark');
+    $('.payment-summary').removeClass('bg-dark');
+    $('.notification-item').removeClass('text-light');
 
     // Store dark mode state in localStorage
     localStorage.setItem('darkMode', 'false');

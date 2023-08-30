@@ -93,11 +93,11 @@
                 <li><a class="dropdown-item" href="/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
             </ul>
             <li class="nav-item dropdown order-1 order-lg-2">
-                <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle notification-button" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-bell"></i>
                     <span class="badge badge-danger" id="notificationCount">0</span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationList">
+                <ul class="notification-menu dropdown-menu w-100" aria-labelledby="notificationDropdown" id="notificationList">
                     <!-- Notifications will be populated here -->
                 </ul>
             </li>
@@ -137,16 +137,24 @@
                     notificationList.empty();
 
                     if (response.unreadCount > 0) {
-                        response.notifications.forEach(function(notification) {
-                            var notificationItem = $('<li class="dropdown-item" data-notification-id="' + notification.notification_id + '">' + 
-                                '<a href="#">' + 
-                                    '<div class="">' + 
-                                        '<p class="notification-item m-0"><i><small>' + notification.office_name + '</small></i></p>' + 
-                                        '<p class="notification-item m-0"><b>' + notification.title + '</b></p>' + 
-                                        '<p class="notification-item">' + notification.description + '</p>' + 
-                                    '</div>' + 
+                        // Display up to 10 notifications (if available)
+                        var notificationsToDisplay = response.notifications.slice(0, 10);
+
+                        notificationsToDisplay.forEach(function(notification) {
+                            var notificationItem = $('<li data-notification-id="' + notification.notification_id + '">' + 
+                                '<a href="#" class="dropdown-item notification-item">' + 
+                                    '<p class="text-wrap m-0"><i><small>' + notification.office_name + '</small></i></p>' + 
+                                    '<p class="text-wrap m-0"><b>' + notification.title + '</b></p>' + 
+                                    '<p class="text-wrap">' + notification.description + '</p>' + 
                                 '</a>' + 
                             '</li>');
+
+                            // Add the click handler within the forEach loop
+                            notificationItem.on('click', function(e) {
+                                e.stopPropagation();
+                                handleNotificationClick(notification.notification_id);
+                            });
+
                             notificationList.append(notificationItem);
                         });
                     } else {
@@ -162,10 +170,50 @@
             });
         });
 
+        // Define the handleNotificationClick function
+        function handleNotificationClick(notificationId) {
+            $.ajax({
+                type: 'POST',
+                url: 'mark_notif.php',
+                data: { notificationId: notificationId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        var notificationItem = $('[data-notification-id="' + notificationId + '"]');
+
+                        // Apply fade-out transition and remove the item
+                        notificationItem.fadeOut(400, function() {
+                            notificationItem.removeClass('unread');
+                            notificationItem.remove();
+
+                            // Check if the list is empty after removing the item
+                            if ($('#notificationList').children().length === 0) {
+                                var notificationList = $('#notificationList');
+                                notificationList.html('<div class="mx-5 my-3 text-center">'+
+                                '<p><b>You\'re all set!</b></p>'+
+                                '<p><small>No new notifications</small></p>'+
+                                '</div>');
+                            }
+                        });
+
+                        // Update notification count and badge
+                        $('#notificationCount').text(response.unreadCount);
+                    } else {
+                        console.log('Failed to mark notification as read.');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
         // Handle marking notifications as read
-        $('#notificationList').on('click', '.dropdown-item', function() {
+        $('#notificationList').on('click', '.dropdown-item', function(e) {
             var notificationItem = $(this);
             var notificationId = notificationItem.data('notification-id');
+
+            e.stopPropagation();
 
             $.ajax({
                 type: 'POST',
@@ -174,11 +222,12 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        // Update UI to mark the notification as read
-                        notificationItem.removeClass('unread');
-                        // You might also want to remove the notification from the dropdown
-                        notificationItem.remove();
-                        
+                        // Apply fade-out transition and remove the item
+                        notificationItem.fadeOut(400, function() {
+                            notificationItem.removeClass('unread');
+                            notificationItem.remove();
+                        });
+
                         // Update notification count and badge
                         $('#notificationCount').text(response.unreadCount);
                     } else {
