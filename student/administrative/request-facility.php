@@ -60,12 +60,12 @@
                 $_SESSION['success'] = true;
                 // header("Refresh:0");
                 
-                // Update the facility availability to "Unavailable" after successful request
-                $updateQuery = "UPDATE facility SET availability = 'Unavailable' WHERE facility_id = ?";
-                $updateStmt = $connection->prepare($updateQuery);
-                $updateStmt->bind_param("i", $facilityID);
-                $updateStmt->execute();
-                $updateStmt->close();
+                // // Update the facility availability to "Unavailable" after successful request
+                // $updateQuery = "UPDATE facility SET availability = 'Unavailable' WHERE facility_id = ?";
+                // $updateStmt = $connection->prepare($updateQuery);
+                // $updateStmt->bind_param("i", $facilityID);
+                // $updateStmt->execute();
+                // $updateStmt->close();
                 
                 // Add the request details to the session
                 $_SESSION['appointment_details'] = [

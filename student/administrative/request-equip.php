@@ -59,12 +59,12 @@
             $checkStmt->close();
 
             if ($equipmentData['quantity'] >= $quantityEquip) {
-                // Deduct the requested quantity from the equipment table
-                $deductQuery = "UPDATE equipment SET quantity = quantity - ? WHERE equipment_id = ?";
-                $deductStmt = $connection->prepare($deductQuery);
-                $deductStmt->bind_param("ii", $quantityEquip, $equipID);
-                $deductStmt->execute();
-                $deductStmt->close();
+                // // Deduct the requested quantity from the equipment table
+                // $deductQuery = "UPDATE equipment SET quantity = quantity - ? WHERE equipment_id = ?";
+                // $deductStmt = $connection->prepare($deductQuery);
+                // $deductStmt->bind_param("ii", $quantityEquip, $equipID);
+                // $deductStmt->execute();
+                // $deductStmt->close();
 
                 // Check if the quantity is 0
                 $checkAvailabilityQuery = "SELECT quantity FROM equipment WHERE equipment_id = ?";
