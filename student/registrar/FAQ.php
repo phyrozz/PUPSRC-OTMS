@@ -59,7 +59,6 @@
             <?php
             $breadcrumbItems = [
                 ['text' => 'Registrar Office', 'url' => '../registrar.php', 'active' => false],
-                ['text' => 'Registrar Transactions History', 'url' => 'your_transaction.php', 'active' => false],
                 ['text' => 'Help', 'active' => true],
             ];
 
