@@ -8,12 +8,13 @@
         display: none; 
     }
     .custom-alert {
+        color: #020403;
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 300px;
-        background-color: #fff;
+        background-color: #f8f9fa;
         border: 1px solid #ced4da;
         border-radius: 5px;
         padding: 20px;

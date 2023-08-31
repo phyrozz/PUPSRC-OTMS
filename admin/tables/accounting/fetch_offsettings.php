@@ -18,7 +18,7 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'payment_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
 
 // Retrieve the document requests
-$offsettingsQuery = "SELECT offsetting_id, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(offsetting_id, 4)), '%M %e, %Y %l:%i:%s %p')) AS formatted_offsetting_id, DATE_FORMAT(timestamp, '%M %e, %Y') as formatted_timestamp, users.first_name, users.last_name, users.middle_name, users.extension_name, 
+$offsettingsQuery = "SELECT offsetting_id, CONCAT(DATE_FORMAT(offsettingtb.timestamp, '%c/%e/%Y, %h:%i %p')) AS formatted_timestamp, users.first_name, users.last_name, users.middle_name, users.extension_name, 
                         amountToOffset, offsetType, statuses.status_name
                         FROM offsettingtb
                         INNER JOIN users ON users.user_id = offsettingtb.user_id
@@ -27,8 +27,7 @@ $offsettingsQuery = "SELECT offsetting_id, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBS
 
 if (!empty($searchTerm)) {
     $offsettingsQuery .= " AND (offsetting_id LIKE '%$searchTerm%'
-                        OR DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(offsetting_id, 4)), '%M %e, %Y %l:%i:%s %p') LIKE '%$searchTerm%'
-                        OR DATE_FORMAT(timestamp, '%M %e, %Y') LIKE '%$searchTerm%'
+                        OR DATE_FORMAT(timestamp, '%M %e, %Y %l:%i %p') LIKE '%$searchTerm%'
                         OR users.first_name LIKE '%$searchTerm%'
                         OR users.last_name LIKE '%$searchTerm%'
                         OR users.middle_name LIKE '%$searchTerm%'
@@ -57,8 +56,7 @@ if ($result) {
                         INNER JOIN statuses ON statuses.status_id = offsettingtb.status_id";
     if (!empty($searchTerm)) {
         $totalRecordsQuery .= " AND (offsetting_id LIKE '%$searchTerm%'
-                            OR DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(offsetting_id, 4)), '%M %e, %Y %l:%i:%s %p') LIKE '%$searchTerm%'
-                            OR DATE_FORMAT(timestamp, '%M %e, %Y') LIKE '%$searchTerm%'
+                            OR DATE_FORMAT(timestamp, '%M %e, %Y %l:%i %p') LIKE '%$searchTerm%'
                             OR users.first_name LIKE '%$searchTerm%'
                             OR users.last_name LIKE '%$searchTerm%'
                             OR users.middle_name LIKE '%$searchTerm%'
