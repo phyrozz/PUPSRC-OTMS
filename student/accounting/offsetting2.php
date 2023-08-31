@@ -65,6 +65,7 @@ mysqli_close($connection);
     bottom: 180px;
 }
 .custom-alert {
+    color: #020403;
     position: fixed;
     top: 50%;
     left: 50%;
