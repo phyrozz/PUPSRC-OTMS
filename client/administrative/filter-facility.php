@@ -34,18 +34,18 @@ function displayFacilities($facility_table, $connection, $filterCategory = null)
             // Check if the facility is available
             $facilityAvailability = htmlspecialchars($row["availability"]);
             
-            // Check if the facility has been appointed
-            $facilityId = $row["facility_id"];
-            $query = "SELECT * FROM appointment_facility WHERE facility_id = ?";
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("i", $facilityId);
-            $stmt->execute();
-            $appointmentResult = $stmt->get_result();
-            $facilityAppointment = $appointmentResult->fetch_assoc();
-            $stmt->close();
+            // // Check if the facility has been appointed
+            // $facilityId = $row["facility_id"];
+            // $query = "SELECT * FROM appointment_facility WHERE facility_id = ?";
+            // $stmt = $connection->prepare($query);
+            // $stmt->bind_param("i", $facilityId);
+            // $stmt->execute();
+            // $appointmentResult = $stmt->get_result();
+            // $facilityAppointment = $appointmentResult->fetch_assoc();
+            // $stmt->close();
 
             // Determine if the button should be disabled and change the text based on availability and appointment
-            if ($facilityAppointment !== null || $facilityAvailability === "Unavailable") {
+            if ($facilityAvailability === "Unavailable") {
                 $disabled = "disabled";
                 $buttonText = "Not Available";
                 $buttonClass = "btn-primary btn-dark text-black"; 

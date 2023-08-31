@@ -37,21 +37,21 @@ if (array_diff($statuses, [1, 6]) === []) {
     // Start a database transaction
     $connection->begin_transaction();
 
-    // Prepare and execute the SQL query to update the equipment quantities and availability
-    $sqlUpdate = "UPDATE equipment SET quantity = quantity + ?, availability = IF(quantity + ? > 0, 'Available', 'Unavailable') WHERE equipment_id = ?";
-    $stmtUpdate = $connection->prepare($sqlUpdate);
+    // // Prepare and execute the SQL query to update the equipment quantities and availability
+    // $sqlUpdate = "UPDATE equipment SET quantity = quantity + ?, availability = IF(quantity + ? > 0, 'Available', 'Unavailable') WHERE equipment_id = ?";
+    // $stmtUpdate = $connection->prepare($sqlUpdate);
 
-    // Iterate over the equipment updates and execute the update query
-    foreach ($equipmentUpdates as $equipmentId => $quantity) {
-        $stmtUpdate->bind_param('iii', $quantity, $quantity, $equipmentId);
-        $stmtUpdate->execute();
-        if ($stmtUpdate->affected_rows <= 0) {
-            // If the update fails, roll back the transaction and return an error response
-            $connection->rollback();
-            echo json_encode(['success' => false, 'error' => 'Failed to update equipment quantity.']);
-            exit;
-        }
-    }
+    // // Iterate over the equipment updates and execute the update query
+    // foreach ($equipmentUpdates as $equipmentId => $quantity) {
+    //     $stmtUpdate->bind_param('iii', $quantity, $quantity, $equipmentId);
+    //     $stmtUpdate->execute();
+    //     if ($stmtUpdate->affected_rows <= 0) {
+    //         // If the update fails, roll back the transaction and return an error response
+    //         $connection->rollback();
+    //         echo json_encode(['success' => false, 'error' => 'Failed to update equipment quantity.']);
+    //         exit;
+    //     }
+    // }
 
     // Prepare and execute the SQL query to delete the document requests
     $placeholders = implode(',', array_fill(0, count($requestIds), '?'));
