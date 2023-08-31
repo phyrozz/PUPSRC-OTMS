@@ -1,6 +1,6 @@
 <?php
 /*session_start();
-$servername = "localhost";
+$servername = "192.168.84.183";
 $username =  "root";
 $password = "";
 $dbname =  "accountingdb";
@@ -36,14 +36,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Accounting Office - Landing Page</title>
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/offsetting1.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <?php
         $office_name = "Accounting Office";
-        include "../../../navbar.php";
+        include "../../navbar.php";
     ?>
     <div class="container-fluid p-4">
         <nav class="breadcrumb-nav" aria-label="breadcrumb">

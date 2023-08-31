@@ -11,7 +11,7 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -19,16 +19,19 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../../../navbar.php";
+            include "../../navbar.php";
+            include "../../../breadcrumb.php";
+            include "../../../conn.php";
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/student/guidance.php">Guidance Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Schedule Good Morals Retrieval</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'My Transactions', 'url' => '/student/transactions.php', 'active' => false],
+                ['text' => 'Schedule Good Moral Retrieval', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>Schedule Retrieval - Good Morals</h1>
@@ -45,15 +48,12 @@
                             <a class="btn btn-outline-primary mb-2" href="/student/transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
-                            <a class="btn btn-outline-primary mb-2">
-                            <i class="fa-regular fa-flag"></i> Generate Inquiry
-                            </a>
-                            <button class="btn btn-outline-primary mb-2">
+                            <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
-                            <button class="btn btn-outline-primary mb-2">
+                            <a href="../help.php" class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-circle-question"></i> Help
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -162,15 +162,15 @@
         </div>
         <div class="push"></div>
     </div>
-    <div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </div>
+    <?php include '../../../footer.php'; ?>
     <script src="jquery.js"></script>
+    <script>
+        let currentDate = new Date().toISOString().split('T')[0];
+
+        var maxDate = "2033-12-31";
+
+        document.getElementById("date").min = currentDate;
+        document.getElementById("date").max = maxDate;
+    </script>
 </body>
 </html>

@@ -1,0 +1,62 @@
+ /* Custom CSS styles */
+
+ * {
+    font-family: "Fira Sans";
+    src: url("/assets/fonts/FiraSans/FiraSans-Regular.ttf") format("truetype");
+  }
+
+
+  body {
+    font-family: "Fira Sans";
+  }
+
+  .header {
+    /* margin-top: px; */
+    text-align: center;
+  }
+
+  .requisition-slip {
+    background-color: #98BCDE; /* Customize the background color */
+    color: #333; /* Customize the text color */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .logo {
+    width: 150px;
+    height: auto;
+  }
+
+  .address {
+    text-align: center;
+  }
+
+  .table {
+    margin-top: 40px;
+    margin-bottom: 100px;
+    border: 2px solid #000;
+    width: 100%;
+  }
+
+  .table  thead  th,
+  .table  tbody td {
+    text-align: center;
+    border: 2px solid grey;
+    width: 33.33%; /* Set equal width for each cell */
+  }
+
+  .signature {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .bold-text {
+    font-weight: bold;
+  }
+
+  .line {
+    border-top: 1px solid black;
+    width: 40%;
+    margin: 0 auto;
+  }

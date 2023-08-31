@@ -81,7 +81,7 @@ $pdf->AddPage();
 // create some HTML content
 $html = <<<EOD
 <h1>XHTML Form Example</h1>
-<form method="post" action="http://localhost/printvars.php" enctype="multipart/form-data">
+<form method="post" action="/printvars.php" enctype="multipart/form-data">
 <label for="name">name:</label> <input type="text" name="name" value="" size="20" maxlength="30" /><br />
 <label for="password">password:</label> <input type="password" name="password" value="" size="20" maxlength="30" /><br /><br />
 <label for="infile">file:</label> <input type="file" name="userfile" size="20" /><br /><br />

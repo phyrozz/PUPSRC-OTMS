@@ -11,7 +11,13 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -19,59 +25,55 @@
     <div class="wrapper">
         <?php
             $office_name = "Academic Office";
-            //include "../conn.php";
-            include "../navbar.php"
+            include "navbar.php";
+            include "../breadcrumb.php";
         ?>
         <div class="container-fluid academicbanner header">
-            <a href="/student/generate_inquiry.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
+        <a href="academic/help-academic.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">
+                <i class="fa-regular fa-circle-question"></i>
+                Help
+            </a>
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
-            <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.php">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Academic Office</li>
-                </ol>
-            </nav>
-            
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Academic Office', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, false);
+            ?>
             <h1 class="display-1 header-text text-center text-light">Academic Office</h1>
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
-            <a href="academic/subject_overload.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/subject_overload.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
                 <h2>Subject Overload</h2>
                 <p>Add additional subject/s more than the prescribed number of units</p>
             </a>
-            <a href="academic/grade_accreditation.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/grade_accreditation.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Grade Accreditation</h2>
                 <p>For Correction of Grade Entry, Late Reporting of Grades, and Removal of Incomplete Mark</p>
             </a>
-            <a href="academic/cross_enrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/cross_enrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Cross-Enrollment</h2>
                 <p>Enrollment of subject/s at another college or university</p>
             </a>
-            <a href="academic/shifting.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/shifting.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Shifting</h2>
                 <p>Shift to another program offered in PUP Santa Rosa</p>
             </a>
-            <a href="academic/manual_enrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/manual_enrollment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Manual Enrollment</h2>
                 <p>Failed to enroll during the online registration period set by the University</p>
             </a>
-            <a href="academic/servicesinsistools.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="academic/servicesinsistools.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Services in SIS Tools</h2>
                 <p>(a) ACE Form - Add subjects or change your officially enrolled subjects, (b) Subject Petition/Tutorial - Request for subject not offered in current semester</p>
             </a>
         </div>
         <div class="push"></div>
     </div>
-    <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </footer>
+    <?php include '../footer.php'; ?>
+    <script src="../loading.js"></script>
     <script>
         $(document).ready(function(){
             $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
@@ -81,5 +83,6 @@
             });
         });
     </script>
+    <script src="../saved_settings.js"></script>
 </body>
 </html>

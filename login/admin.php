@@ -12,27 +12,60 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../bg.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="jumbotron container-lg bg-white d-flex">
-        <div class="container-lg container-fluid">
+    <?php
+    session_start();
+    include "../conn.php";
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $query = "SELECT admins.admin_id, admins.email, admins.first_name, admins.last_name, admins.password, offices.office_name FROM admins INNER JOIN offices ON admins.office_id = offices.office_id WHERE admins.email = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->bind_result($adminId, $dbEmail, $dbFirstName, $dbLastName, $dbPassword, $dbOffice);
+        $stmt->fetch();
+
+        if ($dbEmail && password_verify($password, $dbPassword)) {
+            $_SESSION['admin_id'] = $adminId;
+            $_SESSION['first_name'] = $dbFirstName;
+            $_SESSION['last_name'] = $dbLastName;
+            $_SESSION['email'] = $dbEmail;
+            $_SESSION['office_name'] = $dbOffice;
+            header("Location: ../admin/redirect.php");
+            exit();
+        } else {
+                $loginMessage = "Invalid credentials. Please try again.";
+            }
+    
+            $stmt->close();
+            $connection->close();
+        }
+    ?>
+    <div class="jumbotron bg-white">
+        <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center d-flex flex-column align-items-center justify-content-center">
+                <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
-                    <h1 class="display-4">PUP-SRC</h1>
-                    <h2>Online Transaction Management System</h2>
+                    <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
                     <p class="lead">Sign in as Faculty Admin</p>
 
-                    <form class="d-flex flex-column gap-2" action="admin.php">
+                    <form method="POST" class="d-flex flex-column gap-2" action="">
                         <div class="form-group col-12">
-                            <input type="text" class="form-control" id="email" placeholder="Email address"  maxlength="100" required>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Email address"  maxlength="100" required>
                         </div>
                         <div class="form-group col-12">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password"  maxlength="100" required>
                         </div>
+                        <?php if (isset($loginMessage)) { ?>
+                        <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
+                        <?php } ?>
                         <div class="alert alert-info" role="alert">
                             <h4 class="alert-heading">
                             <i class="fa-solid fa-circle-info"></i> Reminder
@@ -40,9 +73,9 @@
                             <p class="mb-0">By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <button class="btn btn-outline-primary px-4" onclick="window.history.go(-1); return false;">
-                                <i class="fa-solid fa-arrow-left"></i> Back
-                            </button>
+                        <a class="btn btn-outline-primary px-4" href="../index.php" type="button">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </a>
                             <input id="submitBtn" value="Login" type="submit" class="btn btn-primary w-25" />
                         </div>
                     </form>

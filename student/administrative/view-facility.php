@@ -1,46 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Facility</title>
-    <link rel="icon" href="../../assets/icon/pup-logo.png" type="image/x-icon">
+    <title>Administrative - View Facility</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../stylesheets/request-style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../style.css">
+</head>
 </head>
 <body>
 
+
+<div class="wrapper">
 <?php
     $office_name = "Administrative Office";
-    include "../../navbar.php"
+    include "../navbar.php";
+    include "../../breadcrumb.php";
+    include "conn.php";
 ?>
-<div class="wrapper">
-      <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../front-page/administrative.php">Administrative Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">View Facility</li>
-                </ol>
-            </nav>
-        </div>
-
 
     <div class="container-fluid p-4">
-        <!-- <nav class="breadcrumb-nav" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">View Equipment</li>
-            </ol>
-        </nav>
-    </div> -->
-    <div class="container-fluid text-center p-4">
+    <?php
+            $breadcrumbItems = [
+                ['text' => 'Administrative Office', 'url' => '../administrative.php', 'active' => false],
+                ['text' => 'View Facility', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+    ?>    
+
+    <div class="container-fluid text-center mt-4 p-4">
         <h1>View Facility</h1>
     </div>
     <div class="container-fluid">
@@ -63,7 +66,6 @@
                 <option value="First Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'First Floor') echo 'selected'; ?>>First Floor</option>
                 <option value="Second Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'Second Floor') echo 'selected'; ?>>Second Floor</option>
                 <option value="Third Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'Third Floor') echo 'selected'; ?>>Third Floor</option>
-                <option value="Fourth Floor" <?php if(isset($_POST['category']) && $_POST['category'] == 'Fourth Floor') echo 'selected'; ?>>Fourth Floor</option>
             </select>
             <button class="btn btn-primary" onclick="filterResults()">Filter</button>
         </div>
@@ -103,9 +105,9 @@
                 // Load initial table without filtering
                 filterResults();
                 
-                function redirectToRequest(id, facility_table) {
+                function redirectToRequest(id, facility_table, facility_name, facility_number) {
                     // Assuming the PHP file you want to navigate to is named "request.php"
-                    var url = "request-facility.php?id=" + id + "&facility_table=" + facility_table;
+                    var url = "request-facility.php?id=" + id + "&facility_table=" + facility_table + "&facility_name=" + encodeURIComponent(facility_name) + "&facility_number=" + encodeURIComponent(facility_number);
                     console.log(url); // Debugging output
                     window.location.href = url;
                 }
@@ -141,16 +143,8 @@
                 <div class="push"></div>
             </div>
         </div>
-            <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-                <div>
-                    <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-                </div>
-                <div>   
-                    <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-                    <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-                </div>
-            </footer>
-
-
+            <?php include '../../footer.php'; ?>
+            <script src="../../loading.js"></script>
+            <script src="../../saved_settings.js"></script>
 </body>
 </html>

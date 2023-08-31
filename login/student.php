@@ -12,53 +12,51 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../bg.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../sign_up_dropdown.js"></script>
 </head>
 <body>
     <?php
-        session_start();
-        include "../conn.php";
+    session_start();
+    include "../conn.php";
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $studentNo = $_POST['studentNumber'];
-            $password = $_POST['password'];
-    
-            // Query to retrieve user with the given email
-            $query = "SELECT user_id, student_no, first_name, last_name, password FROM users WHERE student_no = ?";
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("s", $studentNo);
-            $stmt->execute();
-            $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbPassword);
-            $stmt->fetch();
-    
-            // Verify password
-            if ($dbStudentNo && password_verify($password, $dbPassword)) {
-                // Password is correct, set session variables and redirect to the dashboard or desired page
-                $_SESSION['user_id'] = $userId;
-                $_SESSION['student_no'] = $dbStudentNo;
-                $_SESSION['first_name'] = $dbFirstName;
-                $_SESSION['last_name'] = $dbLastName;
-                header("Location: ../student/home.php");
-                exit();
-            } else {
-                // Invalid login credentials
-                    $error = "Invalid credentials. Please try again.";
-                }
-        
-                $stmt->close();
-                $connection->close();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $studentNo = $_POST['studentNumber'];
+        $password = $_POST['password'];
+
+        $query = "SELECT user_id, student_no, first_name, last_name, extension_name, password FROM users WHERE student_no = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("s", $studentNo);
+        $stmt->execute();
+        $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
+        $stmt->fetch();
+
+        if ($dbStudentNo && password_verify($password, $dbPassword)) {
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['student_no'] = $dbStudentNo;
+            $_SESSION['first_name'] = $dbFirstName;
+            $_SESSION['last_name'] = $dbLastName;
+            $_SESSION['extension_name'] = $dbExtensionName;
+            $_SESSION['user_role'] = 1;
+            header("Location: ../student/home.php");
+            exit();
+        } else {
+                $loginMessage = "Invalid credentials. Please try again.";
             }
+    
+            $stmt->close();
+            $connection->close();
+        }
 
     ?>
-    <div class="jumbotron container-lg bg-white d-flex">
-        <div class="container-lg container-fluid">
+    <div class="jumbotron bg-white">
+        <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center d-flex flex-column align-items-center justify-content-center">
+                <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
-                    <h1 class="display-4">PUP-SRC</h1>
-                    <h2>Online Transaction Management System</h2>
+                    <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
                     <p class="lead">Sign in as PUP student</p>
 
                     <form method="POST" class="d-flex flex-column gap-2" action="">
@@ -66,24 +64,24 @@
                             <input type="text" class="form-control" name="studentNumber" id="studentNumber" placeholder="Student Number" maxlength="15" required>
                         </div>
                         <div class="form-group col-12">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" maxlength="100" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" maxlength="100" required>
                         </div>
+                        <?php if (isset($loginMessage)) { ?>
+                        <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
+                        <?php } ?>
                         <div class="col-12">
                             Don't have an account yet? <a href="#" data-bs-toggle="modal" data-bs-target="#Register">Sign up</a>
                         </div>
                         <div class="col-12">
-                            <a href="#">I forgot my password</a>
+                            <a href="forgot_password.php">I forgot my password</a>
                         </div>
-                        <?php if (isset($error)) { ?>
-                            <p class="error" style="color: #800000; font-weight: 600;"><?php echo $error; ?></p>
-                        <?php } ?>
                         <div class="alert alert-info" role="alert">
-                            <p class="mb-0">By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></p>
+                            <p class="mb-0"><small>By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></small></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <button class="btn btn-outline-primary px-4" onclick="window.history.go(-1); return false;">
+                            <a class="btn btn-outline-primary px-4" href="../index.php" type="button">
                                 <i class="fa-solid fa-arrow-left"></i> Back
-                            </button>
+                            </a>
                             <input id="submitBtn" value="Login" type="submit" class="btn btn-primary w-25" />
                         </div>
                     </form>
@@ -103,54 +101,80 @@
                         <div class="modal-body">
                         <input type="hidden" class="form-control font-weigth-light" id="hfDepartment" name="hfDepartment">
                         <div class="row">
-                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                            <label>Personal Details</label>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-1 pb-2">
+                            <label><b>Personal Details</b></label>
                         </div>
                         <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">  
                             <div class="row">
                                 <div class="form-group">
-                                <label class="mb-0 pb-1">Student Number <code>*</code></label>
+                                    <label class="mb-0 pb-1">Student Number <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                    <input type="text" name="StudentNo" value="" id="StudentNo" placeholder="Student Number" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="15" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="StudentNo" value="" id="StudentNo" placeholder="Student Number" pattern="\d{4}-\d{5}-SR-\d" maxlength="15" size="50" autocomplete="on" class="form-control" required>
                                     </div>
+                                    <div id="studentNoValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
-                                <label class="mb-0 pb-1">Last Name <code>*</code></label>
+                                    <label class="mb-0 pb-1">Last Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                    <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="LName" value="" id="LName" placeholder="Last Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
+                                    <div id="lastNameValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
-                                <label class="mb-0 pb-1">First Name <code>*</code></label>
+                                    <label class="mb-0 pb-1">First Name <code>*</code></label>
                                     <div class="input-group mb-0 mt-0">
-                                    <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="FName" value="" id="FName" placeholder="First Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
+                                    <div id="firstNameValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
-                                <label class="mb-0 pb-1">Middle Name</label>
+                                    <label class="mb-0 pb-1">Middle Name</label>
                                     <div class="input-group mb-0">
-                                    <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="MName" value="" id="MName" placeholder="Middle Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="100" size="100" autocomplete="on" class="form-control">
                                     </div>
+                                    <div id="middleNameValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
-                                <label class="mb-0 pb-1">Extension Name <font class="small">(Jr./Sr./III Etc..)</font></label>
+                                    <label class="mb-0 pb-1">Extension Name <font class="small">(Jr./Sr./III Etc..)</font></label>
                                     <div class="input-group mb-0">
-                                    <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-Z0-9Ññ\_\-\'\ \.]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="EName" value="" id="EName" placeholder="Extension Name" pattern="[a-zA-ZñÑ_\-\'\ \.]*" maxlength="11" size="11" autocomplete="on" class="form-control">
                                     </div>
-                                </div>                             
+                                    <div id="extensionNameValidationMessage" class="text-danger"></div>
+                                </div>                           
                                 </div>
                                 <div class="row">
                                 <div class="form-group col-12">
+                                    <label class="mb-0 pb-1">Course <code>*</code></label>
+                                    <div class="input-group mb-0">
+                                        <select name="Course" id="Course" class="form-control form-select" required>
+                                            <option value="" disabled selected hidden>Select Course</option>
+                                            <option value="1">Bachelor of Science in Electronics Engineering</option>
+                                            <option value="2">Bachelor of Science in Business Administration Major in Human Resource Management</option>
+                                            <option value="3">Bachelor of Science in Business Administration Major in Marketing Management</option>
+                                            <option value="4">Bachelor in Secondary Education Major in English</option>
+                                            <option value="5">Bachelor in Secondary Education Major in Filipino</option>
+                                            <option value="6">Bachelor in Secondary Education Major in Mathematics</option>
+                                            <option value="7">Bachelor of Science in Industrial Engineering</option>
+                                            <option value="8">Bachelor of Science in Information Technology</option>
+                                            <option value="9">Bachelor of Science in Psychology</option>
+                                            <option value="10">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
+                                            <option value="11">Bachelor of Science in Management Accounting</option>
+                                        </select>                                    
+                                    </div>
+                                </div>
+                                <div class="form-group col-12">
                                     <label>Contact Number <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Contact No." pattern="[0-9\+\ ]*" maxlength="11" size="20" autocomplete="off" class="form-control">
+                                        <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Eg. 0901-234-5678" pattern="^0\d{3}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control" required>
                                     </div>
+                                    <div id="contactNoValidationMessage" class="text-danger"></div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Birthdate <code>*</code></label>
                                     <div data-target="#Birthday" data-toggle="datetimepicker">
-                                        <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input" data-target="#Birthday">
+                                        <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input" data-target="#Birthday" min="1900-01-01" max="<?php echo date('Y-m-d'); ?>" required>
                                     </div>
+                                    <div class="text-danger" id="birthdateError" style="display: none;">Invalid birth date.</div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Sex  <code>*</code></label><br>
@@ -158,7 +182,7 @@
                                     <label class="form-check-label col-3">
                                         <input class="form-check-input" type="radio" id="GenderM" name="Gender" value="1" checked=""> Male
                                     </label>
-                                    <label class="form-check-label col-3">
+                                    <label class="form-check-label col-3 px-3">
                                         <input class="form-check-input" type="radio" id="GenderF" name="Gender" value="0"> Female
                                     </label>
                                     </div> 
@@ -168,145 +192,469 @@
                                 <div class="form-group col-12">
                                     <label>Home Address <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" maxlength="50" size="255" autocomplete="off" class="form-control">
+                                        <input type="text" name="Address" value="" id="Address" placeholder="Address" minlength="2" maxlength="255" size="255" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Province <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Province" value="" id="Province" placeholder="Province" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <select name="Province" id="Province" class="form-control form-select" required>
+                                        </select>
                                     </div>
-                                </div>              
+                                </div> 
                                 <div class="form-group col-6">
                                     <label>City <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="City" value="" id="City" placeholder="City" maxlength="50" size="50" autocomplete="off" class="form-control">
-                                    </div>  
+                                        <select name="City" id="City" class="form-control form-select" required>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Barangay <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="Barangay" value="" id="Barangay" placeholder="Barangay" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="Barangay" value="" id="Barangay" placeholder="Barangay" maxlength="100" size="100" autocomplete="on" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Zip Code</label>
                                     <div class="input-group mb-0">
-                                        <input type="text" name="ZipCode" value="" id="ZipCode" placeholder="Zip Code" pattern="[0-9]+" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                        <input type="text" name="ZipCode" value="" id="ZipCode" placeholder="Zip Code" pattern="[0-9]{4,6}" maxlength="6" size="6" autocomplete="on" class="form-control">
                                     </div>
+                                    <div id="zipCodeError" class="text-danger"></div>
                                 </div>
                                 </div>
                             </div>
                         </div>
                         <div class="dropdown-divider"></div>
                         <div class="row">
-                            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                                <label>Account Details</label>
+                            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-3 pb-2">
+                                <label><b>Account Details</b></label>
                             </div>
                             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">  
                                 <div class="row">
-                                <div class="form-group col-12">
-                                    <label for="exampleInputEmail1">Email <code>*</code></label>
-                                    <div class="input-group mb-0">
-                                    <input type="text" name="Email" value="" id="Email" placeholder="Complete Email" pattern="[a-zA-Z0-9Ññ\@\_\-\.\(\)\&amp;\,\<\>\'\`]*" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                    <div class="form-group col-12">
+                                        <label for="exampleInputEmail1">Email <code>*</code></label>
+                                        <div class="input-group mb-0">
+                                            <input type="text" name="Email" value="" id="Email" placeholder="Complete Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="11" maxlength="50" size="50" autocomplete="on" class="form-control" required>
+                                        </div>
+                                        <div class="text-danger" id="emailError" style="display: none;">Invalid email address.</div>
                                     </div>
-                                </div>
-                                <div class="form-group col-12">
-                                    <label for="exampleInputEmail1">Password <code>*</code></label>
-                                    <div class="input-group mb-0">
-                                    <input type="password" name="Password" value="" id="Password" placeholder="Password" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                    <div class="form-group col-12">
+                                        <label for="exampleInputEmail1">Password <code>*</code></label>
+                                        <div class="input-group mb-0">
+                                        <input type="password" name="Password" value="" id="Password" placeholder="Password" minlength="8" maxlength="80" size="80" autocomplete="on" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group col-12">
-                                    <label for="exampleInputEmail1">Confirm Password <code>*</code></label>
-                                    <div class="input-group mb-0">
-                                    <input type="password" name="ConfirmPassword" value="" id="ConfirmPassword" placeholder="Retype Password" maxlength="50" size="50" autocomplete="off" class="form-control">
+                                    <div class="form-group col-12">
+                                        <label for="exampleInputEmail1">Confirm Password <code>*</code></label>
+                                        <div class="input-group mb-0">
+                                        <input type="password" name="ConfirmPassword" value="" id="ConfirmPassword" placeholder="Retype Password" minlength="8" maxlength="80" size="80" autocomplete="on" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mt-3">
-                                    <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
-                                        <h4>Data Privacy Notice</h4>
-                                        <p>
-                                        <img style="float: right; margin-left: 3px;" src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a class="text-white" href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
+                                    <ul id="passwordChecklist"></ul>
+                                    <div class="form-group mt-3">
+                                        <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
+                                            <h4>Data Privacy Notice</h4>
+                                            <p>
+                                            <img style="float: right; margin-left: 3px; filter: invert(100%);" src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
+                        <input type="submit" value="Sign Up" id="submitBtn" name="studentSignup" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
         </div>            
     </form>
+    <!-- End of sign up modal -->
+    <!-- Success alert modal -->
+    <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Account has been created successfully.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of success alert modal -->
+    <!-- Account already exists modal -->
+    <div id="accountExistsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="accountExistsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="accountExistsModalLabel">Create Account Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>The account details you provided already exists. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of account already exists modal -->
+    <!-- Create account failed modal -->
+    <div id="createAccountFailedModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createAccountFailedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createAccountFailedModalLabel">Create Account Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Failed to create an account. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of create account failed modal -->
+    <!-- Invalid password modal -->
+    <div id="invalidPasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="invalidPasswordModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="invalidPasswordModalLabel">Oops...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Invalid password. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of invalid password modal -->
+    <!-- Password does not match modal -->
+    <div id="passDoesNotMatchModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="passDoesNotMatchModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passDoesNotMatchModalLabel">Oops...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Passwords do not match. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of password does not match modal -->
+    <?php 
+    if (isset($_SESSION['account_created']) && $_SESSION['account_created']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#successModal').modal('show');
+        });
+        </script>
+        ";
+    }
+    if (isset($_SESSION['account_exists']) && $_SESSION['account_exists']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#accountExistsModal').modal('show');
+        });
+        </script>
+        ";
+    }
+    if (isset($_SESSION['account_failed']) && $_SESSION['account_failed']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#createAccountFailedModal').modal('show');
+        });
+        </script>
+        ";
+    }
+    if (isset($_SESSION['invalid_password']) && $_SESSION['invalid_password']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#invalidPasswordModal').modal('show');
+        });
+        </script>
+        ";
+    }
+    if (isset($_SESSION['pass_does_not_match']) && $_SESSION['pass_does_not_match']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#passDoesNotMatchModal').modal('show');
+        });
+        </script>
+        ";
+    }
 
+    unset($_SESSION['account_created']);
+    unset($_SESSION['account_exists']);
+    unset($_SESSION['account_failed']);
+    unset($_SESSION['invalid_password']);
+    unset($_SESSION['pass_does_not_match']);
+    ?>
+    <!-- End of success alert modal -->
+
+    <!-- JS validation for form fields -->
     <script>
-        // $(document).ready(function() {
-            // $('#signupForm').submit(function(e) {
-            // e.preventDefault(); // Prevent form from submitting normally
+        const studentNoInput = document.getElementById('StudentNo');
+        const lastNameInput = document.getElementById('LName');
+        const firstNameInput = document.getElementById('FName');
+        const middleNameInput = document.getElementById('MName');
+        const extensionNameInput = document.getElementById('EName');
+        const lastNameValidationMessage = document.getElementById('lastNameValidationMessage');
+        const firstNameValidationMessage = document.getElementById('firstNameValidationMessage');
+        const middleNameValidationMessage = document.getElementById('middleNameValidationMessage');
+        const extensionNameValidationMessage = document.getElementById('extensionNameValidationMessage');
+        const contactNoInput = document.getElementById('ContactNumber');
+        const studentNoValidationMessage = document.getElementById('studentNoValidationMessage');
+        const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+        const emailInput = document.getElementById('Email');
+        const emailError = document.getElementById('emailError');
+        const zipCodeInput = document.getElementById('ZipCode');
+        const zipCodeError = document.getElementById('zipCodeError');
+        const birthdateInput = document.getElementById('Birthday');
+        const birthdateError = document.getElementById('birthdateError');
+        var passwordInput = document.getElementById("Password");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword");
+        var submitButton = document.getElementById("submitBtn");
 
-            // var password = $('#Password').val();
-            // var confirmPassword = $('#ConfirmPassword').val();
+        // Password rules:
+        // Must have at least one letter (small or capital)
+        // Must have at least one number
+        // Must have at least one special character (!, @, #, $, %, ^, &, *, (, ), _, +, {, })
+        // Must be at least 8 characters long
+        const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/;
 
-            // if (password !== confirmPassword) {
-            //     alert('Password and Confirm Password do not match');
-            //     return;
-            // }
+        // Validation event listeners
+        studentNoInput.addEventListener('input', () => {
+            const studentNo = studentNoInput.value.trim();
+            const studentNoValidPattern = /^\d{4}-\d{5}-SR-\d$/;
 
-            // // Perform AJAX request
-            // $.ajax({
-            //     type: 'POST',
-            //     url: $(this).attr('action'),
-            //     data: $(this).serialize(),
-            //     success: function(response) {
-            //         console.log(response);
-            //         document.innerHTML = `
-            //         <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
-            //             <div class="modal-dialog modal-lg">
-            //                 <div class="modal-content">
-            //                     <div class="modal-header">
-            //                         <p class="modal-title">Account Created</p> 
-            //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            //                     </div>
-            //                     <div class="modal-body">
-            //                         <p>Account created successfully. You may now login.</p>
-            //                     </div>
-            //                     <div class="modal-footer">
-            //                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         </div>  
-            //         `;
-            //     },
-            //         error: function(error) {
-            //         console.log(error);
-            //         document.innerHTML = `
-            //         <div class="modal fade" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="false"> 
-            //             <div class="modal-dialog modal-lg">
-            //                 <div class="modal-content">
-            //                     <div class="modal-header">
-            //                         <p class="modal-title">Sign up Failed</p> 
-            //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            //                     </div>
-            //                     <div class="modal-body">
-            //                         <p>Something went wrong with the sign up. Please try again.</p>
-            //                     </div>
-            //                     <div class="modal-footer">
-            //                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         </div>
-            //         `;
-            //     }
-            // });
-        //     });
-        // });
+            if (!studentNoValidPattern.test(studentNo)) {
+                studentNoValidationMessage.textContent = 'Invalid student number. The format must be xxxx-xxxxx-SR-x';
+                studentNoInput.classList.add('is-invalid');
+            } else {
+                studentNoValidationMessage.textContent = '';
+                studentNoInput.classList.remove('is-invalid');
+            }
+        });
+
+        lastNameInput.addEventListener('input', () => {
+            const lastName = lastNameInput.value.trim();
+            const lastNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!lastNamePattern.test(lastName)) {
+                lastNameValidationMessage.textContent = 'Invalid last name. It must not contain numbers or special characters.';
+                lastNameInput.classList.add('is-invalid');
+            } else {
+                lastNameValidationMessage.textContent = '';
+                lastNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        firstNameInput.addEventListener('input', () => {
+            const firstName = firstNameInput.value.trim();
+            const firstNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!firstNamePattern.test(firstName)) {
+                firstNameValidationMessage.textContent = 'Invalid first name. It must not contain numbers or special characters.';
+                firstNameInput.classList.add('is-invalid');
+            } else {
+                firstNameValidationMessage.textContent = '';
+                firstNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        middleNameInput.addEventListener('input', () => {
+            const middleName = middleNameInput.value.trim();
+            const middleNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!middleNamePattern.test(middleName)) {
+                middleNameValidationMessage.textContent = 'Invalid middle name. It must not contain numbers or special characters.';
+                middleNameInput.classList.add('is-invalid');
+            } else {
+                middleNameValidationMessage.textContent = '';
+                middleNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        extensionNameInput.addEventListener('input', () => {
+            const extensionName = extensionNameInput.value.trim();
+            const extensionNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+
+            if (!extensionNamePattern.test(extensionName)) {
+                extensionNameValidationMessage.textContent = 'Invalid extension name. It must not contain numbers or special characters.';
+                extensionNameInput.classList.add('is-invalid');
+            } else {
+                extensionNameValidationMessage.textContent = '';
+                extensionNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        contactNoInput.addEventListener('input', () => {
+            const contactNo = contactNoInput.value.trim();
+            const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
+
+            // Remove any dashes from the current input value
+            const cleanedContactNo = contactNo.replace(/-/g, '');
+
+            // Format the contact number with dashes
+            let formattedContactNo = '';
+            for (let i = 0; i < cleanedContactNo.length; i++) {
+                if (i === 4 || i === 7) {
+                    formattedContactNo += '-';
+                }
+                formattedContactNo += cleanedContactNo[i];
+            }
+
+            // Update the input value with the formatted contact number
+            contactNoInput.value = formattedContactNo;
+
+            if (!contactNoValidPattern.test(formattedContactNo)) {
+                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
+                contactNoInput.classList.add('is-invalid');
+            } else {
+                contactNoValidationMessage.textContent = '';
+                contactNoInput.classList.remove('is-invalid');
+            }
+        });
+
+        birthdateInput.addEventListener('input', function() {
+            validateBirthdate(this.value);
+        });
+
+        emailInput.addEventListener('input', validateEmail);
+        zipCodeInput.addEventListener('input', validateZipCode);
+
+        // Validation functions
+        function validateBirthdate(birthdate) {
+            const currentDate = new Date();
+            const selectedDate = new Date(birthdate);
+
+            if (selectedDate < new Date('1900-01-01') || selectedDate > currentDate) {
+                birthdateError.style.display = 'block';
+                birthdateInput.classList.add('is-invalid');
+            } else {
+                birthdateError.style.display = 'none';
+                birthdateInput.classList.remove('is-invalid');
+            }
+            }
+
+        function validateEmail() {
+            const email = emailInput.value;
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (emailPattern.test(email)) {
+                emailInput.classList.remove('is-invalid');
+                emailError.style.display = 'none';
+            } else {
+                emailInput.classList.add('is-invalid');
+                emailError.style.display = 'block';
+            }
+        }
+
+        function validateZipCode() {
+            const zipCode = zipCodeInput.value.trim();
+            const validZipCodePattern = /^[0-9]{4,6}$/;
+
+            if (!validZipCodePattern.test(zipCode)) {
+                zipCodeError.textContent = 'Zip Code must be 4 to 6 digits long';
+                zipCodeInput.classList.add('is-invalid');
+            } else {
+                zipCodeError.textContent = '';
+                zipCodeInput.classList.remove('is-invalid');
+            }
+        }
+
+        function validatePassword() {
+            const password = passwordInput.value.trim();
+            const confirmPassword = confirmPasswordInput.value.trim();
+
+            // Check if the password meets the requirements
+            const isPasswordValid = passwordPattern.test(password);
+            const isPasswordMatch = password === confirmPassword;
+
+            // Update the validation messages and styles
+            if (password === '' || !isPasswordValid) {
+                passwordInput.classList.remove('is-valid');
+                passwordInput.classList.add('is-invalid');
+            } else {
+                passwordInput.classList.remove('is-invalid');
+                passwordInput.classList.add('is-valid');
+            }
+
+            if (confirmPassword === '' || !isPasswordMatch) {
+                confirmPasswordInput.classList.remove('is-valid');
+                confirmPasswordInput.classList.add('is-invalid');
+            } else {
+                confirmPasswordInput.classList.remove('is-invalid');
+                confirmPasswordInput.classList.add('is-valid');
+            }
+
+            // Update the checklist message
+            const passwordChecklist = document.getElementById('passwordChecklist');
+            passwordChecklist.innerHTML = '';
+
+            if (password === '') {
+                passwordChecklist.innerHTML += '<li class="text-danger">Password is required</li>';
+            } else if (password.length >= 8) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; At least 8 characters</li>';
+            } else {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; At least 8 characters</li>';
+            }
+
+            if (/[A-Za-z]/.test(password)) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one letter</li>';
+            } else {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one letter</li>';
+            }
+
+            if (/\d/.test(password)) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one number</li>';
+            } else {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one number</li>';
+            }
+
+            if (/[^A-Za-z\d]/.test(password)) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one special character</li>';
+            } else {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one special character</li>';
+            }
+
+            if (confirmPassword === '') {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Confirm password is required</li>';
+            } else if (isPasswordMatch) {
+                passwordChecklist.innerHTML += '<li class="text-success">&#10004; Passwords match</li>';
+            } else {
+                passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Passwords do not match</li>';
+            }
+        }
+
+        passwordInput.addEventListener('input', validatePassword);
+        confirmPasswordInput.addEventListener('input', validatePassword);
     </script>
-    
 </body>
 </html>

@@ -1,36 +1,94 @@
+<!-- INSERT PHP SECTION -->
 <?php
 session_start();
-$servername = "localhost";
-$username =  "root";
-$password = "";
-$dbname =  "payment_db";
+ini_set('error_reporting', 0);
+ini_set('display_errors', 0);
+$office_name = "Accounting Office";
+include '../../conn.php';
 
-$conn = new mysqli ($servername,$username,$password,$dbname);
-if ($conn->connect_error){
-    die("connection failed".$conn->connect_error);
-}
 if (isset($_POST['submit'])) {
-  // Retrieve form data
-  $course = ($_POST['course']);
-  $documentType = ($_POST['documentType']);
-  $firstname = ($_POST['firstname']);
-  $middlename = ($_POST['middlename']);
-  $surname = ($_POST['surname']);
-  $studentNumber = ($_POST['studentNumber']);
-  $amount = ($_POST['amount']);
+    // Retrieve form data
+    $course = $_POST['course'];
+    $documentType = $_POST['documentType'];
+    $firstName = $_POST['firstName'];
+    $middleName = $_POST['middleName'];
+    $lastName = $_POST['lastName'];
+    $studentNumber = $_POST['studentNumber'];
+    //$amount = $_POST['amount'];
+    //$referenceNumber = $_POST['referenceNumber'];
+    $userId = $_SESSION['user_id'];
 
+    // Insert the data into the database
+    $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber) 
+            VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber')";
 
-  $sql = "INSERT INTO student_info (course, documentType, firstname, middlename, surname, studentNumber, amount) VALUES ('$course', '$documentType', '$firstname', '$middlename', '$surname', '$studentNumber', '$amount')";
+    if ($connection->query($sql) === TRUE) {
+        // Get the last inserted ID
+        $lastInsertedId = $connection->insert_id;
+    
+        $_SESSION['payment_id'] = $lastInsertedId;
+        header("Location: payment2.php");
+        exit();
+    } else {
+        echo "Error inserting data: " . $connection->error;
+    }
 
-  if ($conn->query($sql) == TRUE) {
-      header("location: payment2.php");
-  } else {
-      echo "Error inserting data: " . $conn->error;
-  }
+    // Handle file upload
+    /*if (isset($_FILES['receiptImage'])) {
+        $file = $_FILES['receiptImage'];
+        $fileName = $file['name'];
+        $fileTmpName = $file['tmp_name'];
+        $fileSize = $file['size'];
+        $fileError = $file['error'];
+        $fileType = $file['type'];
 
-  $conn->close();
+        // Check if the file is uploaded successfully
+        if ($fileError === UPLOAD_ERR_OK) {
+            // Insert the data into the database
+            $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber, amount, referenceNumber) 
+                    VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber', '$amount', '$referenceNumber')";
+
+            if ($connection->query($sql) === TRUE) {
+                // Get the last inserted ID
+                $lastInsertedId = $connection->insert_id;
+
+                // Generate a new filename using the last inserted ID, firstName, and lastName
+                $imageFileName = "payment_" . $lastInsertedId . "_" . $firstName . '_' . $lastName . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
+
+                // Move the uploaded image to the desired directory with the new filename
+                $targetPath = 'uploads/' . $imageFileName;
+                if (move_uploaded_file($fileTmpName, $targetPath)) {
+                    // Update the image URL in the database
+                    $updateSql = "UPDATE student_info SET image_url = '$targetPath' WHERE payment_id = '$lastInsertedId'";
+                    if ($connection->query($updateSql) === TRUE) {
+                        $_SESSION['payment_id'] = $lastInsertedId;
+                        header("Location: payment2.php");
+                        exit();
+                    } else {
+                        echo "Error updating image URL: " . $connection->error;
+                    }
+                } else {
+                    echo "Error moving uploaded file.";
+                }
+            } else {
+                echo "Error inserting data: " . $connection->error;
+            }
+        } else {
+            echo "Error uploading file. Error code: " . $fileError;
+        }
+    } else {
+        echo "No file uploaded.";
+    } */
+
+    $connection->close();
 }
+
+include '../navbar.php';
 ?>
+
+
+
+
 
 
 
@@ -43,169 +101,206 @@ if (isset($_POST['submit'])) {
     <title>Accounting Office - Landing Page</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/payment1.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
 </head>
 <body>
-    <!-- Start of navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
-        <div class="container-fluid">
-            <img class="p-2" src="images/puplogo.png" alt="PUP Logo" width="40">
-            <a class="navbar-brand" href="#"><strong>PUPSRC-OTMS</strong></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto order-2 order-lg-1">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="officeServicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Accounting Services Office
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-                            <li><a class="dropdown-item" href="#">Registration</a></li>
-                            <li><a class="dropdown-item" href="../guidance.php">Guidance</a></li>
-                            <li><a class="dropdown-item" href="#">Academic</a></li>
-                            <li><a class="dropdown-item" href="index.php">Accounting</a></li>
-                            <li><a class="dropdown-item" href="#">Administration</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="officeServicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Payments
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="officeServicesDropdown">
-                            <li><a class="dropdown-item" href="offsetting1.php">Offsetting</a></li>
-                            <li><a class="dropdown-item" href="transactions.php">Transaction History</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="navbar-nav order-3 order-lg-3 w-50 gap-3">
-                    <div class="d-flex navbar-nav justify-content-center me-auto order-2 order-lg-1 w-100">
-                        <form class="d-flex w-100">
-                            <input class="form-control me-2" type="search" placeholder="Search for services..." aria-label="Search">
-                            <button class="btn btn-warning" type="submit"><strong>Search</strong></button>
-                        </form>
-                    </div>
-                    <li class="nav-item dropdown order-1 order-lg-2">
-                        <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user-circle me-1"></i>
-                            Juan Dela Cruz
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-                            <li><a class="dropdown-item" href="#">Account Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Log Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- End of navbar -->
-
+<?php
+    include '../../breadcrumb.php';
+    ?>
     <div class="container-fluid p-4">
-        <nav class="breadcrumb-nav" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="index.php">Accounting Services Office</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Payments</li>
-            </ol>
-        </nav>
+        <?php
+        $breadcrumbItems = [
+            ['text' => 'Accounting Office', 'url' => '../accounting.php', 'active' => false],
+            ['text' => 'Payments', 'active' => true],
+        ];
+
+        echo generateBreadcrumb($breadcrumbItems, true);
+        ?>
     </div>
-    <div class="container-fluid text-center p-4">
-
-
-
-
+    
+    <div class="fetch-data">
+        <?php
+        $user_id = $_SESSION["user_id"];
+                    $select = mysqli_query($connection, "SELECT * FROM users WHERE user_id = '$user_id'") or die ('query failed');
+                    if(mysqli_num_rows($select) > 0){
+                        $fetch = mysqli_fetch_assoc($select);
+                    }
+        ?>
+    </div>
 
 
 <!--Start of content-->
-<h1>PAYMENT INFORMATION</h1>
-<br> <br> <br>
-<div class="container-fluid-form">
-<form action="" id="" method="post" class="row g-3 needs-validation" autocomplete="off">
+<div class="container-fluid text-center p-4">
+<h1>STUDENT PAYMENT INFORMATION</h1>
 <br>
-<div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="course" class="form-label">Course</label>
-          <select class="form-select" id="" name="course" required>
-            <option value="">Select Course</option>
-            <option value="Course 1" >Course 1</option>
-            <option value="Course 2" >Course 2</option>
-            <option value="Course 3" >Course 3</option>
-            <!-- Add more options as needed -->
-          </select>
+
+<div class="qr-container">
+  <form action="" id="" method="post" class="row g-3 needs-validation" autocomplete="off" enctype="multipart/form-data" onsubmit="validateForm(event)">
+    <div class="col-12 col-md-6">
+      
+      <h4>1. Select Options</h4>
+      <h4>2. Confirm Details</h4>
+      <h4>3. Submit and Save a Copy of Payment Voucher</h4>
+      <p style="color: red;">Note: Ensure all information are correct before submitting</p>
+
+      <!-- <div class="box">
+        <div class="upload-container">
+          <label for="receiptImage" class="form-label">Upload Receipt Here</label>
+          <input type="file" class="form-control upload-button" id="receiptImage" name="receiptImage" accept="image/*" required>
           <div class="invalid-feedback">
-            Please select a course.
+            Please upload a valid image file.
+          </div>
+        </div>
+      </div> -->
+    </div> 
+
+    <!-- <div class="col-12 col-md-6 qr-text">
+      <div class="qr-details">
+        <p>GCash_Receiver_Name</p>
+        <p>012-345-6789</p>
+      </div>
+      <img src="images/qr.png" alt="QR Code" class="qr-image">
+    </div> -->
+
+
+    <div class="col-12 ">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="course" class="form-label">Course <code>*</code></label>
+            <select class="form-select" id="" name="course" required>
+              <option value="" disabled selected hidden>Select Course</option>
+              <option value="Bachelor of Science in Electronics Engineering">Bachelor of Science in Electronics Engineering</option>
+              <option value="Bachelor of Science in Business Administration Major in Human Resource Management">Bachelor of Science in Business Administration Major in Human Resource Management</option>
+              <option value="Bachelor of Science in Business Administration Major in Marketing Management">Bachelor of Science in Business Administration Major in Marketing Management</option>
+              <option value="Bachelor in Secondary Education Major in English">Bachelor in Secondary Education Major in English</option>
+              <option value="Bachelor in Secondary Education Major in Filipino">Bachelor in Secondary Education Major in Filipino</option>
+              <option value="Bachelor in Secondary Education Major in Mathematics">Bachelor in Secondary Education Major in Mathematics</option>
+              <option value="Bachelor of Science in Industrial Engineering">Bachelor of Science in Industrial Engineering</option>
+              <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+              <option value="Bachelor of Science in Psychology">Bachelor of Science in Psychology</option>
+              <option value="Bachelor in Technology And Livelihood Education Major in Home Economics">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
+              <option value="Bachelor of Science in Management Accounting">Bachelor of Science in Management Accounting</option>
+              <!-- Add more options as needed -->
+            </select>
+            <div class="invalid-feedback">
+              Please select a course.
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="documentType" class="form-label">Document Type <code>*</code></label>
+            <select class="form-select" id="" name="documentType" required>
+              <option value="" disabled selected hidden>Select Document Type</option>
+              <option value="Application for Graduation SIS and Non-SIS">Application for Graduation SIS and Non-SIS</option>
+              <option value="Correction of Entry of Grade">Correction of Entry of Grade</option>
+              <option value="Completion of Incomplete Grade">Completion of Incomplete Grade</option>
+              <option value="Late Reporting of Grade">Late Reporting of Grade</option>
+              <option value="Processing of Request for Correction of Name: PSA/School Records">Processing of Request for Correction of Name: PSA/School Records</option>
+              <option value="Certification, Verification, Authentication (CAV/Apostile)">Certification, Verification, Authentication (CAV/Apostile)</option>
+              <option value="Certificate of Attendance">Certificate of Attendance</option>
+              <option value="Certificate of Graduation">Certificate of Graduation</option>
+              <option value="Certificate of Medium of Instruction">Certificate of Medium of Instruction</option>
+              <option value="Certificate of General Weighted Average (GWA)">Certificate of General Weighted Average (GWA)</option>
+              <option value="Non Issuance of Special Order">Non Issuance of Special Order </option>
+              <option value="Course/Subject Description">Course/Subject Description</option>
+              <option value="Certificate of Transfer Credential/Honorable Dismissal">Certificate of Transfer Credential/Honorable Dismissal</option>
+              <option value="Transcript of Records (Second and succeeding copies)">Transcript of Records (Second and succeeding copies)</option>
+              <option value="Transcript of Records (Copy for Another School)">Transcript of Records (Copy for Another School)</option>
+              <option value="Course Accreditation Service (for Transferees)">Course Accreditation Service (for Transferees)</option>
+              <option value="Informative Copy of Grades">Informative Copy of Grades</option>
+              <option value="Certified True Copy">Certified True Copy</option>
+              <option value="Academic Verification Service">Academic Verification Service</option>
+              <!-- Add more options as needed -->
+            </select>
+            <div class="invalid-feedback">
+              Please select a document type.
+            </div>
           </div>
         </div>
       </div>
+    </div>   
 
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="documentType" class="form-label">Document Type</label>
-          <select class="form-select" id="" name="documentType" required>
-            <option value="">Select Document Type</option>
-            <option value="Document 1">Document 1</option>
-            <option value="Document 2">Document 2</option>
-            <option value="Document 3">Document 3</option>
-            <!-- Add more options as needed -->
-          </select>
-          <div class="invalid-feedback">
-            Please select a document type.
-          </div>
+    <div class="col-12 col-md-6">
+      <div class="form-groups">
+        <label for="firstName" class="form-label">First Name <code>*</code></label>
+        <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo isset($fetch['first_name']) ? $fetch['first_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="validateFirstName(this, 100)" required readonly style="background-color: #e9ecef">
+        <div class="invalid-feedback">
+          Please provide a valid first name.
         </div>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <label for="name" class="form-label">Name</label>
-      <input type="text" class="form-control" id="" name="firstname" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 50)" required>
-      <div class="invalid-feedback">
-        Please provide your name.
+    <div class="col-12 col-md-6">
+      <div class="form-groups">
+        <label for="middleName" class="form-label">Middle Name</label>
+        <input type="text" class="form-control" id="middleName" name="middleName" value="<?php echo isset($fetch['middle_name']) ? $fetch['middle_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateMiddleName(this)" readonly style="background-color: #e9ecef">
+        <div class="invalid-feedback">
+          Please provide a valid middle name.
+        </div>
       </div>
     </div>
 
-
-    <div class="col-md-6">
-      <label for="middlename" class="form-label">Middle Name</label>
-      <input type="text" class="form-control" id="" name="middlename" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 50)" required>
-      <div class="invalid-feedback">
-        Please provide your surname.
+    <div class="col-12 col-md-6">
+      <div class="form-groups">
+        <label for="lastName" class="form-label">Last Name <code>*</code></label>
+        <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo isset($fetch['last_name']) ? $fetch['last_name'] : ''; ?>" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 100); validateSurname(this)" required readonly style="background-color: #e9ecef">
+        <div class="invalid-feedback">
+          Please provide a valid last name.
+        </div>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <label for="surname" class="form-label">Surname</label>
-      <input type="text" class="form-control" id="" name="surname" value="" pattern="^[A-Za-z\s]+$" oninput="this.value = this.value.slice(0, 50)" required> 
-      <div class="invalid-feedback">
-        Please provide your surname.
+    <div class="col-12 col-md-6">
+      <div class="form-groups">
+        <label for="studentNumber" class="form-label">Student Number <code>*</code></label>
+        <input type="text" class="form-control" id="studentNumber" name="studentNumber" value="<?php echo isset($fetch['student_no']) ? $fetch['student_no'] : ''; ?>" required oninput="validateStudentNumber(this)" maxlength="15" readonly style="background-color: #e9ecef">
+        <div class="invalid-feedback">
+          Please provide a valid student number.
+        </div>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <label for="studentNumber" class="form-label">Student Number</label>
-      <input type="text" class="form-control" id="studentNumber" name="studentNumber" value="" required oninput="this.value = this.value.slice(0, 15).toUpperCase().replace(/[^A-Z0-9-]/g, '')">
-      <div class="invalid-feedback">
-        Please provide a student number.
+    <!-- <div class="col-12 col-md-6">
+      <div class="form-groups">
+        <label for="amount" class="form-label">Amount <code>*</code></label>
+        <input type="text" class="form-control" id="amount" name="amount" value="" required oninput="validateAmount(this)">
+        <div class="invalid-feedback">
+          Please provide a valid amount.
+        </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="col-md-6">
-      <label for="amount" class="form-label">Amount</label>
-      <input type="number" class="form-control" id="amount" name="amount" value="" required oninput="this.value = this.value.slice(0, 6)">
-      <div class="invalid-feedback">
-        Please provide the amount.
+    <!-- <div class="col-12 col-md-6">
+      <div class="form-groups">
+        <label for="referenceNumber" class="form-label">Reference Number <code>*</code></label>
+        <input type="text" class="form-control" id="referenceNumber" name="referenceNumber" value="" required oninput="validateReferenceNumber(this)" maxlength="20" >
+        <div class="invalid-feedback">
+          Please provide the reference number.
+        </div>
       </div>
-    </div>
+    </div> -->
 
-  
-
-    <div class="col-12">
-      <a class="btn btn-primary back-button" href="index.php">Back</a>
-      <!--<button class="btn btn-primary next-button" type="submit">Next</button>-->
-      <input style="margin-top: 0px; height: 35px; font-size: 15px" class="btn btn-primary" type="submit" name="submit"/>
+    
+    <div class="d-flex justify-content-between">
+        <a class="btn btn-primary back-button" href="../accounting.php">Back</a>
+        <input style="margin-top: 0px; height: 35px; font-size: 15px" class="btn btn-primary" type="submit" name="submit" value="Submit" data-bs-toggle="tooltip" data-bs-placement="top" 
+        title="Make sure all details are correct and true before submitting.">
     </div>
 
   </form>
@@ -213,9 +308,243 @@ if (isset($_POST['submit'])) {
 
 
 
+
+
+
+<script>
+
+$(document).ready(function() {
+  $('.dropdown-submenu a.dropdown-toggle').on("click", function(e) {
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+
+});
+
+function validatefirstName(input, maxLength) {
+  var value = input.value.replace(/[^A-Za-z\s]/g, '');
+
+  if (value.length > maxLength) {
+    input.value = value.slice(0, maxLength);
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+    input.setCustomValidity('The input exceeds the maximum length of ' + maxLength + ' characters.');
+  } else if (hasMoreThanThreeRepeatingChars(value)) {
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+    input.setCustomValidity('The input should not contain more than 3 repeating characters.');
+  } else {
+    input.value = value;
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+    input.setCustomValidity('');
+  }
+}
+
+function hasMoreThanThreeRepeatingChars(value) {
+  var consecutiveCount = 1;
+  for (var i = 0; i < value.length - 1; i++) {
+    if (value[i] === value[i + 1]) {
+      consecutiveCount++;
+      if (consecutiveCount > 3) {
+        return true;
+      }
+    } else {
+      consecutiveCount = 1;
+    }
+  }
+  return false;
+}
+
+function validatemiddleName(input) {
+  var value = input.value.replace(/[^A-Za-z\s]/g, '');
+  input.value = value.trim();
+
+  // Skip validation if the input is empty
+  if (value === '') {
+    input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+    return;
+  }
+
+  var minLength = 2; // Minimum required characters
+
+  if (value.length < minLength) {
+    input.setCustomValidity('Please provide a valid middle name with at least 2 characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else if (hasMoreThanThreeRepeatingChars(value)) {
+    input.setCustomValidity('The input should not contain more than 3 repeating characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else {
+    input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+  }
+}
+
+
+
+
+function validatelastName(input) {
+  var value = input.value.replace(/[^A-Za-z\s]/g, '');
+  input.value = value.trim();
+
+  var minLength = 2; // Minimum required characters
+
+  if (value.length < minLength) {
+    input.setCustomValidity('Please provide a valid last name with at least 2 characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else if (hasMoreThanThreeRepeatingChars(value)) {
+    input.setCustomValidity('The input should not contain more than 3 repeating characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else {
+    input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+  }
+}
+
+
+
+function validateStudentNumber(input) {
+  var value = input.value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+  input.value = value.slice(0, 15);
+
+  // Validate the format: XXXX-XXXXX-SR-X
+  var formatRegex = /^[0-9]{4}-[0-9]{5}-SR-[0-9]$/;
+  var hasValidFormat = formatRegex.test(value);
+
+  // Validate if the input contains only letters
+  var lettersOnlyRegex = /^[A-Z-]+$/;
+  var containsOnlyLetters = lettersOnlyRegex.test(value);
+
+  // Validate if the input contains only numbers
+  var numbersOnlyRegex = /^[0-9-]+$/;
+  var containsOnlyNumbers = numbersOnlyRegex.test(value);
+
+  if (value.length === 15 && hasValidFormat && !containsOnlyLetters && !containsOnlyNumbers) {
+    input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+  } else {
+    input.setCustomValidity('Please provide a valid student number in this format: XXXX-XXXXX-SR-X.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  }
+}
+
+
+function validateAmount(input) {
+  var value = input.value;
+  value = value.replace(/[^0-9.]/g, ''); // Remove any non-digit and non-decimal point characters
+  value = value.slice(0, 9); // Limit the input to a maximum of 7 characters (6 digits + 1 decimal point)
+  input.value = value;
+
+  var regex = /^\d{0,6}(\.\d{0,2})?$/; // Regex pattern to validate input with up to 6 digits and 2 decimal places
+
+  if (!regex.test(input.value)) {
+    input.setCustomValidity('Please provide a valid amount with up to 6 digits and 2 decimal places.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else {
+    input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+  }
+}
+
+
+function validateReferenceNumber(input) {
+  var value = input.value.replace(/[^0-9]/g, '');
+  input.value = value;
+
+  var maxLength = 20; // Maximum allowed characters
+
+  if (value.length > maxLength) {
+    input.value = value.slice(0, maxLength); // Truncate the input value to the maximum length
+  }
+
+  if (value.length !== maxLength) {
+    input.setCustomValidity('Please provide a reference number with exactly 20 characters.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else if (/(\d)\1{4,}/.test(value)) {
+    input.setCustomValidity('Reference number should not contain more than 5 consecutive repeating numbers.');
+    input.classList.add('is-invalid');
+    input.parentNode.classList.add('has-error');
+  } else {
+    input.setCustomValidity('');
+    input.classList.remove('is-invalid');
+    input.parentNode.classList.remove('has-error');
+  }
+}
+
+
+
+
+/*Validate Upload File if Empty */
+function validateForm(event) {
+    var fileInput = document.getElementById('receiptImage');
+    if (!fileInput.files || fileInput.files.length === 0) {
+      event.preventDefault(); // Prevent form submission
+      alert('Please choose an image file to upload.'); // Show alert message
+    }
+  }
+
+  // Enable Bootstrap tooltips SUBMIT BUTTON POPUP
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+
+
+
+  //dropdown course
+  const selectElement = document.querySelector('select[name="course"]');
+  const options = Array.from(selectElement.options);
+
+  // Remove the "Select Course" option from the array
+  const selectCourseOption = options.shift();
+
+  options.sort((a, b) => a.text.localeCompare(b.text));
+
+  // Add back the "Select Course" option at the top
+  selectElement.appendChild(selectCourseOption);
+
+  for (const option of options) {
+    selectElement.appendChild(option);
+  }
+
+
+
+  const documentTypeSelectElement = document.querySelector('select[name="documentType"]');
+  const documentTypeOptions = Array.from(documentTypeSelectElement.options);
+
+  // Remove the "Select Document Type" option from the array
+  const selectDocumentTypeOption = documentTypeOptions.shift();
+
+  documentTypeOptions.sort((a, b) => a.text.localeCompare(b.text));
+
+  // Add back the "Select Document Type" option at the top
+  documentTypeSelectElement.appendChild(selectDocumentTypeOption);
+
+  for (const option of documentTypeOptions) {
+    documentTypeSelectElement.appendChild(option);
+  }
+
+
+</script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="js/script.js"></script>
-
-
+<script src="#"></script>
+<script src="../../loading.js"></script>
+<script src="../../saved_settings.js"></script>
 </body>
 </html>

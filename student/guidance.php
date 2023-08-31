@@ -11,7 +11,13 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -19,45 +25,43 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../navbar.php"
+            include "navbar.php";
+            include "../breadcrumb.php";
         ?>
         <div class="container-fluid guidancebanner header">
-            <a href="#" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">Generate Inquiry</a>
+            <a href="guidance/help.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 start-0">
+                <i class="fa-regular fa-circle-question"></i>
+                Help
+            </a>
             <a href="/student/transactions.php" class="header-btn btn btn-primary position-absolute p-3 m-2 bottom-0 end-0">Transactions</a>
-            <nav class="breadcrumb-nav breadcrumb-container" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.php">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Guidance Office</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'Guidance Office', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, false);
+            ?>
             <h1 class="display-1 header-text text-center text-light">Guidance Office</h1>
             <p class="header-text text-center text-light">Choose from one of the services below to get started</p>
         </div>
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
-            <a href="guidance/counceling.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
-                <h2>Schedule Counceling</h2>
-                <p>Schedule an appointment for counceling with the guidance councelor of the campus</p>
+            <a href="guidance/counseling.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
+                <h2>Schedule Counseling</h2>
+                <p>Schedule an appointment for counseling with the guidance councelor of the campus</p>
             </a>
-            <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
-            <h2>Request Good Moral Document</h2>
-                <p>Request for a good moral document for requirement purposes</p>
+            <a href="guidance/good_morals.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
+            <h2>Request Good Moral Certificate</h2>
+                <p>Request for a good moral certificate for requirement purposes</p>
             </a>
-            <a href="guidance/clearance.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded-0">
+            <a href="guidance/clearance.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>Request Clearance</h2>
                 <p>Request and check the status of your academic clearance</p>
             </a>
         </div>
         <div class="push"></div>
     </div>
-    <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </footer>
+    <?php include '../footer.php'; ?>
+    <script src="../loading.js"></script>
     <script>
         $(document).ready(function(){
             $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
@@ -67,5 +71,6 @@
             });
         });
     </script>
+    <script src="../saved_settings.js"></script>
 </body>
 </html>

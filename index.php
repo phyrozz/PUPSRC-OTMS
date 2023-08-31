@@ -12,16 +12,35 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="bg.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <?php
+        session_start();
+
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SESSION['user_role'] == 1) {
+                header("Location: /student/home.php");
+            }
+            else if ($_SESSION['user_role'] == 2) {
+                header("Location: /client/home.php");
+            }
+            // else if (!empty($_SESSION['admin_id'])) {
+            //     header("Location: /admin/redirect.php");
+            // }
+            else {
+                header("Location: /admin/redirect.php");
+            }
+            exit;
+        }
+    ?>
     <div class="vh-100 d-flex align-items-center">
         <div class="container d-flex justify-content-center">
             <div class="card login-card text-center bg-light p-3">
                 <div class="card-body">
                     <img class="p-3" src="assets/pup-logo.png" alt="PUP Logo" width="110" height="110">
                     <h3 class="card-title">PUP Santa Rosa</h3>
-                    <h5 class="card-title">Online Transaction Management System</h5>
+                    <h5 class="lead card-title"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h5>
                     <p class="card-text">Choose your role to get started</p>
                     <div class="d-flex justify-content-center align-items-center p-3 gap-2">
                         <a href="login/student.php" class="btn btn-student p-3 btn-lg">

@@ -92,9 +92,9 @@ class FileTest extends TestUtil
     {
         $testObj = $this->getTestObject();
         $_SERVER['DOCUMENT_ROOT'] = '/var/www';
-        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['HTTP_HOST'] = '192.168.84.183';
         $_SERVER['HTTPS'] = 'on';
-        $_SERVER['SCRIPT_URI'] = 'https://localhost/path/example.php';
+        $_SERVER['SCRIPT_URI'] = 'https://192.168.84.183/path/example.php';
         $alt = $testObj->getAltFilePaths($file);
         $this->assertEquals($expected, $alt);
     }
@@ -109,9 +109,9 @@ class FileTest extends TestUtil
                 )
             ),
             array(
-                'https://localhost/path/test.txt',
+                'https://192.168.84.183/path/test.txt',
                 array(
-                    0 => 'https://localhost/path/test.txt',
+                    0 => 'https://192.168.84.183/path/test.txt',
                     3 => '/var/www/path/test.txt'
                 )
             ),
@@ -127,21 +127,21 @@ class FileTest extends TestUtil
                 array(
                     0 => '/path/test.txt',
                     1 => '/var/www/path/test.txt',
-                    4 => 'https://localhost/path/test.txt'
+                    4 => 'https://192.168.84.183/path/test.txt'
                 )
             ),
             array(
-                'https://localhost/path/test.php?a=0&b=1&amp;c=2;&amp;d="a+b%20c"',
+                'https://192.168.84.183/path/test.php?a=0&b=1&amp;c=2;&amp;d="a+b%20c"',
                 array(
-                      0 => 'https://localhost/path/test.php?a=0&b=1&amp;c=2;&amp;d="a+b%20c"',
-                      2 => 'https://localhost/path/test.php?a=0&b=1&c=2;&d="a+b%20c"',
+                      0 => 'https://192.168.84.183/path/test.php?a=0&b=1&amp;c=2;&amp;d="a+b%20c"',
+                      2 => 'https://192.168.84.183/path/test.php?a=0&b=1&c=2;&d="a+b%20c"',
                 )
             ),
             array(
                 'path/test.txt',
                 array(
                     0 => 'path/test.txt',
-                    4 => 'https://localhost/path/test.txt'
+                    4 => 'https://192.168.84.183/path/test.txt'
                 )
             ),
         );

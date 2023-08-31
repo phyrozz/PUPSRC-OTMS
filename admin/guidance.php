@@ -11,60 +11,107 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <!-- Loading page -->
+    <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
+    <div id="loader" class="center">
+        <div class="loading-spinner"></div>
+        <p class="loading-text display-3 pt-3">Getting things ready...</p>
+    </div>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
 </head>
 <body>
     <div class="wrapper">
         <?php
-            include "navbar.php"
+            include "../conn.php";
+            include "navbar.php";
+
+            // Avoid admin user from accessing other office pages
+            if ($_SESSION['office_name'] != "Guidance Office") {
+                header("Location: /admin/redirect.php");
+            }
+
+            $table = 'document_request';
+
+            if (isset($_POST['filter-button'])) {
+                $table = $_POST['table-select'];
+            }
         ?>
         <div class="container-fluid py-2">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="d-flex w-100 justify-content-between p-0">
-                        <div class="d-flex p-2">
-                            <select class="form-select" id="transaction-type">
-                                <option value="counseling">Schedule Counseling</option>
-                                <option value="goodMorals">Request Good Moral Document</option>
-                                <option value="clearance">Request Clearance</option>
-                            </select>
+                    <div class="d-md-flex w-100 pb-2 justify-content-between align-items-end">
+                        <div class="d-flex flex-column gap-1">
+                            <div>
+                                <form id="defaultTableValueSelect" class="d-flex input-group" action="guidance.php" method="post">
+                                    <label class="input-group-text" for="table-select">Service:</label>    
+                                    <select id="transactionTableSelect" class="form-select" name="table-select">
+                                        <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
+                                        <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
+                                        <option value="guidance_feedbacks" <?php if ($table === 'guidance_feedbacks') echo 'selected'; ?>>Feedbacks</option>
+                                    </select>
+                                    <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
+                                </form>
+                            </div>
+                            <div>
+                                <div id="filterByStatusSection" class="input-group">
+                                    <label class="input-group-text" for="filterByStatus">Filter by Status:</label>
+                                    <select name="filterByStatus" id="filterByStatus" class="form-select">
+                                        <!-- Select options are dynamically displayed depending on the table -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="filterByDocTypeSection" class="input-group">
+                                    <label class="input-group-text" for="filterByDocType">Filter by Document Type:</label>
+                                    <select name="filterByDocType" id="filterByDocType" class="form-select">
+                                        <option value="all">All</option>
+                                        <option value="goodMoral">Good Moral Document</option>
+                                        <option value="clearance">Clearance</option>
+                                    </select>
+                                </div>
+                                <button type="button" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i class="fa-solid fa-filter"></i> Filter</button>
+                                <?php if ($table === 'document_request') { ?>
+                                    <a href="tables/guidance/doc_request_reports.php" id="generate-doc-requests" name="generate-doc-requests" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Document Request Report</a>
+                                <?php } ?>
+                                <?php if ($table === 'scheduled_appointments') { ?>
+                                    <a href="tables/guidance/counseling_reports.php" id="generate-counseling" name="generate-counseling" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Counseling Schedule Report</a>
+                                <?php } ?>
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-end gap-2">
-                            <div class="input-group mb-3 d-flex justify-content-end">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <button class="btn btn-outline-primary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+                        <div class="mt-2">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="search-input">
+                                <button class="btn btn-outline-primary" type="button" id="search-button"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </div>
-                    <table id="transactions-table" class="table table-hover table-bordered"></table>
+                    
+                   
+                    <div id="loading-indicator" class="text-center">
+                        Loading...
+                    </div>
+                    <div id="table-container">
+                        <?php
+                            // Load the requested table
+                            if ($table === 'document_request') {
+                                include 'tables/guidance/doc_requests.php';
+                            }
+                            elseif ($table === 'scheduled_appointments') {
+                                include 'tables/guidance/counseling_appointments.php';
+                            }
+                            elseif ($table === 'guidance_feedbacks') {
+                                include 'tables/guidance/feedbacks_table.php';
+                            }
+                        ?>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex w-100 justify-content-between p-2">
-                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-                </button>
-                <div class="d-flex justify-content-end gap-2">
-                    <button class="btn btn-primary" disabled>Previous</button>
-                    <button class="btn btn-primary" disabled>Next</button>
-                </div>
-            </div>
-            
         </div>
         <div class="push"></div>
     </div>
-    <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </footer>
+    <?php include '../footer.php'; ?>
     <script>
         $(document).ready(function(){
             $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
@@ -75,155 +122,116 @@
         });
     </script>
     <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            const dropdown = document.getElementById('transaction-type');
-            const table = document.getElementById('transactions-table');
+        $(document).ready(function() {
+            $("#generate-doc-requests").on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var selectedDocType = $("#filterByDocType").val();
+                var searchValue = $("#search-input").val(); // Get the value of the search input
 
-            const defaultTable = `<thead>
-                    <tr>
-                        <th class="text-center" scope="col">Request Code</th>
-                        <th class="text-center" scope="col">Office</th>
-                        <th class="text-center" scope="col">Request</th>
-                        <th class="text-center" scope="col">Schedule</th>
-                        <th class="text-center" scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>GO-0001</td>
-                        <td>Guidance Office</td>
-                        <td>Request Good Moral Document</td>
-                        <td>12/05/2023 12:00 PM <a href="/student/guidance/doc_appointments/good_morals.php" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a></td>
-                        <td class="text-center">
-                            <select class="form-select" id="status">
-                                <option value="approved" style="background-color: green; color: #fff;">Approved</option>
-                                <option value="disapproved" style="background-color: red; color: #fff;">Disapproved</option>
-                                <option value="pending" style="background-color: yellow;">Pending</option>
-                            </select>
-                        </td>         
-                    </tr>
-                    <tr>
-                        <td>GO-0003</td>
-                        <td>Guidance Office</td>
-                        <td>Request Clearance</td>
-                        <td>-</td>
-                        <td class="text-center">
-                            <select class="form-select" id="changeStatus">
-                                <option>
-                                    <span class="badge rounded-pill bg-success">Approved</span>
-                                </option>
-                                <option selected>
-                                    <span class="badge rounded-pill bg-danger">Disapproved</span>
-                                </option>
-                                <option>
-                                    <span class="badge rounded-pill bg-warning text-dark">Pending</span>
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            `;
-            table.innerHTML = defaultTable;
-            
-            dropdown.addEventListener('change', function() {
-            // Get the selected value
-            const selectedValue = this.value;
-            
-            // Change the table based on the selected value
-            if (selectedValue === 'counseling') {
-                // Show the document requests and schedules table
-                table.innerHTML = defaultTable;
-            }
-            else if (selectedValue === 'goodMorals') {
-                table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th class="text-center" scope="col">Appointment Code</th>
-                            <th class="text-center" scope="col">Office</th>
-                            <th class="text-center" scope="col">Appointment</th>
-                            <th class="text-center" scope="col">Schedule</th>
-                            <th class="text-center" scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>GO-0002</td>
-                            <td>Guidance Office</td>
-                            <td>Schedule Counseling</td>
-                            <td>13/05/2023 9:00 AM  <a href="/student/guidance/counceling.php" class="btn btn-primary px-2 py-0"><i class="fa-brands fa-wpforms"></i></a></td>
-                            <td class="text-center">
-                                <select class="form-select" id="changeStatus">
-                                    <option>
-                                        <span class="badge rounded-pill bg-success">Approved</span>
-                                    </option>
-                                    <option>
-                                        <span class="badge rounded-pill bg-danger">Disapproved</span>
-                                    </option>
-                                    <option>
-                                        <span class="badge rounded-pill bg-warning text-dark">Pending</span>
-                                    </option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                `;
-            }
-             else if (selectedValue === 'clearance') {
-                // Show the payments table
-                table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th class="text-center" scope="col">Accounting Code</th>
-                        <th class="text-center" scope="col">Description</th>
-                        <th class="text-center" scope="col">Amount Paid</th>
-                        <th class="text-center" scope="col">Paid date</th>
-                        <th class="text-center" scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>AO-0001</td>
-                        <td>COR Certified True Copy</td>
-                        <td>PHP 150.00</td>
-                        <td>13/05/2023 3:00 PM</td>
-                        <td class="text-center">
-                            <select class="form-select" id="changeStatus">
-                                <option>
-                                    <span class="badge rounded-pill bg-success">Approved</span>
-                                </option>
-                                <option>
-                                    <span class="badge rounded-pill bg-danger">Disapproved</span>
-                                </option>
-                                <option>
-                                    <span class="badge rounded-pill bg-warning text-dark">Pending</span>
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>AO-0002</td>
-                        <td>Tuition Fee</td>
-                        <td>PHP 899.50</td>
-                        <td>15/05/2023 10:00 AM</td>
-                        <td class="text-center">
-                            <select class="form-select" id="changeStatus">
-                                <option>
-                                    <span class="badge rounded-pill bg-success">Approved</span>
-                                </option>
-                                <option>
-                                    <span class="badge rounded-pill bg-danger">Disapproved</span>
-                                </option>
-                                <option>
-                                    <span class="badge rounded-pill bg-warning text-dark">Pending</span>
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>`
-                ;
+                // Encode the selected values and search query to be URL-safe
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedDocType = encodeURIComponent(selectedDocType);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
+                // Construct the URL with the updated parameters
+                var link = "tables/guidance/doc_request_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+                
+                // Update the href attribute of the link
+                $(this).attr("href", link);
+            });
+            $("#generate-counseling").on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var selectedDocType = $("#filterByDocType").val();
+                var searchValue = $("#search-input").val(); // Get the value of the search input
+
+                // Encode the selected values and search query to be URL-safe
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedDocType = encodeURIComponent(selectedDocType);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
+                // Construct the URL with the updated parameters
+                var link = "tables/guidance/counseling_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+                
+                // Update the href attribute of the link
+                $(this).attr("href", link);
+            });
+
+            $('.sortable-header').on('click', function() {
+                var column = $(this).data('column');
+                var order = $(this).data('order');
+
+                // Toggle the sort order
+                order = (order === 'asc') ? 'desc' : 'asc';
+
+                // Reset the sort icons
+                $('.sortable-header').data('order', 'asc').find('.sort-icon').removeClass('fa-sort-up fa-sort-down').addClass('fa-sort');
+
+                // Update the clicked header's sort order and icon
+                $(this).data('order', order).find('.sort-icon').removeClass('fa-sort').addClass(order === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+
+                // Call the handlePagination function with the updated sort parameters
+                handlePagination(1, '', column, order);
+            });
+
+            // Function to show or hide the "Filter by Document Type" section
+            function toggleFilterByDocTypeSection() {
+                var selectedTable = $("#transactionTableSelect").val();
+
+                if (selectedTable === "document_request") {
+                    $("#filterByDocTypeSection").show();
+                } else {
+                    $("#filterByDocTypeSection").hide();
                 }
-            })
-        })
+            }
+
+            // Call the toggle function initially
+            toggleFilterByDocTypeSection();
+
+            // Event listener for the table select dropdown change
+            $("#tableSubmitSelect").on('click', function() {
+                toggleFilterByDocTypeSection();
+            });
+
+            // $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
+            //     $(this).next('ul').toggle();
+            //     e.stopPropagation();
+            //     e.preventDefault();
+            // });
+        });
+
+        function checkViewport() {
+            if (window.innerWidth < 768) {
+                document.getElementById('transactions-table').classList.add('text-nowrap', 'w-auto');
+            } else {
+                document.getElementById('transactions-table').classList.remove('text-nowrap', 'w-auto');
+            }
+        }
+
+        // Check viewport initially and on window resize
+        window.addEventListener('DOMContentLoaded', checkViewport);
+        window.addEventListener('resize', checkViewport);
+
+        // Get the select element on "Filter by Status" dropdown
+        var filterByStatusSelect = document.getElementById('filterByStatus');
+
+        // Define the statuses array
+        var statuses = <?php echo json_encode($statuses); ?>;
+
+        // Generate the options
+        var allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'All';
+        filterByStatusSelect.appendChild(allOption);
+
+        for (var key in statuses) {
+            if (statuses.hasOwnProperty(key) && key !== 'all') {
+                var option = document.createElement('option');
+                option.value = key;
+                option.textContent = statuses[key];
+                filterByStatusSelect.appendChild(option);
+            }
+        }
     </script>
+    <script src="../loading.js"></script>
 </body>
 </html>

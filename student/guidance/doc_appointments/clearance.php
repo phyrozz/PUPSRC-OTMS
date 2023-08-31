@@ -11,7 +11,7 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style.css">
-    <script src="https://kit.fontawesome.com/fe96d845ef.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -19,16 +19,64 @@
     <div class="wrapper">
         <?php
             $office_name = "Guidance Office";
-            include "../../../navbar.php";
+            include "../../navbar.php";
+            include "../../../breadcrumb.php";
+            include "../../../conn.php";
+
+            $query = "SELECT student_no, last_name, first_name, middle_name, extension_name FROM users
+            WHERE user_id = ?";
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("i", $_SESSION['user_id']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $userData = $result->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+
+            // if(isset($_POST['formSubmit'])) {
+            //     $counselingDescription = $_POST['counseling_description'];
+            //     $date = $_POST['date'];
+            //     $time = $_POST['time'];
+            //     $officeId = 5;
+            //     $statusId = 3;
+            //     $amountToPay = 0.00;
+            //     $dateTime = $date . ' ' . $time;
+
+            //     $query = "INSERT INTO doc_requests (scheduled_datetime, office_id, user_id, status_id, amount_to_pay)
+            //     VALUES (?, ?, ?, ?, ?)";
+
+            //     $stmt = $connection->prepare($query);
+            //     $stmt->bind_param("siiid", $dateTime, $officeId, $_SESSION['user_id'], $statusId, $amountToPay);
+            //     $stmt->execute();
+            //     $insertedId = $connection->insert_id;
+            //     if (!$insertedId > 0) {
+            //         $connection->close();
+            //         header("Location: /student/guidance/counceling.php");
+            //         exit();
+            //     }
+            //     $stmt->close();
+
+            //     $query = "INSERT INTO counseling_schedules (appointment_description, doc_requests_id)
+            //     VALUES (?, ?)";
+
+            //     $stmt = $connection->prepare($query);
+            //     $stmt->bind_param("si", $counselingDescription, $insertedId);
+            //     if ($stmt->execute()) {
+            //         $_SESSION['success'] = true;
+            //         header("Refresh:0");
+            //         $stmt->close();
+            //     }
+            //     $connection->close();
+            // }
         ?>
         <div class="container-fluid p-4">
-            <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/student/guidance.php">Guidance Office</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Schedule Clearance</li>
-                </ol>
-            </nav>
+            <?php
+            $breadcrumbItems = [
+                ['text' => 'My Transactions', 'url' => '/student/transactions.php', 'active' => false],
+                ['text' => 'Schedule Clearance Retrieval', 'active' => true],
+            ];
+
+            echo generateBreadcrumb($breadcrumbItems, true);
+            ?>
         </div>
         <div class="container-fluid text-center p-4">
             <h1>Schedule Retrieval - Clearance</h1>
@@ -45,15 +93,12 @@
                             <a class="btn btn-outline-primary mb-2" href="/student/transactions.php">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
-                            <a class="btn btn-outline-primary mb-2">
-                            <i class="fa-regular fa-flag"></i> Generate Inquiry
-                            </a>
-                            <button class="btn btn-outline-primary mb-2">
+                            <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
                                 <i class="fa-solid fa-arrows-rotate"></i> Reset Form
                             </button>
-                            <button class="btn btn-outline-primary mb-2">
+                            <a href="../help.php" class="btn btn-outline-primary mb-2">
                                 <i class="fa-solid fa-circle-question"></i> Help
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -62,45 +107,47 @@
                         <h6>Appointment Form</h6>
                     </div>
                     <div class="card-body">
-                        <form id="appointment-form" class="row g-3">
+                        <form action="clearance.php" id="appointment-form" class="needs-validated row g-3" method="POST" novalidate>
                             <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
                             <h6>Student Information</h6>
                             <div class="form-group required col-12">
                                 <label for="studentNumber" class="form-label">Student Number</label>
-                                <input type="text" class="form-control" id="studentNumber" disabled required>
+                                <input type="text" class="form-control" id="studentNumber" value="<?php echo $userData[0]['student_no'] ?>" maxlength="15" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" disabled required>
+                                <input type="text" class="form-control" id="lastName" value="<?php echo $userData[0]['last_name'] ?>" maxlength="100" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="firstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" disabled required>
+                                <input type="text" class="form-control" id="firstName" value="<?php echo $userData[0]['first_name'] ?>" maxlength="100" disabled required>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName" disabled required>
+                                <input type="text" class="form-control" id="middleName" value="<?php echo $userData[0]['middle_name'] ?>" maxlength="100" disabled required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="extensionName" class="form-label">Extension Name</label>
-                                <input type="text" class="form-control" id="extensionName" disabled required>
+                                <input type="text" class="form-control" id="extensionName" value="<?php echo $userData[0]['extension_name'] ?>" maxlength="11" disabled required>
                             </div>
                             <div class="form-group required col-12">
                                 <label for="contactNumber" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" required>
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div>
                             <div class="form-group col-12">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@yahoo.com" maxlength="100">
                             </div>
                             <h6 class="mt-5">Appointment Information</h6>
                             <div class="form-group required col-md-6">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" id="date" required>
+                                <input type="date" name="date" class="form-control" id="date" required>
+                                <div class="invalid-feedback">Please choose a valid date.</div>
                             </div>
                             <div class="form-group required col-md-6">
                                 <label for="time" class="form-label">Time</label>
-                                <select class="form-control" id="time">
+                                <select class="form-control" name="time" id="time" required>
+                                    <option value="">--Select--</option>
                                     <option>8:00 AM</option>
                                     <option>9:00 AM</option>
                                     <option>10:00 AM</option>
@@ -115,6 +162,7 @@
                                     <option>7:00 PM</option>
                                     <option>8:00 PM</option>
                                 </select>
+                                <div class="invalid-feedback">Please choose a time.</div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
@@ -150,27 +198,93 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <a href="#" id="submit" class="btn btn-primary">Submit</a>
+                                        <button type="submit" id="submit" class="btn btn-primary" name="formSubmit" data-bs-toggle="modal" data-bs-target="#successModal">Yes</button>
                                     </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <!-- Success alert modal -->
+                        <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your counseling appointment has been submitted successfully!</p>
+                                        <p>You can check the status of your appointment on the <b>My Transactions</b> page.</p>
+                                        <p>You must print this approval letter and submit it to the Director's Office before your scheduled appointment.</p>
+                                        <a href="./generate_pdf.php" target="_blank" class="btn btn-primary">Show Letter</a>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="push"></div>
     </div>
-    <div class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </div>
+    <?php include '../../../footer.php'; ?>
     <script src="jquery.js"></script>
+    <script>
+        let currentDate = new Date().toISOString().split('T')[0];
+
+        var maxDate = "2033-12-31";
+
+        document.getElementById("date").min = currentDate;
+        document.getElementById("date").max = maxDate;
+
+        var counselingDesc = document.getElementById('counseling_description').value;
+
+        function validateForm() {
+            var form = document.getElementById('appointment-form');
+            var selectFields = form.querySelectorAll('select[required]');
+
+            for (var i = 0; i < selectFields.length; i++) {
+                var selectField = selectFields[i];
+                if (selectField.value === "") {
+                    selectField.classList.add('is-invalid');
+                    selectField.classList.remove('is-valid');
+                } else {
+                    selectField.classList.add('is-valid');
+                    selectField.classList.remove('is-invalid');
+                }
+            }
+
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }
+
+        // Function to handle form submission
+        function handleSubmit() {
+            validateForm();
+            if (document.getElementById('appointment-form').checkValidity()) {
+                $('#confirmSubmitModal').modal('show');
+            }
+        }
+        
+        // Add event listener to the submit button
+        document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+    </script>
+    <?php if (isset($_SESSION['success']) && $_SESSION['success']) {
+        echo "
+        <script>
+        $(window).on('load', function() {
+            $('#successModal').modal('show');
+        });
+        </script>
+        ";
+    } 
+    unset($_SESSION['success']);
+    ?>
 </body>
 </html>

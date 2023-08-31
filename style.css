@@ -11,6 +11,14 @@ html, body {
     height: 100%;
 }
 
+body.dark-mode {
+    background-color: #111;
+    color: #fff;
+}
+
+/* Add more CSS rules for dark mode styles */
+  
+
 /* Set styles for the student homepage */
 .jumbotron {
     position: absolute;
@@ -18,9 +26,14 @@ html, body {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 2rem 1rem;
-    background-color: #e9ecef;
+    background-color: #e9ecef !important;
     border-radius: .3rem;
-  }
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.jumbotron.dark-mode {
+    background-color: #1f1f1f !important;
+}
 
 .login-card {
     width: 50%;
@@ -30,18 +43,6 @@ html, body {
 /* Set the style for the table's sorting link */
 .sortable-header {
     cursor: pointer;
-}
-
-.sort-icon {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    margin-left: 5px;
-    vertical-align: middle;
-    font-size: 0.75rem;
-    vertical-align: middle;
 }
 
 .asc {
@@ -89,14 +90,28 @@ html, body {
     background-color: #800000;
 }
 
+.bg-maroon.dark-mode {
+    background-color: #270000;
+}
+
 .btn-primary {
     background-color: #800000;
     border: 1px solid #800000;
 }
 
+.btn-primary.dark-mode {
+    background-color: #270000;
+    border: 1px solid #aaa;
+}
+
 .btn-primary:hover {
     background-color: #520000;
     border: 1px solid #520000;
+}
+
+.btn-primary.dark-mode:hover {
+    background-color: #520000;
+    border: 1px solid #aaa;
 }
 
 .btn:active {
@@ -109,12 +124,25 @@ html, body {
     border-color: #800000;
 }
 
+.btn-outline-primary.dark-mode {
+    color: #aaa;
+    border-color: #aaa;
+}
+
 .btn-outline-primary:hover {
     border-color: #520000;
     background-color: #520000;
 }
 
+.btn-outline-primary.dark-mode:hover {
+    color: #fff;
+    border-color: #aaa;
+    background-color: #520000;
+}
+
 .btn-primary:disabled {
+    color: #757575;
+    border-color: #757575;
     background-color: #bbbbbb;
 }
 
@@ -134,10 +162,19 @@ html, body {
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 99999999999;
 }
 
-.dropdown-item.active, .dropdown-item:active {
+.dropdown-item.dark-mode {
+    color: #fff;
+}
+
+.dropdown-item.dark-mode:hover {
+    background-color: #111111;
+    color: #fff;
+}
+
+.dropdown-item.active, .dropdown-item:active, .dropdown-item.dark-mode.active, .dropdown-item.dark-mode:active {
     background-color: #520000;
 }  
 
@@ -155,6 +192,10 @@ html, body {
 
 .registrarbanner {
     background-image: url("assets/registrar.jpg")
+}
+
+.accountingbanner {
+    background-image: url("assets/accounting_bg.png");
 }
 
 .header {
@@ -196,36 +237,37 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
 }
 
 .breadcrumb-container .breadcrumb-item + .breadcrumb-item::before {
+    color: inherit;
     font-weight: 100;
-    color: #fff;
     content: "/";
 }
 
-.breadcrumb-container .breadcrumb-item a {
-    color: #fff;
-}
-
-.breadcrumb-item a {
-    color: #000;
+.breadcrumb-link {
     text-decoration: none;
     transition: 0.2s ease-in-out;
     padding: 5px 8px;
     border-radius: 5px;
 }
 
-.breadcrumb-item a:hover {
+.breadcrumb-link:hover {
     background-color: #520000;
-    color: #fff;
+    color: #fff !important;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
-.breadcrumb-container .breadcrumb .active {
-    color: #fff;
-}
-
 .breadcrumb .active {
+    padding: 0.3px 8px;
     font-weight: 800;
 }
+
+.breadcrumb-item+.breadcrumb-item::before {
+    display: none;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.75rem;
+}
+
 /* End of custom breadcrumb styling */
 
 /* Different select option colors of statuses for admin pages */
@@ -267,6 +309,305 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     background-image: url("assets/background-img/pup-bg.png");
 }
 
+.search-result {
+    background-color: #f5dcdc;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.search-result:hover a {
+    background-color: #800000;
+    color: white;
+    border-radius: 5px;
+}
+
+.search-result a {
+    text-decoration: none;
+    color: #555;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 5px;
+}
+
+.search-result .card-title {
+    font-weight: normal;
+}
+
+.search-result .card-header {
+    font-style: oblique;
+    border: none;
+}
+
+/* Fixes the overflowing bug on the search result page */
+.page-heading {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+} 
+
+.autocomplete-list {
+    position: absolute;
+    top: 48px;
+    left: 57vw;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.autocomplete-item {
+    color: #000;
+    padding: 10px;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+a .autocomplete-item:hover {
+    background-color: #520000;
+    color: #fff;
+}
+
+/* Validation errors for sign up modal */
+.text-danger {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.text-success {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+/* Overwrite default style of accordions on the Help page */
+.accordion {
+    --bs-accordion-btn-color: #000;
+	--bs-accordion-btn-bg: #f5dcdc;
+	--bs-accordion-active-color: #fff;
+	--bs-accordion-active-bg: #520000;
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='black'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion.dark-mode {
+    --bs-accordion-btn-color: #fff;
+	--bs-accordion-btn-bg: #212121;
+	--bs-accordion-active-color: #fff;
+	--bs-accordion-active-bg: #520000;
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-body {
+    background-color: #fff;
+    color: #000;
+}
+
+.accordion-body.dark-mode {
+    background-color: #2e2525;
+    color: #fff;
+}
+
+/* Style pagination buttons on Transactions page */
+.page-link {
+    text-align: center;
+    width: 40px;
+}
+
+.page-link:hover {
+    color: white;
+}
+
+/* Loading indicator styles on Transactions page */
+#loading-indicator {
+    display: none;
+    text-align: center;
+    padding: 150px 0;
+}
+
+#loading-indicator::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid #d49797;
+    border-top-color: #520000;
+    animation: spin 1s infinite linear;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Loading screen styles for the website */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #111;
+    z-index: 9999;
+}
+
+#loader.dark-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #111;
+    color: #fff;
+    z-index: 9999;
+}
+  
+.loading-text {
+    color: #111;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.loading-text.dark-mode {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.loading-spinner {
+    border: 12px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 12px solid #520000;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+}
+
+.fade-out {
+    /* Apply fade-out animation by setting opacity to 0 */
+    opacity: 0;
+}
+
+#passwordChecklist {
+    margin-top: 5px;
+}
+
+#passwordChecklist li {
+    list-style: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Form field animation when they appear and disappear on the page */
+.fade-in {
+    animation: fadeIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fade-out {
+    animation: fadeOut 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Change Profile Picture div styles on Account Settings */
+.avatar-wrapper {
+    position: relative;
+    width: 250px; /* Desired width */
+    height: 250px; /* Desired height */
+    overflow: hidden;
+    border-radius: 10%; /* For circular avatar */
+}
+
+.avatar-overlay {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    transition: opacity 0.3s ease;
+    z-index: 1; /* Ensure overlay is above the image */
+}
+
+.avatar-wrapper:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.overlay-text {
+    margin-bottom: 1rem;
+}
+
+.upload-label {
+    cursor: pointer;
+}
+
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.notification-menu {
+    position: absolute;
+    left: -200px !important;
+    top: 45px !important;
+    min-width: 400px;
+    background-color: #fff !important;
+}
+
+.notification-button::after {
+    content: none;
+}
+
+@media only screen and (max-width: 992px) {
+    .autocomplete-list {
+        position: static;
+        margin-top: 10px;
+        box-shadow: none;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     .login-card {
         width: 100%;
@@ -278,10 +619,15 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     }
 
     .jumbotron {
-        left: 0;
-        top: 0;
-        margin: 0;
-        padding: 120px 0 0 0;
-        transform: translate(0%, 0%);
+        /* align-items: end; */
+        padding-top: 100px;
+        width: 100vw;
+        height: 100vh;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .jumbotron {
+        height: auto;
     }
 }
