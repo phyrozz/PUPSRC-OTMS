@@ -173,6 +173,11 @@ background-color: #e9ecef;
                         input.setCustomValidity("");
                     }
                     }
+                    document.getElementById('amountToOffset').addEventListener('keydown', function (event) {
+                        if (event.key === "-" || event.key === "+" || event.key === "e") {
+                            event.preventDefault();
+                        }
+                    });
                 </script>
             </div>
             <div class="col-12">
