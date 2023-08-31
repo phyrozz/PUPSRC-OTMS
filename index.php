@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="bg.css">
-    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous" defer></script>
 </head>
 <body>
     <?php

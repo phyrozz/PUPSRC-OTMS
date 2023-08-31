@@ -148,8 +148,11 @@ $isLoggedIn = true;
                 url: '/fetch_profile_img.php',
                 dataType: 'json',
                 success: function(response) {
-                    $('#avatar-icon').attr("src", response.img);
-                    // $('#avatar-icon').attr("src", "/assets/avatar.png");
+                    if (response.img === "/_small") {
+                        $('#avatar-icon').attr("src", "/assets/avatar.png");
+                    } else {
+                        $('#avatar-icon').attr("src", response.img);
+                    }
                 },
                 error: function(error) {
                     $('#avatar-icon').attr("src", "/assets/avatar.png");

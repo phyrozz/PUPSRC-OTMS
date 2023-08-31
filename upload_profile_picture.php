@@ -39,19 +39,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
                 $stmt->close();
 
-                // Rescale the image for the profile icon while maintaining aspect ratio
-                $smallIconPath = $targetDir . basename($_FILES['profile_picture']['name']);
-                $extension_pos = strrpos($smallIconPath, '.'); // find position of the last dot, so where the extension starts
-                $newPath = substr($smallIconPath, 0, $extension_pos) . '_small' . substr($smallIconPath, $extension_pos);
-                $smallIconImage = imagescale($compressedImage, 100, -1, IMG_BICUBIC); // Rescale width to 100 pixels while maintaining aspect ratio
-                imagejpeg($smallIconImage, $newPath);
-                imagedestroy($smallIconImage);
+                // Commented out the implementation of a smaller copy of profile image because it doesn't work on deployment environment
+
+                // // Rescale the image for the profile icon while maintaining aspect ratio
+                // $smallIconPath = $targetDir . basename($_FILES['profile_picture']['name']);
+                // $extension_pos = strrpos($smallIconPath, '.'); // find position of the last dot, so where the extension starts
+                // $newPath = substr($smallIconPath, 0, $extension_pos) . '_small' . substr($smallIconPath, $extension_pos);
+                // $uploadedImage = imagecreatefromjpeg($_FILES['profile_picture']['tmp_name']);
+                // $smallIconImage = imagescale($uploadedImage, 100, -1, IMG_BICUBIC);
+                // imagejpeg($smallIconImage, $newPath);
+                // imagedestroy($smallIconImage);
             } else {
                 echo "Error uploading profile picture.";
             }
 
             // Free up memory by destroying the compressed image resource
             imagedestroy($compressedImage);
+            // imagedestroy($uploadedImage);
         } else {
             echo "Invalid image file.";
         }

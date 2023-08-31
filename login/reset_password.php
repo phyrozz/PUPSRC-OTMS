@@ -58,9 +58,9 @@ $connection->close();
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../bg.css">
-    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
-    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous" defer></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js" defer></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body>
     <div class="jumbotron bg-white d-flex">
