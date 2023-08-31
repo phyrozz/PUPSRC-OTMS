@@ -80,25 +80,36 @@
             <div id="autocomplete-list" class="autocomplete-list"></div>
         </div>
         <li class="nav-item dropdown order-1 order-lg-3">
-            <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-user-circle me-1"></i>
-                <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"] . " " . $_SESSION["extension_name"]; ?>
+            <a class="nav-link dropdown-toggle m-0 p-0" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="avatar-rounded-square">
+                    <img id="avatar-icon" alt="User Avatar" class="nav-avatar">
+                </div>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+            <ul id="userProfileDropdownMenu" class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+                <li>
+                    <a class="dropdown-item" href="/client/my_account.php">
+                        <h5 class="text-center p-3 m-0">
+                            <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"] . " " . $_SESSION["extension_name"]; ?>
+                        </h5>
+                    </a>
+                </li>
                 <li><a class="dropdown-item" href="/client/transactions.php">My Transactions</a></li>
                 <li><a class="dropdown-item" href="/client/my_account.php">Account Settings</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/sign_out.php"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
             </ul>
-            <li class="nav-item dropdown order-1 order-lg-2">
-                <a class="nav-link dropdown-toggle notification-button" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-bell"></i>
-                    <span class="badge badge-danger" id="notificationCount">0</span>
-                </a>
-                <ul class="notification-menu dropdown-menu w-100" aria-labelledby="notificationDropdown" id="notificationList">
+        </li>
+        <li class="nav-item dropdown order-1 order-lg-2">
+            <a class="nav-link dropdown-toggle notification-button" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-bell fa-xl"></i>
+                <span class="badge badge-danger" id="notificationCount">0</span>
+            </a>
+            <ul class="dropdown-menu w-100 notification-menu" aria-labelledby="notificationDropdown">
+                <h5 class="text-center m-3">Notifications</h5>
+                <div id="notificationList">
                     <!-- Notifications will be populated here -->
-                </ul>
-            </li>
+                </div>
+            </ul>
         </li>
       </ul>
     </div>
@@ -121,7 +132,28 @@
             });
         }
 
+        function loadAvatarPicture() {
+            $.ajax({
+                type: 'GET',
+                url: '/fetch_profile_img.php',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.img === "/_small") {
+                        $('#avatar-icon').attr("src", "/assets/avatar.png");
+                    } else {
+                        $('#avatar-icon').attr("src", response.img);
+                    }
+                    // $('#avatar-icon').attr("src", "/assets/avatar.png");
+                },
+                error: function(error) {
+                    $('#avatar-icon').attr("src", "/assets/avatar.png");
+                    console.log(error);
+                }
+            });
+        }
+
         getNotifCount();
+        loadAvatarPicture();
 
         // Fetch and update notifications when the notification icon is clicked
         $('#notificationDropdown').click(function() {
@@ -139,9 +171,10 @@
                         var notificationsToDisplay = response.notifications.slice(0, 10);
 
                         notificationsToDisplay.forEach(function(notification) {
-                            var notificationItem = $('<li data-notification-id="' + notification.notification_id + '">' + 
+                            var notificationItem = $('<li class="card m-2" data-notification-id="' + notification.notification_id + '">' + 
                                 '<a href="#" class="dropdown-item notification-item">' + 
-                                    '<p class="text-wrap m-0"><i><small>' + notification.office_name + '</small></i></p>' + 
+                                    '<p class="text-wrap m-0 text-end"><i><small>' + notification.office_name + '</small></i></p>' + 
+                                    '<p class="text-wrap m-0"><b><small>' + notification.timestamp + '</small></b></p>' + 
                                     '<p class="text-wrap m-0"><b>' + notification.title + '</b></p>' + 
                                     '<p class="text-wrap">' + notification.description + '</p>' + 
                                 '</a>' + 
@@ -157,6 +190,7 @@
                         });
                     } else {
                         notificationList.html('<div class="mx-5 my-3 text-center">'+
+                        '<i class="fa-regular fa-thumbs-up fa-2xl"></i>'+
                         '<p><b>You\'re all set!</b></p>'+
                         '<p><small>No new notifications</small></p>'+
                         '</div>');
@@ -188,6 +222,7 @@
                             if ($('#notificationList').children().length === 0) {
                                 var notificationList = $('#notificationList');
                                 notificationList.html('<div class="mx-5 my-3 text-center">'+
+                                '<i class="fa-regular fa-thumbs-up fa-2xl"></i>'+
                                 '<p><b>You\'re all set!</b></p>'+
                                 '<p><small>No new notifications</small></p>'+
                                 '</div>');

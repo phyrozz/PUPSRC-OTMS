@@ -60,7 +60,7 @@ if (isset($_POST['studentSignup'])) {
                 $stmt->bind_param("sssssssssi", $studentNo, $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
 
                 // Check if all of the names match the following regex expression. If not, the query will not proceed to execute
-                if ($stmt->execute() && (preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $lastName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $firstName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $middleName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $extensionName))) {
+                if ($stmt->execute() && (preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $lastName) && preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $firstName) && preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $middleName) && preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $extensionName))) {
                     $stmt->close();
                     $lastId = $connection->insert_id;
                     $stmt = $connection->prepare($userDetailsQuery);
@@ -158,7 +158,7 @@ else if (isset($_POST['clientSignup'])) {
                 $stmt->bind_param("ssssssssi", $lastName, $firstName, $middleName, $extensionName, $contactNumber, $email, $birthdate, $hashedPassword, $userRole);
 
                 // Check if all of the names match the following regex expression. If not, the query will not proceed to execute
-                if ($stmt->execute() && (preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $lastName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $firstName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $middleName) && preg_match('/^[a-zA-ZÑñ\_\-\'\ \.]*$/', $extensionName))) {
+                if ($stmt->execute() && (preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $lastName) && preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $firstName) && preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $middleName) && preg_match("/^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/", $extensionName))) {
                     $stmt->close();
                     $lastId = $connection->insert_id;
                     $stmt = $connection->prepare($userDetailsQuery);

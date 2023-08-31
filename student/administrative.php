@@ -50,11 +50,11 @@
         <div class="container-fluid p-2 d-flex flex-wrap flex-column justify-content-center gap-2 text-center">
             <a href="administrative/view-equipment.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
                 <h2>Request of School Equipment</h2>
-                <p>Request of equipment inside the campus.</p>
+                <p>Request of equipment inside the campus</p>
             </a>
             <a href="administrative/view-facility.php" class="btn btn-primary d-block text-decoration-none bg-maroon text-light p-4 rounded">
             <h2>School Facility Appointment</h2>
-            <p>Request of Facilities for campus event purposes. </p>
+            <p>Request of Facilities for campus event purposes</p>
             </a>
         </div>
         <div class="push"></div>

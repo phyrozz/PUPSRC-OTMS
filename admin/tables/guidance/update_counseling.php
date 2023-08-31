@@ -47,6 +47,7 @@ try {
 
         $stmt->close();
     }
+    $connection->close();
 } catch (Exception $e) {
     echo json_encode(['message' => 'Error occurred while updating status: ' . $e]);
 }

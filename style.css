@@ -571,6 +571,25 @@ a .autocomplete-item:hover {
     opacity: 1;
 }
 
+.avatar-rounded-square {
+    width: 41px;
+    height: 41px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background-color: #f0f0f0;
+}
+
+.nav-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#userProfileDropdown::after {
+    content: none;
+}
+
 .overlay-text {
     margin-bottom: 1rem;
 }
@@ -590,7 +609,7 @@ a .autocomplete-item:hover {
 
 .notification-menu {
     position: absolute;
-    left: -200px !important;
+    left: -275px !important;
     top: 45px !important;
     min-width: 400px;
     background-color: #fff !important;
@@ -598,6 +617,14 @@ a .autocomplete-item:hover {
 
 .notification-button::after {
     content: none;
+}
+
+#userProfileDropdownMenu {
+    min-width: 300px;
+}
+
+.payment-summary {
+    max-width: 700px;
 }
 
 @media only screen and (max-width: 992px) {

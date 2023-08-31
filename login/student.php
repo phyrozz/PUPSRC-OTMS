@@ -464,7 +464,7 @@
 
         lastNameInput.addEventListener('input', () => {
             const lastName = lastNameInput.value.trim();
-            const lastNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+            const lastNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!lastNamePattern.test(lastName)) {
                 lastNameValidationMessage.textContent = 'Invalid last name. It must not contain numbers or special characters.';
@@ -477,7 +477,7 @@
 
         firstNameInput.addEventListener('input', () => {
             const firstName = firstNameInput.value.trim();
-            const firstNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+            const firstNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!firstNamePattern.test(firstName)) {
                 firstNameValidationMessage.textContent = 'Invalid first name. It must not contain numbers or special characters.';
@@ -490,7 +490,7 @@
 
         middleNameInput.addEventListener('input', () => {
             const middleName = middleNameInput.value.trim();
-            const middleNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+            const middleNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!middleNamePattern.test(middleName)) {
                 middleNameValidationMessage.textContent = 'Invalid middle name. It must not contain numbers or special characters.';
@@ -503,7 +503,7 @@
 
         extensionNameInput.addEventListener('input', () => {
             const extensionName = extensionNameInput.value.trim();
-            const extensionNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+            const extensionNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!extensionNamePattern.test(extensionName)) {
                 extensionNameValidationMessage.textContent = 'Invalid extension name. It must not contain numbers or special characters.';

@@ -27,11 +27,15 @@
             case "2":
                 return 'bg-secondary';
             case "3":
-                return 'bg-info';
+                return 'bg-info text-dark';
             case "4":
                 return 'bg-success';
             case "5":
                 return 'bg-danger';
+            case "6":
+                return 'bg-info text-dark';
+            case "7":
+                return 'bg-warning text-dark';
         }
     }
 
@@ -47,6 +51,10 @@
                 return "Verified";
             case "5":  
                 return "Rejected";
+            case "6":
+                return 'To Be Evaluated';
+            case "7":
+                return 'Need F to F Evaluation';
         }
     }
 
