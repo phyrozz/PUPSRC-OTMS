@@ -438,10 +438,10 @@
                     // Handle the success response
                     console.log('Status updated successfully');
 
-                    // Update facility availability if status is "Released"
-                    if (statusId === '5') { // Assuming "Released" status has ID 2
-                        updateFacilityAvailability(requestIds);
-                    }
+                    // // Update facility availability if status is "Released"
+                    // if (statusId === '5') { // Assuming "Released" status has ID 2
+                    //     updateFacilityAvailability(requestIds);
+                    // }
 
                     // Refresh the table after status update
                     handlePagination(1, '', 'appointment_id', 'desc');
@@ -452,22 +452,22 @@
                 }
             });
 
-            function updateFacilityAvailability(requestIds) {
-                $.ajax({
-                    url: 'tables/administrative/update_facility_availability.php', // Modify the URL accordingly
-                    method: 'POST',
-                    data: { requestIds: requestIds }, // Include relevant data to identify facilities
-                    success: function(response) {
-                        // Handle the success response
-                        console.log('Facility availability updated');
-                        location.reload();
-                    },
-                    error: function() {
-                        // Handle the error response
-                        console.log('Error occurred while updating facility availability');
-                    }
-                });
-            }
+            // function updateFacilityAvailability(requestIds) {
+            //     $.ajax({
+            //         url: 'tables/administrative/update_facility_availability.php', // Modify the URL accordingly
+            //         method: 'POST',
+            //         data: { requestIds: requestIds }, // Include relevant data to identify facilities
+            //         success: function(response) {
+            //             // Handle the success response
+            //             console.log('Facility availability updated');
+            //             location.reload();
+            //         },
+            //         error: function() {
+            //             // Handle the error response
+            //             console.log('Error occurred while updating facility availability');
+            //         }
+            //     });
+            // }
 
             
         });

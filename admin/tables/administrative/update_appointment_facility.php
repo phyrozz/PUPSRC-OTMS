@@ -29,6 +29,14 @@ try {
     $stmt->execute();
     $stmt->close();
 
+    if ($statusId == 5) { // Check if the new status is "Released"
+        // Update facility availability to "Unavailable"
+        $updateStmt = $connection->prepare("UPDATE facility SET availability = 'Unavailable' WHERE facility_id IN (SELECT facility_id FROM appointment_facility WHERE appointment_id IN (".$placeholders."))");
+        $updateStmt->bind_param(str_repeat('s', count($requestIds)), ...$requestIds);
+        $updateStmt->execute();
+        $updateStmt->close();
+    }
+
     echo json_encode(['message' => 'Status updated successfully']);
 
     // Insert notifications
