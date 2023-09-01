@@ -27,20 +27,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if ($updateStmt->execute()) {
                 // Quantity deducted successfully
-
-                // Check if the quantity becomes zero, update availability to 'Unavailable'
-                if ($quantityToDeduct >= $row['quantity']) {
-                    $updateAvailabilityQuery = "UPDATE equipment SET availability = 'Unavailable' WHERE equipment_id = ?";
-                    $updateAvailabilityStmt = $connection->prepare($updateAvailabilityQuery);
-                    $updateAvailabilityStmt->bind_param("i", $equipmentId);
-                    $updateAvailabilityStmt->execute();
-                    $updateAvailabilityStmt->close();
+            
+                // Fetch the updated quantity after deduction
+                $updatedQuantityQuery = "SELECT quantity FROM equipment WHERE equipment_id = ?";
+                $updatedQuantityStmt = $connection->prepare($updatedQuantityQuery);
+                $updatedQuantityStmt->bind_param("i", $equipmentId);
+                $updatedQuantityStmt->execute();
+                $updatedQuantityResult = $updatedQuantityStmt->get_result();
+            
+                if ($updatedQuantityResult && $updatedQuantityResult->num_rows > 0) {
+                    $updatedRow = $updatedQuantityResult->fetch_assoc();
+                    $updatedQuantity = $updatedRow['quantity'];
+            
+                    // Check if the updated quantity becomes zero, update availability to 'Unavailable'
+                    if ($updatedQuantity <= 0) {
+                        $updateAvailabilityQuery = "UPDATE equipment SET availability = 'Unavailable' WHERE equipment_id = ?";
+                        $updateAvailabilityStmt = $connection->prepare($updateAvailabilityQuery);
+                        $updateAvailabilityStmt->bind_param("i", $equipmentId);
+                        $updateAvailabilityStmt->execute();
+                        $updateAvailabilityStmt->close();
+                    }
                 }
+            
+                $updatedQuantityStmt->close();
             } else {
                 // Error occurred while updating quantity
                 echo "Error: " . $updateStmt->error;
             }
-
             $updateStmt->close();
         }
     }
