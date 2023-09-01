@@ -1,31 +1,35 @@
 <?php
-
 include '../../../conn.php'; // Replace with the correct path
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if (isset($_POST['requestIds']) && is_array($_POST['requestIds'])) {
     $requestIds = $_POST['requestIds'];
 
-    // Generate placeholders for the IN clause
-    $placeholders = implode(',', array_fill(0, count($requestIds), '?'));
+    // Loop through each appointment ID
+    foreach ($requestIds as $requestId) {
+        // Get the facility ID associated with the appointment
+        $query = "SELECT facility_id FROM appointment_facility WHERE appointment_id = ?";
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param('i', $requestId);
+        $stmt->execute();
+        $stmt->bind_result($facilityId);
+        $stmt->fetch();
+        $stmt->close();
 
-    $query = "UPDATE facility SET availability = 'Unavailable' WHERE facility_id IN (SELECT facility_id FROM appointment_facility WHERE appointment_id IN ($placeholders))";
-    $stmt = $connection->prepare($query);
-    
-    // Bind parameters for the placeholders
-    $stmt->bind_param(str_repeat('i', count($requestIds)), ...$requestIds);
-    
-    if ($stmt->execute()) {
-        // Facility availability updated successfully
-        echo "Facility availability updated successfully";
-    } else {
-        // Error occurred while updating facility availability
-        echo "Error: " . $stmt->error;
+        // Update the facility's availability to "Unavailable"
+        $updateQuery = "UPDATE facility SET availability = 'Unavailable' WHERE facility_id = ?";
+        $updateStmt = $connection->prepare($updateQuery);
+        $updateStmt->bind_param('i', $facilityId);
+        $updateStmt->execute();
+        $updateStmt->close();
     }
-
-    // Close the prepared statement
-    $stmt->close();
 
     // Close the database connection
     $connection->close();
+
+    // Send a success response
+    echo json_encode(['success' => true]);
+} else {
+    // Send an error response
+    echo json_encode(['success' => false, 'message' => 'Invalid data']);
 }
 ?>
