@@ -6,6 +6,9 @@ $requestIds = $_POST['requestIds'];
 $officeId = 1;
 
 try {
+    // Set the database time zone to Asia/Manila
+    $connection->query("SET time_zone = '+08:00'");
+
     $placeholders = implode(',', array_fill(0, count($requestIds), '?'));
 
     // Fetch request equipment, quantity, purpose, and scheduled datetimes
@@ -30,7 +33,7 @@ try {
 
     // Insert notifications
     if ($statusId == 4 || $statusId == 6) {
-        $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description) VALUES (?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");
     
         foreach ($updatedRequestDescriptions as $requestId => $requestInfo) {
             $title = 'Request Equipment Status Update';

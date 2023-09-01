@@ -64,7 +64,7 @@ $isLoggedIn = true;
                             case 'Registrar Office':
                                 echo '
                                 <li><a class="dropdown-item" href="/student/registrar/create_request.php">Create Request</a></li>
-                                <li><a class="dropdown-item" href="/student/registrar/your_transaction.php">Your Registrar Transactions</a></li>
+                                <li><a class="dropdown-item" href="/student/transactions.php">Your Registrar Transactions</a></li>
                                 ';
                                 break;
                             case 'Accounting Office':
@@ -148,7 +148,7 @@ $isLoggedIn = true;
                 url: '/fetch_profile_img.php',
                 dataType: 'json',
                 success: function(response) {
-                    if (response.img === "/_small") {
+                    if (response.img === "/") {
                         $('#avatar-icon').attr("src", "/assets/avatar.png");
                     } else {
                         $('#avatar-icon').attr("src", response.img);

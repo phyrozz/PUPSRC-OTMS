@@ -14,11 +14,12 @@ if (isset($_SESSION['user_id'])) {
     $stmt->fetch();
     $stmt->close();
 
-    $extension_pos = strrpos($avatarUrl, '.');
-    $newUrl = substr($avatarUrl, 0, $extension_pos) . '_small' . substr($avatarUrl, $extension_pos);
+    // _small thumb upload does not work on deployment env
+    // $extension_pos = strrpos($avatarUrl, '.');
+    // $newUrl = substr($avatarUrl, 0, $extension_pos) . '_small' . substr($avatarUrl, $extension_pos);
 
     // Return the URL as a JSON response
-    echo json_encode(['img' => '/' . $newUrl]);
+    echo json_encode(['img' => '/' . $avatarUrl]);
     $connection->close();
 } else {
     echo json_encode(['error' => 'User not authenticated.']);

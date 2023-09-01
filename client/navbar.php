@@ -138,7 +138,7 @@
                 url: '/fetch_profile_img.php',
                 dataType: 'json',
                 success: function(response) {
-                    if (response.img === "/_small") {
+                    if (response.img === "/") {
                         $('#avatar-icon').attr("src", "/assets/avatar.png");
                     } else {
                         $('#avatar-icon').attr("src", response.img);
