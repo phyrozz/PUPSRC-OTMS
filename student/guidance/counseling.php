@@ -40,10 +40,10 @@
             $stmt->close();
 
             if(isset($_POST['formSubmit'])) {
-                $counselingDescription = $_POST['counseling_description'];
-                $comments = $_POST['reasonText'];
-                $date = $_POST['date'];
-                $time = $_POST['time'];
+                $counselingDescription = sanitizeInput($_POST['counseling_description']);
+                $comments = sanitizeInput($_POST['reasonText']);
+                $date = sanitizeInput($_POST['date']);
+                $time = sanitizeInput($_POST['time']);
                 $officeId = 5;
                 $statusId = 1;
                 $amountToPay = 0.00;

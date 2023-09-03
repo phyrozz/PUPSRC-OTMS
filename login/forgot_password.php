@@ -17,7 +17,7 @@ if (isset($_POST['resetBtn'])) {
     include '../conn.php';
 
     $mail = new PHPMailer(true);
-    $email = $_POST['email'];
+    $email = sanitizeInput($_POST['email']);
 
     try {
         // Check if the email exists in the database
@@ -81,6 +81,11 @@ if (isset($_POST['resetBtn'])) {
     } catch (Exception $e) {
         $_SESSION['email_does_not_exist'] = true;
     }
+}
+
+// Function to sanitize user input
+function sanitizeInput($input) {
+    return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
 }
 ?>
 <!DOCTYPE html>

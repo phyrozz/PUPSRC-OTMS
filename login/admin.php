@@ -22,8 +22,8 @@
     include "../conn.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+        $email = sanitizeInput($_POST['email']);
+        $password = sanitizeInput($_POST['password']);
 
         $query = "SELECT admins.admin_id, admins.email, admins.first_name, admins.last_name, admins.password, offices.office_name FROM admins INNER JOIN offices ON admins.office_id = offices.office_id WHERE admins.email = ?";
         $stmt = $connection->prepare($query);
@@ -41,12 +41,17 @@
             header("Location: ../admin/redirect.php");
             exit();
         } else {
-                $loginMessage = "Invalid credentials. Please try again.";
-            }
-    
-            $stmt->close();
-            $connection->close();
+            $loginMessage = "Invalid credentials. Please try again.";
         }
+    
+        $stmt->close();
+        $connection->close();
+    }
+    
+    // Function to sanitize user input
+    function sanitizeInput($input) {
+        return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+    }
     ?>
     <div class="jumbotron bg-white">
         <div class="container">

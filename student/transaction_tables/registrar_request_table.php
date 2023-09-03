@@ -360,6 +360,16 @@
         });
     }
 
+    // This function gives each office names on the Office column of the table links that will redirect them to their respective offices
+    function generateUrlToOfficeColumn(officeName) {
+        switch (officeName) {
+            case 'Guidance Office':
+                return '/student/guidance.php';
+            case 'Registrar Office':
+                return '/student/registrar.php';
+        }
+    }
+
     //------------------------------------------------------------------------
     // Event listener for view reason buttons
     document.addEventListener('click', function(event) {
@@ -434,7 +444,7 @@
                         var row = '<tr>' +
                             '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
-                            '<td>' + request.office_name + '</td>' +
+                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</td>' +
                             '<td>' + request.request_description + '</td>' +
                             '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +

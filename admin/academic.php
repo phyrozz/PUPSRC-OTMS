@@ -205,58 +205,6 @@
         window.addEventListener('DOMContentLoaded', function() {
             const dropdown = document.getElementById('transaction-type');
             const table = document.getElementById('transactions-table');
-
-            const defaultTable = `<thead>
-                    <tr>
-                        <th class="text-center" scope="col">Request Code</th>
-                        <th class="text-center" scope="col">Requestor</th>
-                        <th class="text-center" scope="col">Application</th>
-                        <th class="text-center" scope="col">View attachment</th> <!-- Added column -->
-                        <th class="text-center" scope="col">PDF forms</th> <!-- Added column -->
-                        <th class="text-center" scope="col">Note</th> <!-- Added column -->
-                        <th class="text-center" scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td> <!-- Added column -->
-                        <td></td> <!-- Added column -->
-                        <td></td> <!-- Added column -->
-                        <td class="text-center">
-                            <select class="form-select" id="status">
-                                <option value="1">Pending</option>
-                                <option value="2">Missing</option>
-                                <option value="3">Under Verification</option>
-                                <option value="4">To Be Evaluated</option> <!-- Added column -->
-                                <option value="5">Verified</option>
-                            </select>
-                        </td>         
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td> <!-- Added column -->
-                        <td></td> <!-- Added column -->
-                        <td></td> <!-- Added column -->
-                        <td class="text-center">
-                            <select class="form-select" id="status">
-                                <option value="1">Pending</option>
-                                <option value="2">Missing</option>
-                                <option value="3">Under Verification</option>
-                                <option value="4">To Be Evaluated</option> <!-- Added column -->
-                                <option value="5">Verified</option>
-                            </select>
-                        </td>
-                    </tr>
-                    
-                   
-                </tbody>
-            `;
-            table.innerHTML = defaultTable;
         })
     </script>
     <script src="../loading.js"></script>

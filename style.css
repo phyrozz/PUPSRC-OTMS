@@ -627,6 +627,19 @@ a .autocomplete-item:hover {
     max-width: 700px;
 }
 
+/* Custom styles for "Next" and "Previous" buttons */
+.custom-nav-button {
+    width: 120px;
+}
+
+/* Style the status dropdowns in Academic Admin */
+select.status-dropdown {
+    max-width: 150px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+}
+
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
         position: static;

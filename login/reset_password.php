@@ -14,8 +14,8 @@ if ($result->num_rows === 1) {
     // Token is valid, allow the user to reset their password
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve the new password from the form
-        $newPassword = $_POST['newPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
+        $newPassword = sanitizeInput($_POST['newPassword']);
+        $confirmPassword = sanitizeInput($_POST['confirmPassword']);
 
         // Check if the passwords match
         if ($newPassword == $confirmPassword) {
@@ -43,6 +43,11 @@ if ($result->num_rows === 1) {
 
 $stmt->close();
 $connection->close();
+
+// Function to sanitize user input
+function sanitizeInput($input) {
+    return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

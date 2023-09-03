@@ -7,6 +7,11 @@ if (!isset($_SESSION['user_id']) or $_SESSION['user_role'] != 1) {
 }
 
 $isLoggedIn = true;
+
+// Function to sanitize user input
+function sanitizeInput($input) {
+    return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+}
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-maroon p-3">
     <div class="container-fluid">

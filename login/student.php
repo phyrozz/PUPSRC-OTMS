@@ -23,8 +23,8 @@
     include "../conn.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $studentNo = $_POST['studentNumber'];
-        $password = $_POST['password'];
+        $studentNo = sanitizeInput($_POST['studentNumber']);
+        $password = sanitizeInput($_POST['password']);
 
         $query = "SELECT user_id, student_no, first_name, last_name, extension_name, password FROM users WHERE student_no = ?";
         $stmt = $connection->prepare($query);
@@ -48,8 +48,12 @@
     
             $stmt->close();
             $connection->close();
-        }
+    }
 
+    // Function to sanitize user input
+    function sanitizeInput($input) {
+        return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+    }
     ?>
     <div class="jumbotron bg-white">
         <div class="container">
