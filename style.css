@@ -654,7 +654,7 @@ select.status-dropdown {
     }
 
     table {
-        table-layout: fixed;
+        /* table-layout: fixed; */
         word-wrap: break-word;
     }
 

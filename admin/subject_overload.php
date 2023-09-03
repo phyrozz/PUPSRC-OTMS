@@ -142,207 +142,215 @@
         <div class="container-fluid py-2">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="d-flex w-100 justify-content-between align-items-center p-0">
-                        <div class="d-flex p-2">
-                            <div class="input-group">
-                                <label for="transaction-type" class="input-group-text">Service: </label>
-                                <select class="form-select" id="transaction-type">
-                                    <option value="subjectoverload">Subject Overload</option>
-                                    <option value="gradeaccreditation">Grade Accreditation</option>
-                                    <option value="crossenrollment">Cross-Enrollment</option>
-                                    <option value="shifting">Shifting</option>
-                                    <option value="manualenrollment">Manual Enrollment</option>
-                                </select>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-md-flex w-100 pb-2 justify-content-between align-items-end">
+                            <div class="d-flex flex-column gap-2 col-md-6">
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-primary" id="status-info-btn"><i class="fa-solid fa-circle-question"></i> Help</button>
+                                    <a href="tables/academic/generate_report_so.php" target="_blank" class="btn btn-primary" id="generate-report-btn"><i class="fas fa-file-pdf"></i> Generate Report</a>
+                                </div>
+                                <div class="row justify-content-center align-items-center gap-2">
+                                    <div class="d-flex gap-2">
+                                        <div class="input-group">
+                                            <label for="transaction-type" class="input-group-text">Service: </label>
+                                            <select class="form-select" id="transaction-type">
+                                                <option value="subjectoverload">Subject Overload</option>
+                                                <option value="gradeaccreditation">Grade Accreditation</option>
+                                                <option value="crossenrollment">Cross-Enrollment</option>
+                                                <option value="shifting">Shifting</option>
+                                                <option value="manualenrollment">Manual Enrollment</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="rows-per-page" class="input-group-text">Rows per Page:</label>
+                                            <select class="form-select" id="rows-per-page">
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                                <!-- Add more options as needed -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="input-group mx-2">
-                                <label for="rows-per-page" class="input-group-text">Rows per Page:</label>
-                                <select class="form-select" id="rows-per-page">
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                    <!-- Add more options as needed -->
-                                </select>
+                            <div class="col-md-3">
+                                <div class="input-group mt-2">
+                                    <input type="text" class="form-control" id="search-input" placeholder="Search...">
+                                    <button class="btn btn-outline-primary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+                                </div>
                             </div>
-                            <button class="btn btn-outline-primary w-100" id="status-info-btn">What do these statuses mean?</button>
                         </div>
-                        <div class="d-flex justify-content-end gap-2">
-                            <div class="input-group mb-3 d-flex justify-content-end">
-                            <input type="text" class="form-control" id="search-input" placeholder="Search...">
-                                <button class="btn btn-outline-primary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table id="transactions-table" class="table table-hover table-hidden">
-                            <thead>
-                                <tr class="table-active">
-                                    <th class="text-center" scope="col" style="background-color: #f2f2f2;">Requestor</th>
-                                    <th class="text-center" scope="col" style="background-color: #f2f2f2;">Student Name</th>
-                                    <!-- <th class="text-center" scope="col" style="background-color: #f2f2f2;">Transaction ID</th> -->
-                                    <th class="text-center" scope="col" style="background-color: #f2f2f2;">Letter for Overload</th>
-                                    <th class="text-center" scope="col" style="background-color: #f2f2f2;">Ace Form</th>
-                                    <th class="text-center" scope="col" style="background-color: #f2f2f2;">COR</th>
-                                    <th class="text-center" scope="col" style="background-color: #f2f2f2;">Note</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    // Function to generate the options for the status dropdown
-                                    function generateStatusOptions($selectedStatusID)
-                                    {
-                                        // You can fetch the status options from your database or define them manually
-                                        $statusOptions = array(
-                                            1 => "Missing",
-                                            2 => "Pending",
-                                            3 => "Under Verification",
-                                            4 => "Verified",
-                                            5 => "Rejected",
-                                            6 => "To Be Evaluated",
-                                            7 => "Need F to F Evaluation"
-                                        );
-
-                                        // Generate the options
-                                        $options = "";
-                                        foreach ($statusOptions as $statusID => $statusName) {
-                                            $selected = ($statusID == $selectedStatusID) ? "selected" : "";
-                                            $options .= "<option value='{$statusID}' {$selected}>{$statusName}</option>";
-                                        }
-
-                                        return $options;
-                                    }
-
-                                    // Fetch data from the acad_subject_overload table with join queries
-                                    $query = "SELECT ao.transaction_id, u.user_id, u.last_name, u.first_name, u.middle_name, u.extension_name, u.student_no, ao.overload_letter, ao.overload_letter_status, ao.ace_form, ao.ace_form_status, ao.cert_of_registration, ao.cert_of_registration_status
-                                    FROM acad_subject_overload ao
-                                    INNER JOIN users u ON ao.user_id = u.user_id
-                                    ORDER BY u.student_no ASC";
-                                    $result = $connection->query($query);
-
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<tr>";
-                                            echo "<td>" . $row['student_no'] . "</td>";
-                                            echo "<td><a href='#' class='user-details-link' data-user-id='" . $row['user_id'] . "'>" . $row['last_name'] . ", " . $row['first_name'] . " " . $row['middle_name'] . " " . $row['extension_name'] . "</a></td>";
-                                            // echo "<td>" . $row['transaction_id'] . "</td>";
-                                            echo "<td class='border'><div class='d-flex align-items-center justify-content-between'>";
-
-                                            // Display link to overload letter attachment, if available
-                                            if (!empty($row['overload_letter'])) {
-                                                echo '<a href="../assets/uploads/user_uploads/' . $row['overload_letter'] . '" target="_blank" class="btn btn-primary"><i class="fa-solid fa-paperclip"></i> View attachment</a>';
-                                            } else {
-                                                echo 'No attachment';
-                                            }
-
-                                            echo '<select data-user-id="' . $row['user_id'] . '" data-status-type="overloadLetter" class="form-select status-dropdown';
-                                            switch ($row['overload_letter_status']) {
-                                                case 1:
-                                                    echo ' bg-light text-dark';
-                                                    break;
-                                                case 2:
-                                                    echo ' bg-secondary text-light';
-                                                    break;
-                                                case 3:
-                                                    echo ' bg-dark text-light';
-                                                    break;
-                                                case 4:
-                                                    echo ' bg-success text-light';
-                                                    break;
-                                                case 5:
-                                                    echo ' bg-danger text-light';
-                                                    break;
-                                                case 6:
-                                                    echo ' bg-info text-dark';
-                                                    break;
-                                                case 7:
-                                                    echo ' bg-warning text-dark';
-                                                    break;
-                                            }
-                                            echo '">';
-                                            echo generateStatusOptions($row['overload_letter_status']);
-                                            echo "</select></td></div>";
-
-                                            echo "<td class='border'><div class='d-flex align-items-center justify-content-between'>";
-                                            // Display link to Ace Form attachment, if available
-                                            if (!empty($row['ace_form'])) {
-                                                echo '<a href="../assets/uploads/generated_pdf/' . $row['ace_form'] . '" target="_blank" class="btn btn-primary"><i class="fa-solid fa-paperclip"></i> View attachment</a>';
-                                            } else {
-                                                echo 'No attachment';
-                                            }
-
-                                            echo '<select data-user-id="' . $row['user_id'] . '" data-status-type="aceForm" class="form-select status-dropdown';
-                                            switch ($row['ace_form_status']) {
-                                                case 1:
-                                                    echo ' bg-light text-dark';
-                                                    break;
-                                                case 2:
-                                                    echo ' bg-secondary text-light';
-                                                    break;
-                                                case 3:
-                                                    echo ' bg-dark text-light';
-                                                    break;
-                                                case 4:
-                                                    echo ' bg-success text-light';
-                                                    break;
-                                                case 5:
-                                                    echo ' bg-danger text-light';
-                                                    break;
-                                                case 6:
-                                                    echo ' bg-info text-dark';
-                                                    break;
-                                                case 7:
-                                                    echo ' bg-warning text-dark';
-                                                    break;
-                                            }
-                                            echo '">';
-                                            echo generateStatusOptions($row['ace_form_status']);
-                                            echo "</select></td></div>";
-
-                                            echo "<td class='border'><div class='d-flex align-items-center justify-content-between'>";
-                                            // Display link to COR attachment, if available
-                                            if (!empty($row['cert_of_registration'])) {
-                                                echo '<a href="../assets/uploads/user_uploads/' . $row['cert_of_registration'] . '" target="_blank" class="btn btn-primary"><i class="fa-solid fa-paperclip"></i> View attachment</a>';
-                                            } else {
-                                                echo 'No attachment';
-                                            }
-                                            echo '<select data-user-id="' . $row['user_id'] . '" data-status-type="certOfRegistration" class="form-select status-dropdown';
-                                            switch ($row['cert_of_registration_status']) {
-                                                case 1:
-                                                    echo ' bg-light text-dark';
-                                                    break;
-                                                case 2:
-                                                    echo ' bg-secondary text-light';
-                                                    break;
-                                                case 3:
-                                                    echo ' bg-dark text-light';
-                                                    break;
-                                                case 4:
-                                                    echo ' bg-success text-light';
-                                                    break;
-                                                case 5:
-                                                    echo ' bg-danger text-light';
-                                                    break;
-                                                case 6:
-                                                    echo ' bg-info text-dark';
-                                                    break;
-                                                case 7:
-                                                    echo ' bg-warning text-dark';
-                                                    break;
-                                            }
-                                            echo '">';
-                                            echo generateStatusOptions($row['cert_of_registration_status']);
-                                            echo "</select></td></div>";
-                                            echo "<td></td>";
-                                            echo "</tr>";
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='9' class='text-center'>No records found.</td></tr>";
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
+            </div>
+            <div class="table-responsive">
+                <table id="transactions-table" class="table table-hover table-hidden academic-table">
+                    <thead>
+                        <tr class="table-active">
+                            <th class="text-center" style="background-color: #f2f2f2;">Requestor</th>
+                            <th class="text-center" style="background-color: #f2f2f2;">Student Name</th>
+                            <!-- <th class="text-center" scope="col" style="background-color: #f2f2f2;">Transaction ID</th> -->
+                            <th class="text-center" style="background-color: #f2f2f2; min-width: 350px">Letter for Overload</th>
+                            <th class="text-center" style="background-color: #f2f2f2; min-width: 350px">Ace Form</th>
+                            <th class="text-center" style="background-color: #f2f2f2; min-width: 350px">COR</th>
+                            <th class="text-center" style="background-color: #f2f2f2;">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            // Function to generate the options for the status dropdown
+                            function generateStatusOptions($selectedStatusID)
+                            {
+                                // You can fetch the status options from your database or define them manually
+                                $statusOptions = array(
+                                    1 => "Missing",
+                                    2 => "Pending",
+                                    3 => "Under Verification",
+                                    4 => "Verified",
+                                    5 => "Rejected",
+                                    6 => "To Be Evaluated",
+                                    7 => "Need F to F Evaluation"
+                                );
+
+                                // Generate the options
+                                $options = "";
+                                foreach ($statusOptions as $statusID => $statusName) {
+                                    $selected = ($statusID == $selectedStatusID) ? "selected" : "";
+                                    $options .= "<option value='{$statusID}' {$selected}>{$statusName}</option>";
+                                }
+
+                                return $options;
+                            }
+
+                            // Fetch data from the acad_subject_overload table with join queries
+                            $query = "SELECT ao.transaction_id, u.user_id, u.last_name, u.first_name, u.middle_name, u.extension_name, u.student_no, ao.overload_letter, ao.overload_letter_status, ao.ace_form, ao.ace_form_status, ao.cert_of_registration, ao.cert_of_registration_status
+                            FROM acad_subject_overload ao
+                            INNER JOIN users u ON ao.user_id = u.user_id
+                            ORDER BY u.student_no ASC";
+                            $result = $connection->query($query);
+
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>" . $row['student_no'] . "</td>";
+                                    echo "<td><a href='#' class='user-details-link' data-user-id='" . $row['user_id'] . "'>" . $row['last_name'] . ", " . $row['first_name'] . " " . $row['middle_name'] . " " . $row['extension_name'] . "</a></td>";
+                                    // echo "<td>" . $row['transaction_id'] . "</td>";
+                                    echo "<td class='border'><div class='d-flex align-items-center justify-content-between'>";
+
+                                    // Display link to overload letter attachment, if available
+                                    if (!empty($row['overload_letter'])) {
+                                        echo '<a href="../assets/uploads/user_uploads/' . $row['overload_letter'] . '" target="_blank" class="btn btn-primary"><i class="fa-solid fa-paperclip"></i> View attachment</a>';
+                                    } else {
+                                        echo 'No attachment';
+                                    }
+
+                                    echo '<select data-user-id="' . $row['user_id'] . '" data-status-type="overloadLetter" class="form-select status-dropdown';
+                                    switch ($row['overload_letter_status']) {
+                                        case 1:
+                                            echo ' bg-light text-dark';
+                                            break;
+                                        case 2:
+                                            echo ' bg-secondary text-light';
+                                            break;
+                                        case 3:
+                                            echo ' bg-dark text-light';
+                                            break;
+                                        case 4:
+                                            echo ' bg-success text-light';
+                                            break;
+                                        case 5:
+                                            echo ' bg-danger text-light';
+                                            break;
+                                        case 6:
+                                            echo ' bg-info text-dark';
+                                            break;
+                                        case 7:
+                                            echo ' bg-warning text-dark';
+                                            break;
+                                    }
+                                    echo '">';
+                                    echo generateStatusOptions($row['overload_letter_status']);
+                                    echo "</select></td></div>";
+
+                                    echo "<td class='border'><div class='d-flex align-items-center justify-content-between'>";
+                                    // Display link to Ace Form attachment, if available
+                                    if (!empty($row['ace_form'])) {
+                                        echo '<a href="../assets/uploads/generated_pdf/' . $row['ace_form'] . '" target="_blank" class="btn btn-primary"><i class="fa-solid fa-paperclip"></i> View attachment</a>';
+                                    } else {
+                                        echo 'No attachment';
+                                    }
+
+                                    echo '<select data-user-id="' . $row['user_id'] . '" data-status-type="aceForm" class="form-select status-dropdown';
+                                    switch ($row['ace_form_status']) {
+                                        case 1:
+                                            echo ' bg-light text-dark';
+                                            break;
+                                        case 2:
+                                            echo ' bg-secondary text-light';
+                                            break;
+                                        case 3:
+                                            echo ' bg-dark text-light';
+                                            break;
+                                        case 4:
+                                            echo ' bg-success text-light';
+                                            break;
+                                        case 5:
+                                            echo ' bg-danger text-light';
+                                            break;
+                                        case 6:
+                                            echo ' bg-info text-dark';
+                                            break;
+                                        case 7:
+                                            echo ' bg-warning text-dark';
+                                            break;
+                                    }
+                                    echo '">';
+                                    echo generateStatusOptions($row['ace_form_status']);
+                                    echo "</select></td></div>";
+
+                                    echo "<td class='border'><div class='d-flex align-items-center justify-content-between'>";
+                                    // Display link to COR attachment, if available
+                                    if (!empty($row['cert_of_registration'])) {
+                                        echo '<a href="../assets/uploads/user_uploads/' . $row['cert_of_registration'] . '" target="_blank" class="btn btn-primary"><i class="fa-solid fa-paperclip"></i> View attachment</a>';
+                                    } else {
+                                        echo 'No attachment';
+                                    }
+                                    echo '<select data-user-id="' . $row['user_id'] . '" data-status-type="certOfRegistration" class="form-select status-dropdown';
+                                    switch ($row['cert_of_registration_status']) {
+                                        case 1:
+                                            echo ' bg-light text-dark';
+                                            break;
+                                        case 2:
+                                            echo ' bg-secondary text-light';
+                                            break;
+                                        case 3:
+                                            echo ' bg-dark text-light';
+                                            break;
+                                        case 4:
+                                            echo ' bg-success text-light';
+                                            break;
+                                        case 5:
+                                            echo ' bg-danger text-light';
+                                            break;
+                                        case 6:
+                                            echo ' bg-info text-dark';
+                                            break;
+                                        case 7:
+                                            echo ' bg-warning text-dark';
+                                            break;
+                                    }
+                                    echo '">';
+                                    echo generateStatusOptions($row['cert_of_registration_status']);
+                                    echo "</select></td></div>";
+                                    echo "<td></td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='9' class='text-center'>No records found.</td></tr>";
+                            }
+                        ?>
+                    </tbody>
+                </table>
             </div>
             <nav class="d-flex w-100 justify-content-between p-2">
                 <ul class="pagination">
@@ -356,7 +364,7 @@
     <script>
     $(document).ready(function () {
         // Number of rows to display per page
-        var rowsPerPage = 10;
+        var rowsPerPage = 20;
         var currentPage = 1;
         var totalPages;
 
@@ -492,6 +500,19 @@
             calculateTotalPages();
             showPage(1);
             updatePaginationButtons();
+        });
+
+        $("#generate-report-btn").on('click', function() {
+            var searchValue = $("#search-input").val();
+
+            // Encode the selected values and search query to be URL-safe
+            var encodedSearchValue = encodeURIComponent(searchValue);
+
+            // Construct the URL with the updated parameters
+            var link = "tables/academic/generate_report_so.php?search=" + encodedSearchValue;
+            
+            // Update the href attribute of the link
+            $(this).attr("href", link);
         });
     });
     </script>
