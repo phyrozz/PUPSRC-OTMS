@@ -68,7 +68,7 @@ function sanitizeInput($input) {
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body>
-    <div class="jumbotron bg-white d-flex">
+    <div class="jumbotron bg-white d-flex jumbotron-bg">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">

@@ -3,7 +3,6 @@ $('.user-details-link').on('click', function(event) {
     populateStudentInfoModal(userId);
 });
 
-// Function to populate the edit modal with the request details
 function populateStudentInfoModal(userId) {
     $.ajax({
         url: 'tables/academic/show_student_info.php',
