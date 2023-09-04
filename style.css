@@ -640,6 +640,30 @@ select.status-dropdown {
     background-color: #fff;
 }
 
+.btn-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+}
+
+/* Transition effect on log-in containers when the page loads */
+.jumbotron-bg {
+    animation: jumbotronFadeIn 0.3s ease-in-out;
+}
+
+@keyframes jumbotronFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 @media only screen and (max-width: 992px) {
     .autocomplete-list {
         position: static;

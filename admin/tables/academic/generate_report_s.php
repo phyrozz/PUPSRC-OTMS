@@ -19,7 +19,7 @@ $timestamp = time();
 $generatedOnDatetime = new DateTime("now", new DateTimeZone($tz));
 $generatedOnDatetime->setTimestamp($timestamp);
 
-$query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status.status_name AS request_letter_status, first_ctc_status.status_name AS first_ctc_status, second_ctc_status.status_name AS second_ctc_status, 
+$query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status.status_name AS request_letter_status, first_ctc_status.status_name AS first_ctc_status, second_ctc_status.status_name AS second_ctc_status, note,  
         users.first_name, users.last_name, users.middle_name, users.extension_name, users.student_no
         FROM acad_shifting
         INNER JOIN users ON acad_shifting.user_id = users.user_id
@@ -104,7 +104,7 @@ $html = '
                     <td>'.$row['request_letter_status'].'</td>
                     <td>'.$row['first_ctc_status'].'</td>
                     <td>'.$row['second_ctc_status'].'</td>
-                    <td>N/A</td>
+                    <td>'.$row['note'].'</td>
                 </tr>';
                 $i++;
             }

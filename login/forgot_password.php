@@ -110,7 +110,7 @@ function sanitizeInput($input) {
     <?php
 
     ?>
-    <div class="jumbotron bg-white d-flex">
+    <div class="jumbotron bg-white d-flex jumbotron-bg">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">

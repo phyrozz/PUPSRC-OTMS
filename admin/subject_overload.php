@@ -28,7 +28,7 @@
     <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
     <script src="../loading.js"></script>
 	<script>
         // Wait for the page to load
@@ -129,9 +129,13 @@
         });
     </script>
     <script src="tables/academic/student_info.js" defer></script>
+    <script src="tables/academic/note.js" defer></script>
 </head>
 <body>
-    <?php include "tables/academic/status_info_modal.php"; ?>
+    <?php 
+    include "tables/academic/status_info_modal.php"; 
+    include "tables/academic/edit_note_modal.php";
+    ?>
     <div class="wrapper">
         <!-- Loading page -->
         <!-- The container is placed here in order to display the loading indicator first while the page is loading. -->
@@ -342,7 +346,7 @@
                                     echo '">';
                                     echo generateStatusOptions($row['cert_of_registration_status']);
                                     echo "</select></td></div>";
-                                    echo "<td></td>";
+                                    echo "<td><button class='edit-note-btn btn btn-primary' data-service='so' data-user-id='". $row['user_id'] ."'><i class='fa-solid fa-note-sticky'></i></button></td>";
                                     echo "</tr>";
                                 }
                             } else {
