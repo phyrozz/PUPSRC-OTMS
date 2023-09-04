@@ -59,6 +59,62 @@
       return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
     }
     ?>
+  <?php ///////// DELETE INACTIVE CLIENT USER FOR 6 MONTHS ///////////
+      // Check if the connection was successful
+      if ($connection->connect_error) {
+          die("Connection failed: " . $connection->connect_error);
+      }
+
+      date_default_timezone_set('Asia/Manila');
+
+      // SQL query to select user data
+      $deletionQuery = "SELECT users.user_id, users.user_role, appointment_facility.end_date_time_sched, doc_requests.scheduled_datetime, request_equipment.datetime_schedule
+              FROM users
+              LEFT JOIN appointment_facility ON users.user_id = appointment_facility.user_id
+              LEFT JOIN doc_requests ON users.user_id = doc_requests.user_id
+              LEFT JOIN request_equipment ON users.user_id = request_equipment.user_id
+              WHERE users.user_role = '2'";
+
+      $result = $connection->query($deletionQuery);
+
+      if ($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()) {
+              $endDateTime = new DateTime($row['end_date_time_sched']);
+              $scheduledDateTime = new DateTime($row['scheduled_datetime']);
+              $datetimeSchedule = new DateTime($row['datetime_schedule']);
+              $currentTime = new DateTime();
+
+              // Calculate the time difference in seconds
+              $endDateTimeDiff = $currentTime->getTimestamp() - $endDateTime->getTimestamp();
+              $scheduledDateTimeDiff = $currentTime->getTimestamp() - $scheduledDateTime->getTimestamp();
+              $datetimeScheduleDiff = $currentTime->getTimestamp() - $datetimeSchedule->getTimestamp();
+
+              // Check if any datetime field is more than 6 months in the past
+              $sixMonthsInSeconds = 6 * 30 * 24 * 60 * 60;
+
+              // Check if any datetime field is more than 6 months in the past
+              if ($endDateTimeDiff > $sixMonthsInSeconds || $scheduledDateTimeDiff > $sixMonthsInSeconds || $datetimeScheduleDiff > $sixMonthsInSeconds) {
+                  // Delete the user account
+                  $userId = $row['user_id'];
+                  $deleteAppointmentQuery = "DELETE FROM appointment_facility WHERE user_id = '$userId'";
+                  $deleteDocRequestsQuery = "DELETE FROM doc_requests WHERE user_id = '$userId'";
+                  $deleteEquipmentQuery = "DELETE FROM request_equipment WHERE user_id = '$userId'";
+                  $deleteSql = "DELETE FROM users WHERE user_id = '$userId'";
+                  if ($connection->query($deleteAppointmentQuery) === TRUE && $connection->query($deleteDocRequestsQuery) === TRUE &&
+                      $connection->query($deleteEquipmentQuery) === TRUE && $connection->query($deleteSql) === TRUE) {
+                      //echo "User with ID $userId deleted successfully.\n";
+                  } else {
+                      $connection->error;
+                  }
+              }
+          }
+      } else {
+          //echo "No users found with the specified criteria.";
+      }
+
+      // Close the database connection
+      $connection->close();
+  ?>
   <div class="jumbotron bg-white">
     <div class="container">
       <div class="row">
