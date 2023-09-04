@@ -16,6 +16,7 @@
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../sign_up_dropdown.js" defer></script>
+    <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <?php
@@ -55,7 +56,7 @@
         return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
     }
     ?>
-    <div class="jumbotron bg-white">
+    <div class="jumbotron bg-white jumbotron-bg">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
@@ -67,8 +68,11 @@
                         <div class="form-group col-12">
                             <input type="text" class="form-control" name="studentNumber" id="studentNumber" placeholder="Student Number" maxlength="15" required>
                         </div>
-                        <div class="form-group col-12">
+                        <div class="form-group col-12 position-relative">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" maxlength="100" required>
+                            <button id="togglePassword" type="button" class="btn btn-outline-primary btn-password-toggle">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
                         </div>
                         <?php if (isset($loginMessage)) { ?>
                         <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
@@ -147,10 +151,10 @@
                                 </div>                           
                                 </div>
                                 <div class="row">
-                                <div class="form-group col-12">
+                                <div class="form-group col-6">
                                     <label class="mb-0 pb-1">Course <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <select name="Course" id="Course" class="form-control form-select" required>
+                                        <select name="Course" id="Course" class="form-control form-select" autocomplete="on" required>
                                             <option value="" disabled selected hidden>Select Course</option>
                                             <option value="1">Bachelor of Science in Electronics Engineering</option>
                                             <option value="2">Bachelor of Science in Business Administration Major in Human Resource Management</option>
@@ -166,6 +170,13 @@
                                         </select>                                    
                                     </div>
                                 </div>
+                                <div class="form-group col-6">
+                                    <label class="mb-0 pb-1">Year and Section <code>*</code></label>
+                                    <div class="input-group mb-0">
+                                        <input type="text" name="YearAndSection" id="YearAndSection" placeholder="2-1" maxlength="3" size="3" autocomplete="on" class="form-control" required>                              
+                                    </div>
+                                    <div id="yrAndSectionValidationMessage" class="text-danger"></div>
+                                </div>
                                 <div class="form-group col-12">
                                     <label>Contact Number <code>*</code></label>
                                     <div class="input-group mb-0">
@@ -176,7 +187,8 @@
                                 <div class="form-group col-6">
                                     <label>Birthdate <code>*</code></label>
                                     <div data-target="#Birthday" data-toggle="datetimepicker">
-                                        <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input" data-target="#Birthday" min="1900-01-01" max="<?php echo date('Y-m-d'); ?>" required>
+                                        <input type="text" class="form-control" name="Birthday" id="Birthday" placeholder="Select Date..." data-target="#Birthday" style="cursor: pointer !important;" autocomplete="on" required data-input>
+                                        <!-- <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input" data-target="#Birthday" min="1900-01-01" max="<?php echo date('Y-m-d'); ?>" autocomplete="on" required> -->
                                     </div>
                                     <div class="text-danger" id="birthdateError" style="display: none;">Invalid birth date.</div>
                                 </div>
@@ -202,14 +214,14 @@
                                 <div class="form-group col-6">
                                     <label>Province <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <select name="Province" id="Province" class="form-control form-select" required>
+                                        <select name="Province" id="Province" class="form-control form-select" autocomplete="on" required>
                                         </select>
                                     </div>
                                 </div> 
                                 <div class="form-group col-6">
                                     <label>City <code>*</code></label>
                                     <div class="input-group mb-0">
-                                        <select name="City" id="City" class="form-control form-select" required>
+                                        <select name="City" id="City" class="form-control form-select" autocomplete="on" required>
                                         </select>
                                     </div>
                                 </div>
@@ -256,20 +268,19 @@
                                         </div>
                                     </div>
                                     <ul id="passwordChecklist"></ul>
-                                    <div class="form-group mt-3">
-                                        <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
-                                            <h4>Data Privacy Notice</h4>
-                                            <p>
-                                            <img style="float: right; margin-left: 3px; filter: invert(100%);" src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
+                                    <h4>Data Privacy Notice</h4>
+                                    <p>Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <input type="submit" value="Sign Up" id="submitBtn" name="studentSignup" class="btn btn-primary" />
+                        <input type="submit" value="Sign Up" id="signUpSubmitBtn" name="studentSignup" class="btn btn-primary" disabled />
                     </div>
                 </div>
             </div>
@@ -421,8 +432,38 @@
     ?>
     <!-- End of success alert modal -->
 
+    <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
+    <script>
+        flatpickr("#Birthday", {
+            altInput: true,
+            dateFormat: "Y-m-d",
+            theme: "custom-datepicker",
+            minDate: "01.01.1901",
+            maxDate: "today",
+            locale: {
+                "firstDayOfWeek": 1 // start week on Monday
+            },
+        });
+    </script>
     <!-- JS validation for form fields -->
     <script>
+        // For login form
+        const loginPasswordInput = document.getElementById('password');
+        const togglePasswordButton = document.getElementById('togglePassword');
+        let passwordVisible = false;
+
+        togglePasswordButton.addEventListener('click', function () {
+            passwordVisible = !passwordVisible;
+            loginPasswordInput.type = passwordVisible ? 'text' : 'password';
+
+            if (passwordVisible) {
+                togglePasswordButton.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                togglePasswordButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        });
+
+        // For sign-up modal
         const studentNoInput = document.getElementById('StudentNo');
         const lastNameInput = document.getElementById('LName');
         const firstNameInput = document.getElementById('FName');
@@ -432,6 +473,8 @@
         const firstNameValidationMessage = document.getElementById('firstNameValidationMessage');
         const middleNameValidationMessage = document.getElementById('middleNameValidationMessage');
         const extensionNameValidationMessage = document.getElementById('extensionNameValidationMessage');
+        const yrAndSectionInput = document.getElementById('YearAndSection');
+        const yrAndSectionValidationMessage = document.getElementById('yrAndSectionValidationMessage');
         const contactNoInput = document.getElementById('ContactNumber');
         const studentNoValidationMessage = document.getElementById('studentNoValidationMessage');
         const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
@@ -441,9 +484,11 @@
         const zipCodeError = document.getElementById('zipCodeError');
         const birthdateInput = document.getElementById('Birthday');
         const birthdateError = document.getElementById('birthdateError');
+        const genderMInput = document.getElementById('GenderM');
+        const genderFInput = document.getElementById('GenderF');
         var passwordInput = document.getElementById("Password");
         var confirmPasswordInput = document.getElementById("ConfirmPassword");
-        var submitButton = document.getElementById("submitBtn");
+        var submitButton = document.getElementById("signUpSubmitBtn");
 
         // Password rules:
         // Must have at least one letter (small or capital)
@@ -452,73 +497,175 @@
         // Must be at least 8 characters long
         const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/;
 
+        function checkFormValidity() {
+            const isStudentNoValid = validateStudentNo();
+            const isLastNameValid = validateLastName();
+            const isFirstNameValid = validateFirstName();
+            const isMiddleNameValid = validateMiddleName();
+            const isExtensionNameValid = validateExtensionName();
+            const isYrAndSectionValid = validateYrAndSection();
+            const isContactNoValid = validateContactNo();
+            const isBirthdateValid = validateBirthdate(birthdateInput.value);
+            const isEmailValid = validateEmail();
+            const isZipCodeValid = validateZipCode();
+            const isPasswordValid = validatePassword();
+
+            const submitButton = document.getElementById('signUpSubmitBtn');
+
+            if (
+                isStudentNoValid &&
+                isLastNameValid &&
+                isFirstNameValid &&
+                isMiddleNameValid &&
+                isExtensionNameValid &&
+                isYrAndSectionValid &&
+                isContactNoValid &&
+                isBirthdateValid &&
+                isEmailValid &&
+                isZipCodeValid &&
+                isPasswordValid
+            ) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+
+        function checkGender() {
+            if (genderFInput.checked === true) {
+                extensionNameInput.disabled = true;
+            } else {
+                extensionNameInput.disabled = false;
+            }
+        }
+
         // Validation event listeners
-        studentNoInput.addEventListener('input', () => {
+        studentNoInput.addEventListener('input', checkFormValidity);
+        lastNameInput.addEventListener('input', checkFormValidity);
+        firstNameInput.addEventListener('input', checkFormValidity);
+        middleNameInput.addEventListener('input', checkFormValidity);
+        extensionNameInput.addEventListener('input', checkFormValidity);
+        yrAndSectionInput.addEventListener('input', checkFormValidity);
+        contactNoInput.addEventListener('input', checkFormValidity);
+        birthdateInput.addEventListener('input', checkFormValidity);
+        emailInput.addEventListener('input', checkFormValidity);
+        zipCodeInput.addEventListener('input', checkFormValidity);
+        passwordInput.addEventListener('input', checkFormValidity);
+        confirmPasswordInput.addEventListener('input', checkFormValidity);
+        genderFInput.addEventListener('click', checkGender);
+        genderMInput.addEventListener('click', checkGender);
+
+        // Validate functions
+        function validateStudentNo() {
             const studentNo = studentNoInput.value.trim();
             const studentNoValidPattern = /^\d{4}-\d{5}-SR-\d$/;
 
             if (!studentNoValidPattern.test(studentNo)) {
-                studentNoValidationMessage.textContent = 'Invalid student number. The format must be xxxx-xxxxx-SR-x';
-                studentNoInput.classList.add('is-invalid');
+                if (studentNo === "") {
+                    studentNoValidationMessage.textContent = '';
+                    studentNoInput.classList.remove('is-invalid');
+                } else {
+                    studentNoValidationMessage.textContent = 'Invalid student number. The format must be xxxx-xxxxx-SR-x';
+                    studentNoInput.classList.add('is-invalid');
+                }
+                return false;
             } else {
                 studentNoValidationMessage.textContent = '';
                 studentNoInput.classList.remove('is-invalid');
+                return true;
             }
-        });
+        }
 
-        lastNameInput.addEventListener('input', () => {
+        function validateLastName() {
             const lastName = lastNameInput.value.trim();
             const lastNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!lastNamePattern.test(lastName)) {
                 lastNameValidationMessage.textContent = 'Invalid last name. It must not contain numbers or special characters.';
                 lastNameInput.classList.add('is-invalid');
+                return false;
+            } else if (lastName === "") {
+                lastNameValidationMessage.textContent = '';
+                lastNameInput.classList.remove('is-invalid');
+                return false;
             } else {
                 lastNameValidationMessage.textContent = '';
                 lastNameInput.classList.remove('is-invalid');
+                return true;
             }
-        });
+        }
 
-        firstNameInput.addEventListener('input', () => {
+        function validateFirstName() {
             const firstName = firstNameInput.value.trim();
             const firstNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!firstNamePattern.test(firstName)) {
                 firstNameValidationMessage.textContent = 'Invalid first name. It must not contain numbers or special characters.';
                 firstNameInput.classList.add('is-invalid');
+                return false;
+            } else if (firstName === "") {
+                firstNameValidationMessage.textContent = '';
+                firstNameInput.classList.remove('is-invalid');
+                return false;
             } else {
                 firstNameValidationMessage.textContent = '';
                 firstNameInput.classList.remove('is-invalid');
+                return true;
             }
-        });
+        }
 
-        middleNameInput.addEventListener('input', () => {
+        function validateMiddleName() {
             const middleName = middleNameInput.value.trim();
             const middleNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!middleNamePattern.test(middleName)) {
                 middleNameValidationMessage.textContent = 'Invalid middle name. It must not contain numbers or special characters.';
                 middleNameInput.classList.add('is-invalid');
+                return false;
             } else {
                 middleNameValidationMessage.textContent = '';
                 middleNameInput.classList.remove('is-invalid');
+                return true;
             }
-        });
+        }
 
-        extensionNameInput.addEventListener('input', () => {
+        function validateExtensionName() {
             const extensionName = extensionNameInput.value.trim();
             const extensionNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
             if (!extensionNamePattern.test(extensionName)) {
                 extensionNameValidationMessage.textContent = 'Invalid extension name. It must not contain numbers or special characters.';
                 extensionNameInput.classList.add('is-invalid');
+                return false;
             } else {
                 extensionNameValidationMessage.textContent = '';
                 extensionNameInput.classList.remove('is-invalid');
+                return true;
             }
-        });
+        }
 
-        contactNoInput.addEventListener('input', () => {
+        function validateYrAndSection() {
+            const yrAndSection = yrAndSectionInput.value.trim();
+            const pattern = /^[1-5]-[1-4]$/;
+
+            if (!pattern.test(yrAndSection)) {
+                if (yrAndSection === "") {
+                    yrAndSectionValidationMessage.textContent = '';
+                    yrAndSectionInput.classList.remove('is-invalid');
+                }
+                else {
+                    yrAndSectionValidationMessage.textContent = 'Invalid year and section.';
+                    yrAndSectionInput.classList.add('is-invalid');
+                }
+                return false;
+            } else {
+                yrAndSectionValidationMessage.textContent = '';
+                yrAndSectionInput.classList.remove('is-invalid');
+                return true;
+            }
+        }
+
+        function validateContactNo() {
             const contactNo = contactNoInput.value.trim();
             const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
 
@@ -538,34 +685,41 @@
             contactNoInput.value = formattedContactNo;
 
             if (!contactNoValidPattern.test(formattedContactNo)) {
-                contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
-                contactNoInput.classList.add('is-invalid');
+                if (contactNo === "") {
+                    contactNoValidationMessage.textContent = '';
+                    contactNoInput.classList.remove('is-invalid');
+                } else {
+                    contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
+                    contactNoInput.classList.add('is-invalid');
+                }
+                return false;
             } else {
                 contactNoValidationMessage.textContent = '';
                 contactNoInput.classList.remove('is-invalid');
+                return true;
             }
-        });
+        }
 
-        birthdateInput.addEventListener('input', function() {
-            validateBirthdate(this.value);
-        });
-
-        emailInput.addEventListener('input', validateEmail);
-        zipCodeInput.addEventListener('input', validateZipCode);
-
-        // Validation functions
         function validateBirthdate(birthdate) {
             const currentDate = new Date();
             const selectedDate = new Date(birthdate);
 
-            if (selectedDate < new Date('1900-01-01') || selectedDate > currentDate) {
-                birthdateError.style.display = 'block';
-                birthdateInput.classList.add('is-invalid');
+            if (selectedDate < new Date('1901-01-01') || selectedDate > currentDate || birthdate === "") {
+                if (birthdate.trim() === "") {
+                    birthdateError.style.display = 'none';
+                    birthdateInput.classList.remove('is-invalid');
+                } else {
+                    birthdateError.style.display = 'block';
+                    birthdateInput.classList.add('is-invalid');
+                }
+                return false;
             } else {
                 birthdateError.style.display = 'none';
                 birthdateInput.classList.remove('is-invalid');
+                return true;
             }
-            }
+            console.log(Date(birthdate));
+        }
 
         function validateEmail() {
             const email = emailInput.value;
@@ -574,22 +728,36 @@
             if (emailPattern.test(email)) {
                 emailInput.classList.remove('is-invalid');
                 emailError.style.display = 'none';
+                return true;
             } else {
-                emailInput.classList.add('is-invalid');
-                emailError.style.display = 'block';
+                if (email.trim() === "") {
+                    emailInput.classList.remove('is-invalid');
+                    emailError.style.display = 'none';
+                } else {
+                    emailInput.classList.add('is-invalid');
+                    emailError.style.display = 'block';
+                }
+                return false;
             }
         }
 
+        // Validate functions
         function validateZipCode() {
             const zipCode = zipCodeInput.value.trim();
             const validZipCodePattern = /^[0-9]{4,6}$/;
 
-            if (!validZipCodePattern.test(zipCode)) {
+            if (zipCode === "") {
+                zipCodeError.textContent = '';
+                zipCodeInput.classList.remove('is-invalid');
+                return true;
+            } else if (!validZipCodePattern.test(zipCode)) {
                 zipCodeError.textContent = 'Zip Code must be 4 to 6 digits long';
                 zipCodeInput.classList.add('is-invalid');
+                return false;
             } else {
                 zipCodeError.textContent = '';
                 zipCodeInput.classList.remove('is-invalid');
+                return true;
             }
         }
 
@@ -597,28 +765,12 @@
             const password = passwordInput.value.trim();
             const confirmPassword = confirmPasswordInput.value.trim();
 
-            // Check if the password meets the requirements
             const isPasswordValid = passwordPattern.test(password);
             const isPasswordMatch = password === confirmPassword;
 
-            // Update the validation messages and styles
-            if (password === '' || !isPasswordValid) {
-                passwordInput.classList.remove('is-valid');
-                passwordInput.classList.add('is-invalid');
-            } else {
-                passwordInput.classList.remove('is-invalid');
-                passwordInput.classList.add('is-valid');
-            }
+            passwordInput.classList.remove('is-valid', 'is-invalid');
+            confirmPasswordInput.classList.remove('is-valid', 'is-invalid');
 
-            if (confirmPassword === '' || !isPasswordMatch) {
-                confirmPasswordInput.classList.remove('is-valid');
-                confirmPasswordInput.classList.add('is-invalid');
-            } else {
-                confirmPasswordInput.classList.remove('is-invalid');
-                confirmPasswordInput.classList.add('is-valid');
-            }
-
-            // Update the checklist message
             const passwordChecklist = document.getElementById('passwordChecklist');
             passwordChecklist.innerHTML = '';
 
@@ -655,10 +807,10 @@
             } else {
                 passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Passwords do not match</li>';
             }
-        }
 
-        passwordInput.addEventListener('input', validatePassword);
-        confirmPasswordInput.addEventListener('input', validatePassword);
+            // Return true only if all validations pass
+            return isPasswordValid && isPasswordMatch;
+        }
     </script>
 </body>
 </html>

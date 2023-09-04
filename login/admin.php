@@ -53,7 +53,7 @@
         return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
     }
     ?>
-    <div class="jumbotron bg-white">
+    <div class="jumbotron bg-white jumbotron-bg">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
@@ -65,8 +65,11 @@
                         <div class="form-group col-12">
                             <input type="text" class="form-control" id="email" name="email" placeholder="Email address"  maxlength="100" required>
                         </div>
-                        <div class="form-group col-12">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password"  maxlength="100" required>
+                        <div class="form-group col-12 position-relative">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" maxlength="100" required>
+                            <button id="togglePassword" type="button" class="btn btn-outline-primary btn-password-toggle">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
                         </div>
                         <?php if (isset($loginMessage)) { ?>
                         <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
@@ -88,5 +91,21 @@
             </div>
         </div>
     </div>
+    <script>
+        const loginPasswordInput = document.getElementById('password');
+        const togglePasswordButton = document.getElementById('togglePassword');
+        let passwordVisible = false;
+
+        togglePasswordButton.addEventListener('click', function () {
+            passwordVisible = !passwordVisible;
+            loginPasswordInput.type = passwordVisible ? 'text' : 'password';
+
+            if (passwordVisible) {
+                togglePasswordButton.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                togglePasswordButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -36,7 +36,7 @@
     ?>
     <div class="vh-100 d-flex align-items-center">
         <div class="container d-flex justify-content-center">
-            <div class="card login-card text-center bg-light p-3">
+            <div class="card login-card text-center bg-light p-3 jumbotron-bg">
                 <div class="card-body">
                     <img class="p-3" src="assets/pup-logo.png" alt="PUP Logo" width="110" height="110">
                     <h3 class="card-title">PUP Santa Rosa</h3>
