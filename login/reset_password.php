@@ -1,6 +1,8 @@
 <?php
 include '../conn.php';
 
+date_default_timezone_set('Asia/Manila');
+
 // Retrieve the token from the URL
 $token = $_GET['token'];
 
@@ -63,9 +65,9 @@ function sanitizeInput($input) {
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../bg.css">
-    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous" defer></script>
-    <script src="../node_modules/jquery/dist/jquery.min.js" defer></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="jumbotron bg-white d-flex jumbotron-bg">

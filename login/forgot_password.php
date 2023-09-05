@@ -20,6 +20,8 @@ if (isset($_POST['resetBtn'])) {
     $email = sanitizeInput($_POST['email']);
 
     try {
+        date_default_timezone_set('Asia/Manila');
+
         // Check if the email exists in the database
         $stmt = $connection->prepare('SELECT user_id FROM users WHERE email = ?');
         $stmt->bind_param('s', $email);
@@ -34,6 +36,9 @@ if (isset($_POST['resetBtn'])) {
             // Generate a unique token
             $token = generateToken();
 
+            // Capture the current time
+            $currentTime = date('Y-m-d H:i:s');
+
             // Check if a token already exists for the user
             $stmt = $connection->prepare('SELECT * FROM password_reset_tokens WHERE user_id = ?');
             $stmt->bind_param('s', $user_id);
@@ -41,13 +46,13 @@ if (isset($_POST['resetBtn'])) {
             $tokenResult = $stmt->get_result();
 
             if ($tokenResult->num_rows === 1) {
-                // Update the existing token
-                $stmt = $connection->prepare('UPDATE password_reset_tokens INNER JOIN users ON password_reset_tokens.user_id = users.user_id SET password_reset_tokens.token = ?, password_reset_tokens.expiry = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE users.user_id = ?');
-                $stmt->bind_param('ss', $token, $user_id);
+                // Update the existing token with the current time
+                $stmt = $connection->prepare('UPDATE password_reset_tokens INNER JOIN users ON password_reset_tokens.user_id = users.user_id SET password_reset_tokens.token = ?, password_reset_tokens.expiry = DATE_ADD(?, INTERVAL 1 HOUR) WHERE users.user_id = ?');
+                $stmt->bind_param('sss', $token, $currentTime, $user_id);
             } else {
-                // Insert a new token record
-                $stmt = $connection->prepare('INSERT INTO password_reset_tokens (user_id, token, expiry) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))');
-                $stmt->bind_param('ss', $user_id, $token);
+                // Insert a new token record with the current time
+                $stmt = $connection->prepare('INSERT INTO password_reset_tokens (user_id, token, expiry) VALUES (?, ?, DATE_ADD(?, INTERVAL 1 HOUR))');
+                $stmt->bind_param('sss', $user_id, $token, $currentTime);
             }
             $stmt->execute();
 
@@ -103,8 +108,8 @@ function sanitizeInput($input) {
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../bg.css">
     <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous" defer></script>
-    <script src="../node_modules/jquery/dist/jquery.min.js" defer></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <?php

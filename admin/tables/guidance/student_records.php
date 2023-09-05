@@ -43,7 +43,7 @@
 <div id="addStudentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
-            <form id="addStudentForm" action="tables/registrar/add_student_record.php" method="post">
+            <form id="addStudentForm" action="tables/guidance/add_student_record.php" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
                 </div>
@@ -110,7 +110,7 @@
         
         // Make an AJAX request to fetch the document requests
         $.ajax({
-            url: 'tables/registrar/fetch_student_records.php',
+            url: 'tables/guidance/fetch_student_records.php',
             method: 'POST',
             data: { page: page, searchTerm: searchTerm, column: column, order: order },
             success: function(response) {
@@ -230,7 +230,7 @@
 
         $.ajax({
             type: "POST",
-            url: "tables/registrar/add_student_record.php",
+            url: "tables/guidance/add_student_record.php",
             data: formData,
             success: function(response) {
                 console.log(response);
@@ -247,7 +247,7 @@
             }).get();
 
             $.ajax({
-                url: 'tables/registrar/delete_student.php',
+                url: 'tables/guidance/delete_student.php',
                 method: 'POST',
                 data: { student_record_ids: studentIds }, // Include the selected status ID in the data
                 success: function(response) {
