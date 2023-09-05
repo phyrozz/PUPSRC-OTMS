@@ -41,7 +41,7 @@
 
 
     // Dynamically display statuses on each requirements
-    $query = "SELECT application_letter, application_letter_status FROM acad_cross_enrollment WHERE user_id = ?";
+    $query = "SELECT application_letter, application_letter_status, note FROM acad_cross_enrollment WHERE user_id = ?";
 
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $_SESSION['user_id']);
@@ -69,7 +69,7 @@
             </button>';
                 break;
             case 4:
-                return '<button type="button" class="btn bg-success" id="status_button" disabled>
+                return '<button type="button" class="btn bg-success text-light" id="status_button" disabled>
                 <i class="fa-solid fa-circle-check"></i> Verified
             </button>';
                 break;
@@ -86,6 +86,11 @@
             case 7:
                 return '<button type="button" class="btn bg-warning text-dark" id="status_button" disabled>
                 <i class="fa-solid fa-circle-check"></i> Need F to F Evaluation
+            </button>';
+                break;
+            case 8:
+                return '<button type="button" class="btn bg-success text-light" id="status_button" disabled>
+                <i class="fa-solid fa-circle-check"></i> Approved
             </button>';
                 break;
         }
@@ -171,7 +176,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                <textarea class="form-control" readonly style="height: 200px; resize: none;"><?php echo htmlspecialchars($userData[0]['remarks'], ENT_QUOTES);?></textarea>
+                <textarea class="form-control" readonly style="height: 200px; resize: none;"><?php echo htmlspecialchars($reqData[0]['note'], ENT_QUOTES);?></textarea>
                 </div>
             </div>
         </div>
