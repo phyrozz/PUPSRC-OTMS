@@ -19,7 +19,7 @@
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
      
-    <script src="/node_modules/@fontawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -244,6 +244,21 @@
                 submitBtn.disabled = true;
             }
         }
+
+        checkRemarks();
+            
+            // Function to check if there is remarks in admin
+            function checkRemarks() {
+                var remarksBtn = document.getElementById('remarksBtn');
+                var remarks = "<?php echo is_null($queryData[0]['note']) || trim($queryData[0]['note']) == "" ? "N/A" : $queryData[0]['note']; ?>";
+
+                // Enable the submit button only if all three requirements are uploaded
+                if (remarks.trim() == "") {
+                    remarksBtn.disabled = false;
+                } else {
+                    remarksBtn.disabled = true;
+                }
+            }
     });
 
     function resetForm() {

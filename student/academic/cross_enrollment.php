@@ -241,6 +241,21 @@
                     submitBtn.disabled = true;
                 }
             }
+
+            checkRemarks();
+            
+            // Function to check if there is remarks in admin
+            function checkRemarks() {
+                var remarksBtn = document.getElementById('remarksBtn');
+                var remarks = "<?php echo is_null($reqData[0]['note']) || trim($reqData[0]['note']) == "" ? "N/A" : $reqData[0]['note']; ?>";
+
+                // Enable the submit button only if all three requirements are uploaded
+                if (remarks.trim() == "") {
+                    remarksBtn.disabled = false;
+                } else {
+                    remarksBtn.disabled = true;
+                }
+            }
         });
 
         function resetForm() {

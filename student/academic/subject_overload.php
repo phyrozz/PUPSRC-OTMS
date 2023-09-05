@@ -353,17 +353,16 @@ function academicStatus($status) {
                     submitBtn.disabled = true;
                 }
             }
-        });
 
-        $(document).ready(function() {
             checkRemarks();
             
             // Function to check if there is remarks in admin
             function checkRemarks() {
-                var remarks = <?php echo $reqData[0]['remarks']; ?>;
+                var remarksBtn = document.getElementById('remarksBtn');
+                var remarks = "<?php echo is_null($reqData[0]['note']) || trim($reqData[0]['note']) == "" ? "N/A" : $reqData[0]['note']; ?>";
 
                 // Enable the submit button only if all three requirements are uploaded
-                if (remarks == null || remarks == "") {
+                if (remarks.trim() == "") {
                     remarksBtn.disabled = false;
                 } else {
                     remarksBtn.disabled = true;
