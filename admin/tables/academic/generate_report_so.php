@@ -90,7 +90,7 @@ $html = '
                 <th>Letter for Overload</th>
                 <th>ACE Form</th>
                 <th>Certificate of Registration</th>
-                <th>Note</th>
+                <th>Remarks</th>
             </tr>
         </thead>
         <tbody>';
@@ -124,7 +124,7 @@ $options->setIsRemoteEnabled(true);
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 // Set the paper size to A4 and orientation to portrait
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 
 $NameModified = strtolower(str_replace(' ', '', $formattedDate));

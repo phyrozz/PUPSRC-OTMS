@@ -64,7 +64,7 @@
           die("Connection failed: " . $connection->connect_error);
       }
 
-      date_default_timezone_set('+08:00');
+      date_default_timezone_set('Asia/Manila');
 
       // SQL query to select user data
       $deletionQuery = "SELECT users.user_id, users.user_role, appointment_facility.end_date_time_sched, doc_requests.scheduled_datetime, request_equipment.datetime_schedule

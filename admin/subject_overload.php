@@ -103,6 +103,10 @@
                         $(this).addClass("bg-warning");
                         $(this).addClass("text-dark");
                         break;
+                    case "8":
+                        $(this).addClass("bg-success");
+                        $(this).addClass("text-light");
+                        break;
                 }
             });
 
@@ -197,7 +201,7 @@
                             <th class="text-center" style="background-color: #f2f2f2; min-width: 350px">Letter for Overload</th>
                             <th class="text-center" style="background-color: #f2f2f2; min-width: 350px">Ace Form</th>
                             <th class="text-center" style="background-color: #f2f2f2; min-width: 350px">COR</th>
-                            <th class="text-center" style="background-color: #f2f2f2;">Note</th>
+                            <th class="text-center" style="background-color: #f2f2f2;">Remarks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -210,6 +214,7 @@
                                     1 => "Missing",
                                     2 => "Pending",
                                     3 => "Under Verification",
+                                    8 => "Approved", 
                                     4 => "Verified",
                                     5 => "Rejected",
                                     6 => "To Be Evaluated",
@@ -270,6 +275,9 @@
                                             break;
                                         case 7:
                                             echo ' bg-warning text-dark';
+                                            break;
+                                        case 8:
+                                            echo ' bg-success text-light';
                                             break;
                                     }
                                     echo '">';
@@ -346,7 +354,7 @@
                                     echo '">';
                                     echo generateStatusOptions($row['cert_of_registration_status']);
                                     echo "</select></td></div>";
-                                    echo "<td><button class='edit-note-btn btn btn-primary' data-service='so' data-user-id='". $row['user_id'] ."'><i class='fa-solid fa-note-sticky'></i></button></td>";
+                                    echo "<td><button class='edit-note-btn btn btn-primary' data-service='so' data-user-id='". $row['user_id'] ."'><i class='fa-regular fa-pen-to-square'></i></button></td>";
                                     echo "</tr>";
                                 }
                             } else {

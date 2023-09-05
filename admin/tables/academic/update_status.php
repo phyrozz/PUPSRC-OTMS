@@ -16,13 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'completionForm':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Grade Accreditation Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Completion Form has been approved.";
+                    $description = "Your Completion Form has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Completion Form has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Completion Form requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Completion Form has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -34,13 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'assessedFee':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Grade Accreditation Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Assessed Fee Receipt has been approved.";
+                    $description = "Your Assessed Fee Receipt has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Assessed Fee Receipt has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Assessed Fee Receipt requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Assessed Fee Receipt has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -52,13 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'applicationLetter':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Cross-Enrollment Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Application Letter for Cross-Enrollment has been approved.";
+                    $description = "Your Application Letter for Cross-Enrollment has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Application Letter for Cross-Enrollment has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Application Letter for Cross-Enrollment requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Application Letter for Cross-Enrollment has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -70,13 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'rZeroForm':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Manual Enrollment Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your R Zero Form has been approved.";
+                    $description = "Your R Zero Form has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your R Zero Form has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your R Zero Form requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your R Zero Form has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -88,13 +96,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'requestLetter':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Academic Shifting Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Request Letter has been approved.";
+                    $description = "Your Request Letter has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Request Letter has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Request Letter requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Request Letter has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -106,13 +116,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'firstCtc':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Academic Shifting Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Certified Copy of Grades has been approved.";
+                    $description = "Your Certified Copy of Grades has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Certified Copy of Grades has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Certified Copy of Grades requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Certified Copy of Grades has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -124,13 +136,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'secondCtc':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Academic Shifting Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Certified Copy of Grades (Office copy) has been approved.";
+                    $description = "Your Certified Copy of Grades (Office copy) has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Certified Copy of Grades (Office copy) has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Certified Copy of Grades (Office copy) requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Certified Copy of Grades (Office copy) has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -142,13 +156,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'overloadLetter':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Subject Overload Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Request Letter for Overload has been approved.";
+                    $description = "Your Request Letter for Overload has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Request Letter for Overload has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Request Letter for Overload requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Request Letter for Overload has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -159,13 +175,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'aceForm':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Subject Overload Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your ACE Form has been approved.";
+                    $description = "Your ACE Form has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your ACE Form has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your ACE Form requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your ACE Form has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();
@@ -177,13 +195,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'certOfRegistration':
             $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");            
             $title = 'Subject Overload Status Update';
-            if ($status == 4 || $status == 5 || $status == 7) {
+            if ($status == 4 || $status == 5 || $status == 7 || $status == 8) {
                 if ($status == 4) {
-                    $description = "Your Certificate of Registration has been approved.";
+                    $description = "Your Certificate of Registration has been verified by the office.";
                 } else if ($status == 5) {
                     $description = "Your Certificate of Registration has been rejected.";
                 } else if ($status == 7) {
                     $description = "Your Certificate of Registration requires a Face-to-face Evaluation. Please proceed to the Director's Office.";
+                } else if ($status == 8) {
+                    $description = "Your Certificate of Registration has been approved.";
                 }
                 $stmt->bind_param('iiss', $userId, $officeId, $title, $description);
                 $stmt->execute();

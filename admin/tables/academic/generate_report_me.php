@@ -86,7 +86,7 @@ $html = '
                 <th>Student Number</th>
                 <th>Student Name</th>
                 <th>R0 (R Zero) Form</th>
-                <th>Note</th>
+                <th>Remarks</th>
             </tr>
         </thead>
         <tbody>';
@@ -118,7 +118,7 @@ $options->setIsRemoteEnabled(true);
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 // Set the paper size to A4 and orientation to portrait
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 
 $NameModified = strtolower(str_replace(' ', '', $formattedDate));

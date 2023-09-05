@@ -39,7 +39,7 @@ function populateEditNoteModal(userId, serviceName) {
             var modalTitle = document.getElementById('editNoteModalLabel');
             var modalBody = document.querySelector('#editNoteModal .modal-body');
 
-            modalTitle.innerText = 'Edit Note';
+            modalTitle.innerText = 'Edit Remarks';
 
             modalBody.innerHTML = `
                 <div class="row">

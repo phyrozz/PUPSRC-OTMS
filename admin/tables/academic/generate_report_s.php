@@ -90,7 +90,7 @@ $html = '
                 <th>Request Letter</th>
                 <th>CCG (Issued Copy)</th>
                 <th>CCG (Academic Office Copy)</th>
-                <th>Note</th>
+                <th>Remarks</th>
             </tr>
         </thead>
         <tbody>';
@@ -124,7 +124,7 @@ $options->setIsRemoteEnabled(true);
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 // Set the paper size to A4 and orientation to portrait
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 
 $NameModified = strtolower(str_replace(' ', '', $formattedDate));
