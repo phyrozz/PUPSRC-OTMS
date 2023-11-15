@@ -45,6 +45,11 @@ $statuses = array(
           Request
           <i class="sort-icon fa-solid fa-caret-down"></i>
         </th>
+        <th class="text-center doc-request-description-header sortable-header" data-column="purpose"
+          scope="col" data-order="desc">
+          Purpose
+          <i class="sort-icon fa-solid fa-caret-down"></i>
+        </th>
         <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col"
           data-order="desc">
           Amount to pay
@@ -306,6 +311,7 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
             .extension_name + '</a></td>' +
             '<td>' + request.role + '</td>' +
             '<td>' + request.request_description + '</td>' +
+            '<td>' + request.purpose + '</td>' +
             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
             '<td>' + '₱' + request.amount_to_pay + '</td>' +
             '<td class="text-center">' +
