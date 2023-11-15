@@ -67,6 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </head>
 <body>
+    <div class="wrapper">
     <?php
     @include '../navbar.php';
     include '../../breadcrumb.php';
@@ -127,11 +128,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="col-12">
             <a class ="btn btn-primary back-button" href="../accounting.php">Back</a>
-                <button class="btn btn-primary next-button" type="submit" name="next"onclick="validateForm(event)">Next</button>
+                <button class="btn btn-primary next-button" style="margin-bottom: 120px" type="submit" name="next"onclick="validateForm(event)">Next</button>
             </div>
+             <div class="alert alert-info" role="alert">
+                                <h4 class="alert-heading">
+                                <i class="fa-solid fa-circle-info"></i> Reminder
+                                </h4>
+                                <p>Make sure that the information provided in every field matched the correct detailed of the account.</p>
+                                <p>This is considered to be an confirmation of your account.</p>
+                                <p class="mb-0">You may begin to <b>Offsetting</b> when you pressed the next button.</p>
+                            </div>
         </form>
     </div>
     </div>
+    </div>
+    <?php include '../../footer.php'; ?>
     <script src="js/offsetting_script.js"></script>
     <script src="../../saved_settings.js"></script>
     <script src="../../loading.js"></script>

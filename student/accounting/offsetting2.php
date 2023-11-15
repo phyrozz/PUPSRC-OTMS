@@ -125,6 +125,7 @@ background-color: #e9ecef;
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
 </head>
 <body>
+    <div class="wrapper">
     <?php
     @include '../navbar.php';
     include '../../breadcrumb.php';
@@ -199,6 +200,8 @@ background-color: #e9ecef;
     </div>
     </form>
     </div>
+    </div>
+    <?php include '../../footer.php'; ?>
     <script src="js/offsetting_script.js"></script>
     <script src="../../saved_settings.js"></script>
     <script src="../../loading.js"></script>
