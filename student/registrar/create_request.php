@@ -43,21 +43,44 @@
 
     //for submit
     if(isset($_POST["submit"])){
-        $req_student_service = $_POST['req_student_service'];
+        $req_student_service = sanitizeInput($_POST['req_student_service']);
         $user_id = $id;
         $office_id = 3; //3 - Registrar Office
-        $date = $_POST['date'];
+        $date = sanitizeInput($_POST['date']);
         $status_id = 1; //1-Pending
         $amount = 0.00;
+        $requestPurpose = sanitizeInput($_POST['reason_request']);
+        //$requestOthers = sanitizeInput($_POST['reasonText']);
+
       
-        $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE request_description = '$req_student_service' AND status_id = '$status_id' AND request_id = '$id'");
+        $query_check =  mysqli_query($connection, "SELECT * FROM doc_requests WHERE (request_description = '$req_student_service' AND status_id = '1' AND scheduled_datetime = '$date') AND user_id = '$id'");
         if(mysqli_num_rows($query_check) > 0) {
             // Data is redundant
             $_SESSION['redundant'] = true;
         } else {
             // Data is not redundant, proceed with insertion
             // Insert the new data into the database
-            $query_insert = "INSERT INTO doc_requests(request_description, scheduled_datetime, office_id, user_id, status_id) VALUES('$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id')";
+            if ($requestPurpose == "Other") {
+              // If yes, save the specific reason for "Others" in $requestOthers
+              $requestOthers = $_POST['reasonText'];
+              if ($_POST['reasonText'] !== "") {
+                $requestOthers = $_POST['reasonText'];
+              } else {
+                  $requestOthers = "User did not specify the reason.";
+              }
+            } else {
+                // If not "Others," save the selected reason in $requestPurpose
+                $requestOthers = "";
+            }
+
+            // Escape the user input to prevent SQL injection
+            $escapedPurpose = $connection->real_escape_string($requestPurpose);
+            $escapedOthers = $connection->real_escape_string($requestOthers);
+
+            $query_insert = "INSERT INTO doc_requests(request_description, scheduled_datetime, office_id, user_id, status_id, purpose) VALUES('$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$escapedPurpose')";
+            if ($requestPurpose == "Other") {
+              $query_insert = "INSERT INTO doc_requests(request_description, scheduled_datetime, office_id, user_id, status_id, purpose) VALUES('$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$escapedOthers')";
+            }
             $result_insert = mysqli_query($connection, $query_insert);
             $_SESSION['success'] = true;
         }
@@ -161,19 +184,58 @@
               <h6 class="mt-5">Request Information</h6>
               <div class="form-group required col-md-12 dropdown">
                 <label for="req_student_service" class="form-label">Type of Services</label>
-                <select name="req_student_service" class="form-control is-invalid" id="req_student_service" required>
-                  <div class="col-md-6">
-                    <option hidden value="">Select options here</option>
-                    <!-- connect to db -->
-                    <?php
-                        while ($dropdown = mysqli_fetch_assoc($result_services)){
-                            if ($dropdown['services_id'] < '15' || ($dropdown['services_id'] >= '18' && $dropdown['services_id'] < 23)) {
-                              echo '<option value="' . $dropdown['services'] . '" >' . $dropdown['services'] . '</option>';
-                            }                          
-                        }
-                    ?>
-                  </div>
-                </select>
+                <div class="input-group has-validation">
+                  <select name="req_student_service" class="form-control is-invalid" id="req_student_service" required>
+                    <div class="col-md-6">
+                      <option hidden value="">--Select--</option>
+                      <!-- connect to db -->
+                      <?php
+                          while ($dropdown = mysqli_fetch_assoc($result_services)){
+                              if ($dropdown['services_id'] < '15' || ($dropdown['services_id'] >= '18' && $dropdown['services_id'] < 23)) {
+                                echo '<option value="' . $dropdown['services'] . '" >' . $dropdown['services'] . '</option>';
+                              }                          
+                          }
+                      ?>
+                    </div>
+                  </select>
+                </div>
+                <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
+              </div>
+              <div class="form-group required col-md-12">
+                <label for="reason_request" class="form-label">Reason for Requesting Document</label>
+                  <div class="input-group has-validation">
+                      <select class="form-control form-select" name="reason_request" id="reason_request" required>
+                        <option hidden value="">--Select--</option>
+                        <option value="CEAP">CEAP</option>
+                        <option value="CHED-FULL SCHOLARSHIP PROGRAM">CHED-FULL SCHOLARSHIP PROGRAM</option>
+                        <option value="CHED-STUFAP">CHED-STUFAP</option>
+                        <option value="CHED-TDP">CHED-TDP</option>
+                        <option value="CHED-TES">CHED-TES</option>
+                        <option value="DOST">DOST</option>
+                        <option value="ECAP">ECAP</option>
+                        <option value="FIF FOUNDATION INC">FIF FOUNDATION INC</option>
+                        <option value="GSIS">GSIS</option>
+                        <option value="ILSP">ILSP</option>
+                        <option value="ISKOLAR NG BAYAN">ISKOLAR NG BAYAN</option>
+                        <option value="ISKOLAR NG BAYAN NG SANTA MARIA">ISKOLAR NG BAYAN NG SANTA MARIA</option>
+                        <option value="ISKOLAR NG CABUYAO">ISKOLAR NG CABUYAO</option>
+                        <option value="ISKOLAR NG CARSIGMA">ISKOLAR NG CARSIGMA</option>
+                        <option value="ISKOLAR NG LAGUNA">ISKOLAR NG LAGUNA</option>
+                        <option value="MACIGLANG ISKOLAR">MACIGLANG ISKOLAR</option>
+                        <option value="MSD">MSD</option>
+                        <option value="MUNTINLUPA SCHOLARSHIP PROGRAM">MUNTINLUPA SCHOLARSHIP PROGRAM</option>
+                        <option value="OWWA ODSP">OWWA ODSP</option>
+                        <option value="SK SCHOLAR">SK SCHOLAR</option>
+                        <option value="SKEAP">SKEAP</option>
+                        <option value="Other">Other (Please specify)</option>
+                      </select>
+                    <div class="invalid-feedback" id="reasonSelectMessage">Please choose an option.</div>
+                  </div>                
+              </div>
+              <div class="form-group col-12 required" id="reasonTextField" style="display: none;">
+                  <label for="reasonText" class="form-label">Reason</label>
+                  <textarea class="form-control" name="reasonText" id="reasonText" style="resize: none;" rows="3" maxlength="2048"></textarea>
+                  <div id="reasonValidationMessage" class="text-danger"></div>
               </div>
               <div class="form-group required col-md-12">
                 <label for="date" class="form-label">Date</label>
@@ -323,6 +385,50 @@ for (var i = 0; i < options.length; i++) {
 const contactNoInput = document.getElementById('contactNumber');
 const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
 
+function validateForm() {
+            var form = document.getElementById('appointment-form');
+            var selectFields = form.querySelectorAll('select[required]');
+            var reasonText = document.getElementById('reasonText');
+            var reasonRequest = document.getElementById('reason_request').value;
+
+            if (reasonRequest === 'Other') {
+                reasonText.setAttribute('required', 'required');
+                if (reasonText.value.trim() === '') {
+                    reasonText.classList.add('is-invalid');
+                } else {
+                    reasonText.classList.remove('is-invalid');
+                }
+            } else {
+                reasonText.removeAttribute('required');
+                reasonText.classList.remove('is-invalid');
+            }
+
+            if (dateValidation.value.trim() === '') {
+                dateValidationMessage.textContent = "Please select a date.";
+                dateValidation.classList.add('is-invalid');
+            }
+            else {
+                dateValidationMessage.textContent = "";
+                dateValidation.classList.remove('is-invalid');
+            }
+
+            for (var i = 0; i < selectFields.length; i++) {
+                var selectField = selectFields[i];
+                if (selectField.value === "") {
+                    selectField.classList.add('is-invalid');
+                } else {
+                    selectField.classList.remove('is-invalid');
+                }
+            }
+
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            contactNoValidation();
+        }
+
+
 contactNoInput.addEventListener('input', () => {
   const contactNo = contactNoInput.value.trim();
   const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
@@ -349,6 +455,18 @@ contactNoInput.addEventListener('input', () => {
     contactNoValidationMessage.textContent = '';
     contactNoInput.classList.remove('is-invalid');
   }
+});
+
+$(document).ready(function() {
+  $('#loadingModal').modal('show');
+
+  $('#reason_request').on('change', function() {
+    if ($(this).val() == 'Other') {
+      $('#reasonTextField').slideToggle(); // Fade in the element
+    } else {
+      $('#reasonTextField').fadeOut(); // Fade out the element
+    }
+  });
 });
 </script>
 <script src="../../loading.js"></script>
