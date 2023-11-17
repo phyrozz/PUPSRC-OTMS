@@ -1,74 +1,86 @@
-<div class="table-responsive">
-    <table id="transactions-table" class="table table-hover hidden">
-        <thead>
-            <tr class="table-active">
-                <th class="text-center"></th>
-                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
-                    Request Code
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="desc">
-                    Office
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
-                    Request
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-schedule-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
-                    Scheduled Date
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
-                    Amount to pay
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
-                    Status
-                    <i class="sort-icon fa-solid fa-caret-down"></i>
-                </th>
-                <th class="text-center"></th>
-            </tr>
-        </thead>
-        <tbody id="table-body">
-            <!-- Table rows will be generated dynamically using JavaScript -->
-        </tbody>
-    </table>
-</div>
-<div id="pagination" class="container-fluid p-0">
-    <nav aria-label="Page navigation">
-        <div class="d-flex justify-content-between align-items-start gap-3">
-            <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
-            <ul class="pagination" id="pagination-links">
-                <!-- Pagination links will be generated dynamically using JavaScript -->
-            </ul>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 p-1">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="alert-heading">
+                        <i class="fa-solid fa-circle-info"></i> Reminder
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">Always check your transaction status to follow instructions.</p>
+                    <p class="mb-0">You can delete or edit transactions during <span
+                        class="badge rounded-pill bg-dark">Pending</span> status.</p>
+                    <hr />
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
+                        the deficiency/ies to necessary office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
+                        by the admin.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
+                            receiving</span> - The request is currently in Receiving window and waiting for submission of
+                        requirements.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                            evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small>
+                    </p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for
+                            pickup</span> - The requested document/s is/are already available for pickup at the releasing section
+                        of student records.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> -
+                        The requested document/s was/were claimed.</small></p>
+                </div>
+            </div>
         </div>
-    </nav>
-</div>
-<div class="d-flex">
-    <div id="reminder-container" class="alert alert-info mt-3" role="alert">
-        <h4 class="alert-heading">
-            <i class="fa-solid fa-circle-info"></i> Reminder
-        </h4>
-        <p class="mb-0">Always check your transaction status to follow instructions.</p>
-        <p class="mb-0">You can delete or edit transactions during <span
-            class="badge rounded-pill bg-dark">Pending</span> status.</p>
-        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
-            the deficiency/ies to necessary office.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
-            by the admin.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
-                receiving</span> - The request is currently in Receiving window and waiting for submission of
-            requirements.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
-                evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small>
-        </p>
-        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for
-                pickup</span> - The requested document/s is/are already available for pickup at the releasing section
-            of student records.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> -
-            The requested document/s was/were claimed.</small></p>
-        <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
+        <div class="col-md-9 p-1">
+            <div class="card">
+                <div class="table-responsive">
+                    <table id="transactions-table" class="table table-hover hidden m-0 p-0">
+                        <thead>
+                            <tr class="table-active">
+                                <th class="text-center"></th>
+                                <th class="text-center doc-request-id-header sortable-header" data-column="request_id" scope="col" data-order="desc">
+                                    Request Code
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-office-header sortable-header" data-column="office_name" scope="col" data-order="desc">
+                                    Office
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-description-header sortable-header" data-column="request_description" scope="col" data-order="desc">
+                                    Request
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-schedule-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
+                                    Scheduled Date
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
+                                    Amount to pay
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-status-header sortable-header" data-column="status_name" scope="col" data-order="desc">
+                                    Status
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="pe-none">
+                            <!-- Table rows will be generated dynamically using JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="pagination" class="container-fluid p-0 pt-2">
+                <nav aria-label="Page navigation">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
+                        <ul class="pagination" id="pagination-links">
+                            <!-- Pagination links will be generated dynamically using JavaScript -->
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
     </div>
 </div>
 <!-- View edit modal -->
@@ -442,9 +454,9 @@
                         var request = data.document_requests[i];
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
+                            '<td class="pe-auto"><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
-                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</td>' +
+                            '<td class="pe-auto"><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</td>' +
                             '<td>' + request.request_description + '</td>' +
                             '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
@@ -455,10 +467,10 @@
                             
                         // Don't allow edit button to appear when status is not pending and view reason for rejected
                         if (request.status_name === "Pending") {
-                            row += '<a href="#" class="btn btn-primary btn-sm edit-request" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Edit <i class="fa-solid fa-pen-to-square"></i></a>'
+                            row += '<a href="#" class="btn btn-primary btn-sm edit-request pe-auto" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Edit <i class="fa-solid fa-pen-to-square"></i></a>'
                             }
                         else if (request.status_name === "Rejected") {
-                            row += '<a href="#" class="btn btn-primary btn-sm view-reason" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Reason <i class="fa-solid fa-eye"></i></a>'
+                            row += '<a href="#" class="btn btn-primary btn-sm view-reason pe-auto" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Reason <i class="fa-solid fa-eye"></i></a>'
                         }
                              
                         row += '</td></tr>';

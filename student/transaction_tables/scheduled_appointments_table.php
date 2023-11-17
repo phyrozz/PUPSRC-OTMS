@@ -1,72 +1,86 @@
-<table id="transactions-table" class="table table-hover hidden">
-    <thead>
-        <tr class="table-active">
-            <th class="text-center"></th>
-            <th class="text-center doc-request-id-header sortable-header" data-column="counseling_id" scope="col" data-order="desc">
-                Counseling Code
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-office-header sortable-header" data-column="appointment_description" scope="col" data-order="desc">
-                Description
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-description-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
-                Schedule
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-            <th class="text-center doc-request-schedule-header sortable-header" data-column="status_name" scope="col" data-order="desc">
-                Status
-                <i class="sort-icon fa-solid fa-caret-down"></i>
-            </th>
-        </tr>
-    </thead>
-    <tbody id="table-body">
-        <!-- Table rows will be generated dynamically using JavaScript -->
-    </tbody>
-</table>
-<div id="pagination" class="container-fluid p-0">
-    <nav aria-label="Page navigation">
-        <div class="d-flex justify-content-between align-items-start gap-3">
-            <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
-            <ul class="pagination" id="pagination-links">
-                <!-- Pagination links will be generated dynamically using JavaScript -->
-            </ul>
-        </div>
-    </nav>
-</div>
-<div class="d-flex">
-    <div id="reminder-container" class="alert alert-info mt-3" role="alert">
-        <h4 class="alert-heading">
-            <i class="fa-solid fa-circle-info"></i> Reminder
-        </h4>
-        <p class="mb-0">Always check your transaction status to follow instructions.</p>
-        <p class="mb-0">You can delete or edit transactions during <span
-            class="badge rounded-pill bg-dark">Pending</span> status.</p>
-        <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The appointment is under review by the office.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The appointment is rejected
-            by the office.</small></p>
-        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
-                evaluation</span> - Additional requirements or appointment purpose is under review by the office.</small>
-        </p>
-        <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Approved</span> -
-            The appointment is approved and the requestor must proceed to the Guidance Office.</small></p>
-        <!-- <p class="mb-0">You will find answers to the questions we get asked the most about requesting for academic documents through <a href="FAQ.php">FAQs</a>.</p> -->
-    </div>
-</div>
-<!-- View comment modal -->
-<div id="viewCommentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewCommentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewCommentModalLabel">Reason/Comment</h5>
-            </div>
-            <div class="modal-body">
-                <p><?php  ?></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 p-1">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="alert-heading">
+                        <i class="fa-solid fa-circle-info"></i> Reminder
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">Always check your transaction status to follow instructions.</p>
+                    <p class="mb-0">You can delete or edit transactions during <span
+                        class="badge rounded-pill bg-dark">Pending</span> status.</p>
+                    <hr />
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The appointment is under review by the office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The appointment is rejected
+                        by the office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                            evaluation</span> - Additional requirements or appointment purpose is under review by the office.</small>
+                    </p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Approved</span> -
+                        The appointment is approved and the requestor must proceed to the Guidance Office.</small></p>
+                </div>
             </div>
         </div>
+        <div class="col-md-9 p-1">
+            <div class="card">
+                <div class="table-responsive">
+                    <table id="transactions-table" class="table table-hover hidden m-0 p-0">
+                        <thead>
+                            <tr class="table-active">
+                                <th class="text-center"></th>
+                                <th class="text-center doc-request-id-header sortable-header" data-column="counseling_id" scope="col" data-order="desc">
+                                    Counseling Code
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-office-header sortable-header" data-column="appointment_description" scope="col" data-order="desc">
+                                    Description
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-description-header sortable-header" data-column="scheduled_datetime" scope="col" data-order="desc">
+                                    Schedule
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                                <th class="text-center doc-request-schedule-header sortable-header" data-column="status_name" scope="col" data-order="desc">
+                                    Status
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="pe-none">
+                            <!-- Table rows will be generated dynamically using JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="pagination" class="container-fluid p-0 pt-2">
+                <nav aria-label="Page navigation">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <button id="delete-button" class="btn btn-primary" disabled="disabled">Delete Transaction(s)</button>
+                        <ul class="pagination" id="pagination-links">
+                            <!-- Pagination links will be generated dynamically using JavaScript -->
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- View comment modal -->
+        <!-- <div id="viewCommentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewCommentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewCommentModalLabel">Reason/Comment</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php  ?></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
 </div>
 <!-- End of view comment modal -->
@@ -177,14 +191,16 @@
                     for (var i = 0; i < data.counseling_schedules.length; i++) {
                         var schedules = data.counseling_schedules[i];
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + schedules.counseling_id + '" name="' + schedules.counseling_id + '" value="' + schedules.counseling_id + '"></td>' +
+                            '<td class="pe-auto"><input type="checkbox" id="' + schedules.counseling_id + '" name="' + schedules.counseling_id + '" value="' + schedules.counseling_id + '"></td>' +
                             '<td>' + schedules.counseling_id + '</td>' +
-                            '<td>' +
-                            (schedules.appointment_description === 'Other' ?
-                                '<a href="#" class="other-appointment" data-comment="' + schedules.comments + '">' +
-                                schedules.appointment_description +
-                                '</a>' :
-                                schedules.appointment_description) +
+                            '<td>' + schedules.appointment_description + '</td>' +
+                            // This table data adds a link that opens the description modal if the value is Other
+
+                            // (schedules.appointment_description === 'Other' ?
+                            //     '<a href="#" class="other-appointment" data-comment="' + schedules.comments + '">' +
+                            //     schedules.appointment_description +
+                            //     '</a>' :
+                            //     schedules.appointment_description) +
                             '</td>' + 
                             '<td>' + (schedules.scheduled_datetime !== null ? (new Date(schedules.scheduled_datetime)).toLocaleString('en-US', {
                             month: 'long',

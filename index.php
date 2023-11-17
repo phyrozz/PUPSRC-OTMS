@@ -34,7 +34,32 @@
             exit;
         }
     ?>
-    <div class="vh-100 d-flex align-items-center">
+    <div class="row m-0 dark-overlay dark-mode d-flex flex-md-row flex-column position-relative justify-content-md-between justify-content-start">
+        <div class="col-md-7 col-12 d-flex flex-column justify-content-center position-relative align-items-md-start align-items-center">
+            <div class="d-flex position-absolute top-0 left-0 gap-2 mt-4 align-items-center">
+                <img src="assets/pup-logo.png" alt="PUP Logo" width="30" height="30">
+                <p class="text-light fs-6 fw-bold lh-1 m-0 p-0">Polytechnic University of the Philippines</p>
+            </div>
+            <h1 class="welcome-title-text card-title pt-2 text-light">PUP Santa Rosa</h1>
+            <h2 class="welcome-text lead card-title text-light fw-lighter"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
+            <p class="pt-4 text-light">Choose your role to get started</p>
+            
+        </div>
+        <div class="role-btn-group col-md-5 col-12 d-flex flex-column align-items-stretch justify-content-center gap-2">
+            <a href="login/student.php" class="btn btn-student p-3 btn-lg">
+                <i class="fa fa-user-circle mr-2"></i> Student
+            </a>
+            <a href="login/client.php" class="btn btn-client p-3 btn-lg">
+                <i class="fa fa-user mr-2"></i> Guest
+            </a>
+            <a href="login/admin.php" class="btn btn-admin p-3 btn-lg">
+                <i class="fa fa-user-shield mr-2"></i> Admin
+            </a>
+        </div>
+        <small class="text-light fw-light position-absolute bottom-0 start-0 mb-2">PUPSRC-OTMS Beta 0.6.0</small>
+    </div>
+
+    <!-- <div class="vh-100 d-flex align-items-center">
         <div class="container d-flex justify-content-center">
             <div class="card login-card text-center bg-light p-3 jumbotron-bg">
                 <div class="card-body">
@@ -57,7 +82,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <script src="/jquery.js"></script>
 </body>
 </html>

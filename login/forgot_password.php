@@ -6,15 +6,28 @@ require '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require '../vendor/phpmailer/phpmailer/src/Exception.php';
 require '../vendor/phpmailer/phpmailer/src/SMTP.php';
 
+session_start();
+include '../conn.php';
+
+// Generate a CSRF token and store it in the session
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrfToken = $_SESSION['csrf_token'];
 
 if (isset($_POST['resetBtn'])) {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        // Token mismatch, handle the error (e.g., log it and deny the request)
+        header("Location: ../index.php");
+        exit("CSRF token validation failed");
+    }
+
     // Function to generate a random token
     function generateToken($length = 32)
     {
         return bin2hex(random_bytes($length));
     }
-
-    include '../conn.php';
 
     $mail = new PHPMailer(true);
     $email = sanitizeInput($_POST['email']);
@@ -124,6 +137,7 @@ function sanitizeInput($input) {
                     <p class="lead">Reset your password</p>
 
                     <form method="POST" class="d-flex flex-column gap-2 w-100" action="forgot_password.php">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <div class="form-group col-12">
                             <input type="email" class="form-control" name="email" id="email" placeholder="Your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="5" maxlength="100" required>
                         </div>

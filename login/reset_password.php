@@ -1,5 +1,12 @@
 <?php
+session_start();
 include '../conn.php';
+
+// Generate a CSRF token and store it in the session
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrfToken = $_SESSION['csrf_token'];
 
 date_default_timezone_set('Asia/Manila');
 
@@ -15,6 +22,13 @@ $result = $stmt->get_result();
 if ($result->num_rows === 1) {
     // Token is valid, allow the user to reset their password
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            // Token mismatch, handle the error (e.g., log it and deny the request)
+            header("Location: ../index.php");
+            exit("CSRF token validation failed");
+        }
+
         // Retrieve the new password from the form
         $newPassword = sanitizeInput($_POST['newPassword']);
         $confirmPassword = sanitizeInput($_POST['confirmPassword']);
@@ -79,6 +93,7 @@ function sanitizeInput($input) {
                     <p class="lead">Reset your password</p>
 
                     <form method="POST" class="d-flex flex-column gap-2 w-100" action="">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <div class="form-group col-12">
                             <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="Enter your new password" minlength="8" maxlength="80" required>
                         </div>

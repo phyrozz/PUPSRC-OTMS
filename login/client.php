@@ -22,43 +22,58 @@
 </head>
 <body>
   <?php
-    session_start();
-    include "../conn.php";
+  session_start();
+  include "../conn.php";
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  // Generate a CSRF token and store it in the session
+  if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+  }
+  $csrfToken = $_SESSION['csrf_token'];
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+      // Token mismatch, handle the error (e.g., log it and deny the request)
+      header("Location: ../index.php");
+      exit("CSRF token validation failed");
+    }
+
       $email = sanitizeInput($_POST['email']);
       $password = sanitizeInput($_POST['password']);
       $clientRole = 2;
 
-      $query = "SELECT user_id, email, first_name, last_name, extension_name, password FROM users WHERE email = ? and user_role = ?";
-      $stmt = $connection->prepare($query);
-      $stmt->bind_param("si", $email, $clientRole);
-      $stmt->execute();
-      $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
-      $stmt->fetch();
-
-      if ($dbEmail && password_verify($password, $dbPassword)) {
-          $_SESSION['user_id'] = $userId;
-          $_SESSION['first_name'] = $dbFirstName;
-          $_SESSION['last_name'] = $dbLastName;
-          $_SESSION['extension_name'] = $dbExtensionName;
-          $_SESSION['user_role'] = 2;
-          header("Location: ../client/home.php");
-          exit();
+      if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
+          $loginMessage = "Invalid email.";
       } else {
-        $loginMessage = "Invalid credentials. Please try again.";
-      }
-  
-      $stmt->close();
-      $connection->close();
-    }
+          $query = "SELECT user_id, email, first_name, last_name, extension_name, password FROM users WHERE email = ? and user_role = ?";
+          $stmt = $connection->prepare($query);
+          $stmt->bind_param("si", $email, $clientRole);
+          $stmt->execute();
+          $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
+          $stmt->fetch();
 
-    // Function to sanitize user input
-    function sanitizeInput($input) {
+          if ($dbEmail && password_verify($password, $dbPassword)) {
+              $_SESSION['user_id'] = $userId;
+              $_SESSION['first_name'] = $dbFirstName;
+              $_SESSION['last_name'] = $dbLastName;
+              $_SESSION['extension_name'] = $dbExtensionName;
+              $_SESSION['user_role'] = 2;
+              header("Location: ../client/home.php");
+              exit();
+          } else {
+              $loginMessage = "Invalid credentials.";
+          }
+
+          $stmt->close();
+      }
+  }
+
+  // Function to sanitize user input
+  function sanitizeInput($input) {
       return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
-    }
-    ?>
-  <?php ///////// DELETE INACTIVE CLIENT USER FOR 6 MONTHS ///////////
+  }
+      ///////// DELETE INACTIVE CLIENT USER FOR 6 MONTHS ///////////
       // Check if the connection was successful
       if ($connection->connect_error) {
           die("Connection failed: " . $connection->connect_error);
@@ -120,9 +135,10 @@
         <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
           <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
           <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
-          <p class="lead">Sign in as Client (Alumni, Visitor, etc.)</p>
+          <p class="lead">Sign in as Guest (Alumni, Visitor, etc.)</p>
 
           <form method="POST" class="d-flex flex-column gap-2" action="">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <div class="form-group col-12">
               <input type="email" class="form-control" name="email" id="email" placeholder="Email Address"
                 maxlength="100" required>
@@ -160,6 +176,7 @@
   </div>
   <!-- Sign Up Modal -->
   <form action="../create_account.php" id="signupForm" method="POST">
+    <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
     <div class="modal fade" id="Register" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">

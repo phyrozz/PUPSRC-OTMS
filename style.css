@@ -35,6 +35,19 @@ body.dark-mode {
     background-color: #1f1f1f !important;
 }
 
+.welcome-title-text {
+    font-size: 4vw;
+}
+
+.welcome-text {
+    font-size: 2vw;
+}
+
+.role-btn-group {
+    background-color: #212121;
+    max-width: 500px;
+}
+
 .login-card {
     width: 50%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -673,6 +686,21 @@ select.status-dropdown {
 }
 
 @media only screen and (max-width: 768px) {
+    .welcome-title-text {
+        font-size: 2.3rem;
+        margin-top: 200px;
+    }
+    
+    .welcome-text {
+        font-size: 1rem;
+        margin-bottom: 100px;
+    }
+
+    .role-btn-group {
+        background-color: rgba(0, 0, 0, 0);
+        max-width: 100%;
+    }
+
     .login-card {
         width: 100%;
     }

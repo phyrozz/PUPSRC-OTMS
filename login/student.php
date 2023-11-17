@@ -23,32 +23,48 @@
     session_start();
     include "../conn.php";
 
+    // Generate a CSRF token and store it in the session
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    $csrfToken = $_SESSION['csrf_token'];
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            // Token mismatch, handle the error (e.g., log it and deny the request)
+            header("Location: ../index.php");
+            exit("CSRF token validation failed");
+        }
+
         $studentNo = sanitizeInput($_POST['studentNumber']);
         $password = sanitizeInput($_POST['password']);
 
-        $query = "SELECT user_id, student_no, first_name, last_name, extension_name, password FROM users WHERE student_no = ?";
-        $stmt = $connection->prepare($query);
-        $stmt->bind_param("s", $studentNo);
-        $stmt->execute();
-        $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
-        $stmt->fetch();
-
-        if ($dbStudentNo && password_verify($password, $dbPassword)) {
-            $_SESSION['user_id'] = $userId;
-            $_SESSION['student_no'] = $dbStudentNo;
-            $_SESSION['first_name'] = $dbFirstName;
-            $_SESSION['last_name'] = $dbLastName;
-            $_SESSION['extension_name'] = $dbExtensionName;
-            $_SESSION['user_role'] = 1;
-            header("Location: ../student/home.php");
-            exit();
+        if (!preg_match('/^\d{4}-\d{5}-SR-\d$/', $studentNo)) {
+            $loginMessage = "Invalid student number.";
         } else {
-                $loginMessage = "Invalid credentials. Please try again.";
+            $stmt = $connection->prepare("SELECT user_id, student_no, first_name, last_name, extension_name, password FROM users WHERE student_no = ?");
+            $stmt->bind_param("s", $studentNo);
+            $stmt->execute();
+            $stmt->bind_result($userId, $dbStudentNo, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
+            $stmt->fetch();
+
+            if ($dbStudentNo && preg_match("/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/", $password) && password_verify($password, $dbPassword)) {
+                $_SESSION['user_id'] = $userId;
+                $_SESSION['student_no'] = $dbStudentNo;
+                $_SESSION['first_name'] = $dbFirstName;
+                $_SESSION['last_name'] = $dbLastName;
+                $_SESSION['extension_name'] = $dbExtensionName;
+                $_SESSION['user_role'] = 1;
+                header("Location: ../student/home.php");
+                exit();
+            } else {
+                $loginMessage = "Invalid credentials.";
             }
-    
+
             $stmt->close();
-            $connection->close();
+        }
+        $connection->close();
     }
 
     // Function to sanitize user input
@@ -65,6 +81,7 @@
                     <p class="lead">Sign in as PUP student</p>
 
                     <form method="POST" class="d-flex flex-column gap-2" action="">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <div class="form-group col-12">
                             <input type="text" class="form-control" name="studentNumber" id="studentNumber" placeholder="Student Number" maxlength="15" required>
                         </div>
@@ -99,6 +116,7 @@
     </div>
     <!-- Sign Up Modal -->
     <form action="../create_account.php" id="signupForm" method="POST">
+        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
         <div class="modal fade" id="Register" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true"> 
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

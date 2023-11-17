@@ -21,7 +21,20 @@
     session_start();
     include "../conn.php";
 
+    // Generate a CSRF token and store it in the session
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    $csrfToken = $_SESSION['csrf_token'];
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            // Token mismatch, handle the error (e.g., log it and deny the request)
+            header("Location: ../index.php");
+            exit("CSRF token validation failed");
+        }
+
         $email = sanitizeInput($_POST['email']);
         $password = sanitizeInput($_POST['password']);
 
@@ -62,6 +75,7 @@
                     <p class="lead">Sign in as Faculty Admin</p>
 
                     <form method="POST" class="d-flex flex-column gap-2" action="">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <div class="form-group col-12">
                             <input type="text" class="form-control" id="email" name="email" placeholder="Email address"  maxlength="100" required>
                         </div>
