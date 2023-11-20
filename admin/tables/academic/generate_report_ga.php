@@ -19,7 +19,7 @@ $timestamp = time();
 $generatedOnDatetime = new DateTime("now", new DateTimeZone($tz));
 $generatedOnDatetime->setTimestamp($timestamp);
 
-$query = "SELECT completion_form, assessed_fee, completion_form_status.status_name AS completion_form_status, assessed_fee_status.status_name AS assessed_fee_status, note, 
+$query = "SELECT completion_form, assessed_fee, completion_form_status.status_name AS completion_form_status, assessed_fee_status.status_name AS assessed_fee_status, ga_remarks, 
         users.first_name, users.last_name, users.middle_name, users.extension_name, users.student_no
         FROM acad_grade_accreditation
         INNER JOIN users ON acad_grade_accreditation.user_id = users.user_id
@@ -101,7 +101,7 @@ $html = '
                     <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['completion_form_status'].'</td>
                     <td>'.$row['assessed_fee_status'].'</td>
-                    <td>'.$row['note'].'</td>
+                    <td>'.$row['remarks'].'</td>
                 </tr>';
                 $i++;
             }

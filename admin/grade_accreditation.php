@@ -133,12 +133,12 @@
         });
     </script>
     <script src="tables/academic/student_info.js" defer></script>
-    <script src="tables/academic/note.js" defer></script>
+    <script src="tables/academic/remarks.js" defer></script>
 </head>
 <body>
     <?php 
     include "tables/academic/status_info_modal.php"; 
-    include "tables/academic/edit_note_modal.php";
+    include "tables/academic/edit_remarks_modal.php";
     ?>
     <div class="wrapper">
         <!-- Loading page -->
@@ -318,7 +318,7 @@
                                     echo '">';
                                     echo generateStatusOptions($row['assessed_fee_status']);
                                     echo "</select></td></div>";
-                                    echo "<td><button class='edit-note-btn btn btn-primary' data-service='ga' data-user-id='". $row['user_id'] ."'><i class='fa-regular fa-pen-to-square'></i></button></td>";
+                                    echo "<td><button class='edit-remarks-btn btn btn-primary' data-service='ga' data-user-id='". $row['user_id'] ."'><i class='fa-regular fa-pen-to-square'></i></button></td>";
                                     echo "</tr>";
                                 }
                             } else {

@@ -94,7 +94,7 @@
 }
 
     // Dynamically display statuses on each requirements
-    $query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status, first_ctc_status, second_ctc_status, note FROM acad_shifting WHERE user_id = ?";
+    $query = "SELECT request_letter, first_ctc, second_ctc, request_letter_status, first_ctc_status, second_ctc_status, s_remarks FROM acad_shifting WHERE user_id = ?";
 
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $_SESSION['user_id']);
@@ -343,21 +343,6 @@
                 }
             }
 
-            checkRemarks();
-            
-            // Function to check if there is remarks in admin
-            function checkRemarks() {
-                var remarksBtn = document.getElementById('remarksBtn');
-                var remarks = "<?php echo is_null($reqData[0]['note']) || trim($reqData[0]['note']) == "" ? "N/A" : $reqData[0]['note']; ?>";
-
-                // Enable the submit button only if all three requirements are uploaded
-                if (remarks.trim() == "") {
-                    remarksBtn.disabled = false;
-                } else {
-                    remarksBtn.disabled = true;
-                }
-            }
-        });
 
         $('#requestLetterUploadBtn').on('click', function () {
             uploadRequirement('requestLetter');

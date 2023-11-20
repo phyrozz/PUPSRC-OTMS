@@ -41,7 +41,7 @@
 
 
     // Dynamically display statuses on each requirements
-    $query = "SELECT application_letter, application_letter_status, note FROM acad_cross_enrollment WHERE user_id = ?";
+    $query = "SELECT application_letter, application_letter_status, ce_remarks FROM acad_cross_enrollment WHERE user_id = ?";
 
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $_SESSION['user_id']);
@@ -241,22 +241,6 @@
                     submitBtn.disabled = true;
                 }
             }
-
-            checkRemarks();
-            
-            // Function to check if there is remarks in admin
-            function checkRemarks() {
-                var remarksBtn = document.getElementById('remarksBtn');
-                var remarks = "<?php echo is_null($reqData[0]['note']) || trim($reqData[0]['note']) == "" ? "N/A" : $reqData[0]['note']; ?>";
-
-                // Enable the submit button only if all three requirements are uploaded
-                if (remarks.trim() == "") {
-                    remarksBtn.disabled = false;
-                } else {
-                    remarksBtn.disabled = true;
-                }
-            }
-        });
 
         function resetForm() {
             if (confirm("Are you sure you want to reset the form? This will delete attached files and reset their status to 'Missing'. But this will only reset requirements if they're in PENDING status.")) {

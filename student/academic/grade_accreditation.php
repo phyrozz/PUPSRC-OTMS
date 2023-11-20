@@ -73,7 +73,7 @@
     }
     
     // Dynamically display statuses on each requirements
-    $query = "SELECT completion_form, assessed_fee, completion_form_status, assessed_fee_status, note FROM acad_grade_accreditation WHERE user_id = ?";
+    $query = "SELECT completion_form, assessed_fee, completion_form_status, assessed_fee_status, ga_remarks FROM acad_grade_accreditation WHERE user_id = ?";
 
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $_SESSION['user_id']);
@@ -297,21 +297,6 @@
                 }
             }
 
-            checkRemarks();
-            
-            // Function to check if there is remarks in admin
-            function checkRemarks() {
-                var remarksBtn = document.getElementById('remarksBtn');
-                var remarks = "<?php echo is_null($reqData[0]['note']) || trim($reqData[0]['note']) == "" ? "N/A" : $reqData[0]['note']; ?>";
-
-                // Enable the submit button only if all three requirements are uploaded
-                if (remarks.trim() == "") {
-                    remarksBtn.disabled = false;
-                } else {
-                    remarksBtn.disabled = true;
-                }
-            }
-        });
 
         $('#assessedFeeUploadBtn').on('click', function () {
             uploadRequirement('assessedFee');
