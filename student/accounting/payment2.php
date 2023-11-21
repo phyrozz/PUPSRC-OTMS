@@ -53,85 +53,111 @@ $dbname = "otms_db";
         <!--Start of content-->
         <div class="m-auto">
             <form id="studentForm" method="post" class="row g-3 needs-validation" novalidate>
+                <!-- Main Rectangle Container -->
+                <div class="row" id="payment-summary" style="border: 1px solid #000; border-radius: 20px; width: 200px; height: 430px;     
+                margin-top: 90px;
+                text-align: left;
+                background-color: #f5f5f5;
+                /*padding: 20px;*/
+                border: 5px solid #800000;
+                border-radius: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+                width: 100%;
+                max-width: 1300px; /* Adjust the maximum width as per your preference */
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: -10px;" >
 
-                
-                <div class="col-12 payment-summary" id="payment-summary">
-                    <h1> Payment Voucher </h1>
-                    <?php
-                    include '../../conn.php';
-                    include '../functions.php';
+                    <!-- Left Section -->
+                    <div class="col-md-4 text-center p-4" style="background-color: #800000; color: #fff; border-top-left-radius: 15px; border-bottom-left-radius: 15px; height: 429px;">
+                        <div class="red-section" style="margin-top: 90px; margin-right:">
+                            <img src="/assets/pup-logo.png" alt="PUP Logo" class="img-fluid mb-2">
+                            <br><br><br>
+                            <p class="font-weight-bold mb-1"><b>POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</b></p>
+                            <p>SANTA ROSA CAMPUS</p>
+                        </div>
+                    </div>
 
-                    // Check if a session has already been started
-                    if (session_status() == PHP_SESSION_NONE) {
-                        session_start();
-                    }
-
-                    // Set the time zone to Philippine time
-                     date_default_timezone_set('Asia/Manila');
-
-                    // Retrieve the latest payment data from the database
-                    $paymentQuery = "SELECT payment_id, firstName, middleName, lastName, studentNumber, course, documentType /*amount, referenceNumber */
-                                    FROM student_info
-                                    WHERE studentNumber = '" . $_SESSION['student_no'] . "'
-                                    ORDER BY payment_id DESC
-                                    LIMIT 1";
-
-                    $result = mysqli_query($connection, $paymentQuery);
-
-                    if ($result) {
-                        $paymentData = mysqli_fetch_assoc($result);
-                        ?>
-
-                        <table class="table">
-                        <tbody>
-                            <tr>
-                                <th>Payment Code</th>
-                                <td> AO-<?php echo $paymentData['payment_id']; ?></td>
-                            </tr>
-                            <tr>
-                                <th>First Name</th>
-                                <td><?php echo $paymentData['firstName']; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Middle Name</th>
-                                <td><?php echo $paymentData['middleName']; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Last Name</th>
-                                <td><?php echo $paymentData['lastName']; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Student Number</th>
-                                <td><?php echo $paymentData['studentNumber']; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Course</th>
-                                <td><?php echo $paymentData['course']; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Document Type</th>
-                                <td><?php echo $paymentData['documentType']; ?></td>
-                            </tr>
-                            <!--<tr>
-                                <th>Amount</th>
-                                <td><?php echo $paymentData['amount']; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Reference Number</th>
-                                <td><?php echo $paymentData['referenceNumber']; ?></td>
-                            </tr> -->
-                            <tr>
-                                <th>Date</th>
-                                <td><?php echo date('Y-m-d'); ?></td>
-                            </tr>
-                        </tbody>
-                        </table>
-
+                    <!-- Right Section: Payment Voucher Details -->
+                    <div class="col-md-8 text-left p-4" >
+                        <h2>PAYMENT VOUCHER</h2>
                         <?php
-                    } else {
-                        echo "Error executing the query: " . mysqli_error($connection);
-                    }
-                    ?>
+                        // Existing PHP code for payment details
+                        include '../../conn.php';
+                        include '../functions.php';
+
+                        // Check if a session has already been started
+                        if (session_status() == PHP_SESSION_NONE) {
+                            session_start();
+                        }
+
+                        // Set the time zone to Philippine time
+                        date_default_timezone_set('Asia/Manila');
+
+                        // Retrieve the latest payment data from the database
+                        $paymentQuery = "SELECT payment_id, firstName, middleName, lastName, studentNumber, course, documentType /*amount, referenceNumber */
+                                        FROM student_info
+                                        WHERE studentNumber = '" . $_SESSION['student_no'] . "'
+                                        ORDER BY payment_id DESC
+                                        LIMIT 1";
+
+                        $result = mysqli_query($connection, $paymentQuery);
+
+                        if ($result) {
+                            $paymentData = mysqli_fetch_assoc($result);
+                            ?>
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                            <th>Payment Code</th>
+                                            <td> AO-<?php echo $paymentData['payment_id']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>First Name</th>
+                                            <td><?php echo $paymentData['firstName']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Middle Name</th>
+                                            <td><?php echo $paymentData['middleName']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Last Name</th>
+                                            <td><?php echo $paymentData['lastName']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Student Number</th>
+                                            <td><?php echo $paymentData['studentNumber']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Course</th>
+                                            <td><?php echo $paymentData['course']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Document Type</th>
+                                            <td><?php echo $paymentData['documentType']; ?></td>
+                                        </tr>
+                                        <!--<tr>
+                                            <th>Amount</th>
+                                            <td><?php echo $paymentData['amount']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Reference Number</th>
+                                            <td><?php echo $paymentData['referenceNumber']; ?></td>
+                                        </tr> -->
+                                        <tr>
+                                            <th>Date</th>
+                                            <td><?php echo date('Y-m-d'); ?></td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                            <?php
+                        } else {
+                            echo "Error executing the query: " . mysqli_error($connection);
+                        }
+                        ?>
+                    </div>
+                   
                 </div>
             </form>
         </div>
@@ -143,13 +169,14 @@ $dbname = "otms_db";
     </div>
     <script src="../../loading.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
         var takeScreenshot = function() {
             html2canvas(document.getElementById("payment-summary"), {
                 onrendered: function (canvas) {
                     var a = document.createElement('a');
                     a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-                    a.download = 'payment-voucher.jpg';
+                    a.download = 'payment-summary.jpg';
                     a.click();
                 }
             });
