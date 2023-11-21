@@ -350,7 +350,7 @@
             data: { request_id: requestId },
             success: function(response) {
                 var reasonData = JSON.parse(response); // Parse the JSON response
-                var reason = reasonData.purpose; // Extract the reason text
+                var reason = reasonData.request_letter; // Extract the reason text
                 
                 var modalTitle = document.getElementById('reasonModalLabel');
                 var modalBody = document.querySelector('#reasonModal .modal-body');

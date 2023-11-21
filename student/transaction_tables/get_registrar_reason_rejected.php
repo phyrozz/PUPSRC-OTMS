@@ -3,8 +3,8 @@ include "../../conn.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_id'])) {
     $requestId = $_POST['request_id'];
-    //"purpose" column in doc_request may reserve as temporary reason for rejected process in registrar
-    $query = "SELECT purpose FROM doc_requests WHERE request_id = ?";
+    //"request_letter" column in doc_request may reserve as temporary reason for rejected process in registrar
+    $query = "SELECT request_letter FROM doc_requests WHERE request_id = ? AND office_id = '3'";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("s", $requestId);
     $stmt->execute();

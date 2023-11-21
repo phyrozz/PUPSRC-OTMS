@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_id'])) {
     $stmt->close();
 
     // Update reason for rejection
-    $query = "UPDATE doc_requests SET purpose = '$reason' WHERE request_id = '$requestId'";
+    $query = "UPDATE doc_requests SET request_letter = '$reason' WHERE request_id = '$requestId'";
     $result = mysqli_query($connection, $query);
 
     // Check if the update was successful
