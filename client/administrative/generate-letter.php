@@ -88,20 +88,8 @@ $html = <<<EOD
             font-family: 'Times New Roman', Times, serif, sans-serif;
 
         }
+
         
-
-        .image-container img {
-            height: 70;
-            width: 70;
-        }
-
-
-
-        /* margin between image and text */
-        .image-container {
-            display: inline-block;
-            margin-right: 14px;
-        }
 
         .text {
             display: inline-block;
@@ -130,6 +118,7 @@ $html = <<<EOD
         }
 
         .date {
+            margin-bottom: 50px;
             text-align: left;
         }
 
@@ -141,6 +130,15 @@ $html = <<<EOD
 
         #current-date {
             font-weight: bold;
+        }
+        .receiver {
+
+            margin-bottom: 40px;
+
+        }
+        .sender {
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
 
         #year-level,
@@ -169,42 +167,9 @@ $html = <<<EOD
             margin-right: 46px;
         }
 
-        .footer-content {
-            position: relative;
-            
-            
-        }
         
-          .footer-image {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 100%;
-          }
         
-          .footer-image img {
-            margin-top: 15px;
-            height: 140px;
-            width: auto;
-
-          }
-        
-          .footer-text {
-            padding-right: 20px; /* Adjust the padding as needed */
-          }
-        
-          .footer-text p {
-            font-size: 12px;
-            margin-bottom: 10px; /* Adjust the margin as needed */
-          }
-        
-          .footer-text p:last-child {
-            margin-bottom: 0;
-          }
-        
-          .footer-text p.footer-title {
-            font-size: 18px;
-          }
+          
         
     </style>
 </head>
@@ -218,7 +183,7 @@ $html = <<<EOD
         <h4><span id="current-date">$currentTime</span></h4>
     </div>
 
-    <div class="reciever">
+    <div class="receiver">
         <p>
             <strong>ASST. PROF DIOMEDES E. RODRIGUEZ</strong><br>
             <em>Head, Administrative Services</em>
@@ -234,19 +199,20 @@ $html = <<<EOD
 
 
     <div class="letter-body">
-        <p>Greetings in pursuit of wisdom!</p>
+        <p>Warm reetings in pursuit of wisdom!</p>
 
 
         <p class="indent">
-            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name)</span>, will be utilizing <span id="facility">$facilityName</span> at Pup Sta. Rosa
-            on <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span> for the purpose of
-             "<span id="reason">$purpose</span>".
+            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name)</span>, kindly request your approval to utilize the <span id="facility">$facilityName</span> at PUP Sta. Rosa Campus.
+            The facility will be used as the venue for <span id="reason">"$purpose"</span>.
+            The intended schedule for our activity is from <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span>.
             This reservation is part of our requirements for the scheduled activity.
         </p>
 
 
 
-        <p>Hoping for your kind consideration.</p>
+        <p>
+        Your kind consideration of this request is highly appreciated. We assure you that our use of the facility will be in accordance with all guidelines and regulations.</p>
 
 
         <br>
@@ -313,4 +279,3 @@ file_put_contents($filePath, $dompdf->output());
 // Output the PDF to the browser
 $dompdf->stream("letter.pdf", ["Attachment" => false]);
 ?>
-
