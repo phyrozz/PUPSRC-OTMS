@@ -201,6 +201,9 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     margin-top: -40px;
 }
 
+#payment-summary .col-md-8 {
+    margin-top: -8px;
+}
 
 #payment-summary .col-md-4 {
     padding-left: -20;
