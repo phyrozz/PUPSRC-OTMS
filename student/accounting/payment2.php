@@ -54,23 +54,22 @@ $dbname = "otms_db";
         <div class="m-auto">
             <form id="studentForm" method="post" class="row g-3 needs-validation" novalidate>
                 <!-- Main Rectangle Container -->
-                <div class="row" id="payment-summary" style="border: 1px solid #000; border-radius: 20px; width: 200px; height: 430px;     
-                margin-top: 90px;
+                <div class="row" id="payment-summary" style="border: 1px solid #000; border-radius: 20px; width: 200px; height: 450px;     
+                margin-top: 70px;
                 text-align: left;
                 background-color: #f5f5f5;
                 /*padding: 20px;*/
                 border: 5px solid #800000;
                 border-radius: 20px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px;
                 width: 100%;
                 max-width: 1300px; /* Adjust the maximum width as per your preference */
                 margin-left: auto;
                 margin-right: auto;
-                margin-bottom: -10px;" >
+                margin-bottom: -30px;" >
 
                     <!-- Left Section -->
-                    <div class="col-md-4 text-center p-4" style="background-color: #800000; color: #fff; border-top-left-radius: 15px; border-bottom-left-radius: 15px; height: 429px;">
+                    <div class="col-md-4 text-center p-4" style="background-color: #800000; color: #fff; border-top-left-radius: 15px; border-bottom-left-radius: 15px; height: 448px;">
                         <div class="red-section" style="margin-top: 90px; margin-right:">
                             <img src="/assets/pup-logo.png" alt="PUP Logo" class="img-fluid mb-2">
                             <br><br><br>
@@ -147,7 +146,11 @@ $dbname = "otms_db";
                                         </tr> -->
                                         <tr>
                                             <th>Date</th>
-                                            <td><?php echo date('Y-m-d'); ?></td>
+                                            <td><?php echo date('F d, Y'); ?></td> <!-- Format changed to 'F d, Y' -->
+                                        </tr>
+                                        <tr>
+                                            <th>Expiration Date</th>
+                                            <td><?php echo date('F d, Y', strtotime("+3 days")); ?></td> <!-- Format changed to 'F d, Y' -->
                                         </tr>
                                 </tbody>
                             </table>
