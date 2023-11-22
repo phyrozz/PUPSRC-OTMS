@@ -89,9 +89,6 @@
                         <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
                         <?php } ?>
                         <div class="alert alert-info" role="alert">
-                            <h4 class="alert-heading">
-                            <i class="fa-solid fa-circle-info"></i> Reminder
-                            </h4>
                             <p class="mb-0">By using this service, you understood and agree to the PUPSRC-OTMS <a href="https://www.pup.edu.ph/terms" target="_blank">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy" target="_blank">Privacy Statement</a></p>
                         </div>
                         <div class="mb-3 d-flex w-100 justify-content-between p-1">

@@ -128,30 +128,53 @@ function sanitizeInput($input) {
     <?php
 
     ?>
-    <div class="jumbotron bg-white d-flex jumbotron-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
-                    <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
-                    <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
-                    <p class="lead">Reset your password</p>
-
-                    <form method="POST" class="d-flex flex-column gap-2 w-100" action="forgot_password.php">
-                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
-                        <div class="form-group col-12">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="5" maxlength="100" required>
-                        </div>
-                        <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                            <a class="btn btn-outline-primary px-4" href="../index.php">
-                                <i class="fa-solid fa-arrow-left"></i> Back
-                            </a>
-                            <button id="resetBtn" name="resetBtn" type="submit" class="btn btn-primary w-25">Reset</button>
-                        </div>
-                    </form>
-                </div>
+    <div class="row m-0 dark-overlay dark-mode d-flex flex-lg-row flex-column position-relative justify-content-lg-between justify-content-start h-100">
+        <div class="col-lg-7 col-12 d-flex flex-column justify-content-center position-relative align-items-lg-start align-items-center pe-none">
+            <div class="d-flex position-absolute top-0 left-0 gap-2 mt-4 align-items-center">
+                <img src="../assets/pup-logo.png" alt="PUP Logo" width="30" height="30">
+                <p class="text-light fs-6 fw-lighter lh-1 m-0 p-0"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</p>
             </div>
+            <h1 class="welcome-title-text card-title pt-2 pb-3 pb-lg-0 text-light">Reset your password</h1>
         </div>
+        <div class="role-btn-group col-lg-5 col-12 d-flex flex-column align-items-stretch justify-content-center gap-2 px-5">
+            <form method="POST" class="d-flex flex-column gap-2 w-100" action="forgot_password.php">
+                <small class="text-start my-2 text-light">Please enter your account's email address in order to reset your account's password. A verification email will be sent to your inbox and you must click the link to successfully change your password.</small>
+                <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+                <div class="form-group col-12">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="5" maxlength="100" required>
+                </div>
+                <div class="mb-3 d-flex w-100 justify-content-between p-1">
+                    <a class="btn btn-outline-light px-4" href="javascript:history.back()">
+                        <i class="fa-solid fa-arrow-left"></i> Back
+                    </a>
+                    <button id="resetBtn" name="resetBtn" type="submit" class="btn btn-primary w-25">Reset</button>
+                </div>
+            </form>
+        </div>
+        <small class="text-light fw-light position-absolute bottom-0 start-0 mb-2">PUPSRC-OTMS Beta 0.5.0</small>
     </div>
+    <!-- <div class="pass-reset-container h-100">
+        <div class="container-fluid d-flex flex-column justify-content-center align-items-start my-auto h-100">
+            <div class="d-flex flex-row align-items-center gap-2 position-absolute top-0 left-0 mt-3">
+                <img src="/assets/pup-logo.png" alt="PUP Logo" width="30">
+                <h2 class="fw-normal mt-2 fs-5 text-light"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
+            </div>
+            <h1 class="lead fs-1 text-light">Reset your password</h1>
+            <form method="POST" class="d-flex flex-column gap-2 w-100" action="forgot_password.php">
+                <small class="text-start my-2 text-light">Please enter your account's email address in order to reset your account's password. A verification email will be sent to your inbox and you must click the link to successfully change your password.</small>
+                <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+                <div class="form-group col-12">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="5" maxlength="100" required>
+                </div>
+                <div class="mb-3 d-flex w-100 justify-content-between p-1">
+                    <a class="btn btn-outline-light px-4" href="javascript:history.back()">
+                        <i class="fa-solid fa-arrow-left"></i> Back
+                    </a>
+                    <button id="resetBtn" name="resetBtn" type="submit" class="btn btn-primary w-25">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div> -->
     <!-- Success alert modal -->
     <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

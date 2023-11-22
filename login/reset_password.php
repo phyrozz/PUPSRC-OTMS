@@ -91,7 +91,6 @@ function sanitizeInput($input) {
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
                     <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
                     <p class="lead">Reset your password</p>
-
                     <form method="POST" class="d-flex flex-column gap-2 w-100" action="">
                         <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <div class="form-group col-12">
