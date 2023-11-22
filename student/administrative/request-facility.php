@@ -157,7 +157,7 @@
                                 <label for="contactNumber" class="form-label">Contact Number</label>
                                 <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div> -->
-                            <div class="form-group col-12">
+                            <div class="form-group required col-12">
                                 
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" name="email" value = "<?php echo $userData[0]['email'] ?>" maxlength="50">

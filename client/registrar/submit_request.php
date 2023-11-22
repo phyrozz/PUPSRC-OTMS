@@ -57,7 +57,7 @@ if ($requestPurpose == "Other") {
 
 if ($stmt->execute()) {
     // Query executed successfully
-    $_SESSION['success'] = true;
+    $_SESSION['letter'] = true;
     echo "<script>
         window.location.href = 'create_request.php';
     </script>";

@@ -283,6 +283,31 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
       </div>
     </div>
     <!-- End of success alert modal -->
+
+    <!-- Letter format alert modal -->
+    <div id="letterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="letterModalLabel"
+              aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="letterModalLabel">Important Reminder</h5>
+            </div>
+            <div class="modal-body">
+              <h5>For Claiming Documents:</h5>
+                <p>When claiming documents, please ensure the following:</p>
+                  <ul>
+                    <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>Request Letter format</a>, which is necessary for requesting the desired document.</li>
+                    <li>Provide an authorization letter and ID if the claimant is an immediate family member.</li>
+                    <li>Submit a Special Power of Attorney (SPA) if the claimant is someone other than an immediate family member.</li>
+                  </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeLetterModal">Proceed</button>
+              </div>
+          </div>
+        </div>
+    </div>
+    <!-- End of Letter format alert modal -->
     <div class="push"></div>
   </div>
   <?php include '../../footer.php'; ?>
@@ -297,6 +322,13 @@ $(document).ready(function() {
     } else {
       $('#reasonTextField').fadeOut(); // Fade out the element
     }
+  });
+});
+
+$(document).ready(function() {
+  $('#closeLetterModal').on('click', function() {
+    // Programmatically trigger the successModal after closing the letterModal
+    $("#successModal").modal("show");
   });
 });
   </script>
@@ -314,8 +346,17 @@ $(document).ready(function() {
   <?php
     unset($_SESSION['success']);
     exit();
-  }
-  ?>
+  } else if (isset($_SESSION['letter'])) {
+    ?>
+    <script>
+    $(document).ready(function() {
+      $("#letterModal").modal("show");
+    })
+    </script>
+    <?php 
+      unset($_SESSION['letter']);
+      exit();
+    } ?>
 </body>
 
 </html>

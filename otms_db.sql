@@ -24,6 +24,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `academic_statuses`
+--
+
+CREATE TABLE `academic_statuses` (
+  `academic_statu_id` int(11) NOT NULL,
+  `status_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `academic_statuses`
+--
+
+INSERT INTO `academic_statuses` (`academic_statu_id`, `status_name`) VALUES
+(1, 'Pending'),
+(2, 'Missing'),
+(3, 'Under Verification'),
+(4, 'Verified'),
+(5, 'None'),
+(6, 'To Be Evaluated'),
+(7, 'Need F to F Evaluation');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `acad_cross_enrollment`
 --
 
@@ -151,8 +175,8 @@ INSERT INTO `acad_status` (`academic_status_id`, `status_name`) VALUES
 (2, 'Pending'),
 (3, 'Under Verification'),
 (4, 'Verified'),
-(5, 'Rejected');
-(6, 'To Be Evaluated');
+(5, 'Rejected'),
+(6, 'To Be Evaluated'),
 (7, 'Need F to F Evaluation');
 
 -- --------------------------------------------------------
@@ -983,8 +1007,8 @@ INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
 (4, 'Ready for Pickup'),
 (5, 'Released'),
 (6, 'Rejected'),
-(7, 'Approved');
-(8, 'To Be Evaluated');
+(7, 'Approved'),
+(8, 'To Be Evaluated'),
 (9, 'Need F to F Evaluation');
 
 -- --------------------------------------------------------
