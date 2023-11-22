@@ -203,7 +203,7 @@ $html = <<<EOD
 
 
         <p class="indent">
-            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name)</span>, kindly request your approval to utilize the <span id="facility">$facilityName</span> at Pup Sta. Rosa Campus.
+            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name)</span>, kindly request your approval to utilize the <span id="facility">$facilityName</span> at PUP Sta. Rosa Campus.
             The facility will be used as the venue for <span id="reason">"$purpose"</span>.
             The intended schedule for our activity is from <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span>.
             This reservation is part of our requirements for the scheduled activity.
