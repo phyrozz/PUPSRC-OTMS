@@ -19,7 +19,7 @@ $timestamp = time();
 $generatedOnDatetime = new DateTime("now", new DateTimeZone($tz));
 $generatedOnDatetime->setTimestamp($timestamp);
 
-$query = "SELECT r_zero_form, r_zero_form_status.status_name AS r_zero_form_status, note, 
+$query = "SELECT r_zero_form, r_zero_form_status.status_name AS r_zero_form_status, me_remarks, 
         users.first_name, users.last_name, users.middle_name, users.extension_name, users.student_no
         FROM acad_manual_enrollment
         INNER JOIN users ON acad_manual_enrollment.user_id = users.user_id
@@ -98,7 +98,7 @@ $html = '
                     <td>'.$row['student_no'].'</td>
                     <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['r_zero_form_status'].'</td>
-                    <td>'.$row['note'].'</td>
+                    <td>'.$row['remarks'].'</td>
                 </tr>';
                 $i++;
             }

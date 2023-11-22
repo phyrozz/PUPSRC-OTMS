@@ -40,7 +40,7 @@
         include "../../conn.php";
 
         
-        $query = "SELECT r_zero_form, r_zero_form_status, note FROM acad_manual_enrollment WHERE user_id = ?";
+        $query = "SELECT r_zero_form, r_zero_form_status, me_remarks FROM acad_manual_enrollment WHERE user_id = ?";
 
         $stmt = $connection->prepare($query);
         $stmt->bind_param("i", $_SESSION['user_id']);
@@ -244,22 +244,6 @@
                 submitBtn.disabled = true;
             }
         }
-
-        checkRemarks();
-            
-            // Function to check if there is remarks in admin
-            function checkRemarks() {
-                var remarksBtn = document.getElementById('remarksBtn');
-                var remarks = "<?php echo is_null($queryData[0]['note']) || trim($queryData[0]['note']) == "" ? "N/A" : $queryData[0]['note']; ?>";
-
-                // Enable the submit button only if all three requirements are uploaded
-                if (remarks.trim() == "") {
-                    remarksBtn.disabled = false;
-                } else {
-                    remarksBtn.disabled = true;
-                }
-            }
-    });
 
     function resetForm() {
         if (confirm("Are you sure you want to reset the form? This will delete attached files and reset their status to 'Missing'. But this will only reset requirements if they're in PENDING status.")) {

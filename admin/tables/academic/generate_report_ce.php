@@ -19,7 +19,7 @@ $timestamp = time();
 $generatedOnDatetime = new DateTime("now", new DateTimeZone($tz));
 $generatedOnDatetime->setTimestamp($timestamp);
 
-$query = "SELECT application_letter, application_letter_status.status_name AS application_letter_status, note, 
+$query = "SELECT application_letter, application_letter_status.status_name AS application_letter_status, ce_remarks, 
         users.first_name, users.last_name, users.middle_name, users.extension_name, users.student_no
         FROM acad_cross_enrollment
         INNER JOIN users ON acad_cross_enrollment.user_id = users.user_id
@@ -98,7 +98,7 @@ $html = '
                     <td>'.$row['student_no'].'</td>
                     <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['application_letter_status'].'</td>
-                    <td>'.$row['note'].'</td>
+                    <td>'.$row['remarks'].'</td>
                 </tr>';
                 $i++;
             }
