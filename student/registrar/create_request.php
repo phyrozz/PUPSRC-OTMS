@@ -82,7 +82,7 @@
               $query_insert = "INSERT INTO doc_requests(request_description, scheduled_datetime, office_id, user_id, status_id, purpose) VALUES('$req_student_service', '$date' , '$office_id' , '$user_id',  '$status_id', '$escapedOthers')";
             }
             $result_insert = mysqli_query($connection, $query_insert);
-            $_SESSION['success'] = true;
+            $_SESSION['letter'] = true;
         }
     
         $connection->close();
@@ -280,6 +280,7 @@
                 </div>
               </div>
             </form>
+
             <!-- Success alert modal -->
             <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
               aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -302,6 +303,32 @@
               </div>
             </div>
             <!-- End of success alert modal -->
+
+            <!-- Letter format alert modal -->
+            <div id="letterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="letterModalLabel"
+              aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="letterModalLabel">Important Reminder</h5>
+                  </div>
+                  <div class="modal-body">
+                  <h5>For Claiming Documents:</h5>
+                    <p>When claiming documents, please ensure the following:</p>
+                    <ul>
+                      <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>Request Letter format</a>, which is necessary for requesting the desired document.</li>
+                      <li>Provide an authorization letter and ID if the claimant is an immediate family member.</li>
+                      <li>Submit a Special Power of Attorney (SPA) if the claimant is someone other than an immediate family member.</li>
+                    </ul>
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeLetterModal">Proceed</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End of Letter format alert modal -->
+
             <!-- Redundant alert modal -->
             <div id="redundantModal" class="modal fade" tabindex="-1" role="dialog"
               aria-labelledby="redundantModalLabel" aria-hidden="true" data-bs-backdrop="static"
@@ -468,21 +495,18 @@ $(document).ready(function() {
     }
   });
 });
+
+$(document).ready(function() {
+  $('#closeLetterModal').on('click', function() {
+    // Programmatically trigger the successModal after closing the letterModal
+    $("#successModal").modal("show");
+  });
+});
 </script>
 <script src="../../loading.js"></script>
 
 <?php
-    if (isset($_SESSION['success'])) {
-        ?>
-<script>
-$(document).ready(function() {
-  $("#successModal").modal("show");
-})
-</script>
-<?php
-        unset($_SESSION['success']);
-        exit();
-    } else if (isset($_SESSION['redundant'])) {
+   if (isset($_SESSION['redundant'])) {
         ?>
 <script>
 $(document).ready(function() {
@@ -490,7 +514,16 @@ $(document).ready(function() {
 })
 </script>
 <?php
-        unset($_SESSION['redundant']);
-        exit();
-    }
+      unset($_SESSION['redundant']);
+      exit();
+    } else if (isset($_SESSION['letter'])) {
 ?>
+<script>
+$(document).ready(function() {
+  $("#letterModal").modal("show");
+})
+</script>
+<?php 
+  unset($_SESSION['letter']);
+  exit();
+} ?>
