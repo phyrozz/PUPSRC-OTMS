@@ -36,6 +36,7 @@ CREATE TABLE `appointment_facility` (
   `email` varchar(50) DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL
+  `orgs` varchar(100) DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

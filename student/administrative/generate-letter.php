@@ -188,13 +188,13 @@ $html = <<<EOD
             <strong>ASST. PROF DIOMEDES E. RODRIGUEZ</strong><br>
             <em>Head, Administrative Services</em>
             <br>
-            This Campus
+            This Branch
         </p>
     </div>
 
     <br>
     <p>
-        <strong>Dear Sir:</strong>
+        <strong>Dear Sir,</strong>
     </p>
 
 
@@ -228,7 +228,7 @@ $html = <<<EOD
     <div class="footer">
         <p>
             Noted by:<br><br><br><br>
-            <strong>Asst. Prof. Leny V. Salmingo, Ph. D.</strong><br>
+            <strong>Asst. Prof. Leny V. Salmingo</strong><br>
             Campus Directress<br>
             PUP Sta. Rosa
         </p>

@@ -20,6 +20,7 @@ if(isset($_SESSION['appointment_details'])) {
     $facilityId = $appointmentDetails['facility_id'];
     $purpose = $appointmentDetails['purposeReq'];
     $client =  $appointmentDetails['client'];
+    $nameOfOrgs = $appointmentDetails['orgs'];
 
 
 
@@ -61,6 +62,7 @@ if(isset($_SESSION['appointment_details'])) {
         $facilityName = '';
 
         $purpose = '';
+        $nameOfOrgs = '';
         $firstName = '';
         $lastName = '';
 
@@ -143,6 +145,7 @@ $html = <<<EOD
 
         #year-level,
         #client,
+        #orgs,
         #facility,
         #reason,
         #start-date,
@@ -188,22 +191,22 @@ $html = <<<EOD
             <strong>ASST. PROF DIOMEDES E. RODRIGUEZ</strong><br>
             <em>Head, Administrative Services</em>
             <br>
-            This Campus
+            This Branch
         </p>
     </div>
 
     <br>
     <p>
-        <strong>Dear Sir:</strong>
+        <strong>Dear Sir,</strong>
     </p>
 
 
     <div class="letter-body">
-        <p>Warm reetings in pursuit of wisdom!</p>
+        <p>Warm greetings in pursuit of wisdom!</p>
 
 
         <p class="indent">
-            We, the <span id="client">$client</span> from <span id="client">(Company/Organization Name)</span>, kindly request your approval to utilize the <span id="facility">$facilityName</span> at PUP Sta. Rosa Campus.
+            We, the <span id="client">$client</span> from <span id="orgs">$nameOfOrgs</span>, kindly request your approval to utilize the <span id="facility">$facilityName</span> at PUP Sta. Rosa Campus.
             The facility will be used as the venue for <span id="reason">"$purpose"</span>.
             The intended schedule for our activity is from <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span>.
             This reservation is part of our requirements for the scheduled activity.
@@ -237,7 +240,7 @@ $html = <<<EOD
     <div class="footer">
         <p>
             Noted by:<br><br><br>
-            <strong>Asst. Prof. Leny V. Salmingo, Ph. D.</strong><br>
+            <strong>Asst. Prof. Leny V. Salmingo</strong><br>
             Campus Directress<br>
             PUP Sta. Rosa
         </p>
