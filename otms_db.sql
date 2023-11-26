@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2023 at 04:45 PM
+-- Generation Time: Nov 26, 2023 at 04:57 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -503,7 +503,7 @@ CREATE TABLE `appointment_facility` (
 --
 
 INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`, `client`, `orgs`) VALUES
-('FA-1701013157', 129, 1, NULL, NULL, '2023-11-29 12:30:00', '2023-11-29 14:00:00', 'test lang ', 3, 'Organization', 'ELITE');
+('FA-1701013697', 129, 8, NULL, NULL, '2023-11-29 15:30:00', '2023-11-29 17:30:00', 'testing', 2, 'Organization', 'ELITE');
 
 -- --------------------------------------------------------
 
@@ -1300,6 +1300,13 @@ CREATE TABLE `request_equipment` (
   `slip_content` longblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `request_equipment`
+--
+
+INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `purpose`, `equipment_id`, `slip_content`) VALUES
+('ROE-1701014188', 129, '2023-11-29 12:00:00', 2, 8, 'PE subject', 2, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -1357,7 +1364,8 @@ INSERT INTO `statuses` (`status_id`, `status_name`) VALUES
 (4, 'Ready for Pickup'),
 (5, 'Released'),
 (6, 'Rejected'),
-(7, 'Approved');
+(7, 'Approved'),
+(8, 'Cancelled');
 
 -- --------------------------------------------------------
 
@@ -2115,7 +2123,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `statuses`
 --
 ALTER TABLE `statuses`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `student_info`
