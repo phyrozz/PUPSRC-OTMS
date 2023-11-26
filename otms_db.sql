@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2023 at 03:08 PM
+-- Generation Time: Nov 26, 2023 at 04:45 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -494,8 +494,16 @@ CREATE TABLE `appointment_facility` (
   `end_date_time_sched` datetime DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL,
+  `client` varchar(50) DEFAULT NULL,
   `orgs` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `appointment_facility`
+--
+
+INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`, `client`, `orgs`) VALUES
+('FA-1701013157', 129, 1, NULL, NULL, '2023-11-29 12:30:00', '2023-11-29 14:00:00', 'test lang ', 3, 'Organization', 'ELITE');
 
 -- --------------------------------------------------------
 
@@ -982,7 +990,7 @@ INSERT INTO `notifications` (`notification_id`, `user_id`, `office_id`, `title`,
 (211, 72, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been verified by the office.', '2023-09-05 08:06:05', 0),
 (212, 94, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been approved.', '2023-09-05 08:06:11', 0),
 (213, 72, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been verified by the office.', '2023-09-05 08:06:12', 0),
-(224, 128, 1, 'Facility Appointment Status Update', 'Your appointment for Audio Visual Room scheduled on November 29, 2023, 11:00 AM to November 29, 2023, 02:00 PM has been approved.', '2023-11-26 22:07:32', 0);
+(224, 128, 1, 'Facility Appointment Status Update', 'Your appointment for Audio Visual Room scheduled on November 29, 2023, 11:00 AM to November 29, 2023, 02:00 PM has been approved.', '2023-11-26 22:07:32', 1);
 
 -- --------------------------------------------------------
 
@@ -1550,7 +1558,8 @@ INSERT INTO `users` (`user_id`, `student_no`, `last_name`, `first_name`, `middle
 (113, NULL, 'Montelucas', 'Gregorio', 'Montemayor', 'II', '0932-563-9830', 'gregoriomm@gmail.com', '1997-12-12', '$2y$10$D1SzBKSsxN.6mD1lQRLyteYHB4yD.PAtuM2I4Gj9IpGOi9Z9z/uzm', 2),
 (115, NULL, 'Ami', 'Dani', '', '', '0901-000-0000', 'danitest@gmail.com', '2000-03-05', '$2y$10$1x/WObKQadZHN7dVhBqtU.TWmfyTZnM/m5XpdXUoP8G8zu1GXiUaG', 2),
 (116, NULL, 'Lindberg', 'Daisy', '', '', '0900-000-0000', 'daisylindberg@gmail.com', '2000-01-01', '$2y$10$ekwnRN.ErL/Fw2wZA2w/neDdKiXUjfFtTsOd0DzPV.BDsvkaVvBKi', 2),
-(128, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'phyrozz70@gmail.com', '2001-08-27', '$2y$10$CLC.zm.yz78bCGp/bBxoQeOdPbk8vmOlS4YpTJXRxwn4Mo5EYP2cm', 1);
+(128, '2020-00201-SR-0', 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'phyrozz70@gmail.com', '2001-08-27', '$2y$10$CLC.zm.yz78bCGp/bBxoQeOdPbk8vmOlS4YpTJXRxwn4Mo5EYP2cm', 1),
+(129, NULL, 'Malabanan', 'Joshua', 'Gonzales', '', '0908-775-6313', 'joshuamalabanan70@gmail.com', '2001-08-27', '$2y$10$NHYru7RNx.bhaZ1AHATkkOqLYxoUDd8Ce/1GlH/wCf1d2rPy2CbNi', 2);
 
 -- --------------------------------------------------------
 
@@ -1632,7 +1641,8 @@ INSERT INTO `user_details` (`user_detail_id`, `sex`, `home_address`, `province`,
 (74, 1, 'Mahogany Street, Sampaguita Village', 'AURORA', 'DINALUNGAN', 'Maliliw', '4036', 12, NULL, NULL, 113),
 (76, 1, 'aasd', 'NUEVA ECIJA', 'GUIMBA', 'asds', '', 12, NULL, NULL, 115),
 (77, 1, 'Daisy Lindberg\'s Garden', 'LAGUNA', 'SANTA ROSA CITY', 'Tagapo', '4026', 12, NULL, NULL, 116),
-(89, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes Subdivision', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, '3-1', NULL, 128);
+(89, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes Subdivision', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 8, '3-1', NULL, 128),
+(90, 1, 'Blk. 14, Lot 2, Phase 2, St. Agata Homes Subdivision', 'LAGUNA', 'SANTA ROSA CITY', 'Dita', '4026', 12, NULL, NULL, 129);
 
 -- --------------------------------------------------------
 
@@ -2123,13 +2133,13 @@ ALTER TABLE `student_record`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
