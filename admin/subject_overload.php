@@ -133,12 +133,12 @@
         });
     </script>
     <script src="tables/academic/student_info.js" defer></script>
-    <script src="tables/academic/note.js" defer></script>
+    <script src="tables/academic/remarks.js" defer></script>
 </head>
 <body>
     <?php 
     include "tables/academic/status_info_modal.php"; 
-    include "tables/academic/edit_note_modal.php";
+    include "tables/academic/edit_remarks_modal.php";
     ?>
     <div class="wrapper">
         <!-- Loading page -->
@@ -354,7 +354,7 @@
                                     echo '">';
                                     echo generateStatusOptions($row['cert_of_registration_status']);
                                     echo "</select></td></div>";
-                                    echo "<td><button class='edit-note-btn btn btn-primary' data-service='so' data-user-id='". $row['user_id'] ."'><i class='fa-regular fa-pen-to-square'></i></button></td>";
+                                    echo "<td><button class='btn btn-primary' id='edit-remarks-btn' data-service='so' data-user-id='". $row['user_id'] ."'><i class='fa-regular fa-pen-to-square'></i></button></td>";
                                     echo "</tr>";
                                 }
                             } else {
@@ -475,6 +475,10 @@
 
         $('#status-info-btn').on('click', function() {
             $('#statusInfoModal').modal('show');
+        });
+
+        $('#edit-remarks-btn').on('click', function() {
+            $('#editRemarksModal').modal('show');
         });
 
         // Function to filter table rows based on student number

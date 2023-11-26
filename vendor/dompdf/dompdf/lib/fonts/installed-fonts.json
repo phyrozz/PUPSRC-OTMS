@@ -11,7 +11,7 @@
         "900": "fira_sans_900_fa941916fc999cb4813b0cc546f7afa7"
     },
     "poppins": {
-        "normal": "C:\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_normal_442dffd12abdf0df26c14405d3f49bfa",
-        "bold": "poppins_bold_2d1c4b360c3ac297e98fc2cfd808a2cc"
+        "normal": "poppins_normal_442dffd12abdf0df26c14405d3f49bfa",
+        "bold": "D:\\chris\\Documents\\xampp\\htdocs\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_bold_2d1c4b360c3ac297e98fc2cfd808a2cc"
     }
 }

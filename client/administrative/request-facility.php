@@ -49,10 +49,11 @@
             $startDateTimeSched = $startDate . ' ' . $startTime;
             $endDateTimeSched = $endDate . ' ' . $endTime;
             $facilityID = $_POST['id'];
+            $nameOfOrgs = $_POST['orgs'];
             
-            $insertQuery = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, client, purpose, facility_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = "INSERT INTO appointment_facility (start_date_time_sched, end_date_time_sched, user_id, status_id, client, purpose, facility_id, orgs) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $insertStmt = $connection->prepare($insertQuery);
-            $insertStmt->bind_param("ssiissi", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $client, $purpose, $facilityID);
+            $insertStmt->bind_param("ssiissis", $startDateTimeSched, $endDateTimeSched, $_SESSION['user_id'], $statusId, $client, $purpose, $facilityID, $nameOfOrgs);
 
             if ($insertStmt->execute()) {
                 $_SESSION['success'] = true;
@@ -76,7 +77,8 @@
                     'status_id' => $statusId,
                     'purposeReq' => $purpose,
                     'facility_id' => $facilityID,
-                    'client' => $client
+                    'client' => $client,
+                    'orgs' => $nameOfOrgs
 
                 ];
             } else {
@@ -157,6 +159,15 @@
                                 <input type="email" class="form-control" id="email" name="email" value = "<?php echo $userData[0]['email'] ?>" maxlength="50" required>
                                 <div class="invalid-feedback">Please input a valid email</div>
                             </div>
+                            <br><br>
+                            <div class="form-group required col-md-6">
+                                
+                                <label for="orgs" class="form-label">Company/Organization </label>
+                                <input type="orgs" class="form-control" id="orgs" name="orgs" placeholder ="Name of Company/Organization"  maxlength="100" required>
+                                <div class="invalid-feedback">Please input a name of company or organization</div>
+                            </div>
+
+                            
 
                             <div class="form-group required col-md-6">
                                 <label for="client" class="form-label">Client Type</label>

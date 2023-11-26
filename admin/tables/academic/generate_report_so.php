@@ -19,7 +19,7 @@ $timestamp = time();
 $generatedOnDatetime = new DateTime("now", new DateTimeZone($tz));
 $generatedOnDatetime->setTimestamp($timestamp);
 
-$query = "SELECT overload_letter, ace_form, cert_of_registration, overload_letter_status.status_name AS overload_letter_status, ace_form_status.status_name AS ace_form_status, cert_of_registration_status.status_name AS cert_of_registration_status, note, 
+$query = "SELECT overload_letter, ace_form, cert_of_registration, overload_letter_status.status_name AS overload_letter_status, ace_form_status.status_name AS ace_form_status, cert_of_registration_status.status_name AS cert_of_registration_status, so_remarks, 
         users.first_name, users.last_name, users.middle_name, users.extension_name, users.student_no
         FROM acad_subject_overload
         INNER JOIN users ON acad_subject_overload.user_id = users.user_id
@@ -104,7 +104,7 @@ $html = '
                     <td>'.$row['overload_letter_status'].'</td>
                     <td>'.$row['ace_form_status'].'</td>
                     <td>'.$row['cert_of_registration_status'].'</td>
-                    <td>'.$row['note'].'</td>
+                    <td>'.$row['remarks'].'</td>
                 </tr>';
                 $i++;
             }
