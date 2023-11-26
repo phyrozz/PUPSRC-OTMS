@@ -128,7 +128,7 @@ function sanitizeInput($input) {
     <?php
 
     ?>
-    <div class="row m-0 dark-overlay dark-mode d-flex flex-lg-row flex-column position-relative justify-content-lg-between justify-content-start h-100">
+    <div class="row m-0 container-bg dark-overlay dark-mode d-flex flex-lg-row flex-column position-relative justify-content-lg-between justify-content-start h-100">
         <div class="col-lg-7 col-12 d-flex flex-column justify-content-center position-relative align-items-lg-start align-items-center pe-none">
             <div class="d-flex position-absolute top-0 left-0 gap-2 mt-4 align-items-center">
                 <img src="../assets/pup-logo.png" alt="PUP Logo" width="30" height="30">
@@ -138,13 +138,13 @@ function sanitizeInput($input) {
         </div>
         <div class="role-btn-group col-lg-5 col-12 d-flex flex-column align-items-stretch justify-content-center gap-2 px-5">
             <form method="POST" class="d-flex flex-column gap-2 w-100" action="forgot_password.php">
-                <small class="text-start my-2 text-light">Please enter your account's email address in order to reset your account's password. A verification email will be sent to your inbox and you must click the link to successfully change your password.</small>
+                <small class="text-start my-2">Please enter your account's email address in order to reset your account's password. A verification email will be sent to your inbox and you must click the link to successfully change your password.</small>
                 <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                 <div class="form-group col-12">
                     <input type="email" class="form-control" name="email" id="email" placeholder="Your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" minlength="5" maxlength="100" required>
                 </div>
                 <div class="mb-3 d-flex w-100 justify-content-between p-1">
-                    <a class="btn btn-outline-light px-4" href="javascript:history.back()">
+                    <a class="btn btn-outline-dark px-4" href="javascript:history.back()">
                         <i class="fa-solid fa-arrow-left"></i> Back
                     </a>
                     <button id="resetBtn" name="resetBtn" type="submit" class="btn btn-primary w-25">Reset</button>

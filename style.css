@@ -50,7 +50,8 @@ body.dark-mode {
     animation: jumbotronFadeIn ease-in 0.3s;
 }
 
-#index-bg {
+/* Container background styles for index, forgot and reset password pages */
+.container-bg {
     animation: jumbotronFadeIn ease-in 0.3s;
 }
 

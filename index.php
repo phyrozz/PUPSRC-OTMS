@@ -34,7 +34,7 @@
             exit;
         }
     ?>
-    <div id="index-bg" class="row m-0 dark-overlay dark-mode d-flex flex-lg-row flex-column position-relative justify-content-lg-between justify-content-start">
+    <div class="row m-0 container-bg dark-overlay dark-mode d-flex flex-lg-row flex-column position-relative justify-content-lg-between justify-content-start">
         <div class="col-lg-7 col-12 d-flex flex-column justify-content-center position-relative align-items-lg-start align-items-center pe-none">
             <div class="d-flex position-absolute top-0 left-0 gap-2 mt-4 align-items-center">
                 <img src="assets/pup-logo.png" alt="PUP Logo" width="30" height="30">

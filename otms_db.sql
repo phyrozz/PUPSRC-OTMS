@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2023 at 05:53 PM
+-- Generation Time: Nov 26, 2023 at 03:08 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -494,18 +494,8 @@ CREATE TABLE `appointment_facility` (
   `end_date_time_sched` datetime DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL,
-  `client` varchar(50) DEFAULT NULL
+  `orgs` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `appointment_facility`
---
-
-INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`, `client`) VALUES
-('FA-1693549165', 99, 4, NULL, NULL, '2023-09-01 14:30:00', '2023-09-01 16:00:00', 'Event', 1, 'Alumni'),
-('FA-1693549224', 99, 1, NULL, NULL, '2023-09-01 15:30:00', '2023-09-01 16:00:00', 'Event', 2, 'Organization'),
-('FA-1693557034', 71, 5, 'BSEE', '3-1', '2023-09-06 12:00:00', '2023-09-06 15:00:00', 'PE CLASS', 1, NULL),
-('FA-1700617832', 128, 1, 'BSIT', '3-1', '2023-11-24 10:00:00', '2023-11-24 14:30:00', 'IT subject', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -704,7 +694,7 @@ INSERT INTO `equipment` (`equipment_id`, `equipment_name`, `availability`, `quan
 (1, 'Badminton Net', 'Available', 10, 2, 1),
 (2, 'Badminton Racket', 'Available', 6, 2, 1),
 (3, 'Badminton Shuttlecock', 'Available', 6, 2, 1),
-(4, 'Basketball', 'Unavailable', 0, 2, 1),
+(4, 'Basketball', 'Available', 3, 2, 1),
 (5, 'Basketball Ring and Net', 'Available', 8, 2, 1),
 (6, 'Brush', 'Available', 10, 3, 1),
 (7, 'Bucket', 'Available', 5, 3, 1),
@@ -762,7 +752,7 @@ CREATE TABLE `facility` (
 --
 
 INSERT INTO `facility` (`facility_id`, `facility_name`, `availability`, `facility_number`, `facility_type_id`, `request`) VALUES
-(1, 'Campus Court', 'Unavailable', '', 1, 1),
+(1, 'Campus Court', 'Available', '', 1, 1),
 (2, 'Computer Lab', 'Available', '205', 2, 1),
 (3, 'Audio Visual Room', 'Available', '307', 3, 1);
 
@@ -991,7 +981,8 @@ INSERT INTO `notifications` (`notification_id`, `user_id`, `office_id`, `title`,
 (210, 94, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been approved.', '2023-09-05 08:06:04', 0),
 (211, 72, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been verified by the office.', '2023-09-05 08:06:05', 0),
 (212, 94, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been approved.', '2023-09-05 08:06:11', 0),
-(213, 72, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been verified by the office.', '2023-09-05 08:06:12', 0);
+(213, 72, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been verified by the office.', '2023-09-05 08:06:12', 0),
+(224, 128, 1, 'Facility Appointment Status Update', 'Your appointment for Audio Visual Room scheduled on November 29, 2023, 11:00 AM to November 29, 2023, 02:00 PM has been approved.', '2023-11-26 22:07:32', 0);
 
 -- --------------------------------------------------------
 
@@ -1300,35 +1291,6 @@ CREATE TABLE `request_equipment` (
   `equipment_id` int(11) NOT NULL,
   `slip_content` longblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `request_equipment`
---
-
-INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `purpose`, `equipment_id`, `slip_content`) VALUES
-('ROE-1693044670', 52, '2023-08-28 12:30:00', 1, 6, 'basta', 10, NULL),
-('ROE-1693283089', 76, '2023-08-30 14:00:00', 2, 6, 'asdasd', 10, NULL),
-('ROE-1693366657', 84, '2023-08-31 13:00:00', 1, 6, 'hump day presentation', 20, NULL),
-('ROE-1693376122', 62, '2023-08-31 20:00:00', 1, 6, 'lilinis', 16, NULL),
-('ROE-1693376266', 62, '2023-08-31 20:00:00', 2, 6, 'nonood', 20, NULL),
-('ROE-1693376495', 62, '2023-08-31 20:00:00', 2, 1, 'dalawa baka sumampid yung isa hehe', 3, NULL),
-('ROE-1693376614', 53, '2023-08-31 08:30:00', 1, 1, 'Hi klowi, peram po isang upuan. Tnx :))', 8, NULL),
-('ROE-1693377695', 100, '2023-09-01 13:00:00', 3, 1, 'Pangligo', 7, NULL),
-('ROE-1693378712', 102, '2023-09-08 20:00:00', 10, 5, 'manonood ng jujutsu kaisen', 20, NULL),
-('ROE-1693412471', 111, '2023-08-31 14:00:00', 1, 5, 'cddcfff', 5, NULL),
-('ROE-1693414518', 111, '2023-08-31 09:00:00', 2, 5, 'ssssss', 8, NULL),
-('ROE-1693452867', 64, '2023-09-05 11:00:00', 1, 5, 'nasa marumi po kasi yung amin', 10, NULL),
-('ROE-1693463296', 105, '2023-08-31 14:30:00', 1, 5, '121221323', 10, NULL),
-('ROE-1693500696', 56, '2023-09-02 08:00:00', 5, 5, 'Event', 8, NULL),
-('ROE-1693500820', 56, '2023-09-15 08:30:00', 2, 5, 'Event', 10, NULL),
-('ROE-1693533758', 99, '2023-09-01 10:30:00', 2, 5, 'Event', 8, NULL),
-('ROE-1693533829', 99, '2023-09-01 16:00:00', 2, 5, 'Event', 8, NULL),
-('ROE-1693538561', 99, '2023-09-01 11:30:00', 5, 5, 'Event', 8, NULL),
-('ROE-1693538647', 99, '2023-09-01 11:30:00', 1, 4, 'Event', 8, NULL),
-('ROE-1693538719', 99, '2023-09-01 11:30:00', 1, 5, 'Event', 10, NULL),
-('ROE-1693538801', 99, '2023-09-02 08:30:00', 6, 6, 'Event', 12, NULL),
-('ROE-1693556769', 71, '2023-09-06 10:00:00', 3, 5, 'PE SUBJECT', 4, NULL),
-('ROE-1700617608', 128, '2023-11-24 15:00:00', 1, 1, 'basta', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -2089,7 +2051,7 @@ ALTER TABLE `guidance_feedbacks`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
 
 --
 -- AUTO_INCREMENT for table `offsettingtb`
