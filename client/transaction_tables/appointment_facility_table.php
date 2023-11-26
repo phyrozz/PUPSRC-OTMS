@@ -674,7 +674,7 @@
 
     cancelButtons.forEach(function (button) {
         var row = button.closest('tr');
-        var statusCell = row.querySelector('.request-equipment-status-cell');
+        var statusCell = row.querySelector('.appointment-facility-status-cell');
         var status = statusCell.textContent.trim();
 
         // Disable the Cancel button based on specific statuses
