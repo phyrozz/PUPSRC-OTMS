@@ -496,23 +496,31 @@
 
     //Disables Cancel Button for certain statuses
     function updateCancelButtonStatus() {
-        var cancelButtons = document.querySelectorAll('.cancel-request');
+    var cancelButtons = document.querySelectorAll('.cancel-request');
 
-        cancelButtons.forEach(function (button) {
-            var row = button.closest('tr');
-            var statusCell = row.querySelector('.request-equipment-status-cell');
-            var status = statusCell.textContent.trim();
+    cancelButtons.forEach(function (button) {
+        var row = button.closest('tr');
+        var statusCell = row.querySelector('.request-equipment-status-cell');
+        var status = statusCell.textContent.trim();
 
-            var statusClass = 'bg-secondary';
-
-            // Disable the Cancel button based on specific return cases
-            if (statusClass === 'bg-success' || statusClass === 'bg-danger' || statusClass === 'bg-warning text-dark'|| statusClass === 'bg-primary'|| statusClass === 'bg-info'|| statusClass === 'bg-secondary') {
-                button.disabled = true;
-            } else {
-                button.disabled = false;
-            }
-        });
+        // Disable the Cancel button based on specific statuses
+        if (
+            status === 'For Receiving' ||
+            status === 'For Evaluation' ||
+            status === 'Ready for Pickup' ||
+            status === 'Released' ||
+            status === 'Rejected' ||
+            status === 'Approved' ||
+            status === 'Cancelled'
+        ) {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+        }
+    });
     }
+
+
 
 
     // Initial pagination request (page 1)

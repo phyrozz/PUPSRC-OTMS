@@ -407,6 +407,9 @@
                 addDeleteButtonListeners();
                 // Add event listeners for edit buttons
                 updateEditButtonStatus();
+                //Checks for request status and hides cancelled button
+                updateCancelButtonStatus();
+
             }
         });
     }
@@ -461,6 +464,32 @@
                 console.error('Error canceling request:', error.responseText);
             }
         });
+    }
+
+    //Disables Cancel Button for certain statuses
+    function updateCancelButtonStatus() {
+    var cancelButtons = document.querySelectorAll('.cancel-request');
+
+    cancelButtons.forEach(function (button) {
+        var row = button.closest('tr');
+        var statusCell = row.querySelector('.request-equipment-status-cell');
+        var status = statusCell.textContent.trim();
+
+        // Disable the Cancel button based on specific statuses
+        if (
+            status === 'For Receiving' ||
+            status === 'For Evaluation' ||
+            status === 'Ready for Pickup' ||
+            status === 'Released' ||
+            status === 'Rejected' ||
+            status === 'Approved' ||
+            status === 'Cancelled'
+        ) {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+        }
+    });
     }
 
     // Function to toggle the sort icons
