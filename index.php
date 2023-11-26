@@ -34,7 +34,7 @@
             exit;
         }
     ?>
-    <div class="row m-0 dark-overlay dark-mode d-flex flex-lg-row flex-column position-relative justify-content-lg-between justify-content-start">
+    <div id="index-bg" class="row m-0 dark-overlay dark-mode d-flex flex-lg-row flex-column position-relative justify-content-lg-between justify-content-start">
         <div class="col-lg-7 col-12 d-flex flex-column justify-content-center position-relative align-items-lg-start align-items-center pe-none">
             <div class="d-flex position-absolute top-0 left-0 gap-2 mt-4 align-items-center">
                 <img src="assets/pup-logo.png" alt="PUP Logo" width="30" height="30">
@@ -44,7 +44,7 @@
             <h2 class="welcome-text lead card-title text-light fw-lighter"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
         </div>
         <div class="role-btn-group col-lg-5 col-12 d-flex flex-column align-items-stretch justify-content-center gap-2 px-5">
-            <p class="text-light text-center m-0 m-2 fw-bold">Choose your role to get started</p>
+            <p class="text-center m-0 m-2 fw-bold">Choose your role to get started</p>
             <a href="login/student.php" class="btn btn-student p-3 btn-lg">
                 <i class="fa fa-user-circle mr-2"></i> Student
             </a>

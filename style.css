@@ -44,8 +44,14 @@ body.dark-mode {
 }
 
 .role-btn-group {
-    background-color: #212121;
+    background-color: #f8f9fa;
+    color: #212529;
     max-width: 500px;
+    animation: jumbotronFadeIn ease-in 0.3s;
+}
+
+#index-bg {
+    animation: jumbotronFadeIn ease-in 0.3s;
 }
 
 .pass-reset-container {
@@ -694,6 +700,7 @@ select.status-dropdown {
 
     .role-btn-group {
         background-color: rgba(0, 0, 0, 0);
+        color: #f8f9fa;
         max-width: 100%;
     }
 
