@@ -88,20 +88,8 @@ $html = <<<EOD
             font-family: 'Times New Roman', Times, serif, sans-serif;
 
         }
-        
-
-        .image-container img {
-            height: 70;
-            width: 70;
-        }
-
-
-
-        /* margin between image and text */
-        .image-container {
-            display: inline-block;
-            margin-right: 14px;
-        }
+    
+    
 
         .text {
             display: inline-block;
@@ -130,6 +118,7 @@ $html = <<<EOD
         }
 
         .date {
+            margin-bottom: 50px;
             text-align: left;
         }
 
@@ -142,6 +131,17 @@ $html = <<<EOD
         #current-date {
             font-weight: bold;
         }
+
+        .receiver {
+
+            margin-bottom: 40px;
+
+        }
+        .sender {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        
 
         #year-level,
         #course,
@@ -169,42 +169,8 @@ $html = <<<EOD
             margin-right: 46px;
         }
 
-        .footer-content {
-            position: relative;
-            
-            
-        }
         
-          .footer-image {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 100%;
-          }
-        
-          .footer-image img {
-            margin-top: 15px;
-            height: 140px;
-            width: auto;
-
-          }
-        
-          .footer-text {
-            padding-right: 20px; /* Adjust the padding as needed */
-          }
-        
-          .footer-text p {
-            font-size: 12px;
-            margin-bottom: 10px; /* Adjust the margin as needed */
-          }
-        
-          .footer-text p:last-child {
-            margin-bottom: 0;
-          }
-        
-          .footer-text p.footer-title {
-            font-size: 18px;
-          }
+          
         
     </style>
 </head>
@@ -217,33 +183,33 @@ $html = <<<EOD
         <h4><span id="current-date">$currentTime</span></h4>
     </div>
 
-    <div class="reciever">
+    <div class="receiver">
         <p>
             <strong>ASST. PROF DIOMEDES E. RODRIGUEZ</strong><br>
             <em>Head, Administrative Services</em>
             <br>
-            This Campus
+            This Branch
         </p>
     </div>
 
     <br>
     <p>
-        <strong>Dear Sir:</strong>
+        <strong>Dear Sir,</strong>
     </p>
 
 
     <div class="letter-body">
-        <p>Greetings in pursuit of wisdom!</p>
+        <p>Warm greetings in our pursuit of wisdom!</p>
 
         <p class="indent">
-            We, the students from <span id="course">$course</span> <span id="year-level">$section</span>, will be utilizing <span id="facility">$facilityName</span> at PUP Sta. Rosa 
-            from <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span>,
-             as a requirement for our subject.
+            We, the students from <span id="course">$course</span> <span id="year-level">$section</span>, kindly request your approval to utilize the <span id="facility">$facilityName</span> at PUP Sta. Rosa Campus.
+            The facility will be used as the venue for <span id="reason">"$purpose"</span>.
+            The intended schedule for our academic activity is from <span id="start-date">$startDate</span>, <span id="start-time">$startTime</span> to <span id="end-date">$endDate</span>, <span id="end-time">$endTime</span>.
             </p>
+        <p>
+        Your kind consideration of this request is highly appreciated. We assure you that our use of the facility will be in accordance with all guidelines and regulations.</p>
 
     
-
-        <p>Hoping for your kind consideration.</p>
 
         <br>
 
@@ -261,8 +227,8 @@ $html = <<<EOD
 
     <div class="footer">
         <p>
-            Noted by:<br><br><br>
-            <strong>Asst. Prof. Leny V. Salmingo, Ph. D.</strong><br>
+            Noted by:<br><br><br><br>
+            <strong>Asst. Prof. Leny V. Salmingo</strong><br>
             Campus Directress<br>
             PUP Sta. Rosa
         </p>

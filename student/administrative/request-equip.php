@@ -59,12 +59,12 @@
             $checkStmt->close();
 
             if ($equipmentData['quantity'] >= $quantityEquip) {
-                // Deduct the requested quantity from the equipment table
-                $deductQuery = "UPDATE equipment SET quantity = quantity - ? WHERE equipment_id = ?";
-                $deductStmt = $connection->prepare($deductQuery);
-                $deductStmt->bind_param("ii", $quantityEquip, $equipID);
-                $deductStmt->execute();
-                $deductStmt->close();
+                // // Deduct the requested quantity from the equipment table
+                // $deductQuery = "UPDATE equipment SET quantity = quantity - ? WHERE equipment_id = ?";
+                // $deductStmt = $connection->prepare($deductQuery);
+                // $deductStmt->bind_param("ii", $quantityEquip, $equipID);
+                // $deductStmt->execute();
+                // $deductStmt->close();
 
                 // Check if the quantity is 0
                 $checkAvailabilityQuery = "SELECT quantity FROM equipment WHERE equipment_id = ?";
@@ -189,7 +189,7 @@
                                 <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Example: 0123-456-7890" maxlength="13">
                             </div> -->
                             
-                            <div class="form-group col-12">
+                            <div class="form-group required col-12">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" name="email" value = "<?php echo $userData[0]['email'] ?>" maxlength="50" disabled required >
                             </div>
@@ -238,12 +238,19 @@
                                     <option value="15:00:00">3:00 PM</option>
                                     <option value="15:30:00">3:30 PM</option>
                                     <option value="16:00:00">4:00 PM</option>
+                                    <option value="17:00:00">5:00 PM</option>
+                                    <option value="17:30:00">5:30 PM</option>
+                                    <option value="18:00:00">6:00 PM</option>
+                                    <option value="18:30:00">6:30 PM</option>
+                                    <option value="19:00:00">7:00 PM</option>
+                                    <option value="19:30:00">7:30 PM</option>
+                                    <option value="20:00:00">8:00 PM</option>
                                 </select>      
                                 <div class="invalid-feedback">Please choose a time.</div>
                             </div>
                             <div class="form-group required col-md-12">
                                 <label for="request_description" class="form-label">Purpose of Request</label>
-                                <textarea type="purposeReq" class="form-control form-control-lg" name="purposeReq" style="resize: none;" id="purposeReq" rows="4" minlength="5"maxlength="200" required></textarea>
+                                <textarea type="purposeReq" class="form-control form-control-lg" name="purposeReq" style="resize: none;" id="purposeReq" rows="4" minlength="5"maxlength="100" required></textarea>
                                 <div class="invalid-feedback">Please provide a reason for request</div>
                             </div>
                             

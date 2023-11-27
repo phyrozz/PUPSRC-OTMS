@@ -39,51 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<style>
-      /*alert*/
-.success-alert {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    margin-bottom: 10px;
-    display: none; 
-}
-.custom-alert {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background-color: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    display: none;
-    z-index: 9999;
-    text-align: center;
-}
-
-.custom-alert-message {
-font-weight: bold;
-margin-bottom: 10px;
-}
-
-.custom-alert-close {
-padding: 5px 10px;
-background-color: #ffc107;
-border: solid 1px black;
-border-radius: 10%;
-color: #212529;
-cursor: pointer;
-}
-
-.custom-alert-close:hover {
-background-color: #e9ecef;
-}
-</style>
-
+<link rel="stylesheet" href="css/offsetting1.css">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,6 +67,7 @@ background-color: #e9ecef;
 
 </head>
 <body>
+    <div class="wrapper">
     <?php
     @include '../navbar.php';
     include '../../breadcrumb.php';
@@ -171,11 +128,21 @@ background-color: #e9ecef;
             </div>
             <div class="col-12">
             <a class ="btn btn-primary back-button" href="../accounting.php">Back</a>
-                <button class="btn btn-primary next-button" type="submit" name="next"onclick="validateForm(event)">Next</button>
+                <button class="btn btn-primary next-button" style="margin-bottom: 120px" type="submit" name="next"onclick="validateForm(event)">Next</button>
             </div>
+             <div class="alert alert-info" role="alert">
+                                <h4 class="alert-heading">
+                                <i class="fa-solid fa-circle-info"></i> Reminder
+                                </h4>
+                                <p>Make sure that the information provided in every field matched the correct detailed of the account.</p>
+                                <p>This is considered to be an confirmation of your account.</p>
+                                <p class="mb-0">You may begin to <b>Offsetting</b> when you pressed the next button.</p>
+                            </div>
         </form>
     </div>
     </div>
+    </div>
+    <?php include '../../footer.php'; ?>
     <script src="js/offsetting_script.js"></script>
     <script src="../../saved_settings.js"></script>
     <script src="../../loading.js"></script>

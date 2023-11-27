@@ -1,97 +1,3 @@
-<!-- INSERT PHP SECTION -->
-<?php
-session_start();
-ini_set('error_reporting', 0);
-ini_set('display_errors', 0);
-$office_name = "Accounting Office";
-include '../../conn.php';
-
-if (isset($_POST['submit'])) {
-    // Retrieve form data
-    $course = $_POST['course'];
-    $documentType = $_POST['documentType'];
-    $firstName = $_POST['firstName'];
-    $middleName = $_POST['middleName'];
-    $lastName = $_POST['lastName'];
-    $studentNumber = $_POST['studentNumber'];
-    //$amount = $_POST['amount'];
-    //$referenceNumber = $_POST['referenceNumber'];
-    $userId = $_SESSION['user_id'];
-
-    // Insert the data into the database
-    $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber) 
-            VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber')";
-
-    if ($connection->query($sql) === TRUE) {
-        // Get the last inserted ID
-        $lastInsertedId = $connection->insert_id;
-    
-        $_SESSION['payment_id'] = $lastInsertedId;
-        header("Location: payment2.php");
-        exit();
-    } else {
-        echo "Error inserting data: " . $connection->error;
-    }
-
-    // Handle file upload
-    /*if (isset($_FILES['receiptImage'])) {
-        $file = $_FILES['receiptImage'];
-        $fileName = $file['name'];
-        $fileTmpName = $file['tmp_name'];
-        $fileSize = $file['size'];
-        $fileError = $file['error'];
-        $fileType = $file['type'];
-
-        // Check if the file is uploaded successfully
-        if ($fileError === UPLOAD_ERR_OK) {
-            // Insert the data into the database
-            $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber, amount, referenceNumber) 
-                    VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber', '$amount', '$referenceNumber')";
-
-            if ($connection->query($sql) === TRUE) {
-                // Get the last inserted ID
-                $lastInsertedId = $connection->insert_id;
-
-                // Generate a new filename using the last inserted ID, firstName, and lastName
-                $imageFileName = "payment_" . $lastInsertedId . "_" . $firstName . '_' . $lastName . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
-
-                // Move the uploaded image to the desired directory with the new filename
-                $targetPath = 'uploads/' . $imageFileName;
-                if (move_uploaded_file($fileTmpName, $targetPath)) {
-                    // Update the image URL in the database
-                    $updateSql = "UPDATE student_info SET image_url = '$targetPath' WHERE payment_id = '$lastInsertedId'";
-                    if ($connection->query($updateSql) === TRUE) {
-                        $_SESSION['payment_id'] = $lastInsertedId;
-                        header("Location: payment2.php");
-                        exit();
-                    } else {
-                        echo "Error updating image URL: " . $connection->error;
-                    }
-                } else {
-                    echo "Error moving uploaded file.";
-                }
-            } else {
-                echo "Error inserting data: " . $connection->error;
-            }
-        } else {
-            echo "Error uploading file. Error code: " . $fileError;
-        }
-    } else {
-        echo "No file uploaded.";
-    } */
-
-    $connection->close();
-}
-
-include '../navbar.php';
-?>
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,13 +18,95 @@ include '../navbar.php';
         <div class="loading-spinner"></div>
         <p class="loading-text display-3 pt-3">Getting things ready...</p>
     </div>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
 </head>
 <body>
 <?php
+    $office_name = "Accounting Office";
     include '../../breadcrumb.php';
+    include '../navbar.php';
+    include '../../conn.php';
+
+    if (isset($_POST['submit'])) {
+        // Retrieve form data
+        $course = $_POST['course'];
+        $documentType = $_POST['documentType'];
+        $firstName = $_POST['firstName'];
+        $middleName = $_POST['middleName'];
+        $lastName = $_POST['lastName'];
+        $studentNumber = $_POST['studentNumber'];
+        //$amount = $_POST['amount'];
+        //$referenceNumber = $_POST['referenceNumber'];
+        $userId = $_SESSION['user_id'];
+
+        // Insert the data into the database
+        $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber) 
+                VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber')";
+
+        if ($connection->query($sql) === TRUE) {
+            // Get the last inserted ID
+            $lastInsertedId = $connection->insert_id;
+        
+            $_SESSION['payment_id'] = $lastInsertedId;
+            // header does not work due to conflicts with the navbar.php
+            // header("Location: payment2.php");
+            echo '<script>window.location.href = "payment2.php";</script>';
+            exit();
+        } else {
+            echo "Error inserting data: " . $connection->error;
+        }
+
+        // Handle file upload
+        /*if (isset($_FILES['receiptImage'])) {
+            $file = $_FILES['receiptImage'];
+            $fileName = $file['name'];
+            $fileTmpName = $file['tmp_name'];
+            $fileSize = $file['size'];
+            $fileError = $file['error'];
+            $fileType = $file['type'];
+
+            // Check if the file is uploaded successfully
+            if ($fileError === UPLOAD_ERR_OK) {
+                // Insert the data into the database
+                $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber, amount, referenceNumber) 
+                        VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber', '$amount', '$referenceNumber')";
+
+                if ($connection->query($sql) === TRUE) {
+                    // Get the last inserted ID
+                    $lastInsertedId = $connection->insert_id;
+
+                    // Generate a new filename using the last inserted ID, firstName, and lastName
+                    $imageFileName = "payment_" . $lastInsertedId . "_" . $firstName . '_' . $lastName . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
+
+                    // Move the uploaded image to the desired directory with the new filename
+                    $targetPath = 'uploads/' . $imageFileName;
+                    if (move_uploaded_file($fileTmpName, $targetPath)) {
+                        // Update the image URL in the database
+                        $updateSql = "UPDATE student_info SET image_url = '$targetPath' WHERE payment_id = '$lastInsertedId'";
+                        if ($connection->query($updateSql) === TRUE) {
+                            $_SESSION['payment_id'] = $lastInsertedId;
+                            header("Location: payment2.php");
+                            exit();
+                        } else {
+                            echo "Error updating image URL: " . $connection->error;
+                        }
+                    } else {
+                        echo "Error moving uploaded file.";
+                    }
+                } else {
+                    echo "Error inserting data: " . $connection->error;
+                }
+            } else {
+                echo "Error uploading file. Error code: " . $fileError;
+            }
+        } else {
+            echo "No file uploaded.";
+        } */
+
+        $connection->close();
+    }
     ?>
     <div class="container-fluid p-4">
         <?php

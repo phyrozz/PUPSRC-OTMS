@@ -197,15 +197,9 @@
     function generateUrlToOfficeColumn(officeName) {
         switch (officeName) {
             case 'Guidance Office':
-                return '/student/guidance.php';
+                return '/client/guidance.php';
             case 'Registrar Office':
-                return '/student/registrar.php';
-            case 'Academic Office':
-                return '/student/academic.php';
-            case 'Accounting Office':
-                return '/student/accounting.php';
-            case 'Administrative Office':
-                return '/student/administrative.php';
+                return '/client/registrar.php';
         }
     }
 
@@ -356,7 +350,7 @@
             data: { request_id: requestId },
             success: function(response) {
                 var reasonData = JSON.parse(response); // Parse the JSON response
-                var reason = reasonData.purpose; // Extract the reason text
+                var reason = reasonData.request_letter; // Extract the reason text
                 
                 var modalTitle = document.getElementById('reasonModalLabel');
                 var modalBody = document.querySelector('#reasonModal .modal-body');

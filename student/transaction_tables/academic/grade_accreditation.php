@@ -23,15 +23,21 @@
     function getStatusBadgeClass(status) {
         switch (status) {
             case "1":
-                return 'bg-danger';
+                return 'bg-light text-dark';
             case "2":
                 return 'bg-secondary';
             case "3":
-                return 'bg-info';
+                return 'bg-dark text-ight';
             case "4":
                 return 'bg-success';
             case "5":
                 return 'bg-danger';
+            case "6":
+                return 'bg-info text-dark';
+            case "7":
+                return 'bg-warning text-dark';
+            case "8":
+                return 'bg-success';
         }
     }
 
@@ -47,6 +53,12 @@
                 return "Verified";
             case "5":  
                 return "Rejected";
+            case "6":
+                return 'To Be Evaluated';
+            case "7":
+                return 'Need F to F Evaluation';
+            case "8":
+                return "Approved";
         }
     }
 

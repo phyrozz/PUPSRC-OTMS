@@ -49,6 +49,7 @@
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
                                         <option value="document_request" <?php if ($table === 'document_request') echo 'selected'; ?>>Document Requests</option>
                                         <option value="scheduled_appointments" <?php if ($table === 'scheduled_appointments') echo 'selected'; ?>>Counseling Schedules</option>
+                                        <option value="student_records" <?php if ($table === 'student_records') echo 'selected'; ?>>Student Records</option>
                                         <option value="guidance_feedbacks" <?php if ($table === 'guidance_feedbacks') echo 'selected'; ?>>Feedbacks</option>
                                     </select>
                                     <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
@@ -100,6 +101,9 @@
                             }
                             elseif ($table === 'scheduled_appointments') {
                                 include 'tables/guidance/counseling_appointments.php';
+                            }
+                            elseif ($table === 'student_records') {
+                                include 'tables/guidance/student_records.php';
                             }
                             elseif ($table === 'guidance_feedbacks') {
                                 include 'tables/guidance/feedbacks_table.php';

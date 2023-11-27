@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,61 +14,140 @@
   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../bg.css">
-  <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
+  <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous" defer></script>
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../sign_up_dropdown.js"></script>
+  <script src="../sign_up_dropdown.js" defer></script>
+  <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
 </head>
-
 <body>
   <?php
-    session_start();
-    include "../conn.php";
+  session_start();
+  include "../conn.php";
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $clientRole = 2;
+  // Generate a CSRF token and store it in the session
+  if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+  }
+  $csrfToken = $_SESSION['csrf_token'];
 
-        $query = "SELECT user_id, email, first_name, last_name, extension_name, password FROM users WHERE email = ? and user_role = ?";
-        $stmt = $connection->prepare($query);
-        $stmt->bind_param("si", $email, $clientRole);
-        $stmt->execute();
-        $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
-        $stmt->fetch();
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+      // Token mismatch, handle the error (e.g., log it and deny the request)
+      header("Location: ../index.php");
+      exit("CSRF token validation failed");
+    }
 
-        if ($dbEmail && password_verify($password, $dbPassword)) {
-            $_SESSION['user_id'] = $userId;
-            $_SESSION['first_name'] = $dbFirstName;
-            $_SESSION['last_name'] = $dbLastName;
-            $_SESSION['extension_name'] = $dbExtensionName;
-            $_SESSION['user_role'] = 2;
-            header("Location: ../client/home.php");
-            exit();
-        } else {
-                $loginMessage = "Invalid credentials. Please try again.";
-            }
-    
-            $stmt->close();
-            $connection->close();
-        }
-    ?>
-  <div class="jumbotron bg-white">
+      $email = sanitizeInput($_POST['email']);
+      $password = sanitizeInput($_POST['password']);
+      $clientRole = 2;
+
+      if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
+          $loginMessage = "Invalid email.";
+      } else {
+          $query = "SELECT user_id, email, first_name, last_name, extension_name, password FROM users WHERE email = ? and user_role = ?";
+          $stmt = $connection->prepare($query);
+          $stmt->bind_param("si", $email, $clientRole);
+          $stmt->execute();
+          $stmt->bind_result($userId, $dbEmail, $dbFirstName, $dbLastName, $dbExtensionName, $dbPassword);
+          $stmt->fetch();
+
+          if ($dbEmail && password_verify($password, $dbPassword)) {
+              $_SESSION['user_id'] = $userId;
+              $_SESSION['first_name'] = $dbFirstName;
+              $_SESSION['last_name'] = $dbLastName;
+              $_SESSION['extension_name'] = $dbExtensionName;
+              $_SESSION['user_role'] = 2;
+              header("Location: ../client/home.php");
+              exit();
+          } else {
+              $loginMessage = "Invalid credentials.";
+          }
+
+          $stmt->close();
+      }
+  }
+
+  // Function to sanitize user input
+  function sanitizeInput($input) {
+      return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+  }
+      ///////// DELETE INACTIVE CLIENT USER FOR 6 MONTHS ///////////
+      // Check if the connection was successful
+      if ($connection->connect_error) {
+          die("Connection failed: " . $connection->connect_error);
+      }
+
+      date_default_timezone_set('Asia/Manila');
+
+      // SQL query to select user data
+      $deletionQuery = "SELECT users.user_id, users.user_role, appointment_facility.end_date_time_sched, doc_requests.scheduled_datetime, request_equipment.datetime_schedule
+              FROM users
+              LEFT JOIN appointment_facility ON users.user_id = appointment_facility.user_id
+              LEFT JOIN doc_requests ON users.user_id = doc_requests.user_id
+              LEFT JOIN request_equipment ON users.user_id = request_equipment.user_id
+              WHERE users.user_role = '2'";
+
+      $result = $connection->query($deletionQuery);
+
+      if ($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()) {
+              $endDateTime = new DateTime($row['end_date_time_sched']);
+              $scheduledDateTime = new DateTime($row['scheduled_datetime']);
+              $datetimeSchedule = new DateTime($row['datetime_schedule']);
+              $currentTime = new DateTime();
+
+              // Calculate the time difference in seconds
+              $endDateTimeDiff = $currentTime->getTimestamp() - $endDateTime->getTimestamp();
+              $scheduledDateTimeDiff = $currentTime->getTimestamp() - $scheduledDateTime->getTimestamp();
+              $datetimeScheduleDiff = $currentTime->getTimestamp() - $datetimeSchedule->getTimestamp();
+
+              // Check if any datetime field is more than 6 months in the past
+              $sixMonthsInSeconds = 6 * 30 * 24 * 60 * 60;
+
+              // Check if any datetime field is more than 6 months in the past
+              if ($endDateTimeDiff > $sixMonthsInSeconds || $scheduledDateTimeDiff > $sixMonthsInSeconds || $datetimeScheduleDiff > $sixMonthsInSeconds) {
+                  // Delete the user account
+                  $userId = $row['user_id'];
+                  $deleteAppointmentQuery = "DELETE FROM appointment_facility WHERE user_id = '$userId'";
+                  $deleteDocRequestsQuery = "DELETE FROM doc_requests WHERE user_id = '$userId'";
+                  $deleteEquipmentQuery = "DELETE FROM request_equipment WHERE user_id = '$userId'";
+                  $deleteSql = "DELETE FROM users WHERE user_id = '$userId'";
+                  if ($connection->query($deleteAppointmentQuery) === TRUE && $connection->query($deleteDocRequestsQuery) === TRUE &&
+                      $connection->query($deleteEquipmentQuery) === TRUE && $connection->query($deleteSql) === TRUE) {
+                      //echo "User with ID $userId deleted successfully.\n";
+                  } else {
+                      $connection->error;
+                  }
+              }
+          }
+      } else {
+          //echo "No users found with the specified criteria.";
+      }
+
+      // Close the database connection
+      $connection->close();
+  ?>
+  <div class="jumbotron bg-white jumbotron-bg">
     <div class="container">
       <div class="row">
         <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
           <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
           <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
-          <p class="lead">Sign in as Client (Alumni, Visitor, etc.)</p>
+          <p class="lead">Sign in as Guest (Alumni, Visitor, etc.)</p>
 
           <form method="POST" class="d-flex flex-column gap-2" action="">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <div class="form-group col-12">
               <input type="email" class="form-control" name="email" id="email" placeholder="Email Address"
                 maxlength="100" required>
             </div>
-            <div class="form-group col-12">
-              <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                maxlength="100" required>
+            <div class="form-group col-12 position-relative">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" maxlength="100" required>
+                <button id="togglePassword" type="button" class="btn btn-outline-primary btn-password-toggle">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
             </div>
             <?php if (isset($loginMessage)) { ?>
             <p style="color: #800000; font-weight: 600;"><?php echo $loginMessage; ?></p>
@@ -98,6 +176,7 @@
   </div>
   <!-- Sign Up Modal -->
   <form action="../create_account.php" id="signupForm" method="POST">
+    <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
     <div class="modal fade" id="Register" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -154,17 +233,17 @@
                   <div class="form-group col-12">
                     <label>Contact Number <code>*</code></label>
                     <div class="input-group mb-0">
-                      <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Contact No."
+                      <input type="text" name="ContactNumber" value="" id="ContactNumber" placeholder="Eg. 0901-234-5678"
                         pattern="^09\d{2}-\d{3}-\d{4}$" maxlength="13" size="20" autocomplete="on" class="form-control"
                         required>
                     </div>
                     <div id="contactNoValidationMessage" class="text-danger"></div>
                   </div>
                   <div class="form-group col-6">
-                    <label>Birthdate <code>*</code></label>
+                    <label>Birth Date <code>*</code></label>
                     <div data-target="#Birthday" data-toggle="datetimepicker">
-                      <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input"
-                        data-target="#Birthday" min="1900-01-01" max="<?php echo date('Y-m-d'); ?>" required>
+                      <input type="text" class="form-control" name="Birthday" id="Birthday" placeholder="Select Date..." data-target="#Birthday" style="cursor: pointer !important;" autocomplete="on" required data-input>
+                      <!-- <input type="date" name="Birthday" id="Birthday" class="form-control datetimepicker-input" data-target="#Birthday" min="1900-01-01" max="<?php echo date('Y-m-d'); ?>" autocomplete="on" required> -->
                     </div>
                     <div class="text-danger" id="birthdateError" style="display: none;">Invalid birth date.</div>
                   </div>
@@ -253,29 +332,19 @@
                     </div>
                   </div>
                   <ul id="passwordChecklist"></ul>
-                  <div class="form-group mt-3">
-                    <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
-                      <h4>Data Privacy Notice</h4>
-                      <p>
-                        <img style="float: right; margin-left: 3px; filter: invert(100%);"
-                          src="//i.imgur.com/1fWC7sz.png" title="QR code">Thank you for providing your data at
-                        Polytechnic University of the Philippines (PUP). We respect and value your rights as a data
-                        subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you
-                        provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP
-                        implements reasonable and appropriate security measures to maintain the confidentiality,
-                        integrity and availability of your personal data. For more detailed Privacy Statement, you may
-                        visit <a href="https://www.pup.edu.ph/privacy/"
-                          target="_blank">https://www.pup.edu.ph/privacy/</a>
-                      </p>
-                    </div>
-                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="alert alert-info alert-dismissible text-xs" style="height: 90%">
+                  <h4>Data Privacy Notice</h4>
+                  <p>Thank you for providing your data at Polytechnic University of the Philippines (PUP). We respect and value your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></p>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <input type="submit" value="Sign Up" id="submit-btn" name="clientSignup" class="btn btn-primary" />
+            <input type="submit" value="Sign Up" id="signUpSubmitBtn" name="clientSignup" class="btn btn-primary" disabled />
           </div>
         </div>
       </div>
@@ -429,9 +498,38 @@
     unset($_SESSION['pass_does_not_match']);
     ?>
   <!-- End of success alert modal -->
-
+  <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
+  <script>
+      flatpickr("#Birthday", {
+          altInput: true,
+          dateFormat: "Y-m-d",
+          theme: "custom-datepicker",
+          minDate: "01.01.1901",
+          maxDate: "today",
+          locale: {
+              "firstDayOfWeek": 1 // start week on Monday
+          },
+      });
+  </script>
   <!-- JS validation for form fields -->
   <script>
+  // For login form
+  const loginPasswordInput = document.getElementById('password');
+  const togglePasswordButton = document.getElementById('togglePassword');
+  let passwordVisible = false;
+
+  togglePasswordButton.addEventListener('click', function () {
+      passwordVisible = !passwordVisible;
+      loginPasswordInput.type = passwordVisible ? 'text' : 'password';
+
+      if (passwordVisible) {
+          togglePasswordButton.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+      } else {
+          togglePasswordButton.innerHTML = '<i class="fa-solid fa-eye"></i>';
+      }
+  });
+
+      // For sign-up modal
   const lastNameInput = document.getElementById('LName');
   const firstNameInput = document.getElementById('FName');
   const middleNameInput = document.getElementById('MName');
@@ -448,9 +546,11 @@
   const zipCodeError = document.getElementById('zipCodeError');
   const birthdateInput = document.getElementById('Birthday');
   const birthdateError = document.getElementById('birthdateError');
+  const genderMInput = document.getElementById('GenderM');
+  const genderFInput = document.getElementById('GenderF');
   var passwordInput = document.getElementById("Password");
   var confirmPasswordInput = document.getElementById("ConfirmPassword");
-  var submitButton = document.getElementById("submitBtn");
+  var submitButton = document.getElementById("signUpSubmitBtn");
 
   // Password rules:
   // Must have at least one letter (small or capital)
@@ -459,200 +559,273 @@
   // Must be at least 8 characters long
   const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/;
 
+  function checkFormValidity() {
+      const isLastNameValid = validateLastName();
+      const isFirstNameValid = validateFirstName();
+      const isMiddleNameValid = validateMiddleName();
+      const isExtensionNameValid = validateExtensionName();
+      const isContactNoValid = validateContactNo();
+      const isBirthdateValid = validateBirthdate(birthdateInput.value);
+      const isEmailValid = validateEmail();
+      const isZipCodeValid = validateZipCode();
+      const isPasswordValid = validatePassword();
+
+      const submitButton = document.getElementById('signUpSubmitBtn');
+
+      if (
+          isLastNameValid &&
+          isFirstNameValid &&
+          isMiddleNameValid &&
+          isExtensionNameValid &&
+          isContactNoValid &&
+          isBirthdateValid &&
+          isEmailValid &&
+          isZipCodeValid &&
+          isPasswordValid
+      ) {
+          submitButton.disabled = false;
+      } else {
+          submitButton.disabled = true;
+      }
+  }
+
+  function checkGender() {
+      if (genderFInput.checked === true) {
+          extensionNameInput.disabled = true;
+      } else {
+          extensionNameInput.disabled = false;
+      }
+  }
+
   // Validation event listeners
-  lastNameInput.addEventListener('input', () => {
+  lastNameInput.addEventListener('input', checkFormValidity);
+  firstNameInput.addEventListener('input', checkFormValidity);
+  middleNameInput.addEventListener('input', checkFormValidity);
+  extensionNameInput.addEventListener('input', checkFormValidity);
+  contactNoInput.addEventListener('input', checkFormValidity);
+  birthdateInput.addEventListener('input', checkFormValidity);
+  emailInput.addEventListener('input', checkFormValidity);
+  zipCodeInput.addEventListener('input', checkFormValidity);
+  passwordInput.addEventListener('input', checkFormValidity);
+  confirmPasswordInput.addEventListener('input', checkFormValidity);
+  genderFInput.addEventListener('click', checkGender);
+  genderMInput.addEventListener('click', checkGender);
+
+  // Validate functions
+  function validateLastName() {
       const lastName = lastNameInput.value.trim();
-      const lastNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+      const lastNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
       if (!lastNamePattern.test(lastName)) {
           lastNameValidationMessage.textContent = 'Invalid last name. It must not contain numbers or special characters.';
           lastNameInput.classList.add('is-invalid');
+          return false;
+      } else if (lastName === "") {
+          lastNameValidationMessage.textContent = '';
+          lastNameInput.classList.remove('is-invalid');
+          return false;
       } else {
           lastNameValidationMessage.textContent = '';
           lastNameInput.classList.remove('is-invalid');
+          return true;
       }
-  });
+  }
 
-  firstNameInput.addEventListener('input', () => {
+  function validateFirstName() {
       const firstName = firstNameInput.value.trim();
-      const firstNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+      const firstNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
       if (!firstNamePattern.test(firstName)) {
           firstNameValidationMessage.textContent = 'Invalid first name. It must not contain numbers or special characters.';
           firstNameInput.classList.add('is-invalid');
+          return false;
+      } else if (firstName === "") {
+          firstNameValidationMessage.textContent = '';
+          firstNameInput.classList.remove('is-invalid');
+          return false;
       } else {
           firstNameValidationMessage.textContent = '';
           firstNameInput.classList.remove('is-invalid');
+          return true;
       }
-  });
+  }
 
-  middleNameInput.addEventListener('input', () => {
+  function validateMiddleName() {
       const middleName = middleNameInput.value.trim();
-      const middleNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+      const middleNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
       if (!middleNamePattern.test(middleName)) {
           middleNameValidationMessage.textContent = 'Invalid middle name. It must not contain numbers or special characters.';
           middleNameInput.classList.add('is-invalid');
+          return false;
       } else {
           middleNameValidationMessage.textContent = '';
           middleNameInput.classList.remove('is-invalid');
+          return true;
       }
-  });
+  }
 
-  extensionNameInput.addEventListener('input', () => {
+  function validateExtensionName() {
       const extensionName = extensionNameInput.value.trim();
-      const extensionNamePattern = /^[a-zA-ZÑñ\_\-\'\ \.]*$/;
+      const extensionNamePattern = /^(?:[a-zA-ZÑñ]+\s?[\-\.']?\s?)*$/;
 
       if (!extensionNamePattern.test(extensionName)) {
           extensionNameValidationMessage.textContent = 'Invalid extension name. It must not contain numbers or special characters.';
           extensionNameInput.classList.add('is-invalid');
+          return false;
       } else {
           extensionNameValidationMessage.textContent = '';
           extensionNameInput.classList.remove('is-invalid');
+          return true;
       }
-  });
+  }
 
-  contactNoInput.addEventListener('input', () => {
-    const contactNo = contactNoInput.value.trim();
-    const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
+  function validateContactNo() {
+      const contactNo = contactNoInput.value.trim();
+      const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
 
-    // Remove any dashes from the current input value
-    const cleanedContactNo = contactNo.replace(/-/g, '');
+      // Remove any dashes from the current input value
+      const cleanedContactNo = contactNo.replace(/-/g, '');
 
-    // Format the contact number with dashes
-    let formattedContactNo = '';
-    for (let i = 0; i < cleanedContactNo.length; i++) {
-      if (i === 4 || i === 7) {
-        formattedContactNo += '-';
+      // Format the contact number with dashes
+      let formattedContactNo = '';
+      for (let i = 0; i < cleanedContactNo.length; i++) {
+          if (i === 4 || i === 7) {
+              formattedContactNo += '-';
+          }
+          formattedContactNo += cleanedContactNo[i];
       }
-      formattedContactNo += cleanedContactNo[i];
-    }
 
-    // Update the input value with the formatted contact number
-    contactNoInput.value = formattedContactNo;
+      // Update the input value with the formatted contact number
+      contactNoInput.value = formattedContactNo;
 
-    if (!contactNoValidPattern.test(formattedContactNo)) {
-      contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
-      contactNoInput.classList.add('is-invalid');
-    } else {
-      contactNoValidationMessage.textContent = '';
-      contactNoInput.classList.remove('is-invalid');
-    }
-  });
+      if (!contactNoValidPattern.test(formattedContactNo)) {
+          if (contactNo === "") {
+              contactNoValidationMessage.textContent = '';
+              contactNoInput.classList.remove('is-invalid');
+          } else {
+              contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
+              contactNoInput.classList.add('is-invalid');
+          }
+          return false;
+      } else {
+          contactNoValidationMessage.textContent = '';
+          contactNoInput.classList.remove('is-invalid');
+          return true;
+      }
+  }
 
-  birthdateInput.addEventListener('input', function() {
-    validateBirthdate(this.value);
-  });
-
-  emailInput.addEventListener('input', validateEmail);
-  zipCodeInput.addEventListener('input', validateZipCode);
-
-  // Validation functions
   function validateBirthdate(birthdate) {
-    const currentDate = new Date();
-    const selectedDate = new Date(birthdate);
+      const currentDate = new Date();
+      const selectedDate = new Date(birthdate);
 
-    if (selectedDate < new Date('1900-01-01') || selectedDate > currentDate) {
-      birthdateError.style.display = 'block';
-      birthdateInput.classList.add('is-invalid');
-    } else {
-      birthdateError.style.display = 'none';
-      birthdateInput.classList.remove('is-invalid');
-    }
+      if (selectedDate < new Date('1901-01-01') || selectedDate > currentDate || birthdate === "") {
+          if (birthdate.trim() === "") {
+              birthdateError.style.display = 'none';
+              birthdateInput.classList.remove('is-invalid');
+          } else {
+              birthdateError.style.display = 'block';
+              birthdateInput.classList.add('is-invalid');
+          }
+          return false;
+      } else {
+          birthdateError.style.display = 'none';
+          birthdateInput.classList.remove('is-invalid');
+          return true;
+      }
+      console.log(Date(birthdate));
   }
 
   function validateEmail() {
-    const email = emailInput.value;
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const email = emailInput.value;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (emailPattern.test(email)) {
-      emailInput.classList.remove('is-invalid');
-      emailError.style.display = 'none';
-    } else {
-      emailInput.classList.add('is-invalid');
-      emailError.style.display = 'block';
-    }
+      if (emailPattern.test(email)) {
+          emailInput.classList.remove('is-invalid');
+          emailError.style.display = 'none';
+          return true;
+      } else {
+          if (email.trim() === "") {
+              emailInput.classList.remove('is-invalid');
+              emailError.style.display = 'none';
+          } else {
+              emailInput.classList.add('is-invalid');
+              emailError.style.display = 'block';
+          }
+          return false;
+      }
   }
 
+  // Validate functions
   function validateZipCode() {
-    const zipCode = zipCodeInput.value.trim();
-    const validZipCodePattern = /^[0-9]{4,6}$/;
+      const zipCode = zipCodeInput.value.trim();
+      const validZipCodePattern = /^[0-9]{4,6}$/;
 
-    if (!validZipCodePattern.test(zipCode)) {
-      zipCodeError.textContent = 'Zip Code must be 4 to 6 digits long';
-      zipCodeInput.classList.add('is-invalid');
-    } else {
-      zipCodeError.textContent = '';
-      zipCodeInput.classList.remove('is-invalid');
-    }
+      if (zipCode === "") {
+          zipCodeError.textContent = '';
+          zipCodeInput.classList.remove('is-invalid');
+          return true;
+      } else if (!validZipCodePattern.test(zipCode)) {
+          zipCodeError.textContent = 'Zip Code must be 4 to 6 digits long';
+          zipCodeInput.classList.add('is-invalid');
+          return false;
+      } else {
+          zipCodeError.textContent = '';
+          zipCodeInput.classList.remove('is-invalid');
+          return true;
+      }
   }
 
   function validatePassword() {
-    const password = passwordInput.value.trim();
-    const confirmPassword = confirmPasswordInput.value.trim();
+      const password = passwordInput.value.trim();
+      const confirmPassword = confirmPasswordInput.value.trim();
 
-    // Check if the password meets the requirements
-    const isPasswordValid = passwordPattern.test(password);
-    const isPasswordMatch = password === confirmPassword;
+      const isPasswordValid = passwordPattern.test(password);
+      const isPasswordMatch = password === confirmPassword;
 
-    // Update the validation messages and styles
-    if (password === '' || !isPasswordValid) {
-        passwordInput.classList.remove('is-valid');
-        passwordInput.classList.add('is-invalid');
-    } else {
-        passwordInput.classList.remove('is-invalid');
-        passwordInput.classList.add('is-valid');
-    }
+      passwordInput.classList.remove('is-valid', 'is-invalid');
+      confirmPasswordInput.classList.remove('is-valid', 'is-invalid');
 
-    if (confirmPassword === '' || !isPasswordMatch) {
-        confirmPasswordInput.classList.remove('is-valid');
-        confirmPasswordInput.classList.add('is-invalid');
-    } else {
-        confirmPasswordInput.classList.remove('is-invalid');
-        confirmPasswordInput.classList.add('is-valid');
-    }
+      const passwordChecklist = document.getElementById('passwordChecklist');
+      passwordChecklist.innerHTML = '';
 
-    // Update the checklist message
-    const passwordChecklist = document.getElementById('passwordChecklist');
-    passwordChecklist.innerHTML = '';
+      if (password === '') {
+          passwordChecklist.innerHTML += '<li class="text-danger">Password is required</li>';
+      } else if (password.length >= 8) {
+          passwordChecklist.innerHTML += '<li class="text-success">&#10004; At least 8 characters</li>';
+      } else {
+          passwordChecklist.innerHTML += '<li class="text-danger">&#10006; At least 8 characters</li>';
+      }
 
-    if (password === '') {
-        passwordChecklist.innerHTML += '<li class="text-danger">Password is required</li>';
-    } else if (password.length >= 8) {
-        passwordChecklist.innerHTML += '<li class="text-success">&#10004; At least 8 characters</li>';
-    } else {
-        passwordChecklist.innerHTML += '<li class="text-danger">&#10006; At least 8 characters</li>';
-    }
+      if (/[A-Za-z]/.test(password)) {
+          passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one letter</li>';
+      } else {
+          passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one letter</li>';
+      }
 
-    if (/[A-Za-z]/.test(password)) {
-        passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one letter</li>';
-    } else {
-        passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one letter</li>';
-    }
+      if (/\d/.test(password)) {
+          passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one number</li>';
+      } else {
+          passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one number</li>';
+      }
 
-    if (/\d/.test(password)) {
-        passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one number</li>';
-    } else {
-        passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one number</li>';
-    }
+      if (/[^A-Za-z\d]/.test(password)) {
+          passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one special character</li>';
+      } else {
+          passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one special character</li>';
+      }
 
-    if (/[^A-Za-z\d]/.test(password)) {
-        passwordChecklist.innerHTML += '<li class="text-success">&#10004; Contains at least one special character</li>';
-    } else {
-        passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Contains at least one special character</li>';
-    }
+      if (confirmPassword === '') {
+          passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Confirm password is required</li>';
+      } else if (isPasswordMatch) {
+          passwordChecklist.innerHTML += '<li class="text-success">&#10004; Passwords match</li>';
+      } else {
+          passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Passwords do not match</li>';
+      }
 
-    if (confirmPassword === '') {
-        passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Confirm password is required</li>';
-    } else if (isPasswordMatch) {
-        passwordChecklist.innerHTML += '<li class="text-success">&#10004; Passwords match</li>';
-    } else {
-        passwordChecklist.innerHTML += '<li class="text-danger">&#10006; Passwords do not match</li>';
-    }
+      // Return true only if all validations pass
+      return isPasswordValid && isPasswordMatch;
   }
-
-  passwordInput.addEventListener("change", validatePassword);
-  confirmPasswordInput.addEventListener("keyup", validatePassword);
   </script>
 </body>
 

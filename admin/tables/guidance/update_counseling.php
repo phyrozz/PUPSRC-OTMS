@@ -6,6 +6,9 @@ $counselingIds = $_POST['counselingIds'];
 $officeId = 5;
 
 try {
+    // Set the database time zone to Asia/Manila
+    $connection->query("SET time_zone = '+08:00'");
+
     $placeholders = implode(',', array_fill(0, count($counselingIds), '?'));
 
     // Fetch appointment descriptions, scheduled datetimes, and user ids for the notifications
@@ -30,7 +33,7 @@ try {
 
     // Insert notifications
     if ($statusId == 6 || $statusId == 7) {
-        $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description) VALUES (?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");
     
         foreach ($updatedCounselingDescriptions as $counselingId => $requestInfo) {
             $title = 'Counseling Status Update';
@@ -47,6 +50,7 @@ try {
 
         $stmt->close();
     }
+    $connection->close();
 } catch (Exception $e) {
     echo json_encode(['message' => 'Error occurred while updating status: ' . $e]);
 }

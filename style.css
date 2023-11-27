@@ -35,6 +35,30 @@ body.dark-mode {
     background-color: #1f1f1f !important;
 }
 
+.welcome-title-text {
+    font-size: 4vw;
+}
+
+.welcome-text {
+    font-size: 2vw;
+}
+
+.role-btn-group {
+    background-color: #f8f9fa;
+    color: #212529;
+    max-width: 500px;
+    animation: jumbotronFadeIn ease-in 0.3s;
+}
+
+/* Container background styles for index, forgot and reset password pages */
+.container-bg {
+    animation: jumbotronFadeIn ease-in 0.3s;
+}
+
+.pass-reset-container {
+    max-width: 50vw;
+}
+
 .login-card {
     width: 50%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -571,6 +595,25 @@ a .autocomplete-item:hover {
     opacity: 1;
 }
 
+.avatar-rounded-square {
+    width: 41px;
+    height: 41px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background-color: #f0f0f0;
+}
+
+.nav-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#userProfileDropdown::after {
+    content: none;
+}
+
 .overlay-text {
     margin-bottom: 1rem;
 }
@@ -590,7 +633,7 @@ a .autocomplete-item:hover {
 
 .notification-menu {
     position: absolute;
-    left: -200px !important;
+    left: -275px !important;
     top: 45px !important;
     min-width: 400px;
     background-color: #fff !important;
@@ -600,7 +643,72 @@ a .autocomplete-item:hover {
     content: none;
 }
 
+#userProfileDropdownMenu {
+    min-width: 300px;
+}
+
+.payment-summary {
+    max-width: 700px;
+}
+
+/* Custom styles for "Next" and "Previous" buttons */
+.custom-nav-button {
+    width: 120px;
+}
+
+/* Style the status dropdowns in Academic Admin */
+select.status-dropdown {
+    max-width: 150px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+}
+
+.btn-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+}
+
+/* Transition effect on log-in containers when the page loads */
+.jumbotron-bg {
+    animation: jumbotronFadeIn 0.3s ease-in-out;
+}
+
+@keyframes jumbotronFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 @media only screen and (max-width: 992px) {
+    .welcome-title-text {
+        font-size: 2.3rem;
+        margin-top: 200px;
+    }
+    
+    .welcome-text {
+        font-size: 1rem;
+        margin-bottom: 100px;
+    }
+
+    .role-btn-group {
+        background-color: rgba(0, 0, 0, 0);
+        color: #f8f9fa;
+        max-width: 100%;
+    }
+
+    .pass-reset-container {
+        max-width: 100%;
+    }
+
     .autocomplete-list {
         position: static;
         margin-top: 10px;
@@ -614,7 +722,7 @@ a .autocomplete-item:hover {
     }
 
     table {
-        table-layout: fixed;
+        /* table-layout: fixed; */
         word-wrap: break-word;
     }
 

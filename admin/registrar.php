@@ -92,8 +92,10 @@
                 </div>
                 <button type="submit" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i
                     class="fa-solid fa-filter"></i> Filter</button>
-                <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i>Generate Registrar Report</a>
-              </div>
+                <?php if ($table === 'document_request') { ?>
+                  <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i>Generate Registrar Report</a>
+                <?php } ?>
+                </div>
             </div>
             <div class="mt-2">
               <div class="input-group search-group">

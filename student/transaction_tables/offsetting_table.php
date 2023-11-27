@@ -23,6 +23,7 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -186,6 +187,7 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(offsetting.status_name) + '">' + offsetting.status_name + '</span>' + 
                             '</td>' +
+                            '<td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }

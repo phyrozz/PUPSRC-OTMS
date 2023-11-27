@@ -1,5 +1,14 @@
 <?php
+session_start();
 include '../conn.php';
+
+// Generate a CSRF token and store it in the session
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrfToken = $_SESSION['csrf_token'];
+
+date_default_timezone_set('Asia/Manila');
 
 // Retrieve the token from the URL
 $token = $_GET['token'];
@@ -13,9 +22,16 @@ $result = $stmt->get_result();
 if ($result->num_rows === 1) {
     // Token is valid, allow the user to reset their password
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            // Token mismatch, handle the error (e.g., log it and deny the request)
+            header("Location: ../index.php");
+            exit("CSRF token validation failed");
+        }
+
         // Retrieve the new password from the form
-        $newPassword = $_POST['newPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
+        $newPassword = sanitizeInput($_POST['newPassword']);
+        $confirmPassword = sanitizeInput($_POST['confirmPassword']);
 
         // Check if the passwords match
         if ($newPassword == $confirmPassword) {
@@ -43,6 +59,11 @@ if ($result->num_rows === 1) {
 
 $stmt->close();
 $connection->close();
+
+// Function to sanitize user input
+function sanitizeInput($input) {
+    return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,15 +84,15 @@ $connection->close();
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="jumbotron bg-white d-flex">
+    <div class="jumbotron bg-white d-flex jumbotron-bg">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center d-flex flex-column align-items-center justify-content-center">
                     <img src="/assets/pup-logo.png" alt="PUP Logo" width="100">
                     <h2 class="fw-normal mt-2"><b>O</b>nline <b>T</b>ransaction <b>M</b>anagement <b>S</b>ystem</h2>
                     <p class="lead">Reset your password</p>
-
                     <form method="POST" class="d-flex flex-column gap-2 w-100" action="">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <div class="form-group col-12">
                             <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="Enter your new password" minlength="8" maxlength="80" required>
                         </div>

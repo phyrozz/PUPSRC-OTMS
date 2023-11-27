@@ -8,6 +8,7 @@ include "../../../conn.php";
     $status = $_GET['status'];
     $doc_type = $_GET['doc_type'];
     $search = $_GET['search'];
+    date_default_timezone_set('Asia/Manila');
     $formattedDate = date('Y-m-d'); //date today
 
     $registrar_reports = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, scheduled_datetime, status_name, amount_to_pay, attached_files, 
@@ -131,7 +132,7 @@ $html = '
                 $timestamp = $row['request_id'];
                 $parsedTimestamp = intval(substr($timestamp, 3));
                 $date_new = new DateTime('@' . ($parsedTimestamp));
-                $format_date = $date_new->format('Y-m-d H:i:s');
+                $format_date = $date_new->format('F j, Y'); // date only
                 $html .= '<tr>
                     <td>'.$i.'</td>
                     <td>'.$row['request_id'].'</td>

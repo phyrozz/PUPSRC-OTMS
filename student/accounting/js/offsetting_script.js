@@ -87,14 +87,3 @@ document.getElementById("birthdate").setAttribute("max", currentDate);
 function closeAlert() {
 document.getElementById('custom-alert').style.display = 'none';
 }
-//restrict user to input space and special char
-function blockSpecialChar(e) {
-  var key = e.key;
-  return (
-    (key >= 'a' && key <= 'z') ||
-    (key >= 'A' && key <= 'Z') ||
-    key === 'Backspace' ||
-    (key >= '0' && key <= '9') ||
-    key === '-'
-  );
-}

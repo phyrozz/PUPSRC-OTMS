@@ -49,9 +49,9 @@ $dbname = "otms_db";
     </div>
 
   
-    <div class="container-fluid text-center p-4">
+    <div class="container-fluid text-center">
         <!--Start of content-->
-        <div class="container-fluid-form">
+        <div class="m-auto">
             <form id="studentForm" method="post" class="row g-3 needs-validation" novalidate>
 
                 
@@ -130,15 +130,13 @@ $dbname = "otms_db";
                     }
                     ?>
                 </div>
-
-                <div class="col-12">
-                    <button class="btn btn-primary next-button" type="button" onclick="takeScreenshot()"><i class="fa-solid fa-download"></i> Save</button>
-                    <a class="btn btn-primary next-button" href="../accounting.php" type="submit">Accounting Office</a>
-                </div>
-
             </form>
         </div>
-        <script src="#"></script>
+        <div class="col-12 w-75 mt-5 pb-5 m-auto">
+            <p class="mb-3">Please present this payment voucher to the cashier to complete your transaction. You may have to wait for a few days until your document request is ready for pickup. You can check the status any time on <b>My Transactions</b> page.</p>
+            <button class="btn btn-primary next-button" type="button" onclick="takeScreenshot()"><i class="fa-solid fa-download"></i> Save</button>
+            <a class="btn btn-primary next-button" href="../transactions.php">My Transactions</a>
+        </div>
     </div>
     <script src="../../loading.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>

@@ -413,7 +413,6 @@
 
         
 
-        // Update status button listener
         $('#update-status-button').on('click', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
             var requestIds = checkedCheckboxes.map(function() {
@@ -421,23 +420,47 @@
             }).get();
             var statusId = $('#update-status').val(); // Get the selected status ID
 
-            $.ajax({
-                url: 'tables/administrative/update_request_equipment.php',
-                method: 'POST',
-                data: { requestIds: requestIds, statusId: statusId }, // Include the selected status ID in the data
-                success: function(response) {
-                    // Handle the success response
-                    console.log('Status updated successfully');
+                $.ajax({
+                    url: 'tables/administrative/update_request_equipment.php',
+                    method: 'POST',
+                    data: { requestIds: requestIds, statusId: statusId },
+                    success: function(response) {
+                        // Handle the success response
+                        console.log('Status updated successfully');
 
-                    // Refresh the table after status update
-                    handlePagination(1, '', 'request_id', 'desc');
-                },
-                error: function() {
-                    // Handle the error response
-                    console.log('Error occurred while updating status');
-                }
+                        // Deduct equipment quantity for each selected request
+                        if (statusId === '5') {
+                            deductEquipmentQuantity(requestIds);
+                        } else {
+                            // Refresh the table after status update
+                            handlePagination(1, '', 'request_id', 'desc');
+                        }
+                    },
+                    error: function() {
+                        // Handle the error response
+                        console.log('Error occurred while updating status');
+                    }
+                });
             });
-        });
+
+            // Function to deduct equipment quantity
+            function deductEquipmentQuantity(requestIds) {
+                $.ajax({
+                    url: 'tables/administrative/deduct_equip_quantity.php',
+                    method: 'POST',
+                    data: { requestIds: requestIds },
+                    success: function(response) {
+                        console.log('Equipment quantity deducted successfully.');
+                        // Reload the page to refresh the table
+                        location.reload();
+                    },
+                    error: function() {
+                        console.log('Error occurred while deducting equipment quantity.');
+                    }
+                });
+            }
+
+    });
 
                 // Checkbox change listener using event delegation
                 $(document).on('change', 'input[name="request-checkbox"]', function() {
@@ -454,7 +477,7 @@
                 statusDropdown.prop('disabled', true);
             }
         });
-    });
+
 
     function filterStatus() {
             var filterByStatusVal = $('#filterByStatus').val();

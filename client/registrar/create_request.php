@@ -68,10 +68,14 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
       // Get the selected date and service
       var selectedDate = document.getElementById("date").value;
       var selectedService = document.getElementById("req_student_service").value;
+      var selectedReason = document.getElementById("reason_request").value;
+      var selectedOthers = document.getElementById("reasonText").value;
 
       // Construct the URL with query parameters
       var redirectURL = 'submit_request.php?date=' + encodeURIComponent(selectedDate) +
-                        '&req_student_service=' + encodeURIComponent(selectedService);
+                        '&req_student_service=' + encodeURIComponent(selectedService) +
+                        '&reason_request=' + encodeURIComponent(selectedReason) +
+                        '&reasonText=' + encodeURIComponent(selectedOthers);
 
       // Redirect to submit_request.php with the query parameters
       window.location.href = redirectURL;
@@ -172,8 +176,43 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
 												echo '<option value="' . $dropdown['services'] . '">' . $dropdown['services'] . '</option>';
 										}
 									?>
-
                 </select>
+              </div>
+              <div class="form-group required col-md-12">
+                <label for="reason_request" class="form-label">Reason for Requesting Document</label>
+                  <div class="input-group has-validation">
+                      <select class="form-control form-select" name="reason_request" id="reason_request" required>
+                        <option hidden value="">--Select--</option>
+                        <option value="CEAP">CEAP</option>
+                        <option value="CHED-FULL SCHOLARSHIP PROGRAM">CHED-FULL SCHOLARSHIP PROGRAM</option>
+                        <option value="CHED-STUFAP">CHED-STUFAP</option>
+                        <option value="CHED-TDP">CHED-TDP</option>
+                        <option value="CHED-TES">CHED-TES</option>
+                        <option value="DOST">DOST</option>
+                        <option value="ECAP">ECAP</option>
+                        <option value="FIF FOUNDATION INC">FIF FOUNDATION INC</option>
+                        <option value="GSIS">GSIS</option>
+                        <option value="ILSP">ILSP</option>
+                        <option value="ISKOLAR NG BAYAN">ISKOLAR NG BAYAN</option>
+                        <option value="ISKOLAR NG BAYAN NG SANTA MARIA">ISKOLAR NG BAYAN NG SANTA MARIA</option>
+                        <option value="ISKOLAR NG CABUYAO">ISKOLAR NG CABUYAO</option>
+                        <option value="ISKOLAR NG CARSIGMA">ISKOLAR NG CARSIGMA</option>
+                        <option value="ISKOLAR NG LAGUNA">ISKOLAR NG LAGUNA</option>
+                        <option value="MACIGLANG ISKOLAR">MACIGLANG ISKOLAR</option>
+                        <option value="MSD">MSD</option>
+                        <option value="MUNTINLUPA SCHOLARSHIP PROGRAM">MUNTINLUPA SCHOLARSHIP PROGRAM</option>
+                        <option value="OWWA ODSP">OWWA ODSP</option>
+                        <option value="SK SCHOLAR">SK SCHOLAR</option>
+                        <option value="SKEAP">SKEAP</option>
+                        <option value="Other">Other (Please specify)</option>
+                      </select>
+                    <div class="invalid-feedback" id="reasonSelectMessage">Please choose an option.</div>
+                  </div>                
+              </div>
+              <div class="form-group col-12 required" id="reasonTextField" style="display: none;">
+                  <label for="reasonText" class="form-label">Reason</label>
+                  <textarea class="form-control" name="reasonText" id="reasonText" style="resize: none;" rows="3" maxlength="2048"></textarea>
+                  <div id="reasonValidationMessage" class="text-danger"></div>
               </div>
               <div class="form-group required col-md-12">
                 <label for="date" class="form-label">Date</label>
@@ -244,9 +283,55 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
       </div>
     </div>
     <!-- End of success alert modal -->
+
+    <!-- Letter format alert modal -->
+    <div id="letterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="letterModalLabel"
+              aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="letterModalLabel">Important Reminder</h5>
+            </div>
+            <div class="modal-body">
+              <h5>For Claiming Documents:</h5>
+                <p>When claiming documents, please ensure the following:</p>
+                  <ul>
+                    <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>Request Letter format</a>, which is necessary for requesting the desired document.</li>
+                    <li>Provide an authorization letter and ID if the claimant is an immediate family member.</li>
+                    <li>Submit a Special Power of Attorney (SPA) if the claimant is someone other than an immediate family member.</li>
+                  </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeLetterModal">Proceed</button>
+              </div>
+          </div>
+        </div>
+    </div>
+    <!-- End of Letter format alert modal -->
     <div class="push"></div>
   </div>
   <?php include '../../footer.php'; ?>
+  <script>
+
+$(document).ready(function() {
+  $('#loadingModal').modal('show');
+
+  $('#reason_request').on('change', function() {
+    if ($(this).val() == 'Other') {
+      $('#reasonTextField').slideToggle(); // Fade in the element
+    } else {
+      $('#reasonTextField').fadeOut(); // Fade out the element
+    }
+  });
+});
+
+$(document).ready(function() {
+  $('#closeLetterModal').on('click', function() {
+    // Programmatically trigger the successModal after closing the letterModal
+    $("#successModal").modal("show");
+  });
+});
+  </script>
   <script src="../../loading.js"></script>
   <script src="../../saved_settings.js"></script>
 
@@ -261,8 +346,17 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
   <?php
     unset($_SESSION['success']);
     exit();
-  }
-  ?>
+  } else if (isset($_SESSION['letter'])) {
+    ?>
+    <script>
+    $(document).ready(function() {
+      $("#letterModal").modal("show");
+    })
+    </script>
+    <?php 
+      unset($_SESSION['letter']);
+      exit();
+    } ?>
 </body>
 
 </html>

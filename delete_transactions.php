@@ -40,6 +40,16 @@ if (!$stmt->execute()) {
     exit();
 }
 
+// Delete transactions from offsetting table
+$query = "DELETE FROM offsettingtb WHERE user_id = ? AND status_id = 6";
+$stmt = $connection->prepare($query);
+$stmt->bind_param("i", $user_id);
+
+if (!$stmt->execute()) {
+    echo json_encode(['success' => false, 'error' => 'Failed to delete transactions.']);
+    exit();
+}
+
 // Return a response indicating the success of the deletion
 echo json_encode(['success' => true]);
 

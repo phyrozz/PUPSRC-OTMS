@@ -4,8 +4,10 @@ include '../../../conn.php';
 // Get the equipment data from the AJAX request
 $equipmentId = $_POST['equipmentId'];
 $equipmentName = $_POST['equipmentName'];
-$availability = $_POST['availability'];
 $quantity = $_POST['quantity'];
+
+// Determine availability based on quantity
+$availability = ($quantity >= 1) ? 'Available' : 'Unavailable';
 
 try {
     // Prepare and execute the SQL query to update the equipment data
@@ -16,7 +18,7 @@ try {
 
     // Check if any rows were affected
     if ($stmt->affected_rows > 0) {
-        // equipment data updated successfully
+        // Equipment data updated successfully
         echo json_encode(['message' => 'Equipment updated successfully']);
     } else {
         // No rows updated

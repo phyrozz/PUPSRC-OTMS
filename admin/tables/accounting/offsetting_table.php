@@ -103,7 +103,7 @@
 
                         var row = '<tr>' +
                         '<td><input type="checkbox" name="request-checkbox" value="' + offsettings.offsetting_id + '"></td>' +
-                            '<td>'+'A0-' + offsettings.offsetting_id + '</td>' +
+                            '<td>'+ offsettings.offsetting_id + '</td>' +
                             '<td>' + (new Date(offsettings.formatted_timestamp).toLocaleString('en-US', {
                             month: 'long',
                             day: 'numeric',
@@ -181,6 +181,12 @@
         $('#filterByStatusSection').hide();
         $('#filterByDocTypeSection').hide();
         $('#filterButton').hide();
+        
+        $('#search-input').on('input', function() {
+            var searchTerm = $('#search-input').val();
+            handlePagination(1, searchTerm, 'offsetting_id', 'desc');
+        });
+
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
             handlePagination(1, searchTerm, 'offsetting_id', 'desc');

@@ -162,7 +162,7 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
   }
   
   .next-button {
-    display: block;
+    /*display: block;*/
     width: 220px;
     padding: 10px 20px;
     background-color: #800000;
@@ -177,12 +177,11 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
   }
   
   .payment-summary {
-    margin-top: 125px;
+    margin-top: 90px;
     text-align: left;
     background-color: #f5f5f5;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    /*padding: 20px;*/
+    border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     width: 100%;
@@ -192,11 +191,50 @@ Breadcrumb is a bootstrap component that shows the location of the user on the w
     margin-bottom: -10px;
 }
 
-.payment-summary h1 {
+.payment-summary h2 {
     text-align: center;
 }
 
+/* Adjustments for Left Section */
+.red-section img {
+    width: 45%;
+    margin-top: -40px;
+}
 
+#payment-summary .col-md-8 {
+    margin-top: -8px;
+}
+
+#payment-summary .col-md-4 {
+    padding-left: -20;
+    margin-left: 0;
+    margin-top: -4px;
+    background-color: #800000;
+    color: #fff;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+    /* Make sure the height matches the parent container if needed */
+    height: 100%;
+}
+
+/* Ensure the container of the .red-section has no additional padding or margin */
+#payment-summary .red-section {
+    margin: 0;
+    padding: 0;
+    /* Adjust padding inside .red-section if necessary */
+    padding: 20px;
+}
+
+/* Optional: if you have a bootstrap container or row affecting the layout */
+.container-fluid, .row {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+#payment-summary .col-md-8 h2 {
+    text-align: center; /* Centers the text horizontally */
+    color: #800000;
+}
 
   /*end of content*/
 @media only screen and (max-width: 768px) {

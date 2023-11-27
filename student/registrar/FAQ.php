@@ -59,7 +59,6 @@
             <?php
             $breadcrumbItems = [
                 ['text' => 'Registrar Office', 'url' => '../registrar.php', 'active' => false],
-                ['text' => 'Registrar Transactions History', 'url' => 'your_transaction.php', 'active' => false],
                 ['text' => 'Help', 'active' => true],
             ];
 
@@ -171,15 +170,7 @@
         <!-- End of success alert modal -->
         <div class="push"></div>
     </div>
-    <footer class="footer container-fluid w-100 text-md-left text-center d-md-flex align-items-center justify-content-center bg-light flex-nowrap">
-        <div>
-            <small>PUP Santa Rosa - Online Transaction Management System Beta 0.1.0</small>
-        </div>
-        <div>
-            <small><a href="https://www.pup.edu.ph/terms/" target="_blank" class="btn btn-link">Terms of Use</a>|</small>
-            <small><a href="https://www.pup.edu.ph/privacy/" target="_blank" class="btn btn-link">Privacy Statement</a></small>
-        </div>
-    </footer>
+    <?php include '../../footer.php'; ?>
     <script src="../../saved_settings.js"></script>
     <?php
     if (isset($_SESSION['success'])) {

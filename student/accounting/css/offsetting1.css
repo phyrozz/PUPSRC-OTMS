@@ -1,0 +1,43 @@
+      /*alert*/
+      .success-alert {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 10px;
+        display: none; 
+    }
+    .custom-alert {
+        color: #020403;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        display: none;
+        z-index: 9999;
+        text-align: center;
+    }
+    
+    .custom-alert-message {
+    font-weight: bold;
+    margin-bottom: 10px;
+    }
+    
+    .custom-alert-close {
+    padding: 5px 10px;
+    background-color: #ffc107;
+    border: solid 1px black;
+    border-radius: 10%;
+    color: #212529;
+    cursor: pointer;
+    }
+    
+    .custom-alert-close:hover {
+    background-color: #e9ecef;
+    }

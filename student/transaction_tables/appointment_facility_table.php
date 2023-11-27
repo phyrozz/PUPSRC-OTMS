@@ -40,6 +40,7 @@
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center"></th>
+                <th class="text-center"></th>
                 <!-- <th class="text-center doc-request-status-header" scope="col">
                     Generate Slip
                 </th> -->
@@ -106,7 +107,7 @@
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 
 <script>
-   function getStatusBadgeClass(status) {
+      function getStatusBadgeClass(status) {
         switch (status) {
             case 'Released':
                 return 'bg-success';
@@ -118,6 +119,8 @@
                 return 'bg-primary';
             case 'Ready for Pickup':
                 return 'bg-info';
+            case 'Cancelled':
+                return 'bg-secondary';
             default:
                 return 'bg-dark';
         }
@@ -651,6 +654,7 @@
                             '<span class="badge rounded-pill appointment-facility-status-cell ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
                             '</td>' +
                             '<td><button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + appointmentFacility.appointment_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></button></td>' +
+                            '<td><button href="#" class="btn btn-primary btn-sm cancel-request" data-request-id="' + appointmentFacility.appointment_id + '">Cancel <i class="fa-solid fa-pen-to-square"></i></button></td>' +
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
@@ -675,6 +679,9 @@
                 addDeleteButtonListeners();
                 // Add event listeners for edit buttons
                 updateEditButtonStatus();
+                //Checks for request status and hides cancelled button
+                updateCancelButtonStatus();
+
             }
         });
     }
@@ -702,6 +709,60 @@
             populateEditModal(editId);
         }
     });
+
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('cancel-request')) {
+            var requestId = event.target.getAttribute('data-request-id');
+           cancelRequest(requestId);
+        }
+    });
+
+    //Function for Cancel button
+    function cancelRequest(requestId) {
+    // Make an AJAX request to cancel the equipment request
+        $.ajax({
+            url: 'transaction_tables/cancel_facility.php',
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function(response) {
+                console.log(requestId);
+                console.log('Request canceled successfully');
+
+
+
+                handlePagination(1, '');
+            },
+            error: function(error) {
+                console.error('Error canceling request:', error.responseText);
+            }
+        });
+    }
+
+    //Disables Cancel Button for certain statuses
+    function updateCancelButtonStatus() {
+    var cancelButtons = document.querySelectorAll('.cancel-request');
+
+    cancelButtons.forEach(function (button) {
+        var row = button.closest('tr');
+        var statusCell = row.querySelector('.appointment-facility-status-cell');
+        var status = statusCell.textContent.trim();
+
+        // Disable the Cancel button based on specific statuses
+        if (
+            status === 'For Receiving' ||
+            status === 'For Evaluation' ||
+            status === 'Ready for Pickup' ||
+            status === 'Released' ||
+            status === 'Rejected' ||
+            status === 'Approved' ||
+            status === 'Cancelled'
+        ) {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+        }
+    });
+    }
 
 
     // Function to toggle the sort icons
