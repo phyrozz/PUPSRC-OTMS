@@ -321,9 +321,7 @@
                     <h5>For Claiming Documents:</h5>
                     <p>When claiming documents, please ensure the following:</p>
                     <ul>
-                      <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i
-                            class="fa-solid fa-envelope-open-text"></i>Request Letter format</a>, which is necessary for
-                        requesting the desired document.</li>
+                      <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>Request Letter Template</a>, which is necessary for requesting the desired document.</li>
                       <li>Provide an authorization letter and ID if the claimant is an immediate family member.</li>
                       <li>Submit a Special Power of Attorney (SPA) if the claimant is someone other than an immediate
                         family member.</li>
