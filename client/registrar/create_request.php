@@ -142,16 +142,19 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
               </div>
               <h6 class="mt-5">Request Information</h6>
               <div class="form-group required col-md-12">
-                <label for="typeOfServices" class="form-label">Type of Services</label>
-                <select required name="req_student_service" class="form-control" id="req_student_service">
-                  <option value="" hidden>--Select Here--</option>
-                  <!-- connect to db -->
-                  <?php
+                <label for="req_student_service" class="form-label">Type of Services</label>
+                <div class="input-group has-validation">
+
+                  <select required name="req_student_service" class="form-control" id="req_student_service">
+                    <option value="" hidden>--Select Here--</option>
+                    <!-- connect to db -->
+                    <?php
 										while ($dropdown = mysqli_fetch_assoc($requirements)){
 												echo '<option value="' . $dropdown['services'] . '">' . $dropdown['services'] . '</option>';
 										}
 									?>
-                </select>
+                  </select>
+                </div>
                 <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
               </div>
               <div class="form-group required col-md-12">
