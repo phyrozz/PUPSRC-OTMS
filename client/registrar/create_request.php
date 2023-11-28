@@ -52,20 +52,8 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
 	<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
   <script defer>
-  function validateForm() {
-    // Check if the form is valid
-    console.log(document.getElementById("appointment-form").checkValidity());
-
-    if (document.getElementById("appointment-form").checkValidity()) {
-      // Show the modal if the form is valid
-      $('#confirmSubmitModal').modal('show');
-    } else {
-      // Trigger HTML5 form validation to display error messages
-      document.getElementById("appointment-form").reportValidity();
-    }
-  }
-
   function submitForm() {
+    validateForm();
     // Get the selected date and service
     var selectedDate = document.getElementById("date").value;
     var selectedService = document.getElementById("req_student_service").value;
@@ -158,8 +146,10 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
               </div>
               <div class="form-group required col-12">
                 <label for="contactNumber" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="contactNumber" name="contactNumber"
-                  value="<?php echo $row["contact_no"]; ?>" required>
+                <input type="text" class="form-control" name="contactNumber" id="contactNumber"
+                  value="<?php echo $row["contact_no"]; ?>" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}"
+                  placeholder="Example: 0123-456-7890" maxlength="13" disabled required>
+                <div id="contactNoValidationMessage" class="text-danger"></div>
               </div>
               <div class="form-group required col-12">
                 <label for="email" class="form-label">Email Address</label>
@@ -178,6 +168,7 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
 										}
 									?>
                 </select>
+                <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
               </div>
               <div class="form-group required col-md-12">
                 <label for="reason_request" class="form-label">Reason for Requesting Document</label>
@@ -218,11 +209,9 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
               </div>
               <div class="form-group required col-md-12">
                 <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control is-invalid" name="date" id="dateInput"
-                  min="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" required>
-                <div id="dateValidationMessage" class="text-danger">
-                </div>
-
+                <input type="date" class="form-control" name="date" id="dateInput" placeholder="Select Date..."
+                  style="cursor: pointer !important;" required data-input>
+                <div id="dateValidationMessage" class="text-danger"></div>
               </div>
               <div class="alert alert-info" role="alert">
                 <h4 class="alert-heading">
@@ -339,6 +328,174 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
       // Programmatically trigger the successModal after closing the letterModal
       $("#successModal").modal("show");
     });
+  });
+
+  const contactNoInput = document.getElementById('contactNumber');
+  const contactNoValidationMessage = document.getElementById('contactNoValidationMessage');
+  const dateValidation = document.getElementById('dateInput');
+  const dateValidationMessage = document.getElementById('dateValidationMessage');
+  const timeSelect = document.getElementById('time');
+  const timeSelectMessage = document.getElementById('timeSelectMessage');
+  const reasonSelect = document.getElementById('counseling_description');
+  const reasonSelectMessage = document.getElementById('reasonSelectMessage');
+  const reasonText = document.getElementById('reasonText');
+  const reasonValidationMessage = document.getElementById('reasonValidationMessage');
+  const servicesSelectMessage = document.getElementById('servicesSelectMessage');
+
+  function validateForm() {
+    var form = document.getElementById('appointment-form');
+    var selectFields = form.querySelectorAll('select[required]');
+    var reasonText = document.getElementById('reasonText');
+    var reasonRequest = document.getElementById('reason_request').value;
+
+    if (reasonRequest === 'Other') {
+      const pattern = /^[a-zA-Z0-9\s]+$/;
+      reasonText.setAttribute('required', 'required');
+      if (reasonText.value.trim() === '') {
+        reasonText.classList.add('is-invalid');
+      } else {
+        reasonText.classList.remove('is-invalid');
+      }
+      if (!pattern.test(reasonText.value)) {
+        reasonText.setCustomValidity('Only letters, numbers, and spaces are allowed.');
+        console.log('pattern match')
+        reasonText.classList.add('is-invalid');
+      } else {
+        reasonText.setCustomValidity('');
+        reasonText.classList.remove('is-invalid');
+      }
+    } else {
+      reasonText.removeAttribute('required');
+      reasonText.classList.remove('is-invalid');
+    }
+
+    if (dateValidation.value.trim() === '') {
+      dateValidationMessage.textContent = "Please select a date.";
+      dateValidation.classList.add('is-invalid');
+    } else {
+      dateValidationMessage.textContent = "";
+      dateValidation.classList.remove('is-invalid');
+    }
+
+    for (var i = 0; i < selectFields.length; i++) {
+      var selectField = selectFields[i];
+      if (selectField.value === "") {
+        selectField.classList.add('is-invalid');
+      } else {
+        selectField.classList.remove('is-invalid');
+      }
+    }
+
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    contactNoValidation();
+    // Check if the form is valid
+    console.log(document.getElementById("appointment-form").checkValidity());
+
+    if (document.getElementById("appointment-form").checkValidity()) {
+      // Show the modal if the form is valid
+      $('#confirmSubmitModal').modal('show');
+    } else {
+      // Trigger HTML5 form validation to display error messages
+      document.getElementById("appointment-form").reportValidity();
+    }
+  }
+
+  function contactNoValidation() {
+    const contactNo = contactNoInput.value.trim();
+    const contactNoValidPattern = /^0\d{3}-\d{3}-\d{4}$/;
+
+    // Remove any dashes from the current input value
+    const cleanedContactNo = contactNo.replace(/-/g, '');
+
+    // Format the contact number with dashes
+    let formattedContactNo = '';
+    for (let i = 0; i < cleanedContactNo.length; i++) {
+      if (i === 4 || i === 7) {
+        formattedContactNo += '-';
+      }
+      formattedContactNo += cleanedContactNo[i];
+    }
+
+    // Update the input value with the formatted contact number
+    contactNoInput.value = formattedContactNo;
+
+    if (!contactNoValidPattern.test(formattedContactNo)) {
+      if (contactNo == '') {
+        contactNoValidationMessage.textContent = 'Please enter a contact number.';
+        contactNoInput.classList.add('is-invalid');
+      } else {
+        contactNoValidationMessage.textContent = 'Invalid contact number. The format must be 0xxx-xxx-xxxx';
+        contactNoInput.classList.add('is-invalid');
+      }
+    } else {
+      contactNoValidationMessage.textContent = '';
+      contactNoInput.classList.remove('is-invalid');
+    }
+  }
+
+  function resetForm() {
+    document.getElementById("appointment-form").reset();
+  }
+
+  var selectElement = document.getElementById("req_student_service");
+  var options = selectElement.options;
+
+  // for minimizing dropdown width
+  for (var i = 0; i < options.length; i++) {
+    var option = options[i];
+    var optionText = option.text;
+
+    if (optionText.length > 60) {
+      option.text = optionText.substring(0, 60) + '...';
+    }
+  }
+
+  function validateTextArea() {
+    var reasonText = document.getElementById('reasonText');
+    var reasonRequest = document.getElementById('reason_request').value;
+
+    if (reasonRequest === 'Other') {
+      const pattern = /^[a-zA-Z0-9\s]+$/;
+      reasonText.setAttribute('required', 'required');
+      if (reasonText.value.trim() === '') {
+        reasonText.classList.add('is-invalid');
+      } else {
+        reasonText.classList.remove('is-invalid');
+      }
+      if (!pattern.test(reasonText.value)) {
+        reasonText.setCustomValidity('Only letters, numbers, and spaces are allowed.');
+        console.log('pattern match')
+        reasonText.classList.add('is-invalid');
+      } else {
+        reasonText.setCustomValidity('');
+        reasonText.classList.remove('is-invalid');
+      }
+    } else {
+      reasonText.removeAttribute('required');
+      reasonText.classList.remove('is-invalid');
+    }
+  }
+  </script>
+  <script>
+  flatpickr("#dateInput", {
+    altInput: true,
+    dateFormat: "Y-m-d",
+    theme: "custom-datepicker",
+    minDate: "today",
+    maxDate: "31.12.2033",
+    disable: [
+      function(date) {
+        // Disable date on Sundays
+        return (date.getDay() === 0);
+
+      }
+    ],
+    locale: {
+      "firstDayOfWeek": 1 // start week on Monday
+    },
   });
   </script>
   <script src="../../loading.js"></script>
