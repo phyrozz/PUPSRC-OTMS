@@ -191,7 +191,8 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
               <div class="form-group col-12 required" id="reasonTextField" style="display: none;">
                 <label for="reasonText" class="form-label">Reason</label>
                 <textarea class="form-control" name="reasonText" id="reasonText" style="resize: none;" rows="3"
-                  maxlength="2048"></textarea>
+                  maxlength="2048" pattern="[a-zA-Z0-9\s,.!]+" oninput="validateTextArea()"
+                  oninvalid="validateTextArea()"></textarea>
                 <div id="reasonValidationMessage" class="text-danger"></div>
               </div>
               <div class="form-group required col-md-12">
@@ -269,30 +270,33 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
 
     <!-- Letter format alert modal -->
     <div id="letterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="letterModalLabel"
-              aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="letterModalLabel">Important Reminder</h5>
-            </div>
-            <div class="modal-body">
-              <h5>For Claiming Documents:</h5>
-                <p>When claiming documents, please ensure the following:</p>
-                  <ul>
-                    <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>Request Letter Template</a>, which is necessary for requesting the desired document.</li>
-                    <li>Provide an authorization letter and ID if the claimant is an immediate family member.</li>
-                    <li>Submit a Special Power of Attorney (SPA) if the claimant is someone other than an immediate family member.</li>
-                  </ul>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeLetterModal">Proceed</button>
-              </div>
+      aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="letterModalLabel">Important Reminder</h5>
+          </div>
+          <div class="modal-body">
+            <h5>For Claiming Documents:</h5>
+            <p>When claiming documents, please ensure the following:</p>
+            <ul>
+              <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i
+                    class="fa-solid fa-envelope-open-text"></i>Request Letter Template</a>, which is necessary for
+                requesting the desired document.</li>
+              <li>Provide an authorization letter and ID if the claimant is an immediate family member.</li>
+              <li>Submit a Special Power of Attorney (SPA) if the claimant is someone other than an immediate family
+                member.</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeLetterModal">Proceed</button>
           </div>
         </div>
       </div>
     </div>
-    <!-- End of Letter format alert modal -->
-    <div class="push"></div>
+  </div>
+  <!-- End of Letter format alert modal -->
+  <div class="push"></div>
   </div>
   <?php include '../../footer.php'; ?>
   <script>
@@ -334,7 +338,7 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
     var reasonRequest = document.getElementById('reason_request').value;
 
     if (reasonRequest === 'Other') {
-      const pattern = /^[a-zA-Z0-9\s]+$/;
+      const pattern = /^[a-zA-Z0-9\s,.!]+$/;
       reasonText.setAttribute('required', 'required');
       if (reasonText.value.trim() === '') {
         reasonText.classList.add('is-invalid');
