@@ -447,7 +447,7 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
     var reasonRequest = document.getElementById('reason_request').value;
 
     if (reasonRequest === 'Other') {
-      const pattern = /^[a-zA-Z0-9\s]+$/;
+      const pattern = /^[a-zA-Z0-9\s,.!]+$/;
       reasonText.setAttribute('required', 'required');
       if (reasonText.value.trim() === '') {
         reasonText.classList.add('is-invalid');
