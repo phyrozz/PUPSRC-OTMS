@@ -52,23 +52,7 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
 	<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
   <script defer>
-  function submitForm() {
-    validateForm();
-    // Get the selected date and service
-    var selectedDate = document.getElementById("date").value;
-    var selectedService = document.getElementById("req_student_service").value;
-    var selectedReason = document.getElementById("reason_request").value;
-    var selectedOthers = document.getElementById("reasonText").value;
 
-    // Construct the URL with query parameters
-    var redirectURL = 'submit_request.php?date=' + encodeURIComponent(selectedDate) +
-      '&req_student_service=' + encodeURIComponent(selectedService) +
-      '&reason_request=' + encodeURIComponent(selectedReason) +
-      '&reasonText=' + encodeURIComponent(selectedOthers);
-
-    // Redirect to submit_request.php with the query parameters
-    window.location.href = redirectURL;
-  }
   </script>
 </head>
 
@@ -393,10 +377,10 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
     contactNoValidation();
     // Check if the form is valid
     console.log(document.getElementById("appointment-form").checkValidity());
-
-    if (document.getElementById("appointment-form").checkValidity()) {
-      // Show the modal if the form is valid
+    const dateValue = dateValidation.value.trim();
+    if (document.getElementById('appointment-form').checkValidity() && dateValue !== '') {
       $('#confirmSubmitModal').modal('show');
+      $('#loadingModal').modal('show');
     } else {
       // Trigger HTML5 form validation to display error messages
       document.getElementById("appointment-form").reportValidity();
@@ -477,6 +461,24 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
       reasonText.removeAttribute('required');
       reasonText.classList.remove('is-invalid');
     }
+  }
+
+  function submitForm() {
+
+    // Get the selected date and service
+    var selectedDate = document.getElementById("dateInput").value;
+    var selectedService = document.getElementById("req_student_service").value;
+    var selectedReason = document.getElementById("reason_request").value;
+    var selectedOthers = document.getElementById("reasonText").value;
+
+    // Construct the URL with query parameters
+    var redirectURL = 'submit_request.php?date=' + encodeURIComponent(selectedDate) +
+      '&req_student_service=' + encodeURIComponent(selectedService) +
+      '&reason_request=' + encodeURIComponent(selectedReason) +
+      '&reasonText=' + encodeURIComponent(selectedOthers);
+
+    // Redirect to submit_request.php with the query parameters
+    window.location.href = redirectURL;
   }
   </script>
   <script>
