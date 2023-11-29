@@ -22,7 +22,8 @@
   <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
   <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+  <link rel="stylesheet" href="../../node_modules/flatpickr/dist/flatpickr.min.css">
+  <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
@@ -236,14 +237,14 @@
               <div class="form-group col-12 required" id="reasonTextField" style="display: none;">
                 <label for="reasonText" class="form-label">Reason</label>
                 <textarea class="form-control" name="reasonText" id="reasonText" style="resize: none;" rows="3"
-                  maxlength="2048" pattern="[a-zA-Z0-9\s]+" oninput="validateTextArea()"
+                  maxlength="2048" pattern="[a-zA-Z0-9\s,.!]+" oninput="validateTextArea()"
                   oninvalid="validateTextArea()"></textarea>
                 <div id="reasonValidationMessage" class="text-danger"></div>
               </div>
               <div class="form-group required col-md-12">
                 <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control is-invalid" name="date" id="dateInput"
-                  min="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" required>
+                <input type="date" class="form-control" name="date" id="dateInput" placeholder="Select Date..."
+                  style="cursor: pointer !important;" required data-input />
                 <div id="dateValidationMessage" class="text-danger"></div>
               </div>
               <div class="alert alert-info" role="alert">
@@ -321,7 +322,9 @@
                     <h5>For Claiming Documents:</h5>
                     <p>When claiming documents, please ensure the following:</p>
                     <ul>
-                      <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>Request Letter Template</a>, which is necessary for requesting the desired document.</li>
+                      <li>Download the <a href="reg_request_letter.pdf" target="_blank" class="btn btn-primary"><i
+                            class="fa-solid fa-envelope-open-text"></i>Request Letter Template</a>, which is necessary
+                        for requesting the desired document.</li>
                       <li>Provide an authorization letter and ID if the claimant is an immediate family member.</li>
                       <li>Submit a Special Power of Attorney (SPA) if the claimant is someone other than an immediate
                         family member.</li>
@@ -375,9 +378,26 @@
   </div>
   <script src="../../jquery.js"></script>
   <script src="../../saved_settings.js"></script>
-</body>
+  <script>
+  flatpickr("#dateInput", {
+    altInput: true,
+    dateFormat: "Y-m-d",
+    theme: "custom-datepicker",
+    minDate: "today",
+    maxDate: "31.12.2033",
+    disable: [
+      function(date) {
+        // Disable date on Sundays
+        return (date.getDay() === 0);
 
-</html>
+      }
+    ],
+    locale: {
+      "firstDayOfWeek": 1 // start week on Monday
+    },
+  });
+  </script>
+</body>
 
 <script>
 const contactNoInput = document.getElementById('contactNumber');
@@ -390,31 +410,12 @@ const reasonSelect = document.getElementById('counseling_description');
 const reasonSelectMessage = document.getElementById('reasonSelectMessage');
 const reasonText = document.getElementById('reasonText');
 const reasonValidationMessage = document.getElementById('reasonValidationMessage');
-
+const servicesSelectMessage = document.getElementById('servicesSelectMessage');
 
 
 function resetForm() {
   document.getElementById("appointment-form").reset();
 }
-
-// Get the reference to the date input element
-var dateInput = document.getElementById('dateInput');
-
-// Add an event listener for the input event
-dateInput.addEventListener('input', function() {
-  var selectedDate = new Date(this.value);
-
-  // Check if the selected date is a Sunday (0 represents Sunday in JavaScript)
-  if (selectedDate.getDay() === 0) {
-    // Disable the input field
-    dateInput.value = ''; // Clear the input value if necessary
-    //dateInput.disabled = true;
-    alert('Selection of Sundays is not allowed.');
-  } else {
-    // Enable the input field if it was previously disabled
-    dateInput.disabled = false;
-  }
-});
 
 var selectElement = document.getElementById("req_student_service");
 var options = selectElement.options;
@@ -434,7 +435,7 @@ function validateTextArea() {
   var reasonRequest = document.getElementById('reason_request').value;
 
   if (reasonRequest === 'Other') {
-    const pattern = /^[a-zA-Z0-9\s]+$/;
+    const pattern = /^[a-zA-Z0-9\s,.!]+$/;
     reasonText.setAttribute('required', 'required');
     if (reasonText.value.trim() === '') {
       reasonText.classList.add('is-invalid');
@@ -500,6 +501,7 @@ function validateForm() {
   }
 
   if (form.checkValidity() === false) {
+    console.log(form.checkValidity());
     event.preventDefault();
     event.stopPropagation();
   }
@@ -570,6 +572,7 @@ $(document).ready(function() {
   });
 });
 </script>
+
 <script src="../../loading.js"></script>
 
 <?php
@@ -594,3 +597,5 @@ $(document).ready(function() {
   unset($_SESSION['letter']);
   exit();
 } ?>
+
+</html>
