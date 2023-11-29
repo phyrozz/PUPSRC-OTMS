@@ -187,7 +187,7 @@
               <div class="form-group required col-md-12 dropdown">
                 <label for="req_student_service" class="form-label">Type of Services</label>
                 <div class="input-group has-validation">
-                  <select name="req_student_service" class="form-control is-invalid" id="req_student_service" required>
+                  <select name="req_student_service" class="form-control" id="req_student_service" required>
                     <div class="col-md-6">
                       <option hidden value="">--Select--</option>
                       <!-- connect to db -->
@@ -200,8 +200,8 @@
                       ?>
                     </div>
                   </select>
+                  <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
                 </div>
-                <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
               </div>
               <div class="form-group required col-md-12">
                 <label for="reason_request" class="form-label">Reason for Requesting Document</label>

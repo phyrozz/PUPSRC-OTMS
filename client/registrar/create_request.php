@@ -104,7 +104,7 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
             <h6>Request Form</h6>
           </div>
           <div class="card-body">
-            <form id="appointment-form" method="post" enctype="multipart/form-data" class="row g-3">
+            <form id="appointment-form" method="post" enctype="multipart/form-data" class="row g-3 was-validated">
               <small>Fields highlighted in <small style="color: red"><b>*</b></small> are required.</small>
               <h6>User Information</h6>
 
@@ -144,7 +144,6 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
               <div class="form-group required col-md-12">
                 <label for="req_student_service" class="form-label">Type of Services</label>
                 <div class="input-group has-validation">
-
                   <select required name="req_student_service" class="form-control" id="req_student_service">
                     <option value="" hidden>--Select Here--</option>
                     <!-- connect to db -->
@@ -154,13 +153,13 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
 										}
 									?>
                   </select>
+				  <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
                 </div>
-                <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
               </div>
               <div class="form-group required col-md-12">
                 <label for="reason_request" class="form-label">Reason for Requesting Document</label>
                 <div class="input-group has-validation">
-                  <select class="form-control form-select" name="reason_request" id="reason_request" required>
+                  <select class="form-control form-select" name="reason_request is-invalid" id="reason_request" required>
                     <option hidden value="">--Select--</option>
                     <option value="CEAP">CEAP</option>
                     <option value="CHED-FULL SCHOLARSHIP PROGRAM">CHED-FULL SCHOLARSHIP PROGRAM</option>
