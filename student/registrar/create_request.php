@@ -200,8 +200,8 @@
                       ?>
                     </div>
                   </select>
+                  <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
                 </div>
-                <div class="invalid-feedback" id="servicesSelectMessage">Please choose an option.</div>
               </div>
               <div class="form-group required col-md-12">
                 <label for="reason_request" class="form-label">Reason for Requesting Document</label>
