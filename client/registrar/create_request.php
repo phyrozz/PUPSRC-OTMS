@@ -144,7 +144,7 @@ $requirements = mysqli_query($connection, "SELECT * FROM reg_services WHERE serv
               <div class="form-group required col-md-12">
                 <label for="req_student_service" class="form-label">Type of Services</label>
                 <div class="input-group has-validation">
-                  <select required name="req_student_service" class="form-control is-invalid" id="req_student_service">
+                  <select required name="req_student_service" class="form-control" id="req_student_service">
                     <option value="" hidden>--Select Here--</option>
                     <!-- connect to db -->
                     <?php
