@@ -372,6 +372,8 @@
                         paginationLinks.innerHTML += pageLink;
                     }
                 }
+                // Call the function to disable checkboxes initially
+                updateCheckboxStatus();
             },
             error: function() {
                 // Hide the loading indicator in case of an error
@@ -504,6 +506,25 @@
         });
     });
 
+    //Function to disable checkbox on cancelled status
+    function updateCheckboxStatus() {
+    var checkboxes = $('input[name="request-checkbox"]');
+
+        checkboxes.each(function() {
+            var row = $(this).closest('tr');
+            var statusCell = row.find('.rounded-pill');
+            var status = statusCell.text().trim().toLowerCase();
+
+            // Disable the checkbox based on specific statuses
+            if ( status === 'cancelled') 
+            {
+                $(this).prop('disabled', true);
+            } else {
+                $(this).prop('disabled', false);
+            }
+        });
+    }
+
     function filterStatus() {
         var filterByStatusVal = $('#filterByStatus').val();
 
@@ -520,6 +541,8 @@
                 return ' released';
             case '6':
                 return ' rejected';
+            case '7':
+                return ' cancelled';
             default:
                 return '';
         }
