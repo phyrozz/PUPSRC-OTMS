@@ -384,6 +384,9 @@
                         paginationLinks.innerHTML += pageLink;
                     }
                 }
+
+                // Call the function to disable checkboxes initially
+                updateCheckboxStatus();
             },
             error: function() {
                 // Hide the loading indicator in case of an error
@@ -559,8 +562,6 @@
 
     });
 
-
-
             // Checkbox change listener using event delegation
             $(document).on('change', 'input[name="request-checkbox"]', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
@@ -577,6 +578,25 @@
             }
         });
 
+
+    //Function to disable checkbox on cancelled status
+    function updateCheckboxStatus() {
+    var checkboxes = $('input[name="request-checkbox"]');
+
+        checkboxes.each(function() {
+            var row = $(this).closest('tr');
+            var statusCell = row.find('.rounded-pill');
+            var status = statusCell.text().trim().toLowerCase();
+
+            // Disable the checkbox based on specific statuses
+            if ( status === 'cancelled') 
+            {
+                $(this).prop('disabled', true);
+            } else {
+                $(this).prop('disabled', false);
+            }
+        });
+    }
 
     function filterStatus() {
             var filterByStatusVal = $('#filterByStatus').val();
@@ -598,6 +618,9 @@
                     break;
                 case '6':
                     return ' rejected';
+                    break;
+                case '7':
+                    return ' cancelled';
                     break;
                 default:
                     return '';

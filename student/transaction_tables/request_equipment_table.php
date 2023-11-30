@@ -501,11 +501,19 @@
             var status = statusCell.textContent.trim();
 
             // Disable the Edit button if the status is "Rejected"
-            if (status === 'Rejected' || status ===  'For Evaluation' || status === 'Ready for Pickup' || status === 'Released') {
-                button.disabled = true;
-            } else {
-                button.disabled = false;
-            }
+            if (
+            status === 'For Receiving' ||
+            status === 'For Evaluation' ||
+            status === 'Ready for Pickup' ||
+            status === 'Released' ||
+            status === 'Rejected' ||
+            status === 'Approved' ||
+            status === 'Cancelled'
+        ) {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+        }
         });
     }
 
