@@ -13,6 +13,7 @@
                         class="badge rounded-pill bg-dark">Pending</span> status.</p>
                     <hr />
                     <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The appointment is under review by the office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-secondary">Cancelled</span> - The user has cancelled the appointment.</small></p>
                     <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The appointment is rejected
                         by the office.</small></p>
                     <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
@@ -46,6 +47,7 @@
                                     Status
                                     <i class="sort-icon fa-solid fa-caret-down"></i>
                                 </th>
+                                <th class="text-center"></th>
                             </tr>
                         </thead>
                         <tbody id="table-body" class="pe-none">
@@ -84,6 +86,24 @@
     </div>
 </div>
 <!-- End of view comment modal -->
+<!-- View confirm cancel modal -->
+<div id="confirmCancelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmCancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmCancelModalLabel">Confirm cancellation</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this appointment? This action is irreversible.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button id="cancel-request-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of confirm cancel modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -130,7 +150,7 @@
                 var statusCell = row.querySelector('.counseling-status-cell');
                 var status = statusCell.textContent.trim();
                 
-                return status === 'Pending' || status === 'Rejected';
+                return status === 'Pending' || status === 'Rejected' || status === 'Cancelled';
             });
 
             deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
@@ -213,12 +233,16 @@
                             + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill counseling-status-cell ' + getStatusBadgeClass(schedules.status_name) + '">' + schedules.status_name + '</span>' +
-                            '</td>' +
-                            '</tr>';
+                            '</td><td>';
+
+                        if (schedules.status_name !== "Cancelled") {
+                            row += '<button class="ms-2 btn btn-primary btn-sm pe-auto cancel-request" data-counseling-id="' + schedules.counseling_id + '" >Cancel <i class="fa-solid fa-xmark"></i></button>'
+                        }
+                        row += '</td></tr>';
                         tableBody.innerHTML += row;
                     }
                 } else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 
@@ -237,6 +261,8 @@
 
                 // Add event listeners for delete buttons
                 addDeleteButtonListeners();
+                // Checks for request status and hides cancelled button
+                updateCancelButtonStatus();
             }
         });
     }
@@ -265,6 +291,72 @@
             handlePagination(1, '', column, order);
         });
     });
+
+    // Function for confirm cancellation modal
+    function confirmCancellationModal(counselingId) {
+        $("#confirmCancelModal").modal("show");
+        var confirmCancelButton = document.getElementById('cancel-request-btn');
+
+        confirmCancelButton.addEventListener('click', function() {
+            cancelRequest(counselingId);
+        });
+    }
+
+    // Click event listener for the cancel button
+    document.addEventListener('click', function(event) {
+        // Cancel button
+        if (event.target.classList.contains('cancel-request')) {
+            var counselingId = event.target.getAttribute('data-counseling-id');
+            confirmCancellationModal(counselingId);
+        }
+    });
+
+    // Function for Cancel button
+    function cancelRequest(counselingId) {
+    // Make an AJAX request to cancel the equipment request
+        $.ajax({
+            url: 'transaction_tables/cancel_counseling.php',
+            method: 'POST',
+            data: { counseling_id: counselingId },
+            success: function(response) {
+                console.log(counselingId);
+                console.log('Request canceled successfully');
+
+
+
+                handlePagination(1, '', 'request_id', 'desc');
+            },
+            error: function(error) {
+                console.error('Error canceling appointment:', error.responseText);
+            }
+        });
+    }
+
+    // Disables Cancel Button for certain statuses
+    function updateCancelButtonStatus() {
+        var cancelButtons = document.querySelectorAll('.cancel-request');
+
+        cancelButtons.forEach(function (button) {
+            var row = button.closest('tr');
+            var statusCell = row.querySelector('.counseling-status-cell');
+            var status = statusCell.textContent.trim();
+
+            // Disable the Cancel button based on specific statuses
+            if (
+                status === 'For Receiving' ||
+                status === 'For Evaluation' ||
+                status === 'Ready for Pickup' ||
+                status === 'Released' ||
+                status === 'Rejected' ||
+                status === 'Approved' ||
+                status === 'Cancelled'
+            ) {
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+            }
+        });
+    }
 
     // Initial pagination request (page 1)
     handlePagination(1, '', 'request_id', 'desc');

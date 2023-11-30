@@ -55,7 +55,7 @@
                 <i class="fa fa-user-shield mr-2"></i> Admin
             </a>
         </div>
-        <small class="text-light fw-light position-absolute bottom-0 start-0 mb-2">PUPSRC-OTMS Beta 0.5.1</small>
+        <small class="text-light fw-light position-absolute bottom-0 start-0 mb-2">PUPSRC-OTMS Beta 0.5.2</small>
     </div>
 
     <!-- <div class="vh-100 d-flex align-items-center">

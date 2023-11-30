@@ -14,6 +14,7 @@
                     <hr />
                     <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
                         the deficiency/ies to necessary office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-secondary">Cancelled</span> - The user has cancelled the request.</small></p>
                     <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
                         by the admin.</small></p>
                     <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
@@ -116,6 +117,24 @@
     </div>
 </div>
 <!-- End of Reason Modal -->
+<!-- View confirm cancel modal -->
+<div id="confirmCancelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmCancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmCancelModalLabel">Confirm cancellation</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this request? This action is irreversible.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button id="cancel-request-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of confirm cancel modal -->
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 <script>
     function getStatusBadgeClass(status) {
@@ -164,7 +183,7 @@
                 var statusCell = row.querySelector('.doc-request-status-cell');
                 var status = statusCell.textContent.trim();
                 
-                return status === 'Pending' || status === 'Rejected';
+                return status === 'Pending' || status === 'Rejected' || status === 'Cancelled';
             });
 
             deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
@@ -394,12 +413,12 @@
     // Function to populate the reason modal with the reason data
     function populateReasonModal(requestId) {
         $.ajax({
-            url: 'transaction_tables/get_registrar_reason_rejected.php', // Replace with the actual URL to fetch reason from the database
+            url: 'transaction_tables/get_registrar_reason_rejected.php',
             method: 'POST',
             data: { request_id: requestId },
             success: function(response) {
-                var reasonData = JSON.parse(response); // Parse the JSON response
-                var reason = reasonData.request_letter; // Extract the reason text
+                var reasonData = JSON.parse(response);
+                var reason = reasonData.request_letter;
                 
                 var modalTitle = document.getElementById('reasonModalLabel');
                 var modalBody = document.querySelector('#reasonModal .modal-body');
@@ -420,6 +439,16 @@
         });
     }
     //------------------------------------------------------------------------
+
+    // Function for confirm cancellation modal
+    function confirmCancellationModal(requestId) {
+        $("#confirmCancelModal").modal("show");
+        var confirmCancelButton = document.getElementById('cancel-request-btn');
+
+        confirmCancelButton.addEventListener('click', function() {
+            cancelRequest(requestId);
+        });
+    }
 
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
         // Show the loading indicator
@@ -472,12 +501,15 @@
                         else if (request.status_name === "Rejected") {
                             row += '<a href="#" class="btn btn-primary btn-sm view-reason pe-auto" data-status="' + request.status_name + '" data-request-id="' + request.request_id + '" data-office="' + request.office_name + '">Reason <i class="fa-solid fa-eye"></i></a>'
                         }
-                             
+
+                        if (request.status_name !== "Cancelled") {
+                            row += '<button class="ms-2 btn btn-primary btn-sm pe-auto cancel-request" data-request-id="' + request.request_id + '" >Cancel <i class="fa-solid fa-xmark"></i></button>'
+                        }
                         row += '</td></tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
-                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="8">No Transactions</td></tr>';
+                    var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="10">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
 
@@ -496,6 +528,8 @@
 
                 // Add event listeners for delete buttons
                 addDeleteButtonListeners();
+                // Checks for request status and hides cancelled button
+                updateCancelButtonStatus();
             },
             error: function() {
                 // Hide the loading indicator in case of an error
@@ -531,6 +565,59 @@
             handlePagination(1, '', column, order);
         });
     });
+
+    // Click event listener for the cancel button
+    document.addEventListener('click', function(event) {
+        // Cancel button
+        if (event.target.classList.contains('cancel-request')) {
+            var requestId = event.target.getAttribute('data-request-id');
+            confirmCancellationModal(requestId);
+        }
+    });
+
+    // Function for Cancel button
+    function cancelRequest(requestId) {
+    // Make an AJAX request to cancel the equipment request
+        $.ajax({
+            url: 'transaction_tables/cancel_doc_request.php',
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function(response) {
+                console.log('Request canceled successfully');
+
+                handlePagination(1, '', 'request_id', 'desc');
+            },
+            error: function(error) {
+                console.error('Error canceling request:', error.responseText);
+            }
+        });
+    }
+
+    // Disables Cancel Button for certain statuses
+    function updateCancelButtonStatus() {
+        var cancelButtons = document.querySelectorAll('.cancel-request');
+
+        cancelButtons.forEach(function (button) {
+            var row = button.closest('tr');
+            var statusCell = row.querySelector('.doc-request-status-cell');
+            var status = statusCell.textContent.trim();
+
+            // Disable the Cancel button based on specific statuses
+            if (
+                status === 'For Receiving' ||
+                status === 'For Evaluation' ||
+                status === 'Ready for Pickup' ||
+                status === 'Released' ||
+                status === 'Rejected' ||
+                status === 'Approved' ||
+                status === 'Cancelled'
+            ) {
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+            }
+        });
+    }
 
     // Initial pagination request (page 1)
     handlePagination(1, '', 'request_id', 'desc');
