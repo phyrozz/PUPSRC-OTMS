@@ -75,6 +75,13 @@
                 <button type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load
                   Table</button>
               </form>
+              <button type="button" class="btn btn-secondary" onclick="cancelButtonClick()">Cancel</button>
+              <script>
+                function cancelButtonClick() {
+                      href = "academic.php"; 
+                     }
+                        </script>
+
             </div>
             <div class="d-flex justify-content-end p-2">
               <div class="input-group d-flex justify-content-end">
