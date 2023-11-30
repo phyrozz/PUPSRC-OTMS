@@ -36,7 +36,8 @@ CREATE TABLE `appointment_facility` (
   `email` varchar(50) DEFAULT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL,
-  `orgs` varchar(100) DEFAULT NULL
+  `orgs` varchar(100) DEFAULT NULL,
+  `admin_reason` varchar(255) DEFAULT NULL
 );
 
 --
