@@ -39,8 +39,7 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center"></th>
-                <th class="text-center"></th>
+                <th class="text-center" class="pe-none"></th>
                 <!-- <th class="text-center doc-request-status-header" scope="col">
                     Generate Slip
                 </th> -->
@@ -104,6 +103,23 @@
     </div>
 </div>
 <!-- End of view edit modal -->
+<!-- Reason Modal -->
+<div id="reasonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reasonModalLabel">Reason for Rejection</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Reason content will be populated here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Reason Modal -->
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 
 <script>
@@ -565,6 +581,46 @@
         });
     }
 
+    // Event listener for view reason buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('view-reason')) {
+            var requestId = event.target.getAttribute('data-request-id');
+            populateReasonModal(requestId);
+        }
+    });
+
+
+    // Function to populate the reason modal with the reason data
+    function populateReasonModal(requestId) {
+        $.ajax({
+            url: 'transaction_tables/get_administrative_reason_facility.php', // Replace with the actual URL to fetch reason from the database
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function(response) {
+                var reasonData = JSON.parse(response); // Parse the JSON response
+                var reason = reasonData.admin_reason; // Extract the reason text
+                console.log(reason);
+                console.log('Reason Shows successfully');
+                
+                var modalTitle = document.getElementById('reasonModalLabel');
+                var modalBody = document.querySelector('#reasonModal .modal-body');
+
+                modalTitle.innerText = 'Reason for Rejection';
+
+                if (reason !== null) {
+                    modalBody.innerHTML = '<p>' + reason + '</p>';
+                } else {
+                    modalBody.innerHTML = '<p>No reason provided yet.</p>';
+                }
+
+                $("#reasonModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching reason.');
+            }
+        });
+    }
+
     // Function to update the request using AJAX
     function updateRequest(editId) {
         var form = document.getElementById('editForm');
@@ -651,10 +707,27 @@
                             // scheduleButton +
                             // '</td>' +
                             '<td class="text-center">' +
-                            '<span class="badge rounded-pill appointment-facility-status-cell ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
+                            '<span class="badge rounded-pill request-equipment-status-cell ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
                             '</td>' +
-                            '<td><button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + appointmentFacility.appointment_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></button></td>' +
-                            '<td><button href="#" class="btn btn-primary btn-sm cancel-request" data-request-id="' + appointmentFacility.appointment_id + '">Cancel <i class="fa-solid fa-pen-to-square"></i></button></td>' +
+                            '<td class="text-center">';
+
+                            if (appointmentFacility.status_name === "Pending") {
+                                row += '<div class="btn-container" style="display: flex;">';
+                                
+                                // Edit Button
+                                row += '<div style="flex: 1;">';
+                                row += '<button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + appointmentFacility.appointment_id + '"><i class="fa-solid fa-pen-to-square"></i> Edit </button>';
+                                row += '</div>';
+                                
+                                // Cancel Button
+                                row += '<div style="flex: 1; margin-left: 5px;">';
+                                row += '<button class="btn btn-primary btn-sm cancel-request" data-request-id="' + appointmentFacility.appointment_id + '"><i class="fa-solid fa-pen-to-square"></i> Cancel </button>';
+                                row += '</div>';
+                                
+                                row += '</div>';
+                            } else if(appointmentFacility.status_name === "Rejected") {
+                                row += '<a href="#" class="btn btn-primary btn-sm view-reason pe-auto" data-status="' + appointmentFacility.status_name + '" data-request-id="' +  appointmentFacility.appointment_id + '"><i class="fa-solid fa-eye"></i> Reason </a>';
+                            }
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
