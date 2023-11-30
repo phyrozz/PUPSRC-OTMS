@@ -149,6 +149,8 @@
                 return 'bg-primary';
             case 'Ready for Pickup':
                 return 'bg-info';
+            case 'Cancelled':
+                return 'bg-secondary';
             default:
                 return 'bg-dark';
         }

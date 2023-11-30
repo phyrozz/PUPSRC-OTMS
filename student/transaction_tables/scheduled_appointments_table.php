@@ -113,6 +113,8 @@
                 return 'bg-danger';
             case 'For Evaluation':
                 return 'bg-primary';
+            case 'Cancelled':
+                return 'bg-secondary';
             default:
                 return 'bg-dark';
         }
