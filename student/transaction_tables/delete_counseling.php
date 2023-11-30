@@ -24,8 +24,8 @@ while ($row = $result->fetch_assoc()) {
     $statuses[] = $row['status_id'];
 }
 
-// Check if all the statuses are either "Pending" or "Rejected"
-if (array_diff($statuses, [1, 6]) === []) {
+// Check if all the statuses are either "Pending", "Rejected", or "Cancelled"
+if (array_diff($statuses, [1, 6, 8]) === []) {
     // Prepare and execute the SQL query to delete the document requests
     $placeholders = implode(',', array_fill(0, count($appointmentIds), '?'));
     $sql = "DELETE counseling_schedules, doc_requests

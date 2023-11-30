@@ -27,8 +27,7 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center"></th>
-                <th class="text-center"></th>
+                <th class="text-center" class="pe-none"></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -89,6 +88,23 @@
     </div>
 </div>
 <!-- End of view edit modal -->
+<!-- Reason Modal -->
+<div id="reasonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reasonModalLabel">Reason for Rejection</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Reason content will be populated here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Reason Modal -->
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 
 
@@ -328,6 +344,46 @@
         });
     }
 
+    // Event listener for view reason buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('view-reason')) {
+            var requestId = event.target.getAttribute('data-request-id');
+            populateReasonModal(requestId);
+        }
+    });
+
+
+    // Function to populate the reason modal with the reason data
+    function populateReasonModal(requestId) {
+        $.ajax({
+            url: 'transaction_tables/get_administrative_reason_equip.php', // Replace with the actual URL to fetch reason from the database
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function(response) {
+                var reasonData = JSON.parse(response); // Parse the JSON response
+                var reason = reasonData.admin_reason; // Extract the reason text
+                console.log(reason);
+                console.log('Reason Shows successfully');
+                
+                var modalTitle = document.getElementById('reasonModalLabel');
+                var modalBody = document.querySelector('#reasonModal .modal-body');
+
+                modalTitle.innerText = 'Reason for Rejection';
+
+                if (reason !== null) {
+                    modalBody.innerHTML = '<p>' + reason + '</p>';
+                } else {
+                    modalBody.innerHTML = '<p>No reason provided yet.</p>';
+                }
+
+                $("#reasonModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching reason.');
+            }
+        });
+    }
+
 
 
     function handlePagination(page, searchTerm = '', column = 'request_id', order = 'desc') {
@@ -383,8 +439,28 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill request-equipment-status-cell ' + getStatusBadgeClass(requestEquipment.status_name) + '">' + requestEquipment.status_name + '</span>' +
                             '</td>' +
-                            '<td><button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + requestEquipment.request_id + '" >Edit <i class="fa-solid fa-pen-to-square"></i></button></td>' + 
-                            '<td><button class="btn btn-primary btn-sm cancel-request" data-request-id="' + requestEquipment.request_id + '" >Cancel <i class="fa-solid fa-pen-to-square"></i></button></td>' +                            '</tr>';
+                            '<td class="text-center">';
+
+                            if (requestEquipment.status_name === "Pending") {
+                                row += '<div class="btn-container" style="display: flex;">';
+                                
+                                // Edit Button
+                                row += '<div style="flex: 1;">';
+                                row += '<button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + requestEquipment.request_id + '"><i class="fa-solid fa-pen-to-square"></i> Edit </button>';
+                                row += '</div>';
+                                
+                                // Cancel Button
+                                row += '<div style="flex: 1; margin-left: 5px;">';
+                                row += '<button class="btn btn-primary btn-sm cancel-request" data-request-id="' + requestEquipment.request_id + '"><i class="fa-solid fa-pen-to-square"></i> Cancel </button>';
+                                row += '</div>';
+                                
+                                row += '</div>';
+                            } else if(requestEquipment.status_name === "Rejected") {
+                                row += '<a href="#" class="btn btn-primary btn-sm view-reason pe-auto" data-status="' + requestEquipment.status_name + '" data-request-id="' +  requestEquipment.request_id + '"><i class="fa-solid fa-eye"></i> Reason </a>';
+                            }
+
+                            
+                            '</tr>';
                         tableBody.innerHTML += row;
                     }
                 }  else {
@@ -408,8 +484,8 @@
                 // Add event listeners for edit buttons
                 updateEditButtonStatus();
 
-                //Checks for request status and hides cancelled button
-                updateCancelButtonStatus();
+                // //Checks for request status and hides cancelled button
+                // updateCancelButtonStatus();
 
 
             }
@@ -447,6 +523,10 @@
             populateEditModal(editId);
         }
     });
+
+    
+
+    
 
     // Function to toggle the sort icons
     function toggleSortIcons(header) {
@@ -502,31 +582,31 @@
         });
     }
 
-    //Disables Cancel Button for certain statuses
-    function updateCancelButtonStatus() {
-    var cancelButtons = document.querySelectorAll('.cancel-request');
+    // //Disables Cancel Button for certain statuses
+    // function updateCancelButtonStatus() {
+    // var cancelButtons = document.querySelectorAll('.cancel-request');
 
-    cancelButtons.forEach(function (button) {
-        var row = button.closest('tr');
-        var statusCell = row.querySelector('.request-equipment-status-cell');
-        var status = statusCell.textContent.trim();
+    // cancelButtons.forEach(function (button) {
+    //     var row = button.closest('tr');
+    //     var statusCell = row.querySelector('.request-equipment-status-cell');
+    //     var status = statusCell.textContent.trim();
 
-        // Disable the Cancel button based on specific statuses
-        if (
-            status === 'For Receiving' ||
-            status === 'For Evaluation' ||
-            status === 'Ready for Pickup' ||
-            status === 'Released' ||
-            status === 'Rejected' ||
-            status === 'Approved' ||
-            status === 'Cancelled'
-        ) {
-            button.disabled = true;
-        } else {
-            button.disabled = false;
-        }
-    });
-    }
+    //     // Disable the Cancel button based on specific statuses
+    //     if (
+    //         status === 'For Receiving' ||
+    //         status === 'For Evaluation' ||
+    //         status === 'Ready for Pickup' ||
+    //         status === 'Released' ||
+    //         status === 'Rejected' ||
+    //         status === 'Approved' ||
+    //         status === 'Cancelled'
+    //     ) {
+    //         button.disabled = true;
+    //     } else {
+    //         button.disabled = false;
+    //     }
+    // });
+    // }
 
 
 
@@ -540,4 +620,5 @@
             handlePagination(1, searchTerm, 'request_id', 'desc');
         });
     });
+    
 </script>

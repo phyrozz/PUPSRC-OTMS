@@ -97,6 +97,7 @@ $statuses = array(
             <div class="modal-body">
                 <div id="reminder-container" class="alert alert-info mt-3" role="alert">
                     <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The appointment is under review by the office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-secondary">Cancelled</span> - The user has cancelled the request. No further actions must be taken.</small></p>
                     <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The appointment is rejected
                         by the office.</small></p>
                     <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
@@ -123,6 +124,8 @@ $statuses = array(
                 return 'bg-danger';
             case 'For Evaluation':
                 return 'bg-primary';
+            case 'Cancelled':
+                return 'bg-secondary';
             default:
                 return 'bg-dark';
         }

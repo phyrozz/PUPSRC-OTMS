@@ -23,91 +23,94 @@
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
 </head>
 <body>
-<?php
+  <?php
     $office_name = "Accounting Office";
     include '../../breadcrumb.php';
     include '../navbar.php';
     include '../../conn.php';
 
-    if (isset($_POST['submit'])) {
-        // Retrieve form data
-        $course = $_POST['course'];
-        $documentType = $_POST['documentType'];
-        $firstName = $_POST['firstName'];
-        $middleName = $_POST['middleName'];
-        $lastName = $_POST['lastName'];
-        $studentNumber = $_POST['studentNumber'];
-        //$amount = $_POST['amount'];
-        //$referenceNumber = $_POST['referenceNumber'];
-        $userId = $_SESSION['user_id'];
+    // Fetch courses from the database
+    $query = "SELECT course_id, course FROM courses";
+    $result = mysqli_query($connection, $query);
 
-        // Insert the data into the database
-        $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber) 
-                VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber')";
-
-        if ($connection->query($sql) === TRUE) {
-            // Get the last inserted ID
-            $lastInsertedId = $connection->insert_id;
-        
-            $_SESSION['payment_id'] = $lastInsertedId;
-            // header does not work due to conflicts with the navbar.php
-            // header("Location: payment2.php");
-            echo '<script>window.location.href = "payment2.php";</script>';
-            exit();
-        } else {
-            echo "Error inserting data: " . $connection->error;
-        }
-
-        // Handle file upload
-        /*if (isset($_FILES['receiptImage'])) {
-            $file = $_FILES['receiptImage'];
-            $fileName = $file['name'];
-            $fileTmpName = $file['tmp_name'];
-            $fileSize = $file['size'];
-            $fileError = $file['error'];
-            $fileType = $file['type'];
-
-            // Check if the file is uploaded successfully
-            if ($fileError === UPLOAD_ERR_OK) {
-                // Insert the data into the database
-                $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber, amount, referenceNumber) 
-                        VALUES ('$userId', '$course', '$documentType', '$firstName', '$middleName', '$lastName', '$studentNumber', '$amount', '$referenceNumber')";
-
-                if ($connection->query($sql) === TRUE) {
-                    // Get the last inserted ID
-                    $lastInsertedId = $connection->insert_id;
-
-                    // Generate a new filename using the last inserted ID, firstName, and lastName
-                    $imageFileName = "payment_" . $lastInsertedId . "_" . $firstName . '_' . $lastName . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
-
-                    // Move the uploaded image to the desired directory with the new filename
-                    $targetPath = 'uploads/' . $imageFileName;
-                    if (move_uploaded_file($fileTmpName, $targetPath)) {
-                        // Update the image URL in the database
-                        $updateSql = "UPDATE student_info SET image_url = '$targetPath' WHERE payment_id = '$lastInsertedId'";
-                        if ($connection->query($updateSql) === TRUE) {
-                            $_SESSION['payment_id'] = $lastInsertedId;
-                            header("Location: payment2.php");
-                            exit();
-                        } else {
-                            echo "Error updating image URL: " . $connection->error;
-                        }
-                    } else {
-                        echo "Error moving uploaded file.";
-                    }
-                } else {
-                    echo "Error inserting data: " . $connection->error;
-                }
-            } else {
-                echo "Error uploading file. Error code: " . $fileError;
-            }
-        } else {
-            echo "No file uploaded.";
-        } */
-
-        $connection->close();
+    // Check for query success
+    if ($result) {
+        $courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        echo "Error fetching courses: " . mysqli_error($connection);
     }
-    ?>
+
+
+    // Fetch document types from the database
+    $query = "SELECT doc_id, document FROM document_types";
+    $result = mysqli_query($connection, $query);
+
+    // Check for query success
+    if ($result) {
+        $documentTypes = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        echo "Error fetching document types: " . mysqli_error($connection);
+    }
+
+
+    if (isset($_POST['submit'])) {
+      // Retrieve form data
+      $firstName = $_POST['firstName'];
+      $middleName = $_POST['middleName'];
+      $lastName = $_POST['lastName'];
+      $studentNumber = $_POST['studentNumber'];
+      $userId = $_SESSION['user_id'];
+  
+      // Fetch user details including course information
+      $userDetailsQuery = "SELECT ud.course_id, c.course
+                          FROM user_details ud
+                          JOIN courses c ON ud.course_id = c.course_id
+                          WHERE ud.user_id = '$userId'";
+      $userDetailsResult = mysqli_query($connection, $userDetailsQuery);
+  
+      if ($userDetailsResult && mysqli_num_rows($userDetailsResult) > 0) {
+          $userDetailsFetch = mysqli_fetch_assoc($userDetailsResult);
+          $course = $userDetailsFetch['course'];
+  
+          // Retrieve selected document types and fetch document names
+          $selectedDocumentTypes = isset($_POST['selectedDocumentTypes']) ? $_POST['selectedDocumentTypes'] : [];
+          $documentType = [];
+  
+          foreach ($selectedDocumentTypes as $docId) {
+              $documentNameQuery = "SELECT document FROM document_types WHERE doc_id = '$docId'";
+              $documentNameResult = mysqli_query($connection, $documentNameQuery);
+  
+              if ($documentNameResult && mysqli_num_rows($documentNameResult) > 0) {
+                  $documentNameFetch = mysqli_fetch_assoc($documentNameResult);
+                  $documentType[] = $documentNameFetch['document'];
+              } else {
+                  // Handle error if needed
+              }
+          }
+  
+          $documentTypeString = implode(', ', $documentType);
+  
+          // Insert the data into the database
+          $sql = "INSERT INTO student_info (user_id, course, documentType, firstName, middleName, lastName, studentNumber) 
+                  VALUES ('$userId', '$course', '$documentTypeString', '$firstName', '$middleName', '$lastName', '$studentNumber')";
+  
+          if ($connection->query($sql) === TRUE) {
+              // Get the last inserted ID
+              $lastInsertedId = $connection->insert_id;
+  
+              $_SESSION['payment_id'] = $lastInsertedId;
+              echo '<script>window.location.href = "payment2.php";</script>';
+              exit();
+          } else {
+              echo "Error inserting data: " . $connection->error;
+          }
+      } else {
+          echo "Error fetching user details: " . mysqli_error($connection);
+      }
+  
+      $connection->close();
+    }
+  ?>
     <div class="container-fluid p-4">
         <?php
         $breadcrumbItems = [
@@ -120,12 +123,15 @@
     </div>
     
     <div class="fetch-data">
-        <?php
+    <?php
         $user_id = $_SESSION["user_id"];
-                    $select = mysqli_query($connection, "SELECT * FROM users WHERE user_id = '$user_id'") or die ('query failed');
-                    if(mysqli_num_rows($select) > 0){
-                        $fetch = mysqli_fetch_assoc($select);
-                    }
+        $select = mysqli_query($connection, "SELECT users.*, user_details.course_id FROM users
+                                              LEFT JOIN user_details ON users.user_id = user_details.user_id
+                                              WHERE users.user_id = '$user_id'") or die ('query failed');
+
+        if (mysqli_num_rows($select) > 0) {
+            $fetch = mysqli_fetch_assoc($select);
+        }
         ?>
     </div>
 
@@ -138,89 +144,91 @@
 <div class="qr-container">
   <form action="" id="" method="post" class="row g-3 needs-validation" autocomplete="off" enctype="multipart/form-data" onsubmit="validateForm(event)">
     <div class="col-12 col-md-6">
-      
       <h4>1. Select Options</h4>
       <h4>2. Confirm Details</h4>
       <h4>3. Submit and Save a Copy of Payment Voucher</h4>
       <p style="color: red;">Note: Ensure all information are correct before submitting</p>
-
-      <!-- <div class="box">
-        <div class="upload-container">
-          <label for="receiptImage" class="form-label">Upload Receipt Here</label>
-          <input type="file" class="form-control upload-button" id="receiptImage" name="receiptImage" accept="image/*" required>
-          <div class="invalid-feedback">
-            Please upload a valid image file.
-          </div>
-        </div>
-      </div> -->
-    </div> 
-
-    <!-- <div class="col-12 col-md-6 qr-text">
-      <div class="qr-details">
-        <p>GCash_Receiver_Name</p>
-        <p>012-345-6789</p>
-      </div>
-      <img src="images/qr.png" alt="QR Code" class="qr-image">
-    </div> -->
-
+    </div>
 
     <div class="col-12 ">
       <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="course" class="form-label">Course <code>*</code></label>
-            <select class="form-select" id="" name="course" required>
-              <option value="" disabled selected hidden>Select Course</option>
-              <option value="Bachelor of Science in Electronics Engineering">Bachelor of Science in Electronics Engineering</option>
-              <option value="Bachelor of Science in Business Administration Major in Human Resource Management">Bachelor of Science in Business Administration Major in Human Resource Management</option>
-              <option value="Bachelor of Science in Business Administration Major in Marketing Management">Bachelor of Science in Business Administration Major in Marketing Management</option>
-              <option value="Bachelor in Secondary Education Major in English">Bachelor in Secondary Education Major in English</option>
-              <option value="Bachelor in Secondary Education Major in Filipino">Bachelor in Secondary Education Major in Filipino</option>
-              <option value="Bachelor in Secondary Education Major in Mathematics">Bachelor in Secondary Education Major in Mathematics</option>
-              <option value="Bachelor of Science in Industrial Engineering">Bachelor of Science in Industrial Engineering</option>
-              <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
-              <option value="Bachelor of Science in Psychology">Bachelor of Science in Psychology</option>
-              <option value="Bachelor in Technology And Livelihood Education Major in Home Economics">Bachelor in Technology And Livelihood Education Major in Home Economics</option>
-              <option value="Bachelor of Science in Management Accounting">Bachelor of Science in Management Accounting</option>
-              <!-- Add more options as needed -->
-            </select>
-            <div class="invalid-feedback">
-              Please select a course.
-            </div>
+        <div class="col-12 col-md-6">
+          <div class="form-groups">
+              <label for="course" class="form-label">Course <code>*</code></label>
+              <?php
+              // Assuming you've fetched the user_id in a previous query
+              $user_id = $_SESSION["user_id"];
+
+              // Fetch course_id from user_details
+              $courseQuery = "SELECT course_id FROM user_details WHERE user_id = '$user_id'";
+              $courseResult = mysqli_query($connection, $courseQuery);
+
+              if ($courseResult && mysqli_num_rows($courseResult) > 0) {
+                  $courseFetch = mysqli_fetch_assoc($courseResult);
+                  $course_id = $courseFetch['course_id'];
+
+                  // Fetch course name based on course_id
+                  $courseNameQuery = "SELECT course FROM courses WHERE course_id = '$course_id'";
+                  $courseNameResult = mysqli_query($connection, $courseNameQuery);
+
+                  if ($courseNameResult && mysqli_num_rows($courseNameResult) > 0) {
+                      $courseFetch = mysqli_fetch_assoc($courseNameResult);
+                      $course_name = $courseFetch['course'];
+                  } else {
+                      $course_name = '';
+                  }
+              } else {
+                  $course_id = '';
+                  $course_name = '';
+              }
+              ?>
+              <input type="text" class="form-control" id="course" name="course" value="<?php echo $course_name; ?>" readonly style="background-color: #e9ecef">
+              <div class="invalid-feedback">
+                  Please provide a valid course.
+              </div>
           </div>
         </div>
+
       
         <div class="col-md-6">
           <div class="form-group">
-            <label for="documentType" class="form-label">Document Type <code>*</code></label>
-            <select class="form-select" id="" name="documentType" required>
-              <option value="" disabled selected hidden>Select Document Type</option>
-              <option value="Application for Graduation SIS and Non-SIS">Application for Graduation SIS and Non-SIS</option>
-              <option value="Correction of Entry of Grade">Correction of Entry of Grade</option>
-              <option value="Completion of Incomplete Grade">Completion of Incomplete Grade</option>
-              <option value="Late Reporting of Grade">Late Reporting of Grade</option>
-              <option value="Processing of Request for Correction of Name: PSA/School Records">Processing of Request for Correction of Name: PSA/School Records</option>
-              <option value="Certification, Verification, Authentication (CAV/Apostile)">Certification, Verification, Authentication (CAV/Apostile)</option>
-              <option value="Certificate of Attendance">Certificate of Attendance</option>
-              <option value="Certificate of Graduation">Certificate of Graduation</option>
-              <option value="Certificate of Medium of Instruction">Certificate of Medium of Instruction</option>
-              <option value="Certificate of General Weighted Average (GWA)">Certificate of General Weighted Average (GWA)</option>
-              <option value="Non Issuance of Special Order">Non Issuance of Special Order </option>
-              <option value="Course/Subject Description">Course/Subject Description</option>
-              <option value="Certificate of Transfer Credential/Honorable Dismissal">Certificate of Transfer Credential/Honorable Dismissal</option>
-              <option value="Transcript of Records (Second and succeeding copies)">Transcript of Records (Second and succeeding copies)</option>
-              <option value="Transcript of Records (Copy for Another School)">Transcript of Records (Copy for Another School)</option>
-              <option value="Course Accreditation Service (for Transferees)">Course Accreditation Service (for Transferees)</option>
-              <option value="Informative Copy of Grades">Informative Copy of Grades</option>
-              <option value="Certified True Copy">Certified True Copy</option>
-              <option value="Academic Verification Service">Academic Verification Service</option>
-              <!-- Add more options as needed -->
-            </select>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#documentTypeModal">
+              Select Document Type
+            </button>
             <div class="invalid-feedback">
               Please select a document type.
             </div>
           </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="documentTypeModal" tabindex="-1" aria-labelledby="documentTypeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="documentTypeModalLabel">Select Document Types</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <!-- Document type checkboxes -->
+                <?php
+                foreach ($documentTypes as $docType) {
+                  echo '<div class="form-check">';
+                  echo '<input class="form-check-input" type="checkbox" name="selectedDocumentTypes[]" value="' . $docType['doc_id'] . '">';
+                  echo '<label class="form-check-label">' . $docType['document'] . '</label>';
+                  echo '</div>';
+                }
+                ?>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="selectDocumentTypes">Select</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
       </div>
     </div>   
 
@@ -263,27 +271,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="col-12 col-md-6">
-      <div class="form-groups">
-        <label for="amount" class="form-label">Amount <code>*</code></label>
-        <input type="text" class="form-control" id="amount" name="amount" value="" required oninput="validateAmount(this)">
-        <div class="invalid-feedback">
-          Please provide a valid amount.
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <div class="col-12 col-md-6">
-      <div class="form-groups">
-        <label for="referenceNumber" class="form-label">Reference Number <code>*</code></label>
-        <input type="text" class="form-control" id="referenceNumber" name="referenceNumber" value="" required oninput="validateReferenceNumber(this)" maxlength="20" >
-        <div class="invalid-feedback">
-          Please provide the reference number.
-        </div>
-      </div>
-    </div> -->
-
     
     <div class="d-flex justify-content-between">
         <a class="btn btn-primary back-button" href="../accounting.php">Back</a>
@@ -300,6 +287,58 @@
 
 
 <script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    var selectedDocumentTypes = [];
+
+    // Handle the modal close event
+    $('#documentTypeModal').on('hidden.bs.modal', function () {
+      // Update the button text with selected document types
+      var buttonText = 'Select Document Type';
+      if (selectedDocumentTypes.length > 0) {
+        buttonText += ' (' + selectedDocumentTypes.length + ' selected)';
+      }
+      $('#documentTypeButton').text(buttonText);
+    });
+
+    // Handle the select button click event
+    $('#selectDocumentTypes').on('click', function () {
+      // Get the selected document types
+      selectedDocumentTypes = $('input[name="selectedDocumentTypes[]"]:checked').map(function () {
+        return this.value;
+      }).get();
+
+      // Close the modal
+      $('#documentTypeModal').modal('hide');
+    });
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $(document).ready(function() {
   $('.dropdown-submenu a.dropdown-toggle').on("click", function(e) {

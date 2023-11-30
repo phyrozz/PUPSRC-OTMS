@@ -151,7 +151,7 @@ function sanitizeInput($input) {
                 </div>
             </form>
         </div>
-        <small class="text-light fw-light position-absolute bottom-0 start-0 mb-2">PUPSRC-OTMS Beta 0.5.0</small>
+        <small class="text-light fw-light position-absolute bottom-0 start-0 mb-2">PUPSRC-OTMS Beta 0.5.2</small>
     </div>
     <!-- <div class="pass-reset-container h-100">
         <div class="container-fluid d-flex flex-column justify-content-center align-items-start my-auto h-100">

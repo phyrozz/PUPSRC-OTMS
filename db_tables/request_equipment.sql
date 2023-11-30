@@ -35,7 +35,9 @@ CREATE TABLE `request_equipment` (
   `status_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `purpose` text NOT NULL,
-  `equipment_id` int(11) NOT NULL
+  `equipment_id` int(11) NOT NULL,
+  `slip_content` longblob DEFAULT NULL,
+  `admin_reason` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

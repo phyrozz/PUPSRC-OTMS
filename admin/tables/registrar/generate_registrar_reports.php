@@ -11,7 +11,7 @@ include "../../../conn.php";
     date_default_timezone_set('Asia/Manila');
     $formattedDate = date('Y-m-d'); //date today
 
-    $registrar_reports = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, scheduled_datetime, status_name, amount_to_pay, attached_files, 
+    $registrar_reports = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, scheduled_datetime, status_name, purpose, amount_to_pay, attached_files, 
                         users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role, doc_requests.user_id AS user_id
                         FROM doc_requests
                         INNER JOIN users ON doc_requests.user_id = users.user_id
@@ -102,7 +102,7 @@ $html = '
         }
         th, td {
             border: 1px solid #4444;
-            padding: 8px;
+            padding: 4px;
             text-align: left;
         }
         th {
@@ -121,6 +121,7 @@ $html = '
                 <th>Requestor</th>
                 <th>Student/Client</th>
                 <th>Request</th>
+                <th>Purpose</th>
                 <th>Amount to Pay</th>
                 <th>Status</th>
             </tr>
@@ -141,6 +142,7 @@ $html = '
                     <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['role'].'</td>
                     <td>'.$row['request_description'].'</td>
+                    <td>'.$row['purpose'].'</td>
                     <td>'.$row['amount_to_pay'].'</td>
                     <td>'.$row['status_name'].'</td>
                 </tr>';

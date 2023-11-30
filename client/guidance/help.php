@@ -67,12 +67,12 @@
         </div>
         <div class="accordion p-4" id="faqAccordion">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h2 class="accordion-header" id="headingZero">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
                     What does the Guidance Office do?
                 </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
+                <div id="collapseZero" class="accordion-collapse collapse" aria-labelledby="headingZero">
                     <div class="accordion-body">
                         <p>The Guidance Office is a faculty within PUP-SRC's Student Services that is responsible in maintaining the social, ethical, and moral integrity within the campus by offering services for the students and alumnus that performs and maintains those objectives.</p>
                         <p>To learn more about the office, you may inquire or schedule a counseling within the office through this application.</p>
@@ -81,31 +81,29 @@
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     What services do the office offer?
                 </button>
                 </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                     <div class="accordion-body">
-                        <p>The Guidance Office provides the following services available in PUPSRC-OTMS:</p>
+                        <p>The Guidance Office provides the following services available in PUPSRC-OTMS for guests:</p>
                         <dl class="row">
                             <dt class="col-sm-6 text-truncate">Request for Good Moral Document</dt>
                             <dd class="col-sm-6">Request for the Good Moral Document without the need of queueing in long lines outside the office by getting the status of your request within PUPSRC-OTMS.</dd>
                             <dt class="col-sm-6 text-truncate">Request for Clearance</dt>
                             <dd class="col-sm-6">Request for the Academic Clearance Document without the need of queueing in long lines outside the office by getting the status of your request within PUPSRC-OTMS.</dd>
-                            <dt class="col-sm-6 text-truncate">Schedule Counseling</dt>
-                            <dd class="col-sm-6">Schedule for counseling without the need of queueing in long lines outside the office by getting the status of your request within PUPSRC-OTMS. You may specify the reason for counseling within the schedule form.</dd>
                         </dl>
                     </div>
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                     Where can I find the office?
                 </button>
                 </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                     <div class="accordion-body">
                         <p>You can find the office on the second floor by looking for the <b>Student Services</b> room (Room 210).</p>
                     </div>
@@ -113,23 +111,36 @@
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    What should I do after creating a document request?
+                </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                    <div class="accordion-body">
+                        <p>After creating a request, you must prepare the requirements and proceed to the Student Services office to submit them.</p>
+                        <p>Always check the status on the <a href="../transactions.php"><b>My Transactions</b></a> page and see if your request has been approved or not.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                     How do I inquire with the office?
                 </button>
                 </h2>
-                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
                     <div class="accordion-body">
                         You may submit a feedback by filling out the form below or by visiting the office.
                     </div>
                 </div>
             </div>
             <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                     What are the requirements for the document requests?
                 </button>
                 </h2>
-                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix">
                     <div class="accordion-body">
                         <p>Here are the requirements for the two document requests provided by the office:</p>
                         <ul>

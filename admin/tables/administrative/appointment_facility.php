@@ -45,6 +45,7 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody id="table-body">
@@ -93,6 +94,28 @@
     </div>
 </div>
 <!-- End of view purpose modal -->
+<!-- Create reason for rejected status modal -->
+<div id="createReasonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createReasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReasonModalLabel">Create Reason</h5>
+            </div>
+            <div class="modal-body">
+                <form id="createReasonForm">
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Reason:</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submitReasonBtn">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
     <br><br><br>
 
     <div class="container-fluid text-center p-4">
@@ -350,10 +373,14 @@
                             '<a href="#" class="btn-link" style="text-decoration: none;" onclick="openPurposeModal(\'' + appointment.purpose + '\')">See Purpose</a>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(appointment.status_name) + '">' + appointment.status_name + '</span>' +
-                            '</td>' +
-                            '</tr>';
+                            '</td>';
+                            
+                            row += (appointment.status_name == "Rejected") ?
+                                '<td class="text-center"><a href="#" class="btn btn-primary btn-sm create-reason" data-status="' + appointment.status_name + '" data-request-id="' + appointment.appointment_id + '"><i class="fa-solid fa-pen-to-square"></i>Create Reason </a></td>' :
+                                '<td></td>';
 
-                        tableBody.innerHTML += row;
+                            row += '</tr>';
+                            tableBody.innerHTML += row;
                     }
                 } else {
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="12">No Transactions</td></tr>';
@@ -422,6 +449,75 @@
         $('#filterButton').on('click', function() {
             var searchTerm = $('#search-input').val();
             handlePagination(1, searchTerm + filterStatus(), 'appointment_id', 'desc');
+        });
+
+
+         // Create Reason button click listener
+         $(document).on('click', '.create-reason', function(event) {
+                var requestId = event.target.getAttribute('data-request-id');
+                
+                // Set the request ID and office in the modal
+                $('#createReasonModal').data('request-id', requestId);
+                
+                // Show the modal
+                $('#createReasonModal').modal('show');
+            });
+
+        // Submit Reason button click listener
+        $('#submitReasonBtn').on('click', function() {
+                var requestId = $('#createReasonModal').data('request-id');
+                var reason = $('#reason').val();
+                
+                // Make an AJAX request to update the purpose in the database
+                $.ajax({
+                    url: 'tables/administrative/update_create_reason_facility.php', // Your PHP script to handle the update
+                    method: 'POST',
+                    data: {
+                        request_id: requestId,
+                        reason: reason
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        
+                        // Close the modal
+                        $('#createReasonModal').modal('hide');
+                        
+                        // Refresh the table
+                        handlePagination(1, '', 'appointment_id', 'desc');
+                    },
+                    error: function() {
+                        // Handle error
+                        console.log('Error occurred while updating reason.');
+                    }
+                });
+            });
+
+            $(document).on('click', '.create-reason', function(event) {
+            var requestId = event.target.getAttribute('data-request-id');
+            var office = event.target.getAttribute('data-office');
+            
+            // Set the request ID 
+            $('#createReasonModal').data('request-id', requestId);
+            
+            // Fetch the existing purpose and populate the textarea
+            $.ajax({
+                url: 'tables/administrative/fetch_reason_facility.php', // Your PHP script to fetch the existing purpose
+                method: 'POST',
+                data: {
+                    request_id: requestId
+                },
+                success: function(response) {
+                    // Update the textarea with the existing purpose
+                    $('#reason').val(response);
+                    
+                    // Show the modal
+                    $('#createReasonModal').modal('show');
+                },
+                error: function() {
+                    // Handle error
+                    console.log('Error occurred while fetching existing purpose.');
+                }
+            });
         });
 
         // Update status button listener
