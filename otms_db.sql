@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2023 at 07:52 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- Generation Time: Nov 30, 2023 at 06:08 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -500,15 +500,18 @@ CREATE TABLE `appointment_facility` (
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL,
   `client` varchar(50) DEFAULT NULL,
-  `orgs` varchar(100) DEFAULT NULL
+  `orgs` varchar(100) DEFAULT NULL,
+  `admin_reason` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `appointment_facility`
 --
 
-INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`, `client`, `orgs`) VALUES
-('FA-1701013697', 129, 8, NULL, NULL, '2023-11-29 15:30:00', '2023-11-29 17:30:00', 'testing', 2, 'Organization', 'ELITE');
+INSERT INTO `appointment_facility` (`appointment_id`, `user_id`, `status_id`, `course`, `section`, `start_date_time_sched`, `end_date_time_sched`, `purpose`, `facility_id`, `client`, `orgs`, `admin_reason`) VALUES
+('FA-1701013697', 129, 8, NULL, NULL, '2023-11-29 15:30:00', '2023-11-29 17:30:00', 'testing', 2, 'Organization', 'ELITE', NULL),
+('FA-1701265258', 128, 1, 'BSIT', '3-1', '2023-12-13 13:30:00', '2023-12-13 15:00:00', 'pe subject', 1, NULL, NULL, NULL),
+('FA-1701320752', 128, 6, 'BSIT', '4-1', '2023-12-02 13:00:00', '2023-12-02 15:30:00', 'IT Elective subject', 2, NULL, NULL, 'maintenance in the room');
 
 -- --------------------------------------------------------
 
@@ -538,8 +541,7 @@ INSERT INTO `counseling_schedules` (`counseling_id`, `appointment_description`, 
 ('GC-1693451665', 'Academic Performance', '', 'DR-1693451665'),
 ('GC-1693476869', 'Personal Development', '', 'DR-1693476869'),
 ('GC-1693557298', 'Academic Performance', '', 'DR-1693557298'),
-('GC-1700224223', 'Other', 'bullying', 'DR-1700224223'),
-('GC-1700227195', 'Academic Performance', '', 'DR-1700227195');
+('GC-1701307534', 'Other', 'bullying etc etc', 'DR-1701307534');
 
 -- --------------------------------------------------------
 
@@ -630,95 +632,96 @@ CREATE TABLE `doc_requests` (
 --
 
 INSERT INTO `doc_requests` (`request_id`, `request_description`, `scheduled_datetime`, `office_id`, `user_id`, `status_id`, `purpose`, `amount_to_pay`, `attached_files`, `request_letter`) VALUES
-('DR-1693042649', 'Request Good Moral Document', '2023-08-28 00:00:00', 5, 52, 5, 'School Requirement', '0.00', NULL, NULL),
-('DR-1693057547', 'Course Accreditation Service-Senior High School to Bridge Course', '2023-08-29 00:00:00', 3, 53, 3, NULL, '0.00', NULL, NULL),
-('DR-1693067270', 'Completion of Incomplete Grade', '2023-09-02 00:00:00', 3, 52, 1, NULL, '0.00', NULL, NULL),
-('DR-1693136757', 'Guidance Counseling', '2023-08-29 10:00:00', 5, 60, 1, NULL, '0.00', NULL, NULL),
-('DR-1693136870', 'Request Good Moral Document', '2023-08-31 00:00:00', 5, 60, 5, 'School Requirement', '0.00', '../../assets/uploads/supporting_docs/64eb37e6934dd-cuti.jpg', NULL),
-('DR-1693136922', 'Request Clearance', '2023-08-29 00:00:00', 5, 60, 3, NULL, '0.00', '../../assets/uploads/supporting_docs/64eb381a65d89-treasure.jpg', NULL),
-('DR-1693137538', 'Request Good Moral Document', '2023-08-31 00:00:00', 5, 61, 6, 'School Requirement', '0.00', '../../assets/uploads/supporting_docs/64eb3a8255e18-cuti.jpg', NULL),
-('DR-1693137601', 'Request Clearance', '2023-08-29 00:00:00', 5, 61, 3, NULL, '0.00', '../../assets/uploads/supporting_docs/64eb3ac168c84-ee.jpg', NULL),
-('DR-1693144219', 'Certificate of General Weighted Average (GWA)', '2023-08-31 00:00:00', 3, 66, 3, NULL, '0.00', NULL, NULL),
-('DR-1693152155', 'Late Reporting of Grade', '2023-09-28 00:00:00', 3, 66, 1, NULL, '0.00', NULL, NULL),
-('DR-1693193160', 'Guidance Counseling', '2023-08-31 17:30:00', 5, 51, 1, NULL, '0.00', NULL, NULL),
-('DR-1693218333', ' Correction of Entry of Grade', '2023-09-08 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693218396', 'Late Reporting of Grade', '2023-09-09 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219398', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219406', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219458', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219463', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219468', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219473', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219478', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219494', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219499', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219504', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219529', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219535', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219540', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219547', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219551', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219556', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219561', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219565', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219570', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219575', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219580', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219584', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219605', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219611', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219616', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219621', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219626', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219631', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219636', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219643', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219648', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219652', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219657', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219662', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219667', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, '0.00', NULL, NULL),
-('DR-1693219698', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, '0.00', NULL, NULL),
-('DR-1693219703', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, '0.00', NULL, NULL),
-('DR-1693219708', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, '0.00', NULL, NULL),
-('DR-1693219715', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, '0.00', NULL, NULL),
-('DR-1693235939', 'Application for Graduation SIS and Non-SIS', '2023-08-28 00:00:00', 3, 70, 4, 'The documents are not visible', '0.00', NULL, NULL),
-('DR-1693282861', 'Guidance Counseling', '2023-08-31 11:00:00', 5, 55, 1, NULL, '0.00', NULL, NULL),
-('DR-1693293466', 'Request Clearance', '2023-08-29 00:00:00', 5, 66, 3, NULL, '0.00', NULL, NULL),
-('DR-1693298487', 'Request Clearance', '2023-08-29 00:00:00', 5, 55, 2, NULL, '0.00', '../../assets/uploads/supporting_docs/64edaf37b3dae-cat.jpg', NULL),
-('DR-1693298805', 'Request Good Moral Document', '2023-08-29 00:00:00', 5, 88, 6, 'Professional Licenses', '0.00', '../../assets/uploads/supporting_docs/64edb075aa3ae-nyar.png', NULL),
-('DR-1693298822', 'Request Clearance', '2023-08-29 00:00:00', 5, 88, 3, NULL, '0.00', NULL, NULL),
-('DR-1693301299', 'Guidance Counseling', '2023-08-31 15:30:00', 5, 89, 1, NULL, '0.00', NULL, NULL),
-('DR-1693301470', 'Request Clearance', '2023-08-29 00:00:00', 5, 90, 4, NULL, '0.00', NULL, NULL),
-('DR-1693302543', 'Application for Graduation SIS and Non-SIS', '2023-09-02 00:00:00', 3, 91, 1, NULL, '0.00', NULL, NULL),
-('DR-1693310162', 'Request Good Moral Document', '2023-08-29 00:00:00', 5, 93, 1, 'Job Application', '0.00', NULL, NULL),
-('DR-1693325509', 'Guidance Counseling', '2023-08-31 14:30:00', 5, 52, 1, NULL, '0.00', NULL, NULL),
-('DR-1693326618', 'Request Good Moral Document', '2023-08-30 00:00:00', 5, 52, 1, 'Job Application', '0.00', NULL, NULL),
-('DR-1693327214', 'Request Clearance', '2023-08-30 00:00:00', 5, 52, 1, NULL, '0.00', NULL, NULL),
-('DR-1693366646', 'Guidance Counseling', '2023-08-31 13:30:00', 5, 89, 1, NULL, '0.00', NULL, NULL),
-('DR-1693374749', 'Completion of Incomplete Grade', '2023-08-31 00:00:00', 3, 70, 4, NULL, '0.00', NULL, NULL),
-('DR-1693374881', 'Guidance Counseling', '2023-08-31 20:00:00', 5, 62, 1, NULL, '0.00', NULL, NULL),
-('DR-1693378418', 'Certificate of Medium of Instruction', '2023-08-31 00:00:00', 3, 102, 1, NULL, '0.00', NULL, NULL),
-('DR-1693378471', 'Certificate of Transfer Credential/Honorable Dismissal', '2023-12-25 00:00:00', 3, 102, 1, NULL, '0.00', NULL, NULL),
-('DR-1693400211', 'Certificate of Graduation', '2023-08-31 00:00:00', 3, 93, 6, 'Kulang pa po sa requirements.', '0.00', NULL, NULL),
-('DR-1693412669', 'Certification, Verification, Authentication (CAV/Apostile)', '2023-09-01 00:00:00', 3, 69, 5, NULL, '0.00', NULL, NULL),
-('DR-1693413071', 'Request Clearance', '2023-09-07 00:00:00', 5, 69, 1, NULL, '0.00', '../../assets/uploads/supporting_docs/64ef6ecf6b2a4-Screenshot (47).png', NULL),
-('DR-1693449516', 'Transcript of Records (Second and succeeding copies)', '2023-09-04 00:00:00', 3, 113, 1, NULL, '0.00', NULL, NULL),
-('DR-1693450313', 'Certified True Copy', '2023-09-01 00:00:00', 3, 78, 1, NULL, '0.00', NULL, NULL),
-('DR-1693451562', 'Certified True Copy', '2023-09-01 00:00:00', 3, 56, 6, NULL, '0.00', NULL, NULL),
-('DR-1693451665', 'Guidance Counseling', '2023-09-01 08:00:00', 5, 56, 1, NULL, '0.00', NULL, NULL),
-('DR-1693476869', 'Guidance Counseling', '2023-08-31 13:00:00', 5, 73, 1, NULL, '0.00', NULL, NULL),
-('DR-1693489989', '', '2023-08-31 00:00:00', 3, 102, 1, NULL, '0.00', NULL, NULL),
-('DR-1693494075', 'Certificate of General Weighted Average (GWA)', '2023-09-01 00:00:00', 3, 63, 4, NULL, '0.00', NULL, NULL),
-('DR-1693494312', 'Request Clearance', '2023-08-31 00:00:00', 5, 63, 6, NULL, '0.00', '../../assets/uploads/supporting_docs/64f0ac282a610-payment-voucher.jpg', NULL),
-('DR-1693495858', 'Informative Copy of Grades', '2023-09-01 00:00:00', 3, 53, 1, '123', '0.00', NULL, NULL),
-('DR-1693496422', 'Certified True Copy', '2023-09-08 00:00:00', 3, 93, 5, NULL, '0.00', NULL, NULL),
-('DR-1693555024', 'Informative Copy of Grades', '2023-09-01 00:00:00', 3, 71, 6, 'Insufficient documents submitted, please resubmit.', '0.00', NULL, NULL),
-('DR-1693557298', 'Guidance Counseling', '2023-09-04 09:30:00', 5, 71, 1, NULL, '0.00', NULL, NULL),
-('DR-1693557418', 'Request Good Moral Document', '2023-09-02 00:00:00', 5, 71, 5, 'School Requirement', '0.00', NULL, NULL),
-('DR-1700224223', 'Guidance Counseling', '2023-11-18 05:00:00', 5, 128, 1, NULL, '0.00', NULL, NULL),
-('DR-1700227195', 'Guidance Counseling', '2023-11-29 02:00:00', 5, 128, 1, NULL, '0.00', NULL, NULL),
-('DR-1700228353', 'Request Good Moral Document', '2023-11-17 16:00:00', 5, 128, 1, 'School Requirement', '0.00', NULL, NULL);
+('DR-1693042649', 'Request Good Moral Document', '2023-08-28 00:00:00', 5, 52, 5, 'School Requirement', 0.00, NULL, NULL),
+('DR-1693057547', 'Course Accreditation Service-Senior High School to Bridge Course', '2023-08-29 00:00:00', 3, 53, 3, NULL, 0.00, NULL, NULL),
+('DR-1693067270', 'Completion of Incomplete Grade', '2023-09-02 00:00:00', 3, 52, 1, NULL, 0.00, NULL, NULL),
+('DR-1693136757', 'Guidance Counseling', '2023-08-29 10:00:00', 5, 60, 1, NULL, 0.00, NULL, NULL),
+('DR-1693136870', 'Request Good Moral Document', '2023-08-31 00:00:00', 5, 60, 5, 'School Requirement', 0.00, '../../assets/uploads/supporting_docs/64eb37e6934dd-cuti.jpg', NULL),
+('DR-1693136922', 'Request Clearance', '2023-08-29 00:00:00', 5, 60, 3, NULL, 0.00, '../../assets/uploads/supporting_docs/64eb381a65d89-treasure.jpg', NULL),
+('DR-1693137538', 'Request Good Moral Document', '2023-08-31 00:00:00', 5, 61, 6, 'School Requirement', 0.00, '../../assets/uploads/supporting_docs/64eb3a8255e18-cuti.jpg', NULL),
+('DR-1693137601', 'Request Clearance', '2023-08-29 00:00:00', 5, 61, 3, NULL, 0.00, '../../assets/uploads/supporting_docs/64eb3ac168c84-ee.jpg', NULL),
+('DR-1693144219', 'Certificate of General Weighted Average (GWA)', '2023-08-31 00:00:00', 3, 66, 3, NULL, 0.00, NULL, NULL),
+('DR-1693152155', 'Late Reporting of Grade', '2023-09-28 00:00:00', 3, 66, 1, NULL, 0.00, NULL, NULL),
+('DR-1693193160', 'Guidance Counseling', '2023-08-31 17:30:00', 5, 51, 1, NULL, 0.00, NULL, NULL),
+('DR-1693218333', ' Correction of Entry of Grade', '2023-09-08 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693218396', 'Late Reporting of Grade', '2023-09-09 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219398', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219406', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219458', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219463', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219468', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219473', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219478', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219494', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219499', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219504', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219529', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219535', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219540', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219547', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219551', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219556', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219561', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219565', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219570', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219575', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219580', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219584', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219605', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219611', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219616', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219621', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219626', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219631', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219636', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219643', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219648', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219652', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219657', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219662', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219667', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 1, NULL, 0.00, NULL, NULL),
+('DR-1693219698', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, 0.00, NULL, NULL),
+('DR-1693219703', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, 0.00, NULL, NULL),
+('DR-1693219708', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, 0.00, NULL, NULL),
+('DR-1693219715', 'Application for Graduation SIS and Non-SIS', '2023-08-30 00:00:00', 3, 72, 2, NULL, 0.00, NULL, NULL),
+('DR-1693235939', 'Application for Graduation SIS and Non-SIS', '2023-08-28 00:00:00', 3, 70, 4, 'The documents are not visible', 0.00, NULL, NULL),
+('DR-1693282861', 'Guidance Counseling', '2023-08-31 11:00:00', 5, 55, 1, NULL, 0.00, NULL, NULL),
+('DR-1693293466', 'Request Clearance', '2023-08-29 00:00:00', 5, 66, 3, NULL, 0.00, NULL, NULL),
+('DR-1693298487', 'Request Clearance', '2023-08-29 00:00:00', 5, 55, 2, NULL, 0.00, '../../assets/uploads/supporting_docs/64edaf37b3dae-cat.jpg', NULL),
+('DR-1693298805', 'Request Good Moral Document', '2023-08-29 00:00:00', 5, 88, 6, 'Professional Licenses', 0.00, '../../assets/uploads/supporting_docs/64edb075aa3ae-nyar.png', NULL),
+('DR-1693298822', 'Request Clearance', '2023-08-29 00:00:00', 5, 88, 3, NULL, 0.00, NULL, NULL),
+('DR-1693301299', 'Guidance Counseling', '2023-08-31 15:30:00', 5, 89, 1, NULL, 0.00, NULL, NULL),
+('DR-1693301470', 'Request Clearance', '2023-08-29 00:00:00', 5, 90, 4, NULL, 0.00, NULL, NULL),
+('DR-1693302543', 'Application for Graduation SIS and Non-SIS', '2023-09-02 00:00:00', 3, 91, 1, NULL, 0.00, NULL, NULL),
+('DR-1693310162', 'Request Good Moral Document', '2023-08-29 00:00:00', 5, 93, 1, 'Job Application', 0.00, NULL, NULL),
+('DR-1693325509', 'Guidance Counseling', '2023-08-31 14:30:00', 5, 52, 1, NULL, 0.00, NULL, NULL),
+('DR-1693326618', 'Request Good Moral Document', '2023-08-30 00:00:00', 5, 52, 1, 'Job Application', 0.00, NULL, NULL),
+('DR-1693327214', 'Request Clearance', '2023-08-30 00:00:00', 5, 52, 1, NULL, 0.00, NULL, NULL),
+('DR-1693366646', 'Guidance Counseling', '2023-08-31 13:30:00', 5, 89, 1, NULL, 0.00, NULL, NULL),
+('DR-1693374749', 'Completion of Incomplete Grade', '2023-08-31 00:00:00', 3, 70, 4, NULL, 0.00, NULL, NULL),
+('DR-1693374881', 'Guidance Counseling', '2023-08-31 20:00:00', 5, 62, 1, NULL, 0.00, NULL, NULL),
+('DR-1693378418', 'Certificate of Medium of Instruction', '2023-08-31 00:00:00', 3, 102, 1, NULL, 0.00, NULL, NULL),
+('DR-1693378471', 'Certificate of Transfer Credential/Honorable Dismissal', '2023-12-25 00:00:00', 3, 102, 1, NULL, 0.00, NULL, NULL),
+('DR-1693400211', 'Certificate of Graduation', '2023-08-31 00:00:00', 3, 93, 6, 'Kulang pa po sa requirements.', 0.00, NULL, NULL),
+('DR-1693412669', 'Certification, Verification, Authentication (CAV/Apostile)', '2023-09-01 00:00:00', 3, 69, 5, NULL, 0.00, NULL, NULL),
+('DR-1693413071', 'Request Clearance', '2023-09-07 00:00:00', 5, 69, 1, NULL, 0.00, '../../assets/uploads/supporting_docs/64ef6ecf6b2a4-Screenshot (47).png', NULL),
+('DR-1693449516', 'Transcript of Records (Second and succeeding copies)', '2023-09-04 00:00:00', 3, 113, 1, NULL, 0.00, NULL, NULL),
+('DR-1693450313', 'Certified True Copy', '2023-09-01 00:00:00', 3, 78, 1, NULL, 0.00, NULL, NULL),
+('DR-1693451562', 'Certified True Copy', '2023-09-01 00:00:00', 3, 56, 6, NULL, 0.00, NULL, NULL),
+('DR-1693451665', 'Guidance Counseling', '2023-09-01 08:00:00', 5, 56, 1, NULL, 0.00, NULL, NULL),
+('DR-1693476869', 'Guidance Counseling', '2023-08-31 13:00:00', 5, 73, 1, NULL, 0.00, NULL, NULL),
+('DR-1693489989', '', '2023-08-31 00:00:00', 3, 102, 1, NULL, 0.00, NULL, NULL),
+('DR-1693494075', 'Certificate of General Weighted Average (GWA)', '2023-09-01 00:00:00', 3, 63, 4, NULL, 0.00, NULL, NULL),
+('DR-1693494312', 'Request Clearance', '2023-08-31 00:00:00', 5, 63, 6, NULL, 0.00, '../../assets/uploads/supporting_docs/64f0ac282a610-payment-voucher.jpg', NULL),
+('DR-1693495858', 'Informative Copy of Grades', '2023-09-01 00:00:00', 3, 53, 1, '123', 0.00, NULL, NULL),
+('DR-1693496422', 'Certified True Copy', '2023-09-08 00:00:00', 3, 93, 5, NULL, 0.00, NULL, NULL),
+('DR-1693555024', 'Informative Copy of Grades', '2023-09-01 00:00:00', 3, 71, 6, 'Insufficient documents submitted, please resubmit.', 0.00, NULL, NULL),
+('DR-1693557298', 'Guidance Counseling', '2023-09-04 09:30:00', 5, 71, 1, NULL, 0.00, NULL, NULL),
+('DR-1693557418', 'Request Good Moral Document', '2023-09-02 00:00:00', 5, 71, 5, 'School Requirement', 0.00, NULL, NULL),
+('DR-1701263906', 'Request Good Moral Document', '2023-11-29 16:00:00', 5, 129, 1, 'School Requirement', 0.00, NULL, NULL),
+('DR-1701305281', 'Request Good Moral Document', '2023-12-05 16:00:00', 5, 128, 1, 'School Requirement', 0.00, NULL, NULL),
+('DR-1701307534', 'Guidance Counseling', '2023-12-02 02:00:00', 5, 128, 8, NULL, 0.00, NULL, NULL),
+('DR-1701308335', 'Informative Copy of Grades', '2023-12-05 16:00:00', 3, 128, 1, 'ISKOLAR NG BAYAN', 0.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1031,7 +1034,9 @@ INSERT INTO `notifications` (`notification_id`, `user_id`, `office_id`, `title`,
 (211, 72, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been verified by the office.', '2023-09-05 08:06:05', 0),
 (212, 94, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been approved.', '2023-09-05 08:06:11', 0),
 (213, 72, 4, 'Cross-Enrollment Status Update', 'Your Application Letter for Cross-Enrollment has been verified by the office.', '2023-09-05 08:06:12', 0),
-(224, 128, 1, 'Facility Appointment Status Update', 'Your appointment for Audio Visual Room scheduled on November 29, 2023, 11:00 AM to November 29, 2023, 02:00 PM has been approved.', '2023-11-26 22:07:32', 1);
+(224, 128, 1, 'Facility Appointment Status Update', 'Your appointment for Audio Visual Room scheduled on November 29, 2023, 11:00 AM to November 29, 2023, 02:00 PM has been approved.', '2023-11-26 22:07:32', 1),
+(225, 128, 1, 'Facility Appointment Status Update', 'Your appointment for Computer Lab scheduled on December 2, 2023, 01:00 PM to December 2, 2023, 03:30 PM has been rejected.', '2023-11-30 13:06:58', 1),
+(226, 128, 1, 'Facility Appointment Status Update', 'Your Appointment for Computer Lab scheduled on December 2, 2023, 01:00 PM to December 2, 2023, 03:30 PM, has been rejected for the following reason: \"maintenance in the room.\"', '2023-11-30 13:07:12', 1);
 
 -- --------------------------------------------------------
 
@@ -1075,33 +1080,33 @@ CREATE TABLE `offsettingtb` (
 --
 
 INSERT INTO `offsettingtb` (`offsetting_id`, `user_id`, `amountToOffset`, `offsetType`, `timestamp`, `status_id`) VALUES
-(9, 58, '5000.00', 'Miscellaneous Fee', '2023-08-27 01:17:27', 6),
-(10, 58, '3000.00', 'Tuition Fee', '2023-08-27 05:35:33', 6),
-(11, 51, '400.00', 'Miscellaneous Fee', '2023-08-28 03:24:33', 1),
-(12, 51, '100.00', 'Miscellaneous Fee', '2023-08-28 04:05:09', 1),
-(13, 51, '1000.00', 'Tuition Fee', '2023-08-28 04:57:51', 1),
-(14, 84, '500.00', 'Tuition Fee', '2023-08-29 08:42:16', 6),
-(15, 84, '1000.00', 'Tuition Fee', '2023-08-29 08:43:19', 1),
-(16, 73, '23.00', 'Tuition Fee', '2023-08-29 09:09:09', 7),
-(18, 92, '1299.00', 'Miscellaneous Fee', '2023-08-29 10:32:06', 3),
-(19, 84, '3000.00', 'Miscellaneous Fee', '2023-08-29 13:41:01', 1),
-(20, 62, '9999.99', 'Tuition Fee', '2023-08-30 06:11:29', 6),
-(21, 100, '345.00', 'Tuition Fee', '2023-08-30 06:44:42', 1),
-(22, 84, '9999.99', 'Tuition Fee', '2023-08-30 09:18:06', 1),
-(23, 71, '1245.00', 'Tuition Fee', '2023-08-30 09:24:50', 6),
-(24, 108, '5000.00', 'Miscellaneous Fee', '2023-08-30 14:02:21', 1),
-(25, 69, '4350.00', 'Tuition Fee', '2023-08-30 16:26:14', 3),
-(26, 69, '453.00', 'Tuition Fee', '2023-08-30 16:36:50', 7),
-(27, 100, '34.00', 'Miscellaneous Fee', '2023-08-30 16:38:47', 6),
-(29, 63, '1000.00', 'Tuition Fee', '2023-08-31 01:55:26', 6),
-(30, 108, '9999.00', 'Miscellaneous Fee', '2023-08-31 03:08:11', 1),
-(31, 73, '23.00', 'Tuition Fee', '2023-08-31 03:38:01', 1),
-(32, 56, '30.00', 'Tuition Fee', '2023-08-31 05:14:00', 6),
-(33, 73, '23.00', 'Tuition Fee', '2023-08-31 06:42:40', 1),
-(34, 73, '244.00', 'Miscellaneous Fee', '2023-08-31 06:42:53', 6),
-(35, 64, '20.00', 'Miscellaneous Fee', '2023-08-31 07:18:33', 6),
-(37, 51, '9999.99', 'Miscellaneous Fee', '2023-08-31 12:09:24', 1),
-(39, 51, '5000.00', 'Tuition Fee', '2023-09-01 15:45:37', 1);
+(9, 58, 5000.00, 'Miscellaneous Fee', '2023-08-27 01:17:27', 6),
+(10, 58, 3000.00, 'Tuition Fee', '2023-08-27 05:35:33', 6),
+(11, 51, 400.00, 'Miscellaneous Fee', '2023-08-28 03:24:33', 1),
+(12, 51, 100.00, 'Miscellaneous Fee', '2023-08-28 04:05:09', 1),
+(13, 51, 1000.00, 'Tuition Fee', '2023-08-28 04:57:51', 1),
+(14, 84, 500.00, 'Tuition Fee', '2023-08-29 08:42:16', 6),
+(15, 84, 1000.00, 'Tuition Fee', '2023-08-29 08:43:19', 1),
+(16, 73, 23.00, 'Tuition Fee', '2023-08-29 09:09:09', 7),
+(18, 92, 1299.00, 'Miscellaneous Fee', '2023-08-29 10:32:06', 3),
+(19, 84, 3000.00, 'Miscellaneous Fee', '2023-08-29 13:41:01', 1),
+(20, 62, 9999.99, 'Tuition Fee', '2023-08-30 06:11:29', 6),
+(21, 100, 345.00, 'Tuition Fee', '2023-08-30 06:44:42', 1),
+(22, 84, 9999.99, 'Tuition Fee', '2023-08-30 09:18:06', 1),
+(23, 71, 1245.00, 'Tuition Fee', '2023-08-30 09:24:50', 6),
+(24, 108, 5000.00, 'Miscellaneous Fee', '2023-08-30 14:02:21', 1),
+(25, 69, 4350.00, 'Tuition Fee', '2023-08-30 16:26:14', 3),
+(26, 69, 453.00, 'Tuition Fee', '2023-08-30 16:36:50', 7),
+(27, 100, 34.00, 'Miscellaneous Fee', '2023-08-30 16:38:47', 6),
+(29, 63, 1000.00, 'Tuition Fee', '2023-08-31 01:55:26', 6),
+(30, 108, 9999.00, 'Miscellaneous Fee', '2023-08-31 03:08:11', 1),
+(31, 73, 23.00, 'Tuition Fee', '2023-08-31 03:38:01', 1),
+(32, 56, 30.00, 'Tuition Fee', '2023-08-31 05:14:00', 6),
+(33, 73, 23.00, 'Tuition Fee', '2023-08-31 06:42:40', 1),
+(34, 73, 244.00, 'Miscellaneous Fee', '2023-08-31 06:42:53', 6),
+(35, 64, 20.00, 'Miscellaneous Fee', '2023-08-31 07:18:33', 6),
+(37, 51, 9999.99, 'Miscellaneous Fee', '2023-08-31 12:09:24', 1),
+(39, 51, 5000.00, 'Tuition Fee', '2023-09-01 15:45:37', 1);
 
 -- --------------------------------------------------------
 
@@ -1340,15 +1345,17 @@ CREATE TABLE `request_equipment` (
   `status_id` int(11) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL,
-  `slip_content` longblob DEFAULT NULL
+  `slip_content` longblob DEFAULT NULL,
+  `admin_reason` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `request_equipment`
 --
 
-INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `purpose`, `equipment_id`, `slip_content`) VALUES
-('ROE-1701014188', 129, '2023-11-29 12:00:00', 2, 8, 'PE subject', 2, NULL);
+INSERT INTO `request_equipment` (`request_id`, `user_id`, `datetime_schedule`, `quantity_equip`, `status_id`, `purpose`, `equipment_id`, `slip_content`, `admin_reason`) VALUES
+('ROE-1701014188', 129, '2023-11-29 12:00:00', 2, 8, 'PE subject', 2, NULL, NULL),
+('ROE-1701265224', 128, '2023-12-07 10:00:00', 2, 8, 'event', 8, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2059,13 +2066,13 @@ ALTER TABLE `guidance_feedbacks`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `offsettingtb`
 --
 ALTER TABLE `offsettingtb`
-  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `offsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `password_reset_tokens`
