@@ -192,7 +192,7 @@
       
         <div class="col-md-6">
           <div class="form-group">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#documentTypeModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#documentTypeModal" style="width: 100%; margin-top: 30px;">
               Select Document Type
             </button>
             <div class="invalid-feedback">
