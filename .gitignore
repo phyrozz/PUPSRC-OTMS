@@ -1,3 +1,11 @@
 /node_modules/
 /vendor/
+/admin/generate_report/
+/assets/uploads/
+/client/accounting/uploads/
+/client/administrative/appointment-letter/
+/client/administrative/requisition-slip/
+/student/accounting/uploads/
+/student/administrative/appointment-letter/
+/student/administrative/requisition-slip/
 pupsrc-otms.zip
