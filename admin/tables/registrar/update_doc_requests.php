@@ -32,18 +32,34 @@ try {
     echo json_encode(['message' => 'Status updated successfully']);
 
     // Insert notifications
-    if ($statusId == 4) {
+    // Define status descriptions
+    $statusDescriptions = [
+        2 => "is for receiving.",
+        3 => "is for evaluation.",
+        4 => "is ready for pickup.",
+        5 => "is released.",
+        // Add more statuses as needed
+    ];
+
+    // Check if the statusId exists in the mapping
+    if (array_key_exists($statusId, $statusDescriptions)) {
+        // Prepare the statement
         $stmt = $connection->prepare("INSERT INTO notifications (user_id, office_id, title, description, timestamp) VALUES (?, ?, ?, ?, NOW())");
-    
+
+        // Iterate through updatedRequestDescriptions
         foreach ($updatedRequestDescriptions as $requestId => $requestInfo) {
             $title = 'Request Status Update';
-            $description = "Your Request for $requestInfo[description] scheduled on $requestInfo[formatted_scheduled_datetime] is ready for pickup.";
+            $description = "Your Request for $requestInfo[description] scheduled on $requestInfo[formatted_scheduled_datetime] " . $statusDescriptions[$statusId];
+
+            // Bind parameters and execute statement
             $stmt->bind_param('iiss', $requestInfo['user_id'], $officeId, $title, $description);
             $stmt->execute();
         }
 
+        // Close the statement
         $stmt->close();
     }
+
 } catch (Exception $e) {
     echo json_encode(['message' => 'Error occurred while updating status: ' . $e]);
 }
