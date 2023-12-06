@@ -4,10 +4,11 @@ include '../../conn.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the request_id from the POST data
     $request_id = isset($_POST['request_id']) ? $_POST['request_id'] : null;
+    $cancellationReason = isset($_POST['reason']) ? $_POST['reason'] : '';
 
     if ($request_id) {
         // Update the status_id in the 'request_equipment' table
-        $updateQuery = "UPDATE request_equipment SET status_id = 8 WHERE request_id = '$request_id'";
+        $updateQuery = "UPDATE request_equipment SET status_id = 8, user_reason = '$cancellationReason' WHERE request_id = '$request_id'";
         $updateResult = mysqli_query($connection, $updateQuery);
 
         if ($updateResult) {

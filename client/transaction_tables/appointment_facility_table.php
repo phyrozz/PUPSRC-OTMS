@@ -100,6 +100,44 @@
     </div>
 </div>
 <!-- End of view edit modal -->
+<!-- Reason Modal -->
+<div id="reasonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reasonModalLabel">Reason for Rejection</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Reason content will be populated here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Reason Modal -->
+
+<!-- Modal for cancellation confirmation -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this appointment?</p>
+                <label for="cancellationReason">Reason for cancellation:</label>
+                <input type="text" class="form-control" id="cancellationReason" name="cancellationReason">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmCancelBtn">Confirm Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End of Cancel Modal -->
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 <script>
     function getStatusBadgeClass(status) {
@@ -498,6 +536,46 @@
         });
     }
 
+    // Event listener for view reason buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('view-reason')) {
+            var requestId = event.target.getAttribute('data-request-id');
+            populateReasonModal(requestId);
+        }
+    });
+
+
+    // Function to populate the reason modal with the reason data
+    function populateReasonModal(requestId) {
+        $.ajax({
+            url: 'transaction_tables/get_administrative_reason_facility.php', // Replace with the actual URL to fetch reason from the database
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function(response) {
+                var reasonData = JSON.parse(response); // Parse the JSON response
+                var reason = reasonData.admin_reason; // Extract the reason text
+                console.log(reason);
+                console.log('Reason Shows successfully');
+                
+                var modalTitle = document.getElementById('reasonModalLabel');
+                var modalBody = document.querySelector('#reasonModal .modal-body');
+
+                modalTitle.innerText = 'Reason for Rejection';
+
+                if (reason !== null) {
+                    modalBody.innerHTML = '<p>' + reason + '</p>';
+                } else {
+                    modalBody.innerHTML = '<p>No reason provided yet.</p>';
+                }
+
+                $("#reasonModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching reason.');
+            }
+        });
+    }
+
     // Function to update the request using AJAX
     function updateRequest(editId) {
         var form = document.getElementById('editForm');
@@ -584,8 +662,25 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill appointment-facility-status-cell ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
                             '</td>' +
-                            '<td><button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + appointmentFacility.appointment_id + '">Edit <i class="fa-solid fa-pen-to-square"></i></button></td>' +
-                            '<td><button href="#" class="btn btn-primary btn-sm cancel-request" data-request-id="' + appointmentFacility.appointment_id + '">Cancel <i class="fa-solid fa-pen-to-square"></i></button></td>' +
+                            '<td class="text-center">';
+
+                            if (appointmentFacility.status_name === "Pending") {
+                                row += '<div class="btn-container" style="display: flex;">';
+                                
+                                // Edit Button
+                                row += '<div style="flex: 1;">';
+                                row += '<button href="#" class="btn btn-primary btn-sm edit-request" data-request-id="' + appointmentFacility.appointment_id + '"><i class="fa-solid fa-pen-to-square"></i> Edit </button>';
+                                row += '</div>';
+                                
+                                // Cancel Button
+                                row += '<div style="flex: 1; margin-left: 5px;">';
+                                row += '<button class="btn btn-primary btn-sm cancel-request" data-request-id="' + appointmentFacility.appointment_id + '"><i class="fa-solid fa-times"></i> Cancel </button>';
+                                row += '</div>';
+                                
+                                row += '</div>';
+                            } else if(appointmentFacility.status_name === "Rejected") {
+                                row += '<a href="#" class="btn btn-primary btn-sm view-reason pe-auto" data-status="' + appointmentFacility.status_name + '" data-request-id="' +  appointmentFacility.appointment_id + '"><i class="fa-solid fa-eye"></i> Reason </a>';
+                            }
                             '</tr>';
                         tableBody.innerHTML += row;
                     }
@@ -640,33 +735,47 @@
         }
     });
 
-    document.addEventListener('click', function(event) {
+        //Event Listener for Cancel Button
+        document.addEventListener('click', function(event) {
         if (event.target.classList.contains('cancel-request')) {
             var requestId = event.target.getAttribute('data-request-id');
-           cancelRequest(requestId);
+            openCancelModal(requestId);
         }
     });
 
-    //Function for Cancel button
-    function cancelRequest(requestId) {
-    // Make an AJAX request to cancel the equipment request
-        $.ajax({
-            url: 'transaction_tables/cancel_facility.php',
-            method: 'POST',
-            data: { request_id: requestId },
-            success: function(response) {
-                console.log(requestId);
-                console.log('Request canceled successfully');
-
-
-
-                handlePagination(1, '');
-            },
-            error: function(error) {
-                console.error('Error canceling request:', error.responseText);
-            }
-        });
+    function openCancelModal(requestId) {
+        // Set the request ID in the modal data attribute
+        $('#cancelModal').data('request-id', requestId);
+        // Open the modal
+        $('#cancelModal').modal('show');
     }
+    
+    // Event Listener for Confirm Cancel Button
+    document.getElementById('confirmCancelBtn').addEventListener('click', cancelRequest);
+
+
+    //Function for Cancel button
+    function cancelRequest() {
+        console.log('cancelRequest function called');
+    var requestId = $('#cancelModal').data('request-id');
+    var cancellationReason = $('#cancellationReason').val();
+
+    // Make an AJAX request to cancel the equipment request
+    $.ajax({
+        url: 'transaction_tables/cancel_facility.php',
+        method: 'POST',
+        data: { request_id: requestId, reason: cancellationReason },
+        success: function(response) {
+            console.log('Request canceled successfully');
+            // Close the modal
+            $('#cancelModal').modal('hide');
+            handlePagination(1, '');
+        },
+        error: function(error) {
+            console.error('Error canceling request:', error.responseText);
+        }
+    });
+}
 
     //Disables Cancel Button for certain statuses
     function updateCancelButtonStatus() {
