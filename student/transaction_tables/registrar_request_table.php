@@ -54,6 +54,10 @@
                                     Scheduled Date
                                     <i class="sort-icon fa-solid fa-caret-down"></i>
                                 </th>
+                                <th class="text-center doc-request-specified-purpose-header sortable-header" data-column="purpose" scope="col" data-order="desc">
+                                    Purpose
+                                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                                </th>
                                 <th class="text-center doc-request-amount-header sortable-header" data-column="amount_to_pay" scope="col" data-order="desc">
                                     Amount to pay
                                     <i class="sort-icon fa-solid fa-caret-down"></i>
@@ -490,6 +494,7 @@
                             '<td class="pe-auto"><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</td>' +
                             '<td>' + request.request_description + '</td>' +
                             '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
+                            '<td>' + request.purpose + '</td>' +
                             '<td>' + '₱' + request.amount_to_pay + '</td>' +
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill doc-request-status-cell ' + getStatusBadgeClass(request.status_name) + '">' + request.status_name + '</span>' +

@@ -119,7 +119,7 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <a class="btn btn-outline-primary mb-2" href="/student/transactions.php">
+                            <a class="btn btn-outline-primary mb-2" href="/student/transactions.php" data-bs-toggle="tooltip" data-bs-placement="right" title="Check your document requests/scheduled appointments and their statuses">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
@@ -237,10 +237,10 @@
                                 <p class="mb-0">You may constantly monitor the status of the request by going to <b>My Transactions</b>.</p>
                             </div>
                             <div class="d-flex w-100 justify-content-between p-1">
-                                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
+                                <button class="btn btn-primary px-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return to previous page" onclick="window.history.go(-1); return false;">
                                     <i class="fa-solid fa-arrow-left"></i> Back
                                 </button>
-                                <button id="submitBtn" type="button" class="btn btn-primary w-25">Submit</button>
+                                <button id="submitBtn" type="button" class="btn btn-primary w-25" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Submit the appointment">Submit</button>
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
@@ -325,6 +325,7 @@
         <div class="push"></div>
     </div>
     <?php include '../../footer.php'; ?>
+    <script src="../../tooltips.js"></script>
     <script src="../../loading.js"></script>
     <script src="../../jquery.js"></script>
     <script>
@@ -476,11 +477,22 @@
             contactNoValidation();
         });
 
+        function reasonTextValidation() {
+            if (reasonSelect === 'Other' && !/^[\w\d\s]{1,2048}$/.test(reasonText.value.trim())) {
+                reasonValidationMessage.textContent = 'Invalid purpose.';
+                reasonText.classList.add('is-invalid');
+                return false;
+            }
+            return true;
+        }
+
         // Function to handle form submission
         function handleSubmit() {
+            const isCustomValidationValid = reasonTextValidation();
+
             validateForm();
             const dateValue = dateValidation.value.trim();
-            if (document.getElementById('appointment-form').checkValidity() && dateValue !== '') {
+            if (document.getElementById('appointment-form').checkValidity() && dateValue !== '' && isCustomValidationValid) {
                 $('#confirmSubmitModal').modal('show');
                 $('#loadingModal').modal('show');
             }
@@ -492,6 +504,7 @@
         $(document).ready(function() {
             $('#loadingModal').modal('show');
 
+            // Add a transition effect on the reason text field when it appears and disappears
             $('#counseling_description').on('change', function() {
                 if ($(this).val() == 'Other') {
                     $('#reasonTextField').slideToggle(); // Fade in the element

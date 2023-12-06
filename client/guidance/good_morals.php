@@ -46,6 +46,7 @@
                 $statusId = 1;
                 $amountToPay = 0.00;
                 $purpose = $_POST['purpose'];
+                $purposeText = $_POST['purposeText'];
             
                 // Check if a file was uploaded
                 if (isset($_FILES['supportingDocuments']) && $_FILES['supportingDocuments']['error'] === UPLOAD_ERR_OK) {
@@ -107,10 +108,10 @@
                 }
                 else {
                     // Insert the form data into the database
-                    $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, purpose, amount_to_pay, attached_files)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    $insertQuery = "INSERT INTO doc_requests (request_description, scheduled_datetime, office_id, user_id, status_id, purpose, amount_to_pay, attached_files, specified_purpose)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt = $connection->prepare($insertQuery);
-                    $stmt->bind_param("ssiiisds", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $purpose, $amountToPay, $fileContents);
+                    $stmt->bind_param("ssiiisdss", $requestDescription, $scheduledDateTime, $officeId, $_SESSION['user_id'], $statusId, $purpose, $amountToPay, $fileContents, $purposeText);
                     if ($stmt->execute()) {
                         $_SESSION['success'] = true;
 
@@ -153,7 +154,7 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <a class="btn btn-outline-primary mb-2" href="../transactions.php">
+                            <a class="btn btn-outline-primary mb-2" href="../transactions.php" data-bs-toggle="tooltip" data-bs-placement="right" title="Check your document requests/scheduled appointments and their statuses">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
@@ -218,8 +219,14 @@
                                     <option value="Government Services">Government Services</option>
                                     <option value="Rental or Lease Agreements">Rental or Lease Agreements</option>
                                     <option value="Legal Proceedings">Legal Proceedings</option>
+                                    <option value="Other">Other</option>
                                 </select>
                                 <div class="invalid-feedback" id="purposeMessage">Please choose a time.</div>
+                            </div>
+                            <div class="form-group required col-md-12" id="purposeTextField" style="display: none;">
+                                <label for="purposeText" class="form-label">Purpose</label>
+                                <textarea class="form-control" id="purposeText" name="purposeText" placeholder="Please state your purpose for requesting" maxlength="2048" style="resize: none;" rows="4" pattern="[\w\d\s]{1,2048}" required></textarea>
+                                <div id="purposeValidationMessage" class="text-danger"></div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="supportingDocuments" class="form-label">
@@ -238,10 +245,10 @@
                                 <p class="mb-0">You may constantly monitor the status of your request by going to <b>My Transactions</b> then choosing <b>Document Requests</b>.</p>
                             </div>
                             <div class="d-flex w-100 justify-content-between p-1">
-                                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
+                                <button class="btn btn-primary px-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return to previous page" onclick="window.history.go(-1); return false;">
                                     <i class="fa-solid fa-arrow-left"></i> Back
                                 </button>
-                                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
+                                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Submit the document request" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
@@ -329,6 +336,7 @@
     </div>
     <?php include '../../footer.php'; ?>
     <script src="../../loading.js"></script>
+    <script src="../../tooltips.js"></script>
     <script src="../../jquery.js"></script>
     <script>
         const contactNoInput = document.getElementById('contactNumber');
@@ -337,6 +345,8 @@
         const dateValidationMessage = document.getElementById('dateValidationMessage');
         const purposeSelectInput = document.getElementById('purpose');
         const purposeSelectMessage = document.getElementById('purposeMessage');
+        const purposeText = document.getElementById('purposeText');
+        const purposeValidationMessage = document.getElementById('purposeValidationMessage');
 
         contactNoInput.addEventListener('input', () => {
             const contactNo = contactNoInput.value.trim();
@@ -368,13 +378,36 @@
 
         purposeSelectInput.addEventListener('change', () => {
             const purposeSelectValue = purposeSelectInput.value;
+            var purposeTextField = document.getElementById('purposeTextField');
 
             if (purposeSelectValue == "") {
-                purposeSelectMessage.textContent = 'Please enter a purpose for requesting.';
+                purposeSelectMessage.textContent = 'Please choose a purpose for requesting.';
                 purposeSelectInput.classList.add('is-invalid');
-            } else {
+                purposeText.required = true;
+            } else if (purposeSelectValue == "Other") {
                 purposeSelectMessage.textContent = '';
                 purposeSelectInput.classList.remove('is-invalid');
+                purposeText.required = true;
+            } else {
+                purposeSelectMessage.textContent = '';
+                purposeValidationMessage.textContent = '';
+                purposeText.value = '';
+                purposeSelectInput.classList.remove('is-invalid');
+                purposeText.classList.remove('is-invalid');
+                purposeText.required = false;
+            }
+        });
+
+        purposeText.addEventListener('input', () => {
+            const purposeTextValue = purposeText.value.trim();
+            const purposeSelectValue = purposeSelectInput.value;
+
+            if (!(/^[\w\d\s]{1,2048}$/.test(purposeTextValue)) && purposeSelectValue == 'Other') {
+                purposeValidationMessage.textContent = 'Invalid purpose.';
+                purposeText.classList.add('is-invalid');
+            } else {
+                purposeValidationMessage.textContent = '';
+                purposeText.classList.remove('is-invalid');
             }
         });
 
@@ -390,15 +423,40 @@
             }
         });
 
+        // Function to validate custom fields
+        function validateCustomFields() {
+            const purposeSelectValue = purposeSelectInput.value;
+            const purposeTextValue = purposeText.value.trim();
+
+            if (purposeSelectValue === 'Other' && !/^[\w\d\s]{1,2048}$/.test(purposeTextValue)) {
+                purposeValidationMessage.textContent = 'Invalid purpose.';
+                purposeText.classList.add('is-invalid');
+                return false;
+            }
+
+            return true; // All custom validations passed
+        }
+
         // Function to handle form submission
         function handleSubmit() {
-            if (document.getElementById('appointment-form').checkValidity()) {
+            const isCustomValidationValid = validateCustomFields();
+
+            if (document.getElementById('appointment-form').checkValidity() && isCustomValidationValid) {
                 $('#confirmSubmitModal').modal('show');
             }
         }
 
         // Add event listener to the submit button
         document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+
+        // Add a transition effect on the reason text field when it appears and disappears
+        $('#purpose').on('change', function() {
+            if ($(this).val() == 'Other') {
+                $('#purposeTextField').slideToggle(); // Fade in the element
+            } else {
+                $('#purposeTextField').fadeOut(); // Fade out the element
+            }
+        });
     </script>
     <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
     <script>

@@ -142,7 +142,7 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <p><small>PUP respects and values your rights as a data subject under the Data Privacy Act (DPA). PUP is committed to protecting the personal data you provide in accordance with the requirements under the DPA and its IRR. In this regard, PUP implements reasonable and appropriate security measures to maintain the confidentiality, integrity and availability of your personal data. For more detailed Privacy Statement, you may visit <a href="https://www.pup.edu.ph/privacy/" target="_blank">https://www.pup.edu.ph/privacy/</a></small></p>
                         <div class="d-flex flex-column">
-                            <a class="btn btn-outline-primary mb-2" href="../transactions.php">
+                            <a class="btn btn-outline-primary mb-2" href="../transactions.php" data-bs-toggle="tooltip" data-bs-placement="right" title="Check your document requests/scheduled appointments and their statuses">
                             <i class="fa-regular fa-clipboard"></i> My Transactions
                             </a>
                             <button class="btn btn-outline-primary mb-2" onclick="location.reload()">
@@ -211,10 +211,10 @@
                                 <p class="mb-0">You may constantly monitor the status of your request by going to <b>My Transactions</b> then choosing <b>Document Requests</b>.</p>
                             </div>
                             <div class="d-flex w-100 justify-content-between p-1">
-                                <button class="btn btn-primary px-4" onclick="window.history.go(-1); return false;">
+                                <button class="btn btn-primary px-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return to previous page" onclick="window.history.go(-1); return false;">
                                     <i class="fa-solid fa-arrow-left"></i> Back
                                 </button>
-                                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
+                                <input id="submitBtn" value="Submit" type="button" class="btn btn-primary w-25" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Submit the document request" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal" />
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
@@ -302,6 +302,7 @@
     </div>
     <?php include '../../footer.php'; ?>
     <script src="../../loading.js"></script>
+    <script src="../../tooltips.js"></script>
     <script src="../../jquery.js"></script>
     <script>
         const contactNoInput = document.getElementById('contactNumber');
