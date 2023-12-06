@@ -116,6 +116,24 @@
         </div>
     </div>
 </div>
+<!-- End of reason for rejection modal -->
+<!-- Modal for displaying reason for cancellation -->
+<div class="modal fade" id="viewReasonModal" tabindex="-1" role="dialog" aria-labelledby="viewReasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewReasonModalLabel">Reason for Cancellation</h5>
+            </div>
+            <div class="modal-body">
+                <p id="cancellationReasonText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view reason modal -->
     <br><br><br>
 
     <div class="container-fluid text-center p-4">
@@ -375,9 +393,13 @@
                             '<span class="badge rounded-pill ' + getStatusBadgeClass(appointment.status_name) + '">' + appointment.status_name + '</span>' +
                             '</td>';
                             
-                            row += (appointment.status_name == "Rejected") ?
-                                '<td class="text-center"><a href="#" class="btn btn-primary btn-sm create-reason" data-status="' + appointment.status_name + '" data-request-id="' + appointment.appointment_id + '"><i class="fa-solid fa-pen-to-square"></i>Create Reason </a></td>' :
-                                '<td></td>';
+                            if (appointment.status_name === 'Cancelled') {
+                                row += '<td class="text-center"><a href="#" class="btn btn-primary btn-sm view-reason" data-status="' + appointment.status_name + '" data-request-id="' + appointment.appointment_id + '"><i class="fa-solid fa-eye"></i> View Reason </a></td>';
+                            } else if (appointment.status_name === 'Rejected') {
+                                row += '<td class="text-center"><a href="#" class="btn btn-primary btn-sm create-reason" data-status="' + appointment.status_name + '" data-request-id="' + appointment.appointment_id + '"><i class="fa-solid fa-pen-to-square"></i> Create Reason </a></td>';
+                            } else {
+                                row += '<td></td>';
+                            }
 
                             row += '</tr>';
                             tableBody.innerHTML += row;
@@ -617,6 +639,34 @@
                 $(this).prop('disabled', true);
             } else {
                 $(this).prop('disabled', false);
+            }
+        });
+    }
+
+    // Event Listener for View Reason Button
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('view-reason')) {
+            var requestId = event.target.getAttribute('data-request-id');
+            openViewReasonModal(requestId);
+        }
+    });
+
+    // Function to Open View Reason Modal
+    function openViewReasonModal(requestId) {
+        // Make an AJAX request to fetch the reason for cancellation
+        $.ajax({
+            url: 'tables/administrative/get_facility_cancel_reason.php',
+            method: 'POST',
+            data: { request_id: requestId },
+            success: function (response) {
+                // Update the modal content with the reason for cancellation
+                $('#cancellationReasonText').text(response);
+
+                // Open the View Reason modal
+                $('#viewReasonModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error fetching cancellation reason:', error.responseText);
             }
         });
     }

@@ -105,6 +105,27 @@
     </div>
 </div>
 <!-- End of Reason Modal -->
+
+<!-- Modal for cancellation confirmation -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Request</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this request?</p>
+                <label for="cancellationReason">Reason for cancellation:</label>
+                <input type="text" class="form-control" id="cancellationReason" name="cancellationReason">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmCancelBtn">Confirm Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End of Cancel Modal -->
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 
 
@@ -451,7 +472,7 @@
                                 
                                 // Cancel Button
                                 row += '<div style="flex: 1; margin-left: 5px;">';
-                                row += '<button class="btn btn-primary btn-sm cancel-request" data-request-id="' + requestEquipment.request_id + '"><i class="fa-solid fa-pen-to-square"></i> Cancel </button>';
+                                row += '<button class="btn btn-primary btn-sm cancel-request" data-request-id="' + requestEquipment.request_id + '"><i class="fa-solid fa-times"></i> Cancel </button>';
                                 row += '</div>';
                                 
                                 row += '</div>';
@@ -553,34 +574,47 @@
         });
     });
 
-
+    //Event Listener for Cancel Button
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('cancel-request')) {
             var requestId = event.target.getAttribute('data-request-id');
-           cancelRequest(requestId);
+            openCancelModal(requestId);
         }
     });
 
-    //Function for Cancel button
-    function cancelRequest(requestId) {
-    // Make an AJAX request to cancel the equipment request
-        $.ajax({
-            url: 'transaction_tables/cancel_equipment.php',
-            method: 'POST',
-            data: { request_id: requestId },
-            success: function(response) {
-                console.log(requestId);
-                console.log('Request canceled successfully');
-
-
-
-                handlePagination(1, '');
-            },
-            error: function(error) {
-                console.error('Error canceling request:', error.responseText);
-            }
-        });
+    function openCancelModal(requestId) {
+        // Set the request ID in the modal data attribute
+        $('#cancelModal').data('request-id', requestId);
+        // Open the modal
+        $('#cancelModal').modal('show');
     }
+    
+    // Event Listener for Confirm Cancel Button
+    document.getElementById('confirmCancelBtn').addEventListener('click', cancelRequest);
+
+
+    //Function for Cancel button
+    function cancelRequest() {
+        console.log('cancelRequest function called');
+    var requestId = $('#cancelModal').data('request-id');
+    var cancellationReason = $('#cancellationReason').val();
+
+    // Make an AJAX request to cancel the equipment request
+    $.ajax({
+        url: 'transaction_tables/cancel_equipment.php',
+        method: 'POST',
+        data: { request_id: requestId, reason: cancellationReason },
+        success: function(response) {
+            console.log('Request canceled successfully');
+            // Close the modal
+            $('#cancelModal').modal('hide');
+            handlePagination(1, '');
+        },
+        error: function(error) {
+            console.error('Error canceling request:', error.responseText);
+        }
+    });
+}
 
     // //Disables Cancel Button for certain statuses
     // function updateCancelButtonStatus() {
