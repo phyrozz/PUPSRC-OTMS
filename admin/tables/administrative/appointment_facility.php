@@ -105,7 +105,7 @@
                 <form id="createReasonForm">
                     <div class="mb-3">
                         <label for="reason" class="form-label">Reason:</label>
-                        <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                        <textarea class="form-control" id="reason" name="reason" rows="3" maxlength="255"></textarea>
                     </div>
                 </form>
             </div>
