@@ -139,6 +139,24 @@
     </div>
 </div>
 <!-- End of confirm cancel modal -->
+<!-- Confirm delete modal -->
+<div id="confirmDeleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm delete</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this request?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button id="delete-request-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of confirm delete modal -->
 <script src="../../node_modules/flatpickr/dist/flatpickr.min.js"></script>
 <script>
     function getStatusBadgeClass(status) {
@@ -175,6 +193,7 @@
 
     function addDeleteButtonListeners() {
         var deleteButton = document.getElementById('delete-button');
+        var confirmDeleteButton = document.getElementById('delete-request-btn');
 
         // Get all the checkboxes
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -200,8 +219,12 @@
             checkbox.addEventListener('change', updateDeleteButtonState);
         });
 
+        deleteButton.addEventListener('click', function() {
+            $("#confirmDeleteModal").modal("show");
+        });
+
         // Add event listener to delete button
-        deleteButton.addEventListener('click', function () {
+        confirmDeleteButton.addEventListener('click', function () {
             var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
             // Get the request ids of the checked rows
@@ -209,9 +232,7 @@
                 return checkbox.value;
             });
 
-            if (confirm('Are you sure you want to delete the selected appointment(s)?')) {
-                handleDeleteRequest(requestIds);
-            }
+            handleDeleteRequest(requestIds);
         });
 
         // Update delete button state initially
