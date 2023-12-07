@@ -1,7 +1,49 @@
+<?php
+// Generate a list of statuses for this table to be rendered on <select> in guidance.php
+$statuses = array(
+    'all' => 'All',
+    '1' => 'Pending',
+    '3' => 'For Evaluation',
+    '6' => 'Rejected',
+    '7' => 'Approved'
+);
+?>
 <div class="table-responsive">
     <table id="transactions-table" class="table table-hover hidden">
         <thead>
             <tr class="table-active">
+                <input type="checkbox" id="chk-btn" name="request-checkbox" class="hidden" onclick="selectAllCheckbox(this)"><label for="chk-btn" class="chk-btn">Select All</label></input>
+                <style>
+                    .hidden{
+                        display: none;
+                    }
+                    .chk-btn{
+                        padding: 10px;
+                        background-color: #800000;
+                        color: #fff;
+                        margin-bottom: 5px;
+                        border-radius: 5px;
+                    }
+                </style>
+                <script>
+                    function selectAllCheckbox(source) {
+                        checkboxes = document.getElementsByName('request-checkbox');
+                        for(var i=0, n=checkboxes.length;i<n;i++) {
+                            checkboxes[i].checked = source.checked;
+                        }
+                        }
+                        // Function to reset all checkboxes
+                    function resetCheckboxes() {
+                        var checkboxes = document.getElementsByName('request-checkbox');
+                        checkboxes.forEach(function (checkbox) {
+                            checkbox.checked = false;
+                        });
+
+                        // Disable the update button and status dropdown
+                        $('#update-status-button').prop('disabled', true);
+                        $('#update-status').prop('disabled', true);
+                    }
+                </script>
             <th class="text-center"></th>
                 <th class="text-center sortable-header" data-column="offsetting_id" scope="col" data-order="desc">
                     Offsetting Code
@@ -45,6 +87,9 @@
                 <option value="6">Rejected</option>
             </select>
         </div>
+        <div>
+            <a href="#" id="status-info-btn">What do these statuses mean?</a>
+        </div>
         <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i> Update</button>
     </div>    
     <nav aria-label="Page navigation">
@@ -55,6 +100,56 @@
         </div>
     </nav>
 </div>
+<!-- View user details modal -->
+<div id="viewUserDetailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewUserDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewUserDetailsModalLabel">User Details</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view user details modal -->
+<!-- View user status info modal -->
+<div id="statusInfoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="statusInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusInfoModalLabel">What do these statuses mean?</h5>
+            </div>
+            <div class="modal-body">
+                <div id="reminder-container" class="alert alert-info mt-3" role="alert">
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
+                        the deficiency/ies to necessary office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-secondary">Cancelled</span> - The user has cancelled the request. No further actions must be taken.</small></p> 
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
+                        by the admin.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
+                            receiving</span> - The request is currently in Receiving window and waiting for submission of
+                        requirements.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                            evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small>
+                    </p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for
+                            pickup</span> - The requested document/s is/are already available for pickup at the releasing section
+                        of student records.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> -
+                        The requested document/s was/were claimed.</small></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view status info modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -68,7 +163,77 @@
                 return 'bg-dark';
         }
     }
+// Function to populate the edit modal with the request details
+function populateUserInfoModal(userId) {
+        $.ajax({
+            url: 'tables/accounting/get_user_details.php',
+            method: 'POST',
+            data: { user_id: userId },
+            success: function(response) {
+                var userDetails = JSON.parse(response);
+                var modalTitle = document.getElementById('viewUserDetailsModalLabel');
+                var modalBody = document.querySelector('#viewUserDetailsModal .modal-body');
 
+                modalTitle.innerText = 'User details';
+
+                modalBody.innerHTML = `
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Name</strong></p>
+                                <p class="mx-2">${userDetails.last_name + ", " + userDetails.first_name + " " + userDetails.middle_name + " " + userDetails.extension_name}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Student/Guest</strong></p>
+                                <p class="mx-2">${userDetails.user_role_id == 1 ? "Student" : "Guest"}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Student Number</strong></p>
+                                <p class="mx-2">${userDetails.student_no}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Course</strong></p>
+                                <p class="mx-2">${userDetails.course}</p>
+                            </div>
+                            <div class="m-0" style="display: ${userDetails.course == 'N/A' ? "none" : "block"};">
+                                <p class="fs-5 m-0"><strong>Year and Section</strong></p>
+                                <p class="mx-2">${userDetails.year_and_section == "" || null ? 'N/A' : userDetails.year_and_section}</p>
+                            </div>
+                            </div>
+                        <div class="col-6">
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Sex</strong></p>
+                                <p class="mx-2">${userDetails.sex == 1 ? "Male" : "Female"}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Email</strong></p>
+                                <p class="mx-2">${userDetails.email}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Contact Number</strong></p>
+                                <p class="mx-2">${userDetails.contact_no}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Birth Date</strong></p>
+                                <p class="mx-2">${userDetails.formatted_birth_date}</p>
+                            </div>
+                            <div class="m-0">
+                                <p class="fs-5 m-0"><strong>Address</strong></p>
+                                <p class="mx-2 py-0 my-0">${userDetails.home_address}</p>
+                                <p class="mx-2 py-0 my-0">${userDetails.barangay + ", " + userDetails.city}</p>
+                                <p class="mx-2 py-0 my-0">${userDetails.province + (userDetails.zip_code ? ", " + userDetails.zip_code : "")}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $("#viewUserDetailsModal").modal("show");
+            },
+            error: function() {
+                console.log('Error occurred while fetching request details.');
+            }
+        });
+    }
     function handlePagination(page, searchTerm = '', column = 'offsetting_id', order = 'desc') {
         // Show the loading indicator
         var loadingIndicator = document.getElementById('loading-indicator');
@@ -178,23 +343,20 @@
     handlePagination(1, '', 'offsetting_id', 'desc');
 
     $(document).ready(function() {
-        $('#filterByStatusSection').hide();
-        $('#filterByDocTypeSection').hide();
-        $('#filterButton').hide();
         
         $('#search-input').on('input', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm, 'offsetting_id', 'desc');
+            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'offsetting_id', 'desc');
         });
 
         $('#search-button').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm, 'offsetting_id', 'desc');
+            handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'offsetting_id', 'desc');
         });
 
         $('#filterButton').on('click', function() {
             var searchTerm = $('#search-input').val();
-            handlePagination(1, searchTerm + filterDocType(), 'offsetting_id', 'desc');
+            handlePagination(1, searchTerm +  filterDocType() + filterStatus(), 'offsetting_id', 'desc');
         });
 
         // Update status button listener
@@ -213,42 +375,74 @@
                     // Handle the success response
                     console.log('Status updated successfully');
 
+                    resetCheckboxes();
                     // Refresh the table after status update
                     handlePagination(1, '', 'offsetting_id', 'desc');
                 },
                 error: function() {
                     // Handle the error response
                     console.log('Error occurred while updating status');
+
+                    resetCheckboxes();
                 }
             });
         });
 
         // Checkbox change listener using event delegation
-        $(document).on('change', 'input[name="request-checkbox"]', function() {
-            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
-            var updateButton = $('#update-status-button');
-            var statusDropdown = $('#update-status');
+        $(document).on('change', 'input[name="request-checkbox"]', handleCheckboxChange);
 
-            if (checkedCheckboxes.length > 0) {
-                updateButton.prop('disabled', false);
-                statusDropdown.prop('disabled', false);
-            }
-            else {
-                updateButton.prop('disabled', true);
-                statusDropdown.prop('disabled', true);
-            }
+        $('#status-info-btn').on('click', function() {
+            $('#statusInfoModal').modal('show');
         });
     });
+
+    function handleCheckboxChange() {
+        var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
+        var updateButton = $('#update-status-button');
+        var statusDropdown = $('#update-status');
+
+        if (checkedCheckboxes.length > 0) {
+            updateButton.prop('disabled', false);
+            statusDropdown.prop('disabled', false);
+        } else {
+            updateButton.prop('disabled', true);
+            statusDropdown.prop('disabled', true);
+        }
+    }
 
     // Perform search functionality when either the Filter or Search button is pressed
     function filterDocType() {
         var filterByDocTypeVal = $('#filterByDocType').val();
         
-        if (filterByDocTypeVal == 'all') {
-            return '';
+        switch (filterByDocTypeVal) {
+            case 'Miscellaneous Fee':
+                return 'Miscellaneous Fee';
+                break;
+            case 'Tuition Fee':
+                return 'Tuition Fee';
+                break;
+            default:
+                return '';
         }
-        else {
-            return " " + filterByDocTypeVal;
+    }
+    function filterStatus() {
+        var filterByStatusVal = $('#filterByStatus').val();
+        
+        switch (filterByStatusVal) {
+            case '1':
+                return 'Pending';
+                break;
+            case '3':
+                return 'For Evaluation';
+                break;
+            case '6':
+                return 'Rejected';
+                break;
+            case '7':
+                return 'Approved';
+                break;
+            default:
+                return '';
         }
     }
 </script>

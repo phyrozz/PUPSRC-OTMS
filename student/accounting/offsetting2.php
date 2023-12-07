@@ -58,12 +58,6 @@ mysqli_close($connection);
 ?>
 
 <style>
-    .alert-info{
-    margin-right: 50px;
-    width: 600px;
-    float: right;
-    bottom: 180px;
-}
 .custom-alert {
     color: #020403;
     position: fixed;
@@ -107,6 +101,7 @@ background-color: #e9ecef;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Office - Offsetting Verification</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/offsetting1.css">
     <link rel="stylesheet" href="css/offsetting2.css">
     <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -140,13 +135,15 @@ background-color: #e9ecef;
         echo generateBreadcrumb($breadcrumbItems, true);
         ?>
     </div>
-    <div class="row_main">
+    <!--new-->
     <div class="container-fluid text-center p-4">
+        <!--Start of content-->
         <h1>Offsetting</h1>
-    </div>
-    <div class="column_left">
-    <form action="" id="student-offset"method="post">
-    <div class="container-fluid-form col-md-6">
+        <p></p>
+        <div class="container-fluid-form">
+            <form action="" method="post" class="row g-3 needs-validation">
+                <div class="container-form custom-d-flex">
+                    <div class="col-md-6 content-center">
         <h2>Select type of offset</h2>
         <div class="row g-3">
             <div class="col-md-6">
@@ -184,11 +181,11 @@ background-color: #e9ecef;
             </div>
             <div class="col-12">
                 <button class="btn btn-primary" type="submit" name="submit">Submit</button>
-            </div>
-        </div>
-    </div>
-    </form>
-    <div class="alert alert-info col-md-6" role="alert">
+                        </div>
+                    </div>
+                </div>
+                    <div class="col">
+                        <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
                                 <i class="fa-solid fa-circle-info"></i> Reminder
                                 </h4>
@@ -196,9 +193,10 @@ background-color: #e9ecef;
                             <p>The confirmation of your request (whether approved or disapproved) will be provided, ensuring that you receive timely updates regarding the status of your tuition offsetting request.</p>
                             <p>We prioritize the confidentiality of your money-related information and remain committed to providing a secure and reliable experience for all our users.</p>
                             </div>
-    </div>
-    </div>
-    </form>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     </div>
     <?php include '../../footer.php'; ?>
