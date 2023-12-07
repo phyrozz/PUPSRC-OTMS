@@ -166,6 +166,12 @@
                     var notificationList = $('#notificationList');
                     notificationList.empty();
 
+                    // Add the CSS style for the scrollbar
+                    notificationList.css({
+                        'max-height': '500px',
+                        'overflow-y': 'auto'
+                    });
+
                     if (response.unreadCount > 0) {
                         // Display up to 10 notifications (if available)
                         var notificationsToDisplay = response.notifications.slice(0, 10);

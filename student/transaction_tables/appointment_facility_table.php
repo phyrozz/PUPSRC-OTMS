@@ -130,8 +130,13 @@
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to cancel this appointment?</p>
-                <label for="cancellationReason">Reason for cancellation:</label>
-                <input type="text" class="form-control" id="cancellationReason" name="cancellationReason">
+                <form id="createReasonForm">
+                    <div class="mb-3">
+                        <label for="cancellationReason" class="form-label">Reason for cancellation:</label>
+                        <textarea class="form-control" id="cancellationReason" name="cancellationReason" rows="3" maxlength="255"></textarea>
+                        <small id="cancellationReasonHelp" class="form-text text-muted">Maximum length: 255 characters.</small>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
