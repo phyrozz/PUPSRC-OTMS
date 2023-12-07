@@ -39,7 +39,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<link rel="stylesheet" href="css/offsetting1.css">
+<style>
+.custom-alert {
+    color: #020403;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 9999;
+    text-align: center;
+    }
+
+.custom-alert-message {
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.custom-alert-close {
+padding: 5px 10px;
+background-color: #ffc107;
+border: solid 1px black;
+border-radius: 10%;
+color: #212529;
+cursor: pointer;
+}
+
+.custom-alert-close:hover {
+background-color: #e9ecef;
+}
+</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Office - Offsetting</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/payment1.css">
+    <link rel="stylesheet" href="css/offsetting1.css">
     <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,22 +156,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="col-md-6">
                 <label for="birthdate" class="form-label">Birth Date<code>*</code></label>
-                <input type="date" class="form-control" id="birthdate"name="birth_date" required value="<?php echo isset($fetch['birth_date']) ? $fetch['birth_date'] : ''; ?>">
+                <input type="date" class="form-control" id="birthdate"name="birth_date" required value="<?php echo isset($fetch['birth_date']) ? $fetch['birth_date'] : ''; ?>" readonly>
                 <div class="invalid-feedback">
                     Please provide a birth date.
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-12" style="display: flex; justify-content: space-between">
             <a class ="btn btn-primary back-button" href="../accounting.php">Back</a>
-                <button class="btn btn-primary next-button" style="margin-bottom: 120px" type="submit" name="next"onclick="validateForm(event)">Next</button>
+            <div class="m-2"></div>
+                <button class="btn btn-primary back-button" type="submit" name="next"onclick="validateForm(event)">Next</button>
             </div>
              <div class="alert alert-info" role="alert">
                                 <h4 class="alert-heading">
                                 <i class="fa-solid fa-circle-info"></i> Reminder
                                 </h4>
-                                <p>Make sure that the information provided in every field matched the correct detailed of the account.</p>
-                                <p>This is considered to be an confirmation of your account.</p>
-                                <p class="mb-0">You may begin to <b>Offsetting</b> when you pressed the next button.</p>
+                                <p>Make sure that the information provided in every field match the correct details of the account</p>
+                                <p>This is a confirmation of your account’s validity</p>
+                                <p>You may begin with <b>Offsetting</b> once you pressed the Next button</p>
                             </div>
         </form>
     </div>
