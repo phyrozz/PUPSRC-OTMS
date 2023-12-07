@@ -74,10 +74,10 @@
                                 </div>
                                 <button type="button" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i class="fa-solid fa-filter"></i> Filter</button>
                                 <?php if ($table === 'document_request') { ?>
-                                    <a href="tables/guidance/doc_request_reports.php" id="generate-doc-requests" name="generate-doc-requests" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Document Request Report</a>
+                                    <button id="generate-doc-requests" name="generate-doc-requests" class="btn btn-primary mt-2"><i class="fas fa-file-pdf"></i> Generate Document Request Report</button>
                                 <?php } ?>
                                 <?php if ($table === 'scheduled_appointments') { ?>
-                                    <a href="tables/guidance/counseling_reports.php" id="generate-counseling" name="generate-counseling" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i> Generate Counseling Schedule Report</a>
+                                    <button id="generate-counseling" name="generate-counseling" class="btn btn-primary mt-2"><i class="fas fa-file-pdf"></i> Generate Counseling Schedule Report</button>
                                 <?php } ?>
                             </div>
                         </div>
@@ -128,6 +128,14 @@
     <script>
         $(document).ready(function() {
             $("#generate-doc-requests").on('click', function() {
+                $("#confirmGenerateReportModal").modal("show");
+            });
+            $("#generate-counseling").on('click', function() {
+                $("#confirmGenerateReportModal").modal("show");
+            });
+
+            // "dr" stands for document request, "gc" for guidance counseling
+            $('#generate-dr-to-pdf-btn').on('click', function() {
                 var selectedStatus = $("#filterByStatus").val();
                 var selectedDocType = $("#filterByDocType").val();
                 var searchValue = $("#search-input").val(); // Get the value of the search input
@@ -140,25 +148,51 @@
                 // Construct the URL with the updated parameters
                 var link = "tables/guidance/doc_request_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
                 
-                // Update the href attribute of the link
-                $(this).attr("href", link);
+                window.open(link, '_blank');
             });
-            $("#generate-counseling").on('click', function() {
+
+            $('#generate-dr-to-csv-btn').on('click', function() {
                 var selectedStatus = $("#filterByStatus").val();
                 var selectedDocType = $("#filterByDocType").val();
-                var searchValue = $("#search-input").val(); // Get the value of the search input
+                var searchValue = $("#search-input").val();
 
-                // Encode the selected values and search query to be URL-safe
                 var encodedStatus = encodeURIComponent(selectedStatus);
                 var encodedDocType = encodeURIComponent(selectedDocType);
                 var encodedSearchValue = encodeURIComponent(searchValue);
 
-                // Construct the URL with the updated parameters
+                var link = "tables/guidance/doc_request_csv.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+
+                window.open(link, '_blank');
+            });
+
+            $('#generate-gc-to-pdf-btn').on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var selectedDocType = $("#filterByDocType").val();
+                var searchValue = $("#search-input").val();
+
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedDocType = encodeURIComponent(selectedDocType);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
                 var link = "tables/guidance/counseling_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
                 
-                // Update the href attribute of the link
-                $(this).attr("href", link);
+                window.open(link, '_blank');
             });
+
+            $('#generate-gc-to-csv-btn').on('click', function() {
+                var selectedStatus = $("#filterByStatus").val();
+                var selectedDocType = $("#filterByDocType").val();
+                var searchValue = $("#search-input").val();
+
+                var encodedStatus = encodeURIComponent(selectedStatus);
+                var encodedDocType = encodeURIComponent(selectedDocType);
+                var encodedSearchValue = encodeURIComponent(searchValue);
+
+                var link = "tables/guidance/counseling_reports_csv.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+                
+                window.open(link, '_blank');
+            });
+
 
             $('.sortable-header').on('click', function() {
                 var column = $(this).data('column');

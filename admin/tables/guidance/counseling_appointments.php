@@ -116,6 +116,26 @@ $statuses = array(
     </div>
 </div>
 <!-- End of view status info modal -->
+<!-- Confirm generate modal -->
+<div id="confirmGenerateReportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmGenerateReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmGenerateReportModalLabel">Confirm generate</h5>
+            </div>
+            <div class="modal-body">
+                <p>You will be generating a report in .pdf document format. Do you want to export your report in .csv?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <!-- "dr" stands for document request -->
+                <button id="generate-gc-to-pdf-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">No. Generate in .pdf</button>
+                <button id="generate-gc-to-csv-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes. Export to .csv</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of confirm generate modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
