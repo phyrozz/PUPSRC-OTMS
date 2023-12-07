@@ -568,7 +568,7 @@
                 modalTitle.innerText = 'Reason for Rejection';
 
                 if (reason !== null) {
-                    modalBody.innerHTML = '<p>' + reason + '</p>';
+                    modalBody.innerHTML = '<p style= "overflow-wrap: break-word;">' + reason + '</p>';
                 } else {
                     modalBody.innerHTML = '<p>No reason provided yet.</p>';
                 }

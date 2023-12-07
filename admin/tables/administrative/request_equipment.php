@@ -118,7 +118,7 @@
                 <h5 class="modal-title" id="viewReasonModalLabel">Reason for Cancellation</h5>
             </div>
             <div class="modal-body">
-                <p id="cancellationReasonText"></p>
+                <p id="cancellationReasonText" style= "overflow-wrap: break-word;"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
