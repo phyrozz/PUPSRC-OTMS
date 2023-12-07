@@ -152,7 +152,7 @@
                 var statusCell = row.querySelector('.counseling-status-cell');
                 var status = statusCell.textContent.trim();
                 
-                return status === 'Pending' || status === 'Rejected' || status === 'Cancelled';
+                return status === 'Pending' || status === 'Rejected';
             });
 
             deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
@@ -364,8 +364,8 @@
     handlePagination(1, '', 'request_id', 'desc');
 
     $(document).ready(function() {
-        $('#button-addon2').click(function() {
-            var searchTerm = $('#search-input').val();
+        $('#search-button').click(function() {
+            var searchTerm = ($('#search-input').val() + filterStatus()).trim();
             handlePagination(1, searchTerm, 'request_id', 'desc');
         });
     });
@@ -388,4 +388,29 @@
             $('#viewCommentModal').modal('show');
         }
     });
+
+    // Add status value on the search term based on the selected option on status filter dropdown
+    function filterStatus() {
+        var filterByStatusVal = $('#status-filter-btn').text();
+        
+        switch (filterByStatusVal) {
+            case 'Pending':
+                return ' pending';
+                break;
+            case 'Approved':
+                return ' approved';
+                break;
+            case 'For evaluation':
+                return ' for evaluation';
+                break;
+            case 'Rejected':
+                return ' rejected';
+                break;
+            case 'Cancelled':
+                return ' cancelled';
+                break;
+            default:
+                return '';
+        }
+    }
 </script>

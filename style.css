@@ -148,6 +148,12 @@ body.dark-mode {
     border-color: #800000;
 }
 
+.btn-outline-primary:focus-within {
+    background-color: #800000;
+    color: #fff;
+    border-color: #800000;
+}
+
 .btn-outline-primary.dark-mode {
     color: #aaa;
     border-color: #aaa;

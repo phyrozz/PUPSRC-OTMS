@@ -512,9 +512,57 @@
     handlePagination(1, '', 'request_id', 'desc');
 
     $(document).ready(function() {
-        $('#button-addon2').click(function() {
-            var searchTerm = $('#search-input').val();
+        // Click event handling on Search button
+        $('#search-button').click(function() {
+            var searchTerm = $('#search-input').val() + filterOffice() + filterStatus();
             handlePagination(1, searchTerm, 'request_id', 'desc');
         });
     });
+
+    // Add office name value on the search term based on the selected option on office filter dropdown
+    function filterOffice() {
+        var filterByOfficeNameVal = $('#office-filter-btn').text();
+        
+        switch (filterByOfficeNameVal) {
+            case 'Registrar Office':
+                return 'registrar office';
+                break;
+            case 'Guidance Office':
+                return 'guidance office';
+                break;
+            default:
+                return '';
+        }
+    }
+
+    // Add status value on the search term based on the selected option on status filter dropdown
+    function filterStatus() {
+        var filterByStatusVal = $('#status-filter-btn').text();
+        
+        switch (filterByStatusVal) {
+            case 'Pending':
+                return ' pending';
+                break;
+            case 'For receiving':
+                return ' for receiving';
+                break;
+            case 'For evaluation':
+                return ' for evaluation';
+                break;
+            case 'Ready for pickup':
+                return ' ready for pickup';
+                break;
+            case 'Released':
+                return ' released';
+                break;
+            case 'Rejected':
+                return ' rejected';
+                break;
+            case 'Cancelled':
+                return ' cancelled';
+                break;
+            default:
+                return '';
+        }
+    }
 </script>
