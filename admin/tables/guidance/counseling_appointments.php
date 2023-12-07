@@ -3,6 +3,7 @@
 $statuses = array(
     'all' => 'All',
     '1' => 'Pending',
+    '8' => 'Cancelled',
     '3' => 'For Evaluation',
     '7' => 'Approved',
     '6' => 'Rejected'
@@ -339,6 +340,9 @@ $statuses = array(
                 break;
             case '7':
                 return ' approved';
+                break;
+            case '8':
+                return ' cancelled';
                 break;
             default:
                 return '';
