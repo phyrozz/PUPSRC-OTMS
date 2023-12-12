@@ -148,6 +148,27 @@ $statuses = array(
   </div>
 </div>
 <!-- End of create reason for rejected status modal -->
+<!-- Start of Confirm Delete Modal -->
+<div id="confirmDeleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Are you sure you want to delete this record?</h5>
+      </div>
+      <div class="modal-body">
+        <div class="m-0">
+          <p id="recordToBeDeleted" class="fs-5 m-0">Student/Guest</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="confirmDeleteButton">Submit</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of confirm Delete Modal -->
 <script>
 function getStatusBadgeClass(status) {
   switch (status) {
@@ -239,10 +260,6 @@ function populateUserInfoModal(userId) {
     }
   });
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////////////////////////////
 
 function populateFeedbackTextModal(feedbackText) {
   var modalTitle = document.getElementById('viewFeedbackTextModalLabel');
@@ -355,7 +372,8 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
       if (data.total_pages > 1) {
         for (var i = 1; i <= data.total_pages; i++) {
           var pageLink = '<li class="page-item">' +
-            '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' : 'btn-outline-primary') +
+            '<a class="page-link ' + (i == data.current_page ? 'btn-primary text-light' :
+              'btn-outline-primary') +
             '" href="#" onclick="handlePagination(' + i + ', \'' + searchTerm +
             '\', \'request_id\', \'desc\')">' + i + '</a>' +
             '</li>';
@@ -495,24 +513,31 @@ $(document).ready(function() {
   $(document).on('click', '.delete-request', function() {
     var request_id = event.target.getAttribute('data-request-id');
     console.log(request_id);
+    $('#recordToBeDeleted').text(request_id);
+    $('#confirmDeleteModal').modal('show');
 
-    $.ajax({
-      url: 'tables/registrar/delete_request.php',
-      method: 'POST',
-      data: {
-        request_id: request_id
-      },
-      success: function(response) {
-        // Log response
-        console.log('Request successfully deleted, response:\n', response)
-        // Delete row from table
-        $(`#${request_id}`).hide()
-        $(`#${request_id}`).remove()
-      },
-      error: function() {
-        console.log('Error occurred while fetching existing purpose.');
-      }
+    $('#confirmDeleteButton').on('click', function() {
+      $.ajax({
+        url: 'tables/registrar/delete_request.php',
+        method: 'POST',
+        data: {
+          request_id: request_id
+        },
+        success: function(response) {
+          // Log response
+          console.log('Request successfully deleted, response:\n', response)
+          // Delete row from table
+          $(`#${request_id}`).hide()
+          $(`#${request_id}`).remove()
+        },
+        error: function() {
+          console.log('Error occurred while fetching existing purpose.');
+        }
+      })
+
+      $('#confirmDeleteModal').modal('hide');
     })
+
   })
 
   // Update status button listener
