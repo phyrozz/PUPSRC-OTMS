@@ -171,7 +171,8 @@ $statuses = array(
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary" id="submitAmountButton">Submit</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="edit-amount-dismiss" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancel</button>
         </div>
       </form>
     </div>
@@ -554,6 +555,12 @@ $(document).ready(function() {
 
   })
 
+
+  // Hide invalid tooltip
+  $(document).on('click', '#edit-amount-dismiss', function() {
+    $(".invalid-tooltip").hide();
+  })
+
   // Update amount to pay
   $(document).on('submit', '#editAmountToPayForm', function(e) {
     e.preventDefault()
@@ -565,13 +572,14 @@ $(document).ready(function() {
 
     if (!/^\d*\.?\d*$/.test(amount_to_pay.value)) {
       $(".invalid-tooltip").text('Please enter a valid amount');
-      $(".invalid-tooltip").modal('show');
+      $(".invalid-tooltip").show();
+
       return;
     }
 
     if (isNaN(amount_to_pay) || amount_to_pay < 0 || amount_to_pay > 1000) {
       $(".invalid-tooltip").text('Please enter a valid amount between 0 and 1000.');
-      $(".invalid-tooltip").modal('show');
+      $(".invalid-tooltip").show();
       return;
     }
 
@@ -579,7 +587,7 @@ $(document).ready(function() {
     var decimalCount = (amount_to_pay.toString().split('.')[1] || []).length;
     if (decimalCount > 2) {
       $(".invalid-tooltip").text('Amount should only have up to 2 decimal points.');
-      $(".invalid-tooltip").modal('show');
+      $(".invalid-tooltip").show();
       return;
     }
 
@@ -596,7 +604,7 @@ $(document).ready(function() {
 
         // Close the modal
         $('#editAmountToPayModal').modal('hide');
-        $(".invalid-tooltip").modal('hide');
+        $(".invalid-tooltip").hide();
 
         // Refresh the table
         handlePagination(1, '', 'request_id', 'desc');
@@ -604,6 +612,8 @@ $(document).ready(function() {
       error: function(error) {
         // Handle error
         $('#amount').val(error);
+        $(".invalid-tooltip").hide();
+
         console.log('Error occurred while updating reason.');
       }
     });
