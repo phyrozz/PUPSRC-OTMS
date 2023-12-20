@@ -563,24 +563,27 @@ $(document).ready(function() {
 
   // Update amount to pay
   $(document).on('submit', '#editAmountToPayForm', function(e) {
+    $(".invalid-tooltip").hide();
     e.preventDefault()
     e.stopPropagation()
     var request_id = $("#editAmountToPayModal").data('request-id')
-    var amount_to_pay = parseFloat($('#amount').val())
+    var amount_to_pay = $('#amount').val()
 
     // Validation for amount
 
-    if (!/^\d*\.?\d*$/.test(amount_to_pay.value)) {
+    if (!/^[0-9]+(?:\.[0-9]+)?$/.test(amount_to_pay)) {
+      console.log(amount_to_pay)
+      console.log('this is still working')
       $(".invalid-tooltip").text('Please enter a valid amount');
       $(".invalid-tooltip").show();
 
-      return;
+      return false;
     }
 
     if (isNaN(amount_to_pay) || amount_to_pay < 0 || amount_to_pay > 1000) {
       $(".invalid-tooltip").text('Please enter a valid amount between 0 and 1000.');
       $(".invalid-tooltip").show();
-      return;
+      return false;
     }
 
     // Validate decimal points (up to 2)
@@ -588,7 +591,7 @@ $(document).ready(function() {
     if (decimalCount > 2) {
       $(".invalid-tooltip").text('Amount should only have up to 2 decimal points.');
       $(".invalid-tooltip").show();
-      return;
+      return false;
     }
 
     // Make an AJAX request to update the purpose in the database
