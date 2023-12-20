@@ -148,6 +148,37 @@ $statuses = array(
   </div>
 </div>
 <!-- End of create reason for rejected status modal -->
+<!-- Edit Amount to pay modal -->
+<div id="editAmountToPayModal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="editAmountToPayModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAmountToPayModalLabel">Edit amount of request:</h5>
+      </div>
+      <form class="needs-validation" novalidate id="editAmountToPayForm" method="post">
+        <div class="modal-body mb-2">
+          <div class="mb-3">
+            <label for="amount" class="form-label">Amount to Pay:</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">₱</span>
+              </div>
+              <input class="form-control mb-2" type="text" id="amount" name="amount" />
+              <div class="invalid-tooltip"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" id="submitAmountButton">Submit</button>
+          <button type="button" id="edit-amount-dismiss" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- End of edit amount to pay modal -->
 <!-- Start of Confirm Delete Modal -->
 <div id="confirmDeleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
   aria-hidden="true">
@@ -332,7 +363,9 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
             '<td>' + request.request_description + '</td>' +
             '<td>' + request.purpose + '</td>' +
             // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-            '<td>' + '₱' + request.amount_to_pay + '</td>' +
+            '<td><a href="#" class="amount-to-pay-link" data-request-id="' + request.request_id +
+            '"data-amount-to-pay="' + request.amount_to_pay + '">' + '₱' +
+            request.amount_to_pay + '</a></td>' +
             '<td class="text-center">' +
             '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request
             .status_name + '</span>' + '</td>';
@@ -508,8 +541,90 @@ $(document).ready(function() {
     });
   });
 
-  // Create a event listener for when delete button is pressed
+  // Show edit amount modal
+  $(document).on('click', '.amount-to-pay-link', function(e) {
+    var request_id = e.target.getAttribute('data-request-id')
+    var amount_to_pay = e.target.getAttribute('data-amount-to-pay')
 
+    $('#editAmountToPayModal').data('request-id', request_id)
+    $('#editAmountToPayModal').data('amount-to-pay', amount_to_pay)
+    $('#amount').val(amount_to_pay)
+    $('#editAmountToPayModalLabel').text(`Edit amount of ${request_id}`)
+
+    $('#editAmountToPayModal').modal('show')
+
+  })
+
+
+  // Hide invalid tooltip
+  $(document).on('click', '#edit-amount-dismiss', function() {
+    $(".invalid-tooltip").hide();
+  })
+
+  // Update amount to pay
+  $(document).on('submit', '#editAmountToPayForm', function(e) {
+    $(".invalid-tooltip").hide();
+    e.preventDefault()
+    e.stopPropagation()
+    var request_id = $("#editAmountToPayModal").data('request-id')
+    var amount_to_pay = $('#amount').val()
+
+    // Validation for amount
+
+    if (!/^[0-9]+(?:\.[0-9]+)?$/.test(amount_to_pay)) {
+      console.log(amount_to_pay)
+      console.log('this is still working')
+      $(".invalid-tooltip").text('Please enter a valid amount');
+      $(".invalid-tooltip").show();
+
+      return false;
+    }
+
+    if (isNaN(amount_to_pay) || amount_to_pay < 0 || amount_to_pay > 1000) {
+      $(".invalid-tooltip").text('Please enter a valid amount between 0 and 1000.');
+      $(".invalid-tooltip").show();
+      return false;
+    }
+
+    // Validate decimal points (up to 2)
+    var decimalCount = (amount_to_pay.toString().split('.')[1] || []).length;
+    if (decimalCount > 2) {
+      $(".invalid-tooltip").text('Amount should only have up to 2 decimal points.');
+      $(".invalid-tooltip").show();
+      return false;
+    }
+
+    // Make an AJAX request to update the purpose in the database
+    $.ajax({
+      url: 'tables/registrar/edit_amount_to_pay.php', // Your PHP script to handle the update
+      method: 'POST',
+      data: {
+        request_id: request_id,
+        amount_to_pay: amount_to_pay
+      },
+      success: function(response) {
+        // Handle success response
+
+        // Close the modal
+        $('#editAmountToPayModal').modal('hide');
+        $(".invalid-tooltip").hide();
+
+        // Refresh the table
+        handlePagination(1, '', 'request_id', 'desc');
+      },
+      error: function(error) {
+        // Handle error
+        $('#amount').val(error);
+        $(".invalid-tooltip").hide();
+
+        console.log('Error occurred while updating reason.');
+      }
+    });
+  })
+
+  // Validation for amount to pay input
+
+  // Create a event listener for when delete button is pressed
   $(document).on('click', '.delete-request', function() {
     var request_id = event.target.getAttribute('data-request-id');
     console.log(request_id);
