@@ -39,6 +39,10 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center appointment-facility-attachment-header sortable-header" data-column="9" scope="letter_content" data-order="asc">
+                    Attachment
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
                 <th class="text-center" class="pe-none"></th>
                 <!-- <th class="text-center doc-request-status-header" scope="col">
                     Generate Slip
@@ -705,8 +709,7 @@
                         var appointmentFacility = data.appointment_facility[i];
 
                         var row = '<tr>' +
-                            '<td><input type="checkbox" id="' + appointmentFacility.appointment_id + '" name="' + appointmentFacility.appointment_id + '" value="' + appointmentFacility.appointment_id + '"></td>' +
-                            '<td class="text-center">' + appointmentFacility.appointment_id + '</td>' +
+                        '<td><input type="checkbox" id="' + appointmentFacility.appointment_id + '" name="' + appointmentFacility.appointment_id + '" value="' + appointmentFacility.appointment_id + '"></td>' +
                             '<td class="text-center">' +  appointmentFacility.facility_name + '</td>' +
                             '<td class="text-center">' +  appointmentFacility.facility_number + '</td>' +
                             '<td class="text-center">' +  appointmentFacility.course + '</td>' +
@@ -735,7 +738,9 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill request-equipment-status-cell ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
                             '</td>' +
+                            '<td class="text-center"><a href="' + (appointmentFacility.letter_content ? "../../../student/administrative/appointment-letter/" + appointmentFacility.letter_content : "") + '" target="_blank">' + (appointmentFacility.letter_content ? "View Letter" : "") + '</a></td>' + 
                             '<td class="text-center">';
+                            
 
                             if (appointmentFacility.status_name === "Pending") {
                                 row += '<div class="btn-container" style="display: flex;">';
@@ -778,8 +783,8 @@
                 addDeleteButtonListeners();
                 // Add event listeners for edit buttons
                 updateEditButtonStatus();
-                //Checks for request status and hides cancelled button
-                updateCancelButtonStatus();
+                // //Checks for request status and hides cancelled button
+                // updateCancelButtonStatus();
 
             }
         });
@@ -859,31 +864,31 @@
     });
 }
 
-    //Disables Cancel Button for certain statuses
-    function updateCancelButtonStatus() {
-    var cancelButtons = document.querySelectorAll('.cancel-request');
+    // //Disables Cancel Button for certain statuses
+    // function updateCancelButtonStatus() {
+    // var cancelButtons = document.querySelectorAll('.cancel-request');
 
-    cancelButtons.forEach(function (button) {
-        var row = button.closest('tr');
-        var statusCell = row.querySelector('.appointment-facility-status-cell');
-        var status = statusCell.textContent.trim();
+    // cancelButtons.forEach(function (button) {
+    //     var row = button.closest('tr');
+    //     var statusCell = row.querySelector('.appointment-facility-status-cell');
+    //     var status = statusCell.textContent.trim();
 
-        // Disable the Cancel button based on specific statuses
-        if (
-            status === 'For Receiving' ||
-            status === 'For Evaluation' ||
-            status === 'Ready for Pickup' ||
-            status === 'Released' ||
-            status === 'Rejected' ||
-            status === 'Approved' ||
-            status === 'Cancelled'
-        ) {
-            button.disabled = true;
-        } else {
-            button.disabled = false;
-        }
-    });
-    }
+    //     // Disable the Cancel button based on specific statuses
+    //     if (
+    //         status === 'For Receiving' ||
+    //         status === 'For Evaluation' ||
+    //         status === 'Ready for Pickup' ||
+    //         status === 'Released' ||
+    //         status === 'Rejected' ||
+    //         status === 'Approved' ||
+    //         status === 'Cancelled'
+    //     ) {
+    //         button.disabled = true;
+    //     } else {
+    //         button.disabled = false;
+    //     }
+    // });
+    // }
 
 
     // Function to toggle the sort icons
