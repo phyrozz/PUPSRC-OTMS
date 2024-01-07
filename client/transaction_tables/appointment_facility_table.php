@@ -35,6 +35,10 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
+                <th class="text-center appointment-facility-attachment-header sortable-header" data-column="9" scope="letter_content" data-order="asc">
+                    Attachment
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
                 <th class="text-center"></th>
                 <th class="text-center"></th>
                 <!-- <th class="text-center doc-request-status-header" scope="col">
@@ -667,6 +671,7 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill appointment-facility-status-cell ' + getStatusBadgeClass(appointmentFacility.status_name) + '">' + appointmentFacility.status_name + '</span>' +
                             '</td>' +
+                            '<td class="text-center"><a href="' + (appointmentFacility.letter_content ? "../../../client/administrative/appointment-letter/" + appointmentFacility.letter_content : "") + '" target="_blank">' + (appointmentFacility.letter_content ? "View Letter" : "") + '</a></td>' + 
                             '<td class="text-center">';
 
                             if (appointmentFacility.status_name === "Pending") {

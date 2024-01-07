@@ -19,7 +19,7 @@ $column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'desc';
 
 // Retrieve the request_equipment requests
-$requestQuery = "SELECT request_id, datetime_schedule, quantity_equip, status_name, equipment_name
+$requestQuery = "SELECT request_id, datetime_schedule, quantity_equip, status_name, equipment_name, slip_content
                         FROM request_equipment
                         INNER JOIN statuses ON request_equipment.status_id = statuses.status_id
                         INNER JOIN equipment ON request_equipment.equipment_id = equipment.equipment_id
@@ -29,7 +29,8 @@ if (!empty($searchTerm)) {
     $requestQuery .= " AND (request_id LIKE '%$searchTerm%'
                            OR quantity_equip LIKE '%$searchTerm%'
                            OR datetime_schedule LIKE '%$searchTerm%'
-                           OR equipment_name LIKE '%$searchTerm%')";
+                           OR equipment_name LIKE '%$searchTerm%'
+                           OR slip_content LIKE '%$searchTerm%')";
 }
 
 // Add the sorting parameters to the query

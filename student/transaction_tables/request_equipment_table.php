@@ -26,6 +26,10 @@
                 <th class="text-center request-equipment-status-header sortable-header" data-column="5" scope="status_name" data-order="asc">
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>,
+                <th class="text-center request-equipment-attachment-header sortable-header" data-column="6" scope="slip_content" data-order="asc">
+                    Attachment
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
                 <th class="text-center" class="pe-none"></th>
             </tr>
@@ -465,6 +469,7 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill request-equipment-status-cell ' + getStatusBadgeClass(requestEquipment.status_name) + '">' + requestEquipment.status_name + '</span>' +
                             '</td>' +
+                            '<td class="text-center"><a href="' + (requestEquipment.slip_content ? "../../../student/administrative/requisition-slip/" + requestEquipment.slip_content : "") + '" target="_blank">' + (requestEquipment.slip_content ? "View Slip" : "") + '</a></td>' + 
                             '<td class="text-center">';
 
                             if (requestEquipment.status_name === "Pending") {
@@ -484,6 +489,8 @@
                             } else if(requestEquipment.status_name === "Rejected") {
                                 row += '<a href="#" class="btn btn-primary btn-sm view-reason pe-auto" data-status="' + requestEquipment.status_name + '" data-request-id="' +  requestEquipment.request_id + '"><i class="fa-solid fa-eye"></i> Reason </a>';
                             }
+                            
+
 
                             
                             '</tr>';
@@ -510,8 +517,8 @@
                 // Add event listeners for edit buttons
                 updateEditButtonStatus();
 
-                // //Checks for request status and hides cancelled button
-                // updateCancelButtonStatus();
+                //Checks for request status and hides cancelled button
+                updateCancelButtonStatus();
 
 
             }

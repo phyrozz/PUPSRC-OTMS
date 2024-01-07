@@ -27,7 +27,10 @@
                     Status
                     <i class="sort-icon fa-solid fa-caret-down"></i>
                 </th>
-                <th class="text-center"></th>
+                <th class="text-center request-equipment-attachment-header sortable-header" data-column="6" scope="slip_content" data-order="asc">
+                    Attachment
+                    <i class="sort-icon fa-solid fa-caret-down"></i>
+                </th>
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -466,6 +469,7 @@
                             '<td class="text-center">' +
                             '<span class="badge rounded-pill request-equipment-status-cell ' + getStatusBadgeClass(requestEquipment.status_name) + '">' + requestEquipment.status_name + '</span>' +
                             '</td>' +
+                            '<td class="text-center"><a href="' + (requestEquipment.slip_content ? "../../../client/administrative/requisition-slip/" + requestEquipment.slip_content : "") + '" target="_blank">' + (requestEquipment.slip_content ? "View Slip" : "") + '</a></td>' + 
                             '<td class="text-center">';
 
                             if (requestEquipment.status_name === "Pending") {

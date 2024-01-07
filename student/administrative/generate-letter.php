@@ -262,11 +262,49 @@ $fileName = 'appointment_letter'. '_'.  $facilityNameModified . '_' . uniqid(). 
 
 
 // Save the PDF to a directory in your file system
-$directoryPath = 'C:/xampp/htdocs/student/administrative/appointment-letter/';
+$directoryPath = $_SERVER['DOCUMENT_ROOT'] . '/student/administrative/appointment-letter/';
 $filePath = $directoryPath . $fileName;
 file_put_contents($filePath, $dompdf->output());
 
 // Output the PDF to the browser
-$dompdf->stream("letter.pdf", ["Attachment" => false]);
+$dompdf->stream($fileName, ["Attachment" => false]);
+
+try {
+  // Prepare the query to retrieve appointment_id for the user
+  $checkQuery = "SELECT appointment_id FROM appointment_facility WHERE user_id = ?";
+  $checkStmt = $connection->prepare($checkQuery);
+  $checkStmt->bind_param("i", $_SESSION['user_id']);
+  $checkStmt->execute();
+  $checkResult = $checkStmt->get_result();
+
+  if ($checkResult->num_rows > 0) {
+      while ($row = $checkResult->fetch_assoc()) {
+          $requestId = $row['appointment_id'];
+
+          // Prepare the query to update slip_content for each request
+          $pdfUpdateQuery = "UPDATE appointment_facility SET letter_content = ? WHERE appointment_id = ? AND facility_id = ? ";
+          $stmt = $connection->prepare($pdfUpdateQuery);
+          $stmt->bind_param("ssi", $fileName,$requestId, $facilityId);
+          $stmt->execute();
+
+          // Additional logic after update if needed
+          if ($stmt->affected_rows > 0) {
+            echo "<script>alert('Generated PDF uploaded successfully for all requests.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+          } else {
+              // Handle cases where the update failed
+          }
+      }
+  } else {
+      echo "<script>alert('No requests found for the user.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+  }
+
+  // Close prepared statements
+  $checkStmt->close();
+  $stmt->close();
+} catch (Exception $e) {
+  $errorCode = $e->getCode();
+  $errorMessage = $e->getMessage();
+  echo "<script>alert('An error occurred: Error code " . $errorCode . ". Error message: " . $errorMessage . "'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+}
 ?>
 

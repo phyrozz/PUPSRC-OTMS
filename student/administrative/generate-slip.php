@@ -112,6 +112,8 @@ $dompdf->loadHtml($html);
 
 $dompdf->render();
 
+
+
 $equipmentNameModified = strtolower(str_replace(' ', '', $equipmentName));
 
 // Generate the file name with the current time, unique identifier, and equipment name
@@ -122,17 +124,49 @@ $directoryPath = $_SERVER['DOCUMENT_ROOT'] . '/student/administrative/requisitio
 $filePath = $directoryPath . $fileName;
 file_put_contents($filePath, $dompdf->output());
 
-// Save the PDF content to a variable
-$pdfContent = $dompdf->output();
-
-// Update the request_equipment table with the PDF file content
-$pdfUpdateQuery = "UPDATE request_equipment SET slip_content = ? WHERE request_id = ?";
-$pdfUpdateStmt = $connection->prepare($pdfUpdateQuery);
-$pdfUpdateStmt->bind_param("bs", $pdfContent, $requestId);
-$pdfUpdateStmt->execute();
-$pdfUpdateStmt->close();
-
 // Output the PDF to the browser
 $dompdf->stream($fileName, ["Attachment" => false]);
+
+try {
+  // Prepare the query to retrieve request_id for the user
+  $checkQuery = "SELECT request_id FROM request_equipment WHERE user_id = ?";
+  $checkStmt = $connection->prepare($checkQuery);
+  $checkStmt->bind_param("i", $_SESSION['user_id']);
+  $checkStmt->execute();
+  $checkResult = $checkStmt->get_result();
+
+  if ($checkResult->num_rows > 0) {
+      while ($row = $checkResult->fetch_assoc()) {
+          $requestId = $row['request_id'];
+
+          // Prepare the query to update slip_content for each request
+          $pdfUpdateQuery = "UPDATE request_equipment SET slip_content = ? WHERE request_id = ? AND equipment_id = ? ";
+          $stmt = $connection->prepare($pdfUpdateQuery);
+          $stmt->bind_param("ssi", $fileName,$requestId, $equipmentId);
+          $stmt->execute();
+
+          // Additional logic after update if needed
+          if ($stmt->affected_rows > 0) {
+            echo "<script>alert('Generated PDF uploaded successfully for all requests.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+          } else {
+              // Handle cases where the update failed
+          }
+      }
+  } else {
+      echo "<script>alert('No requests found for the user.'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+  }
+
+  // Close prepared statements
+  $checkStmt->close();
+  $stmt->close();
+} catch (Exception $e) {
+  $errorCode = $e->getCode();
+  $errorMessage = $e->getMessage();
+  echo "<script>alert('An error occurred: Error code " . $errorCode . ". Error message: " . $errorMessage . "'); window.location.href = '{$_SERVER['HTTP_REFERER']}';</script>";
+}
+
+
+
+
 
 ?>

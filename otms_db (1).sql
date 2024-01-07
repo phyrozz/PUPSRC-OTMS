@@ -491,12 +491,13 @@ INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `ext
 
 CREATE TABLE `appointment_facility` (
   `appointment_id` varchar(50) NOT NULL DEFAULT concat('FA-',unix_timestamp()),
-  `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `course` varchar(50) DEFAULT NULL,
   `section` varchar(50) DEFAULT NULL,
   `start_date_time_sched` datetime DEFAULT NULL,
   `end_date_time_sched` datetime DEFAULT NULL,
+  `letter_content` varchar(50) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `purpose` varchar(200) DEFAULT NULL,
   `facility_id` int(11) NOT NULL,
   `client` varchar(50) DEFAULT NULL,
@@ -1455,13 +1456,13 @@ CREATE TABLE `reg_transaction` (
 
 CREATE TABLE `request_equipment` (
   `request_id` varchar(50) NOT NULL DEFAULT concat('ROE-',unix_timestamp()),
-  `user_id` int(11) NOT NULL,
   `datetime_schedule` datetime DEFAULT NULL,
   `quantity_equip` int(30) NOT NULL,
   `status_id` int(11) NOT NULL,
   `purpose` text NOT NULL,
   `equipment_id` int(11) NOT NULL,
-  `slip_content` longblob DEFAULT NULL,
+  `slip_content` varchar(50) DEFAULT NULL,
+   `user_id` int(11) NOT NULL,
   `admin_reason` varchar(255) DEFAULT NULL,
   `user_reason` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
