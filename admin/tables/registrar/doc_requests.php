@@ -164,7 +164,8 @@ $statuses = array(
               <div class="input-group-prepend">
                 <span class="input-group-text">₱</span>
               </div>
-              <input class="form-control mb-2" type="text" id="amount" name="amount" />
+              <input class="form-control mb-2" min="0" max="1000" pattern="^(?:\d{1,3}(?:\.\d{0,2})?|0(?:\.\d{0,2})?)$"
+                type="text" id="amount" name="amount" />
               <div class="invalid-tooltip"></div>
             </div>
           </div>
@@ -179,6 +180,30 @@ $statuses = array(
   </div>
 </div>
 <!-- End of edit amount to pay modal -->
+<!-- Confirm Edit Amount to pay modal -->
+<div id="confirmEditAmountToPayModal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="confirmEditAmountToPayModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmEditAmountToPayModalLabel">Confirm Edit</h5>
+      </div>
+      <div class="modal-body mb-2">
+        <div class="mb-3">
+          <div>You have entered this amount: ₱<span class="fw-bold" id="confirmAmount">1000</span></div>
+          <br />
+          <div>Are you sure you want to proceed?</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="confirmSubmitAmountButton">Yes</button>
+        <button type="button" id="confirm-edit-amount-dismiss" class="btn btn-secondary"
+          data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of confirm edit amount to pay modal -->
 <!-- Start of Confirm Delete Modal -->
 <div id="confirmDeleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
   aria-hidden="true">
@@ -361,16 +386,22 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
             .extension_name + '</a></td>' +
             '<td>' + request.role + '</td>' +
             '<td>' + request.request_description + '</td>' +
-            '<td>' + request.purpose + '</td>' +
-            // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
-            '<td><a href="#" class="amount-to-pay-link" data-request-id="' + request.request_id +
+            '<td>' + request.purpose + '</td>'
+          // '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime)).toLocaleString() : 'Not yet scheduled') + '</td>' +
+          // Dont allow edit amount when status is ready, released or rejected
+          request.status_name == "Ready for Pickup" || request.status_name == "Released" || request.status_name ==
+            "Rejected" ?
+            row += '<td>' + '₱' +
+            request.amount_to_pay + '</td>' :
+            row += '<td><a href="#" class="amount-to-pay-link" data-request-id="' + request.request_id +
             '"data-amount-to-pay="' + request.amount_to_pay + '">' + '₱' +
-            request.amount_to_pay + '</a></td>' +
-            '<td class="text-center">' +
+            request.amount_to_pay + '</a></td>';
+
+          row += '<td class="text-center">' +
             '<span class="badge rounded-pill ' + getStatusBadgeClass(request.status_name) + '">' + request
             .status_name + '</span>' + '</td>';
 
-          // Don't allow edit button to appear when status is not pending
+          // Only allow create reason when rejected
           request.status_name == "Rejected" ?
             row +=
             '<td class="" style="height: 100%"><button class="btn btn-warning btn-sm create-reason mb-2" data-status="' +
@@ -548,12 +579,16 @@ $(document).ready(function() {
 
     $('#editAmountToPayModal').data('request-id', request_id)
     $('#editAmountToPayModal').data('amount-to-pay', amount_to_pay)
+
+    $('#submitAmountButton').data('request-id', request_id)
+    $('#submitAmountButton').data('amount-to-pay', amount_to_pay)
     $('#amount').val(amount_to_pay)
     $('#editAmountToPayModalLabel').text(`Edit amount of ${request_id}`)
 
     $('#editAmountToPayModal').modal('show')
 
   })
+
 
 
   // Hide invalid tooltip
@@ -569,11 +604,10 @@ $(document).ready(function() {
     var request_id = $("#editAmountToPayModal").data('request-id')
     var amount_to_pay = $('#amount').val()
 
-    // Validation for amount
 
+
+    // Validation for amount
     if (!/^[0-9]+(?:\.[0-9]+)?$/.test(amount_to_pay)) {
-      console.log(amount_to_pay)
-      console.log('this is still working')
       $(".invalid-tooltip").text('Please enter a valid amount');
       $(".invalid-tooltip").show();
 
@@ -594,32 +628,43 @@ $(document).ready(function() {
       return false;
     }
 
-    // Make an AJAX request to update the purpose in the database
-    $.ajax({
-      url: 'tables/registrar/edit_amount_to_pay.php', // Your PHP script to handle the update
-      method: 'POST',
-      data: {
-        request_id: request_id,
-        amount_to_pay: amount_to_pay
-      },
-      success: function(response) {
-        // Handle success response
+    $('#confirmAmount').text(amount_to_pay)
+    $('#confirmEditAmountToPayModal').modal('show')
 
-        // Close the modal
-        $('#editAmountToPayModal').modal('hide');
-        $(".invalid-tooltip").hide();
+    $(document).on('click', '#confirmSubmitAmountButton', function(e) {
 
-        // Refresh the table
-        handlePagination(1, '', 'request_id', 'desc');
-      },
-      error: function(error) {
-        // Handle error
-        $('#amount').val(error);
-        $(".invalid-tooltip").hide();
+      // Make an AJAX request to update the purpose in the database
+      $.ajax({
+        url: 'tables/registrar/edit_amount_to_pay.php', // Your PHP script to handle the update
+        method: 'POST',
+        data: {
+          request_id: request_id,
+          amount_to_pay: amount_to_pay
+        },
+        success: function(response) {
+          // Handle success response
 
-        console.log('Error occurred while updating reason.');
-      }
-    });
+          // Close the modal
+          $('#editAmountToPayModal').modal('hide');
+          $('#confirmEditAmountToPayModal').modal('hide')
+          $(".invalid-tooltip").hide();
+
+          // Refresh the table
+          handlePagination(1, '', 'request_id', 'desc');
+        },
+        error: function(error) {
+          // Handle error
+          $('#amount').val(error);
+          $('#confirmEditAmountToPayModal').modal('hide');
+          $(".invalid-tooltip").hide();
+
+          console.log('Error occurred while updating reason.');
+        }
+      });
+
+    })
+
+
   })
 
   // Validation for amount to pay input

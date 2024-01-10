@@ -12,7 +12,7 @@ $amount_to_pay = $_POST['amount_to_pay'];
 
 $query = "UPDATE doc_requests SET amount_to_pay = ?  WHERE request_id = ?";
 $stmt = $connection->prepare($query);
-$stmt->bind_param('is', $amount_to_pay, $request_id);
+$stmt->bind_param('ds', $amount_to_pay, $request_id);
 $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
