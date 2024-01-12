@@ -98,7 +98,7 @@ $html = '
                     <td>'.$row['student_no'].'</td>
                     <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['r_zero_form_status'].'</td>
-                    <td>'.$row['remarks'].'</td>
+                    <td>'.$row['me_remarks'].'</td>
                 </tr>';
                 $i++;
             }
