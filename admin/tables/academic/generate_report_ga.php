@@ -101,7 +101,7 @@ $html = '
                     <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['completion_form_status'].'</td>
                     <td>'.$row['assessed_fee_status'].'</td>
-                    <td>'.$row['remarks'].'</td>
+                    <td>'.$row['ga_remarks'].'</td>
                 </tr>';
                 $i++;
             }

@@ -104,7 +104,7 @@ $html = '
                     <td>'.$row['request_letter_status'].'</td>
                     <td>'.$row['first_ctc_status'].'</td>
                     <td>'.$row['second_ctc_status'].'</td>
-                    <td>'.$row['remarks'].'</td>
+                    <td>'.$row['s_remarks'].'</td>
                 </tr>';
                 $i++;
             }
