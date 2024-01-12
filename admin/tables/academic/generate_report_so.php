@@ -12,7 +12,7 @@ use Dompdf\Options;
 include "../../../conn.php";
 
 $searchTerm = $_GET['search'];
-$formattedDate = date('Y-m-d');
+$formattedDate = date('Y-m-d'); 
 
 $tz = '+08:00';
 $timestamp = time();
@@ -97,15 +97,17 @@ $html = '
         $i = 1;
         if(mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_array($result)) {
-                $html .= '<tr>
+                $html .= '
+                <tr>
                     <td>'.$i.'</td>
                     <td>'.$row['student_no'].'</td>
                     <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
                     <td>'.$row['overload_letter_status'].'</td>
                     <td>'.$row['ace_form_status'].'</td>
                     <td>'.$row['cert_of_registration_status'].'</td>
-                    <td>'.$row['remarks'].'</td>
-                </tr>';
+                    <td>'.$row['so_remarks'].'</td>
+                </tr>
+                ';
                 $i++;
             }
         } else {
