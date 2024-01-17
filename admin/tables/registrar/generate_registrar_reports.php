@@ -78,19 +78,23 @@ $html = '
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Office | Generate Reports</title>
-    <p>Generated on: ' . date('F j, Y | g:i A') . '</p>
+    <img src="report_header.png" alt="Example Image" class="img-fluid">
     <!--Google Fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
     <style>
+    img {
+        width: 100%;
+        margin: 0px;
+    }
     body {
             font-family: Poppins, sans-serif;
         }
         h2 {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 0px;
         }
         p {
             text-align: center;
@@ -108,9 +112,24 @@ $html = '
         th {
             background-color: #f2f2f2;
         }
+        h5 {
+            margin-top: 30px;
+            margin-bottom: 100px;
+            text-align: center;
+        }
+        h4 {
+            margin: 0;
+            font-weight: 400;
+        }
+        .footer-letter {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
 </style>
 <body>
     <h2>PUPSRC - Registrar Office Reports</h2>
+    <p>Generated on: ' . date('F j, Y | g:i A') . '</p>
     <table>
         <thead>
             <tr>
@@ -155,8 +174,16 @@ $html = '
         }
         $html .= '</tbody>
     </table>
+    <h5>--- NOTHING FOLLOWS ---</h5>
+    <h4><b>Engr. Emy Lou G. Alinsod</b></h4>
+    <h4>Campus Registrar</h4>
+    <h4>PUP Santa Rosa Campus</h4>
 </body>
+<div class="footer-letter">
+<img src="report_footer.png" alt="Example Image" class="img-fluid">
+</div>
 </html>';
+
 $options = new Options();
 $options->setChroot(__DIR__);
 $options->setIsRemoteEnabled(true);
