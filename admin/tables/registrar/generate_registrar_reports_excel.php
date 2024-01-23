@@ -1,8 +1,4 @@
 <?php
-require '../../../vendor/autoload.php';
-use Dompdf\Dompdf;
-use Dompdf\Options;
-
 include "../../../conn.php";
     
     $status = $_GET['status'];
@@ -67,40 +63,24 @@ include "../../../conn.php";
     
     $result = mysqli_query($connection, $registrar_reports);
 
+    $html = '';
     $i = 1;
 
 $html = '
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Office | Generate Reports</title>
-    <!--Google Fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-</head>
     <style>
     img {
         width: 100%;
         margin: 0px;
     }
     body {
-            font-family: Arial, sans-serif;
-            margin-top: 130px;
-            margin-bottom: 100px;
+            font-family: Poppins, sans-serif;
         }
         h2 {
             text-align: center;
             margin-top: 0px;
-            margin-bottom: 0px;
         }
         p {
             text-align: center;
-            margin: 0px;
         }
         table {
             width: 100%;
@@ -116,58 +96,41 @@ $html = '
             background-color: #f2f2f2;
         }
         h5 {
-            margin-top: 50;
-            margin-bottom: 50;
+            margin-top: 30px;
+            margin-bottom: 100px;
             text-align: center;
         }
         h4 {
             margin: 0;
             font-weight: 400;
         }
+        .footer-letter {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
         .center {
             text-align: center;
         }
-        .invisible {
-            border: none;
-            background: none;
-        }
-
-        @page {
-            margin-top: 10px; /* Adjust as needed */
-            margin-bottom: 10px; /* Adjust as needed */
-        }
-
-        .header-letter,
-        .footer-letter {
-            position: fixed;
-            left: 0;
-            right: 0;
-        }
-
-        .header-letter {
-            top: 0;
-        }
-
-        .footer-letter {
-            bottom: 0;
-        }
-
-        img {
-            width: 100%;
-            margin: 0px;
+        .header {
+            height: 60px; /* Set your preferred height */
         }
 </style>
-<div class="header-letter">
-<img src="report_header.png" alt="Example Image" class="img-fluid">
-</div>
-<div class="footer-letter">
-<img src="report_footer.png" alt="Example Image" class="img-fluid">
-</div>
-<body>
-
-    <h2>PUPSRC Online Transaction Management System</h2>
-    <p style="font-size: 16">Office of the University Registrar Report</p>
-    <p style="margin-bottom: 10px">Generated on: ' . date('F j, Y | g:i A') . '</p>
+    <table>
+        <thead>
+        <tr><th colspan="10" class="center header"><img src="report_header_excel.jpg"></tr>
+        <tr><th colspan="10"></tr>
+        <tr><th colspan="10"></tr>
+        <tr><th colspan="10"></tr>
+        <tr><th colspan="10"></tr>
+        <tr><th colspan="10"></tr>
+        <tr><th colspan="10"></tr>
+            <tr><th colspan="10" class="center"><h4><b>PUPSRC Online Transaction Managment System</b></h4></tr>
+            <tr><th colspan="10" class="center">Office of the University Registrar Report</tr>
+            <tr><th colspan="10" class="center">Generated on: ' . date('F j, Y | g:i A') . '</tr>
+            <tr><th colspan="10"></tr>
+        </thead>
+    </table>
     <table>
         <thead>
             <tr>
@@ -190,67 +153,50 @@ $html = '
                 $timestamp = $row['request_id'];
                 $parsedTimestamp = intval(substr($timestamp, 3));
                 $date_new = new DateTime('@' . ($parsedTimestamp));
-                $format_date = $date_new->format('Y/m/d'); // date only
+                $format_date = $date_new->format('F j, Y'); // date only
                 $html .= '<tr>
                     <td>'.$i.'</td>
                     <td>'.$row['request_id'].'</td>
-                    <td class="center">'.$format_date.'</td>
-                    <td class="center">'.date('Y/m/d', strtotime($row['scheduled_datetime'])).'</td>
-                    <td style="width: 100%;">'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
-                    <td class="center">'.$row['role'].'</td>
-                    <td class="center">'.$row['request_description'].'</td>
-                    <td class="center">'.$row['purpose'].'</td>
-                    <td class="center">'.$row['amount_to_pay'].'</td>
-                    <td class="center">'.$row['status_name'].'</td>
+                    <td>'.$format_date.'</td>
+                    <td>'.date('F j, Y', strtotime($row['scheduled_datetime'])).'</td>
+                    <td>'.$row['last_name'].', '.$row['first_name'].' '.$row['middle_name'].' '.$row['extension_name'].'</td>
+                    <td>'.$row['role'].'</td>
+                    <td>'.$row['request_description'].'</td>
+                    <td>'.$row['purpose'].'</td>
+                    <td>'.$row['amount_to_pay'].'</td>
+                    <td>'.$row['status_name'].'</td>
                 </tr>';
                 $i++;
             }
-        $html .='<tr><th class="invisible" colspan="10"><h5>--- NOTHING FOLLOWS ---</h5></tr>';
+            $html .='<tr><th colspan="10"><h5>--- NOTHING FOLLOWS ---</h5></tr>
+            <tr><th colspan="10"></tr>
+            <tr><th colspan="10"></tr>
+            <tr><th colspan="10"></tr>
+            <tr><th colspan="10"></tr>
+            <tr><th colspan="4">GENERATED BY:</th><th colspan="3">CERTIFIED TRUE AND CORRECTED BY:</th><th colspan="3">NOTED BY:</th></tr>
+            <tr><th colspan="10"></tr>
+            <tr><th colspan="10"></tr>
+            <tr><th colspan="4"><h4><b>NURIN GLADYS</b></h4></th><th colspan="3"><h4><b>ENGR. EMY LOU G. ALINSOD</b></h4></th><th colspan="3"><h4><b>DIR. LENY V. SALMINGO</b></h4></th></tr>
+            <tr><th colspan="4"><h4>OUR STAFF</h4></th><th colspan="3"><h4></h4>Campus Registrar</th><th colspan="3"><h4>Campus Director</h4></th></tr>
+            <tr><th colspan="4"><h4>PUP Santa Rosa Campus</h4></th><th colspan="3"><h4>PUP Santa Rosa Campus</h4></th><th colspan="3"><h4>PUP Santa Rosa Campus</h4></th></tr>';
         } else {
             $html .='<tr>
                 <td class="text-center" colspan="10">No record found!</td>
             </tr>';
         }
-        $html .= '</tbody>
+        $html .= '
+        </tbody>
     </table>
-    <table style="page-break-inside: avoid;">';
-    $html .='
-    <tr><th class="invisible" colspan="10"></tr>
-    <tr><th class="invisible" colspan="10"></tr>
-    <tr><th class="invisible" colspan="10"></tr>
-    <tr><th class="invisible" colspan="4">GENERATED BY:</th><th class="invisible" colspan="3">CERTIFIED TRUE AND CORRECTED BY:</th><th class="invisible" colspan="3">NOTED BY:</th></tr>
-    <tr><th class="invisible" colspan="10"></tr>
-    <tr><th class="invisible" colspan="10"></tr>
-    <tr><th class="invisible" colspan="10"></tr>
-    <tr><th class="invisible" colspan="10"></tr>
-    <tr><th class="invisible" colspan="4"><h4><b>NURIN GLADYS</b></h4></th><th class="invisible" colspan="3"><h4><b>ENGR. EMY LOU G. ALINSOD</b></h4></th><th class="invisible" colspan="3"><h4><b>DIR. LENY V. SALMINGO</b></h4></th></tr>
-    <tr><th class="invisible" colspan="4"><h4>OUR STAFF</h4></th><th class="invisible" colspan="3"><h4>Campus Registrar</h4></th><th class="invisible" colspan="3"><h4>Campus Director</h4></th></tr>
-    <tr><th class="invisible" colspan="4"><h4>PUP Santa Rosa Campus</h4></th><th class="invisible" colspan="3"><h4>PUP Santa Rosa Campus</h4></th><th class="invisible" colspan="3"><h4>PUP Santa Rosa Campus</h4></th></tr>
-    </table>
+<img src="report_footer_excel.jpg">';
 
-</body>
+    $currentDate = date('Y-m-d');
+    $uniqueId = uniqid();
+    $fileName = 'registrar_report_' . $currentDate . '_' . $uniqueId . '.xls';
+    $filePath = '../../generate_report/registrar//' . $fileName; // Replace with the actual path to your folder
+    file_put_contents($filePath, $html);
 
-</html>';
-
-$options = new Options();
-$options->setChroot(__DIR__);
-$options->setIsRemoteEnabled(true);
-
-$dompdf = new Dompdf($options);
-$dompdf->loadHtml($html);
-// Set the paper size to A4 and orientation to portrait
-$dompdf->setPaper('A4', 'landscape');
-$dompdf->render();
-
-$NameModified = strtolower(str_replace(' ', '', $formattedDate));
-// Generate the file name with the current time, unique identifier, and equipment name
-$fileName = 'registrar_report'. '_'.  $NameModified . '_' . uniqid(). '.pdf';
-
-// Save the PDF to a directory in your file system
-$directoryPath = '../../generate_report/registrar/'; 
-$filePath = $directoryPath . $fileName;
-file_put_contents($filePath, $dompdf->output());
-
-// Output the PDF to the browser
-$dompdf->stream($fileName, ["Attachment" => false]);
+    // Provide the file as a download
+    header('Content-Type: application/xls');
+    header('Content-Disposition: attachment; filename=' . $fileName);
+    echo $html;
 ?>
