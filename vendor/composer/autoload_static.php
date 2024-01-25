@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitacd8b34106abae7a26124678c2eaa5cc
 {
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'Tests\\PhpOffice\\Math\\' => 21,
+        ),
         'S' => 
         array (
             'Svg\\' => 4,
@@ -14,6 +18,8 @@ class ComposerStaticInitacd8b34106abae7a26124678c2eaa5cc
         ),
         'P' => 
         array (
+            'PhpOffice\\PhpWord\\' => 18,
+            'PhpOffice\\Math\\' => 15,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
@@ -45,6 +51,10 @@ class ComposerStaticInitacd8b34106abae7a26124678c2eaa5cc
     );
 
     public static $prefixDirsPsr4 = array (
+        'Tests\\PhpOffice\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/math/tests/Math',
+        ),
         'Svg\\' => 
         array (
             0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
@@ -52,6 +62,14 @@ class ComposerStaticInitacd8b34106abae7a26124678c2eaa5cc
         'Sabberworm\\CSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
+        'PhpOffice\\PhpWord\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
+        ),
+        'PhpOffice\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/math/src/Math',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (

@@ -93,7 +93,9 @@
                 <button type="submit" id="filterButton" name="filterButton" class="btn btn-primary mt-2"><i
                     class="fa-solid fa-filter"></i> Filter</button>
                 <?php if ($table === 'document_request') { ?>
-                  <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i>Generate Registrar Report</a>
+                  <a href="tables/registrar/generate_registrar_reports.php" id="generate-report-pdf-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-pdf"></i>PDF</a>
+                  <a href="tables/registrar/generate_registrar_reports_excel.php" id="generate-report-excel-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-excel"></i>Excel</a>
+                  <a href="tables/registrar/generate_registrar_reports_docx.php" id="generate-report-docx-link" name="generate-report-btn" class="btn btn-primary mt-2" target="_blank"><i class="fas fa-file-word-o"></i>Word</a>
                 <?php } ?>
                 </div>
             </div>
@@ -162,7 +164,7 @@
     });
 
   $(document).ready(function() {
-    $("#generate-report-link").on('click', function() {
+    $("#generate-report-pdf-link").on('click', function() {
       var selectedStatus = $("#filterByStatus").val();
       var selectedDocType = $("#filterByDocType").val();
       var searchValue = $("#search-input").val(); // Get the value of the search input
@@ -174,6 +176,40 @@
 
       // Construct the URL with the updated parameters
       var link = "tables/registrar/generate_registrar_reports.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+      
+      // Update the href attribute of the link
+      $(this).attr("href", link);
+    });
+
+    $("#generate-report-excel-link").on('click', function() {
+      var selectedStatus = $("#filterByStatus").val();
+      var selectedDocType = $("#filterByDocType").val();
+      var searchValue = $("#search-input").val(); // Get the value of the search input
+
+      // Encode the selected values and search query to be URL-safe
+      var encodedStatus = encodeURIComponent(selectedStatus);
+      var encodedDocType = encodeURIComponent(selectedDocType);
+      var encodedSearchValue = encodeURIComponent(searchValue);
+
+      // Construct the URL with the updated parameters
+      var link = "tables/registrar/generate_registrar_reports_excel.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
+      
+      // Update the href attribute of the link
+      $(this).attr("href", link);
+    });
+
+    $("#generate-report-docx-link").on('click', function() {
+      var selectedStatus = $("#filterByStatus").val();
+      var selectedDocType = $("#filterByDocType").val();
+      var searchValue = $("#search-input").val(); // Get the value of the search input
+
+      // Encode the selected values and search query to be URL-safe
+      var encodedStatus = encodeURIComponent(selectedStatus);
+      var encodedDocType = encodeURIComponent(selectedDocType);
+      var encodedSearchValue = encodeURIComponent(searchValue);
+
+      // Construct the URL with the updated parameters
+      var link = "tables/registrar/generate_registrar_reports_docx.php?status=" + encodedStatus + "&doc_type=" + encodedDocType + "&search=" + encodedSearchValue;
       
       // Update the href attribute of the link
       $(this).attr("href", link);
