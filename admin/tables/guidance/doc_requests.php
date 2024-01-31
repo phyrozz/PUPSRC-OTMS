@@ -154,6 +154,24 @@ $statuses = array(
     </div>
 </div>
 <!-- End of confirm generate modal -->
+<!-- Confirm status update modal -->
+<div id="confirmStatusUpdateModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmStatusUpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmStatusUpdateModalLabel">Confirm Update</h5>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirm-update-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of confirm status update modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -385,26 +403,40 @@ $statuses = array(
         // Update status button listener
         $('#update-status-button').on('click', function() {
             var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
+            var numSelectedStatuses = checkedCheckboxes.length;
+            
+            // Update the message in the confirmation modal
+            $('#confirmStatusUpdateModal .modal-body').html('<p>Are you sure you want to update ' + numSelectedStatuses + ' status(es)?</p>');
+
+            // Show the confirmation modal
+            $('#confirmStatusUpdateModal').modal('show');
+        });
+
+        $('#confirm-update-btn').on('click', function() {
+            // Get the selected status ID
+            var statusId = $('#update-status').val();
+
+            // Get the IDs of selected requests
+            var checkedCheckboxes = $('input[name="request-checkbox"]:checked');
             var requestIds = checkedCheckboxes.map(function() {
                 return $(this).val();
             }).get();
-            var statusId = $('#update-status').val(); // Get the selected status ID
 
             $.ajax({
                 url: 'tables/guidance/update_doc_requests.php',
                 method: 'POST',
-                data: { requestIds: requestIds, statusId: statusId }, // Include the selected status ID in the data
+                data: { requestIds: requestIds, statusId: statusId },
                 success: function(response) {
-                    // Handle the success response
-
                     // Refresh the table after status update
                     handlePagination(1, '', 'request_id', 'desc');
                 },
                 error: function() {
-                    // Handle the error response
                     console.log('Error occurred while updating status');
                 }
             });
+
+            // Close the confirmation modal
+            $('#confirmStatusUpdateModal').modal('hide');
         });
 
         // Checkbox change listener using event delegation
@@ -412,6 +444,24 @@ $statuses = array(
 
         $('#status-info-btn').on('click', function() {
             $('#statusInfoModal').modal('show');
+        });
+    });
+
+    // Add event listener for checkbox clicks
+    $(document).on('click', 'input[name="request-checkbox"]', function(event) {
+        // Toggle the checkbox state when the checkbox is clicked directly
+        var checkbox = $(event.target);
+        checkbox.prop('checked', !checkbox.prop('checked'));
+        handleCheckboxChange(); // Update the checkbox status
+    });
+
+    // Add event listener for row clicks
+    var rows = document.querySelectorAll('.clickable-row');
+    rows.forEach(function (row) {
+        row.addEventListener('click', function (event) {
+            var checkbox = row.querySelector('input[name="request-checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            handleCheckboxChange(); // Update the checkbox status
         });
     });
 

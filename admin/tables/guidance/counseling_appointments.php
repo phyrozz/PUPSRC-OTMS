@@ -136,6 +136,24 @@ $statuses = array(
     </div>
 </div>
 <!-- End of confirm generate modal -->
+<!-- Confirm status update modal -->
+<div id="confirmStatusUpdateModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmStatusUpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmStatusUpdateModalLabel">Confirm Update</h5>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirm-update-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of confirm status update modal -->
 <script>
     function getStatusBadgeClass(status) {
         switch (status) {
@@ -291,6 +309,38 @@ $statuses = array(
         // Update status button listener
         $('#update-status-button').on('click', function() {
             var checkedCheckboxes = $('input[name="counseling-checkbox"]:checked');
+            var numSelectedStatuses = checkedCheckboxes.length;
+            
+            // Update the message in the confirmation modal
+            $('#confirmStatusUpdateModal .modal-body').html('<p>Are you sure you want to update ' + numSelectedStatuses + ' status(es)?</p>');
+
+            // Show the confirmation modal
+            $('#confirmStatusUpdateModal').modal('show');
+            // var counselingIds = checkedCheckboxes.map(function() {
+            //     return $(this).val();
+            // }).get();
+            // var statusId = $('#update-status').val(); // Get the selected status ID
+
+            // $.ajax({
+            //     url: 'tables/guidance/update_counseling.php',
+            //     method: 'POST',
+            //     data: { counselingIds: counselingIds, statusId: statusId }, // Include the selected status ID in the data
+            //     success: function(response) {
+            //         // Handle the success response
+            //         console.log('Status updated successfully');
+
+            //         // Refresh the table after status update
+            //         handlePagination(1, '', 'counseling_id', 'desc');
+            //     },
+            //     error: function() {
+            //         // Handle the error response
+            //         console.log('Error occurred while updating status');
+            //     }
+            // });
+        });
+
+        $('#confirm-update-btn').on('click', function() {
+            var checkedCheckboxes = $('input[name="counseling-checkbox"]:checked');
             var counselingIds = checkedCheckboxes.map(function() {
                 return $(this).val();
             }).get();
@@ -312,6 +362,9 @@ $statuses = array(
                     console.log('Error occurred while updating status');
                 }
             });
+
+            // Close the confirmation modal
+            $('#confirmStatusUpdateModal').modal('hide');
         });
 
         // Add event listener to the table body
@@ -338,6 +391,24 @@ $statuses = array(
 
         $('#status-info-btn').on('click', function() {
             $('#statusInfoModal').modal('show');
+        });
+    });
+
+    // Add event listener for checkbox clicks
+    $(document).on('click', 'input[name="counseling-checkbox"]', function(event) {
+        // Toggle the checkbox state when the checkbox is clicked directly
+        var checkbox = $(event.target);
+        checkbox.prop('checked', !checkbox.prop('checked'));
+        handleCheckboxChange(); // Update the checkbox status
+    });
+
+    // Add event listener for row clicks
+    var rows = document.querySelectorAll('.clickable-row');
+    rows.forEach(function (row) {
+        row.addEventListener('click', function (event) {
+            var checkbox = row.querySelector('input[name="counseling-checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            handleCheckboxChange(); // Update the checkbox status
         });
     });
 
