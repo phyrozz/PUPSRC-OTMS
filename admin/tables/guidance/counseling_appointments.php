@@ -43,7 +43,7 @@ $statuses = array(
             </th>
         </tr>
     </thead>
-    <tbody id="table-body">
+    <tbody id="table-body" class="user-select-none">
         <!-- Table rows will be generated dynamically using JavaScript -->
     </tbody>
 </table>
@@ -190,7 +190,7 @@ $statuses = array(
                         var date = new Date(parsedTimestamp * 1000);
                         var formattedDate = date.toLocaleString();
 
-                        var row = '<tr>' +
+                        var row = '<tr class="clickable-row">' +
                             '<td><input type="checkbox" name="counseling-checkbox" value="' + schedules.counseling_id + '"></td>' +
                             '<td>' + schedules.counseling_id + '</td>' +
                             '<td>' + formattedDate + '</td>' +
@@ -222,6 +222,16 @@ $statuses = array(
                     var noRecordsRow = '<tr><td class="text-center table-light p-4" colspan="7">No Transactions</td></tr>';
                     tableBody.innerHTML = noRecordsRow;
                 }
+
+                // Add event listener for row clicks
+                var rows = document.querySelectorAll('.clickable-row');
+                rows.forEach(function (row) {
+                    row.addEventListener('click', function (event) {
+                        var checkbox = row.querySelector('input[name="counseling-checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                        handleCheckboxChange(); // Update the checkbox status
+                    });
+                });
 
                 // Update the pagination links
                 var paginationLinks = document.getElementById('pagination-links');
@@ -304,22 +314,6 @@ $statuses = array(
             });
         });
 
-        // Checkbox change listener using event delegation
-        $(document).on('change', 'input[name="counseling-checkbox"]', function() {
-            var checkedCheckboxes = $('input[name="counseling-checkbox"]:checked');
-            var updateButton = $('#update-status-button');
-            var statusDropdown = $('#update-status');
-
-            if (checkedCheckboxes.length > 0) {
-                updateButton.prop('disabled', false);
-                statusDropdown.prop('disabled', false);
-            }
-            else {
-                updateButton.prop('disabled', true);
-                statusDropdown.prop('disabled', true);
-            }
-        });
-
         // Add event listener to the table body
         var tableBody = document.getElementById('table-body');
         tableBody.addEventListener('click', function(event) {
@@ -339,10 +333,28 @@ $statuses = array(
             }
         });
 
+        // Checkbox change listener using event delegation
+        $(document).on('change', 'input[name="counseling-checkbox"]', handleCheckboxChange);
+
         $('#status-info-btn').on('click', function() {
             $('#statusInfoModal').modal('show');
         });
     });
+
+    function handleCheckboxChange() {
+        var checkedCheckboxes = $('input[name="counseling-checkbox"]:checked');
+        var updateButton = $('#update-status-button');
+        var statusDropdown = $('#update-status');
+
+        if (checkedCheckboxes.length > 0) {
+            updateButton.prop('disabled', false);
+            statusDropdown.prop('disabled', false);
+        }
+        else {
+            updateButton.prop('disabled', true);
+            statusDropdown.prop('disabled', true);
+        }
+    }
 
     // Perform search functionality when either the Filter or Search button is pressed
     function filterStatus() {

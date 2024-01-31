@@ -69,7 +69,7 @@
                                 <th class="text-center"></th>
                             </tr>
                         </thead>
-                        <tbody id="table-body" class="pe-none">
+                        <tbody id="table-body" class="user-select-none">
                             <!-- Table rows will be generated dynamically using JavaScript -->
                         </tbody>
                     </table>
@@ -184,6 +184,15 @@
         });
     }
 
+    // Function to handle row click and toggle the checkbox
+    function handleRowClick(event) {
+        if (event.target.type !== 'checkbox') {
+            // If the clicked element is not the checkbox, toggle the checkbox
+            var checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+        }
+    }
+
     function addDeleteButtonListeners() {
         var deleteButton = document.getElementById('delete-button');
         var confirmDeleteButton = document.getElementById('delete-request-btn');
@@ -205,6 +214,13 @@
             });
             deleteButton.disabled = !canDelete || checkedCheckboxes.length === 0;
         }
+
+        // Add event listeners for row clicks
+        var rows = document.querySelectorAll('#table-body tr');
+        rows.forEach(function (row) {
+            row.addEventListener('click', handleRowClick);
+            row.addEventListener('click', updateDeleteButtonState);
+        });
 
         // Add event listeners to checkboxes
         checkboxes.forEach(function (checkbox) {

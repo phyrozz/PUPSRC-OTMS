@@ -69,7 +69,7 @@
                                 <th class="text-center"></th>
                             </tr>
                         </thead>
-                        <tbody id="table-body" class="pe-none">
+                        <tbody id="table-body" class="user-select-none">
                             <!-- Table rows will be generated dynamically using JavaScript -->
                         </tbody>
                     </table>
@@ -191,6 +191,15 @@
         });
     }
 
+    // Function to handle row click and toggle the checkbox
+    function handleRowClick(event) {
+        if (event.target.type !== 'checkbox') {
+            // If the clicked element is not the checkbox, toggle the checkbox
+            var checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+        }
+    }
+
     function addDeleteButtonListeners() {
         var deleteButton = document.getElementById('delete-button');
         var confirmDeleteButton = document.getElementById('delete-request-btn');
@@ -221,6 +230,13 @@
 
         deleteButton.addEventListener('click', function() {
             $("#confirmDeleteModal").modal("show");
+        });
+
+        // Add event listeners for row clicks
+        var rows = document.querySelectorAll('#table-body tr');
+        rows.forEach(function (row) {
+            row.addEventListener('click', handleRowClick);
+            row.addEventListener('click', updateDeleteButtonState);
         });
 
         // Add event listener to delete button
@@ -510,9 +526,9 @@
                         var request = data.document_requests[i];
 
                         var row = '<tr>' +
-                            '<td class="pe-auto"><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
+                            '<td><input type="checkbox" id="' + request.request_id + '" name="' + request.request_id + '" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
-                            '<td class="pe-auto"><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</td>' +
+                            '<td><a href="' + generateUrlToOfficeColumn(request.office_name) + '">' + request.office_name + '</td>' +
                             '<td>' + request.request_description + '</td>' +
                             '<td>' + (request.scheduled_datetime !== null ? (new Date(request.scheduled_datetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })) : 'Not yet scheduled') + '</td>' +
                             '<td>' + ((request.purpose === null) ? '' : request.purpose) + '</td>' +

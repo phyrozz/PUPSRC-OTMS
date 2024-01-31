@@ -53,7 +53,7 @@ $statuses = array(
                 </th>
             </tr>
         </thead>
-        <tbody id="table-body">
+        <tbody id="table-body" class="user-select-none">
             <!-- Table rows will be generated dynamically using JavaScript -->
         </tbody>
     </table>
@@ -278,7 +278,7 @@ $statuses = array(
                     for (var i = 0; i < data.document_requests.length; i++) {
                         var request = data.document_requests[i];
 
-                        var row = '<tr>' +
+                        var row = '<tr class="clickable-row">' +
                             '<td><input type="checkbox" name="request-checkbox" value="' + request.request_id + '"></td>' +
                             '<td>' + request.request_id + '</td>' +
                             '<td>' + request.formatted_request_id + '</td>' +
@@ -316,6 +316,16 @@ $statuses = array(
                 $('.user-details-link').on('click', function(event) {
                     var userId = event.target.getAttribute('data-user-id');
                     populateUserInfoModal(userId);
+                });
+
+                // Add event listener for row clicks
+                var rows = document.querySelectorAll('.clickable-row');
+                rows.forEach(function (row) {
+                    row.addEventListener('click', function (event) {
+                        var checkbox = row.querySelector('input[name="request-checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                        handleCheckboxChange(); // Update the checkbox status
+                    });
                 });
             },
             error: function() {
