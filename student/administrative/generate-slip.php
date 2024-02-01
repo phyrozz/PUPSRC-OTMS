@@ -129,7 +129,7 @@ $dompdf->stream($fileName, ["Attachment" => false]);
 
 try {
   // Prepare the query to retrieve request_id for the user
-  $checkQuery = "SELECT request_id FROM request_equipment WHERE user_id = ?";
+  $checkQuery = "SELECT request_id FROM request_equipment WHERE user_id = ? ORDER BY request_id DESC LIMIT 1";
   $checkStmt = $connection->prepare($checkQuery);
   $checkStmt->bind_param("i", $_SESSION['user_id']);
   $checkStmt->execute();
@@ -138,6 +138,21 @@ try {
   if ($checkResult->num_rows > 0) {
       while ($row = $checkResult->fetch_assoc()) {
           $requestId = $row['request_id'];
+
+          // Define the path to the log file
+$logFilePath = $_SERVER['DOCUMENT_ROOT'] . '/debug.log';
+
+// Debug log function to append messages to the log file
+function debugLog($message) {
+    global $logFilePath;
+    $timestamp = date('Y-m-d H:i:s');
+    $logMessage = "[{$timestamp}] {$message}\n";
+    file_put_contents($logFilePath, $logMessage, FILE_APPEND);
+}
+
+// Before executing the update query, add debug logging to check the values of variables
+debugLog("Request ID: " . $requestId);
+debugLog("Equipment ID: " . $equipmentId);
 
           // Prepare the query to update slip_content for each request
           $pdfUpdateQuery = "UPDATE request_equipment SET slip_content = ? WHERE request_id = ? AND equipment_id = ? ";
