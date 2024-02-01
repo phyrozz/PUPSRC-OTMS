@@ -188,7 +188,7 @@ $dompdf->stream($fileName, ["Attachment" => false]);
 
 try {
   // Prepare the query to retrieve request_id for the user
-  $checkQuery = "SELECT request_id FROM request_equipment WHERE user_id = ?";
+  $checkQuery = "SELECT request_id FROM request_equipment WHERE user_id = ? ORDER BY request_id DESC LIMIT 1";
   $checkStmt = $connection->prepare($checkQuery);
   $checkStmt->bind_param("i", $_SESSION['user_id']);
   $checkStmt->execute();

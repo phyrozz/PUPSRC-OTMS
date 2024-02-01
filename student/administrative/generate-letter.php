@@ -271,7 +271,7 @@ $dompdf->stream($fileName, ["Attachment" => false]);
 
 try {
   // Prepare the query to retrieve appointment_id for the user
-  $checkQuery = "SELECT appointment_id FROM appointment_facility WHERE user_id = ?";
+  $checkQuery = "SELECT appointment_id FROM appointment_facility WHERE user_id = ? ORDER BY appointment_id DESC LIMIT 1";
   $checkStmt = $connection->prepare($checkQuery);
   $checkStmt->bind_param("i", $_SESSION['user_id']);
   $checkStmt->execute();
