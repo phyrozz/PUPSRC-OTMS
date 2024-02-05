@@ -6,10 +6,19 @@ use Dompdf\Options;
 include "../../../conn.php";
     
     $status = $_GET['status'];
-    $doc_type = $_GET['doc_type'];
     $search = $_GET['search'];
+    $req_desc = json_decode($_GET['req_desc'], true);
+    $req_desc_conditions = implode("', '", $req_desc);
     date_default_timezone_set('Asia/Manila');
     $formattedDate = date('Y-m-d'); //date today
+
+    $all_for_query = "SELECT DISTINCT request_description FROM doc_requests";
+    $all_for_result = mysqli_query($connection, $all_for_query);
+    $all_for_array = array();
+    while ($row = mysqli_fetch_assoc($all_for_result)) {
+        $all_for_array[] = $row['request_description'];
+    }
+    $all_for_conditions = implode(", ", $all_for_array);
 
     $registrar_reports = "SELECT request_id, request_description, CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) AS formatted_request_id, scheduled_datetime, status_name, purpose, amount_to_pay, attached_files, 
                         users.first_name, users.last_name, users.middle_name, users.extension_name, user_roles.role, doc_requests.user_id AS user_id
@@ -26,7 +35,7 @@ include "../../../conn.php";
         OR users.last_name LIKE '%$search%'
         OR users.middle_name LIKE '%$search%'
         OR users.extension_name LIKE '%$search%'
-        OR request_description LIKE '%$search%'
+        OR request_description IN ('$all_for_conditions')
         OR user_roles.role LIKE '%$search%'
         OR scheduled_datetime LIKE '%$search%'
         -- CONCAT name and request_description combinations
@@ -52,6 +61,7 @@ include "../../../conn.php";
         OR CONCAT(DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%c/%e/%Y, %h:%i:%s %p')) LIKE '%$search%'
         OR DATE_FORMAT(FROM_UNIXTIME(SUBSTRING(request_id, 4)), '%M') LIKE '%$search%' -- Search for worded months
         OR status_name LIKE '%$search%'
+        OR request_description LIKE '%$search%'
         OR amount_to_pay LIKE '%$search%')";
     }
 
@@ -59,8 +69,8 @@ include "../../../conn.php";
         $registrar_reports .= " AND doc_requests.status_id = '$status'";
     }
     
-    if ($doc_type != 'all') {
-        $registrar_reports .= " AND request_description = '$doc_type'";
+    if (!in_array('all', $req_desc))  {
+        $registrar_reports .= " AND request_description IN ('$req_desc_conditions')";
     }
 
     $registrar_reports .= " ORDER BY scheduled_datetime DESC";
