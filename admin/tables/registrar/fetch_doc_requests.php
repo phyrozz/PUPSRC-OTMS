@@ -13,6 +13,10 @@ $recordsPerPage = 20;
 $startingRecord = ($page - 1) * $recordsPerPage;
 $searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
+$selectedRequestDescriptions = isset($_POST['selectedRequestDescriptions']) ? $_POST['selectedRequestDescriptions'] : array();
+// Convert the array of selected document types to a comma-separated string
+$selectedRequestDescriptionsString = implode("','", $selectedRequestDescriptions);
+
 // Retrieve the sorting parameters from the AJAX request
 $column = isset($_POST['column']) ? $_POST['column'] : 'request_id';
 $order = isset($_POST['order']) ? $_POST['order'] : 'asc';
@@ -33,7 +37,7 @@ if (!empty($searchTerm)) {
                            OR users.last_name LIKE '%$searchTerm%'
                            OR users.middle_name LIKE '%$searchTerm%'
                            OR users.extension_name LIKE '%$searchTerm%'
-                           OR request_description LIKE '%$searchTerm%'
+                           OR request_description IN ('$selectedRequestDescriptionsString')
                            OR purpose LIKE '%$searchTerm%'
                            OR user_roles.role LIKE '%$searchTerm%'
                            OR scheduled_datetime LIKE '%$searchTerm%'
@@ -90,7 +94,7 @@ if ($result) {
                                OR users.last_name LIKE '%$searchTerm%'
                                OR users.middle_name LIKE '%$searchTerm%'
                                OR users.extension_name LIKE '%$searchTerm%'
-                               OR request_description LIKE '%$searchTerm%'
+                               OR request_description IN ('$selectedRequestDescriptionsString')
                                OR purpose LIKE '%$searchTerm%'
                                OR user_roles.role LIKE '%$searchTerm%'
                                OR scheduled_datetime LIKE '%$searchTerm%'

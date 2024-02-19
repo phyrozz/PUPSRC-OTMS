@@ -96,6 +96,9 @@ $statuses = array(
         <option value="6">Rejected</option>
       </select>
     </div>
+    <div>
+      <a href="#" id="status-info-btn">What do these statuses mean?</a>
+    </div>
     <button id="update-status-button" class="btn btn-primary w-50" disabled><i class="fa-solid fa-pen-to-square"></i>
       Update</button>
   </div>
@@ -225,6 +228,40 @@ $statuses = array(
   </div>
 </div>
 <!-- End of confirm Delete Modal -->
+<!-- View user status info modal -->
+<div id="statusInfoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="statusInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusInfoModalLabel">What do these statuses mean?</h5>
+            </div>
+            <div class="modal-body">
+                <div id="reminder-container" class="alert alert-info mt-3" role="alert">
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-dark">Pending</span> - The requester should settle
+                        the deficiency/ies to necessary office.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-secondary">Cancelled</span> - The user has cancelled the request. You must change the status to <b>Rejected</b> after.</small></p> 
+                    <p class="mb-0"><small><span class="badge rounded-pill bg-danger">Rejected</span> - The request is rejected
+                        by the admin.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: orange;">For
+                            receiving</span> - The request is currently in Receiving window and waiting for submission of
+                        requirements.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: blue;">For
+                            evaluation</span> - Evaluation and Processing of records and required documents for releasing.</small>
+                    </p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: DodgerBlue;">Ready for
+                            pickup</span> - The requested document/s is/are already available for pickup at the releasing section
+                        of student records.</small></p>
+                    <p class="mb-0"><small><span class="badge rounded-pill" style="background-color: green;">Released</span> -
+                        The requested document/s was/were claimed.</small></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of view status info modal -->
 <script>
 function getStatusBadgeClass(status) {
   switch (status) {
@@ -337,6 +374,8 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
   var table = document.getElementById('transactions-table');
   table.classList.add('hidden');
 
+  var selectedRequestDescriptions = $('#filterByDocType').val() || [];
+
   // Make an AJAX request to fetch the document requests
   $.ajax({
     url: 'tables/registrar/fetch_doc_requests.php',
@@ -345,7 +384,8 @@ function handlePagination(page, searchTerm = '', column = 'request_id', order = 
       page: page,
       searchTerm: searchTerm,
       column: column,
-      order: order
+      order: order,
+      selectedRequestDescriptions: selectedRequestDescriptions
     },
     success: function(response) {
       // Hide the loading indicator
@@ -502,6 +542,10 @@ $(document).ready(function() {
   $('#filterButton').on('click', function() {
     var searchTerm = $('#search-input').val();
     handlePagination(1, searchTerm + filterDocType() + filterStatus(), 'request_id', 'desc');
+  });
+
+  $('#status-info-btn').on('click', function() {
+    $('#statusInfoModal').modal('show');
   });
 
   // Create Reason button click listener
@@ -748,11 +792,29 @@ $(document).ready(function() {
 // Perform search functionality when either the Filter or Search button is pressed
 function filterDocType() {
   var filterByDocTypeVal = $('#filterByDocType').val();
-  if (filterByDocTypeVal == "all") {
+  
+  // If no value is selected or "all" is selected, return an empty string
+  if (!filterByDocTypeVal || filterByDocTypeVal.includes("all")) {
     return '';
   }
-  return ' ' + filterByDocTypeVal.toLowerCase();
+
+  // If one or more values are selected, concatenate them into a string
+  return ' ' + filterByDocTypeVal.map(function(value) {
+    return value.toLowerCase();
+  }).join(' ');
 }
+
+// TO D E L E T E
+function showSelectedValues() {
+    var selectedValues = $('#filterByDocType').val();
+    if (!selectedValues || selectedValues.length === 0) {
+      console.log('No values selected');
+    } else {
+      console.log('Selected values:', selectedValues);
+      // Alternatively, you can display the values in an alert or update the UI
+      // Example: alert('Selected values: ' + selectedValues.join(', '));
+    }
+  }
 
 function filterStatus() {
   var filterByStatusVal = $('#filterByStatus').val();
