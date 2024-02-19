@@ -2,71 +2,51 @@
 include '../../conn.php';
 include '../functions.php';
 
-session_start();
+// Check if the request is a POST request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve the appointment IDs from the POST data
+    $appointmentIds = isset($_POST['appointment_id']) ? $_POST['appointment_id'] : null;
 
-// Check if the appointmentIds are provided
-$appointmentIds = $_POST['appointment_id'];
+    if ($appointmentIds) {
+        try {
+            // Start a database transaction
+            $connection->begin_transaction();
 
-try {
-    // Start a database transaction
-    $connection->begin_transaction();
+            // Prepare and execute the SQL query to update the is_archived column
+            $placeholders = implode(',', array_fill(0, count($appointmentIds), '?'));
+            $sqlUpdate = "UPDATE appointments SET is_archived = 1, status_id = 8 WHERE appointment_id IN ($placeholders)";
+            $stmtUpdate = $connection->prepare($sqlUpdate);
 
-    // Prepare and execute the SQL query to fetch the facility IDs of the appointments
-    $placeholders = implode(',', array_fill(0, count($appointmentIds), '?'));
-    $sql = "SELECT facility_id FROM appointment_facility WHERE appointment_id IN ($placeholders)";
-    $stmt = $connection->prepare($sql);
+            // Bind parameters dynamically based on the number of appointment IDs
+            $types = str_repeat('s', count($appointmentIds));
+            $stmtUpdate->bind_param($types, ...$appointmentIds);
+            $stmtUpdate->execute();
 
-    // Bind parameters dynamically based on the number of appointmentIds
-    $types = str_repeat('s', count($appointmentIds));
-    $stmt->bind_param($types, ...$appointmentIds);
-    $stmt->execute();
+            // Check if the update was successful
+            if ($stmtUpdate->affected_rows > 0) {
+                // Commit the transaction and return a success response
+                $connection->commit();
+                echo json_encode(['success' => true]);
+            } else {
+                // If the update fails, roll back the transaction and return an error response
+                $connection->rollback();
+                echo json_encode(['success' => false, 'error' => 'Failed to delete the appointments.']);
+            }
 
-    // Fetch the facility IDs of the appointments
-    $result = $stmt->get_result();
-    $facilityIds = [];
-    while ($row = $result->fetch_assoc()) {
-        $facilityIds[] = $row['facility_id'];
-    }
-
-    // Prepare and execute the SQL query to update the availability of the facilities
-    $placeholders = implode(',', array_fill(0, count($facilityIds), '?'));
-    $sqlUpdate = "UPDATE facility SET availability = 'Available' WHERE facility_id IN ($placeholders)";
-    $stmtUpdate = $connection->prepare($sqlUpdate);
-
-    // Bind parameters dynamically based on the number of facilityIds
-    $types = str_repeat('s', count($facilityIds));
-    $stmtUpdate->bind_param($types, ...$facilityIds);
-    $stmtUpdate->execute();
-
-    // Prepare and execute the SQL query to delete the appointment records
-    $placeholders = implode(',', array_fill(0, count($appointmentIds), '?'));
-    $sqlDelete = "DELETE FROM appointment_facility WHERE appointment_id IN ($placeholders)";
-    $stmtDelete = $connection->prepare($sqlDelete);
-
-    // Bind parameters dynamically based on the number of appointmentIds
-    $types = str_repeat('s', count($appointmentIds));
-    $stmtDelete->bind_param($types, ...$appointmentIds);
-    $stmtDelete->execute();
-
-    // Check if the deletion was successful
-    if ($stmtDelete->affected_rows > 0) {
-        // Commit the transaction and return a response indicating the success of the deletion
-        $connection->commit();
-        echo json_encode(['success' => true]);
+            // Close the statement
+            $stmtUpdate->close();
+        } catch (Exception $e) {
+            // If an exception occurs, roll back the transaction and return an error response
+            $connection->rollback();
+            echo json_encode(['success' => false, 'error' => 'An error occurred during the transaction.']);
+        }
     } else {
-        // If the deletion fails, roll back the transaction and return an error response
-        $connection->rollback();
-        echo json_encode(['success' => false, 'error' => 'Failed to delete the appointment.']);
+        // Return an error response if appointment_ids are not provided
+        echo json_encode(['error' => 'Appointment IDs not provided']);
     }
-
-    // Close the statements
-    $stmt->close();
-    $stmtUpdate->close();
-    $stmtDelete->close();
-} catch (Exception $e) {
-    // If an exception occurs, roll back the transaction and return an error response
-    $connection->rollback();
-    echo json_encode(['success' => false, 'error' => 'An error occurred during the transaction.']);
+} else {
+    // Return an error response for non-POST requests
+    echo json_encode(['error' => 'Invalid request method']);
 }
 
 // Close the database connection
