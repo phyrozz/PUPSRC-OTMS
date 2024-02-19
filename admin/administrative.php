@@ -52,8 +52,10 @@
                                     <label class="input-group-text" for="table-select">Service:</label>    
                                     <select id="transactionTableSelect" class="form-select" name="table-select">
                                         <option value="request_equipment" <?php if ($table === 'request_equipment') echo 'selected'; ?>>Request of Equipment</option>
-                                        <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment </option>
+                                        <option value="appointment_facility" <?php if ($table === 'appointment_facility') echo 'selected'; ?>>Facility Appointment</option>
                                         <option value="administrative_feedbacks" <?php if ($table === 'administrative_feedbacks') echo 'selected'; ?>>Feedbacks</option>
+                                        <option value="archived_equipment" <?php if ($table === 'archived_equipment') echo 'selected'; ?>>Archived Equipment</option>
+                                        <option value="archived_facility" <?php if ($table === 'archived_facility') echo 'selected'; ?>>Archived Facility</option>
                                     </select>
                                     <button id="tableSelectSubmit" type="submit" name="filter-button" class="btn btn-primary"><i class="fas fa-refresh"></i> Load Table</button>
                                 </form>
@@ -111,6 +113,12 @@
                             }
                             elseif ($table === 'administrative_feedbacks') {
                                 include 'tables/administrative/feedbacks_table.php';
+                            } 
+                            elseif ($table === 'archived_equipment') {
+                                include 'tables/administrative/archived_equipment.php';
+                            } 
+                            elseif ($table === 'archived_facility') {
+                                include 'tables/administrative/archived_facility.php';
                             }
                         ?>
                     </div>

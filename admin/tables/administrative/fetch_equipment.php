@@ -24,8 +24,8 @@ $requestQuery = "SELECT request_id, datetime_schedule, CONCAT(DATE_FORMAT(FROM_U
                  INNER JOIN users ON request_equipment.user_id = users.user_id
                  INNER JOIN user_roles ON users.user_role = user_roles.user_role_id
                  INNER JOIN statuses ON request_equipment.status_id = statuses.status_id
-                 INNER JOIN equipment ON request_equipment.equipment_id = equipment.equipment_id";
- 
+                 INNER JOIN equipment ON request_equipment.equipment_id = equipment.equipment_id
+                 AND is_archived = 0";
 
 if (!empty($searchTerm)) {
     $requestQuery .= " AND (request_id LIKE '%$searchTerm%'

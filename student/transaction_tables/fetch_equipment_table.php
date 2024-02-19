@@ -23,7 +23,7 @@ $requestQuery = "SELECT request_id, datetime_schedule, quantity_equip, status_na
                         FROM request_equipment
                         INNER JOIN statuses ON request_equipment.status_id = statuses.status_id
                         INNER JOIN equipment ON request_equipment.equipment_id = equipment.equipment_id
-                        WHERE user_id = '" .  $_SESSION['user_id'] . "'";
+                        WHERE user_id = '" .  $_SESSION['user_id'] . "' AND is_archived = 0";
 
 if (!empty($searchTerm)) {
     $requestQuery .= " AND (request_id LIKE '%$searchTerm%'

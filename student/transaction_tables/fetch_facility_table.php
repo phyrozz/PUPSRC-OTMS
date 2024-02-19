@@ -23,7 +23,7 @@ $appointmentQuery = "SELECT appointment_id, status_name, course, section, start_
                         FROM appointment_facility
                         INNER JOIN statuses ON appointment_facility.status_id = statuses.status_id
                         INNER JOIN facility ON appointment_facility.facility_id = facility.facility_id
-                        WHERE user_id = '" .  $_SESSION['user_id'] . "'";
+                        WHERE user_id = '" .  $_SESSION['user_id'] . "' AND is_archived = 0";
 
 if (!empty($searchTerm)) {
     $appointmentQuery .= " AND (appointment_id LIKE '%$searchTerm%'
